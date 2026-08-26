@@ -1,0 +1,9 @@
+# 本机 Inspector 配置。
+runtime/.env
+
+# 评审注入和截图的临时产物。
+*.bak.*
+screenshots/
+
+# Node.js 依赖目录。
+node_modules/

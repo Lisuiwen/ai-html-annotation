@@ -1,0 +1,143 @@
+<!--
+  UI 反馈包：需要提示条、Modal、Drawer 或 Toast 时读取。
+  依赖同包 foundation.html；正式说明启用时，浮层必须放在左侧 .ui-preview 内。
+-->
+<style>
+  /* 中性提示条。 */
+  .ui-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ui-space-2);
+    padding: var(--ui-space-3) var(--ui-space-4);
+    color: var(--ui-text-secondary);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg-soft);
+  }
+  .ui-alert strong { color: var(--ui-text); }
+
+  /* ponytail: Modal、Drawer、Toast 视觉未采集；取得真实状态后替换视觉和焦点管理。 */
+  .ui-preview { position: relative; }
+  .ui-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 80;
+    display: none;
+    background: rgba(0, 0, 0, 0.45);
+  }
+  .ui-overlay.is-open { display: flex; }
+  .ui-modal-overlay { align-items: center; justify-content: center; padding: var(--ui-space-6); }
+  .ui-modal {
+    width: min(520px, 100%);
+    overflow: hidden;
+    border-radius: var(--ui-radius-container);
+    background: var(--ui-bg);
+  }
+  .ui-layer-head, .ui-layer-foot {
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    padding: 0 var(--ui-space-4);
+    gap: var(--ui-space-2);
+  }
+  .ui-layer-head { border-bottom: 1px solid var(--ui-border-soft); }
+  .ui-layer-head strong { font-size: 16px; }
+  .ui-layer-head .ui-button { margin-left: auto; }
+  .ui-layer-body { padding: var(--ui-space-6); }
+  .ui-layer-foot {
+    justify-content: flex-end;
+    border-top: 1px solid var(--ui-border-soft);
+    background: var(--ui-bg-soft);
+  }
+  .ui-drawer-overlay { justify-content: flex-end; }
+  .ui-drawer { width: min(420px, 92vw); height: 100%; background: var(--ui-bg); }
+  .ui-toast-region {
+    position: fixed;
+    top: var(--ui-space-6);
+    left: 50%;
+    z-index: 120;
+    display: grid;
+    transform: translateX(-50%);
+    gap: var(--ui-space-2);
+    pointer-events: none;
+  }
+  .ui-toast {
+    min-width: 260px;
+    padding: var(--ui-space-3) var(--ui-space-4);
+    color: var(--ui-text);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg);
+    box-shadow: 0 8px 24px var(--ui-border-subtle);
+  }
+</style>
+
+<!-- 正式说明 Addon 启用时，将浮层结构放入左侧产品区 #uiPreview，而不是 body 根节点。 -->
+<div class="ui-preview" id="uiPreview">
+  <button class="ui-button ui-button--primary" data-ui-open="uiDemoModal">打开 Modal</button>
+  <div class="ui-overlay ui-modal-overlay" id="uiDemoModal" data-ui-layer="modal" role="dialog" aria-modal="true" aria-labelledby="uiModalTitle">
+    <div class="ui-modal">
+      <div class="ui-layer-head"><strong id="uiModalTitle">Modal 标题</strong><button class="ui-button ui-button--icon" data-ui-close aria-label="关闭">×</button></div>
+      <div class="ui-layer-body"><div class="ui-alert" role="status">通用内容区域</div></div>
+      <div class="ui-layer-foot"><button class="ui-button" data-ui-close>取消</button><button class="ui-button ui-button--primary" data-ui-confirm>确定</button></div>
+    </div>
+  </div>
+</div>
+<div class="ui-toast-region" id="uiToastRegion" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+  /* 打开浮层并限制在左侧产品区当前可视范围。 */
+  function openUiLayer(id) {
+    const layer = document.getElementById(id);
+    if (!layer) return;
+    const preview = layer.closest('.ui-preview');
+    layer.style.top = `${preview.scrollTop}px`;
+    layer.style.height = `${preview.clientHeight}px`;
+    layer.classList.add('is-open');
+    const focusTarget = layer.querySelector('button, input, [tabindex]');
+    if (focusTarget) focusTarget.focus();
+    window.dispatchEvent(new CustomEvent('ui:layer-change', { detail: { page: layer.dataset.uiLayer } }));
+  }
+
+  /* 关闭浮层并恢复基础页面说明状态。 */
+  function closeUiLayer(layer) {
+    if (!layer) return;
+    layer.classList.remove('is-open');
+    layer.style.removeProperty('top');
+    layer.style.removeProperty('height');
+    window.dispatchEvent(new CustomEvent('ui:layer-change', { detail: { page: 'base' } }));
+  }
+
+  /* 创建自动消失的中性 Toast。 */
+  function showUiToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'ui-toast';
+    toast.textContent = message;
+    document.getElementById('uiToastRegion').appendChild(toast);
+    window.setTimeout(() => toast.remove(), 2400);
+  }
+
+  /* 集中处理浮层打开、关闭、确认和 Toast。 */
+  document.addEventListener('click', (event) => {
+    const openButton = event.target.closest('[data-ui-open]');
+    if (openButton) openUiLayer(openButton.dataset.uiOpen);
+    const closeButton = event.target.closest('[data-ui-close]');
+    if (closeButton) closeUiLayer(closeButton.closest('.ui-overlay'));
+    const confirmButton = event.target.closest('[data-ui-confirm]');
+    if (confirmButton) {
+      closeUiLayer(confirmButton.closest('.ui-overlay'));
+      showUiToast('操作已完成');
+    }
+    const toastButton = event.target.closest('[data-ui-toast]');
+    if (toastButton) showUiToast(toastButton.dataset.uiToast);
+    if (event.target.classList.contains('ui-overlay')) closeUiLayer(event.target);
+  });
+
+  /* 支持 Escape 关闭当前浮层。 */
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    closeUiLayer(document.querySelector('.ui-overlay.is-open'));
+  });
+</script>

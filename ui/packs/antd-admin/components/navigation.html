@@ -1,0 +1,166 @@
+<!--
+  UI 导航包：需要顶部导航、侧栏菜单、树或 Tabs 时读取。
+  依赖同包 foundation.html 的 Token 和通用按钮。
+-->
+<style>
+  /* 顶部导航与品牌区。 */
+  .ui-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    height: var(--ui-header-height);
+    border-bottom: 1px solid var(--ui-border-subtle);
+    background: var(--ui-bg);
+  }
+  .ui-brand {
+    display: flex;
+    align-items: center;
+    width: var(--ui-sider-width);
+    height: 100%;
+    padding: 0 var(--ui-space-6);
+    gap: var(--ui-space-2);
+    font-weight: 600;
+  }
+  .ui-brand-mark {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    color: var(--ui-text-on-primary);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-primary);
+  }
+  .ui-topnav { display: flex; align-items: center; height: 100%; gap: var(--ui-space-2); }
+  .ui-topnav a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 var(--ui-space-4);
+    color: var(--ui-text-secondary);
+    text-decoration: none;
+    font-size: 16px;
+  }
+  /* ponytail: 顶部导航选中态未采集；取得真实状态截图后替换当前近似。 */
+  .ui-topnav a[aria-current="page"] { color: var(--ui-primary); box-shadow: inset 0 -2px var(--ui-primary); }
+  .ui-header-actions {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    padding-right: var(--ui-space-6);
+    gap: var(--ui-space-2);
+  }
+
+  /* 侧栏菜单。 */
+  .ui-sider {
+    padding: var(--ui-space-4) var(--ui-space-2);
+    border-right: 1px solid var(--ui-border-subtle);
+    background: var(--ui-bg);
+  }
+  .ui-menu { display: grid; gap: var(--ui-space-1); }
+  .ui-menu-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    padding: 0 var(--ui-space-3);
+    gap: var(--ui-space-3);
+    color: var(--ui-text-secondary);
+    text-align: left;
+    border: 0;
+    border-radius: var(--ui-radius-control);
+    background: transparent;
+  }
+  /* ponytail: 菜单 hover 和 active 未采集；取得真实状态后替换当前近似。 */
+  .ui-menu-item:hover, .ui-menu-item.is-active { color: var(--ui-primary); background: var(--ui-bg-soft); }
+
+  /* 层级树。 */
+  .ui-tree {
+    display: grid;
+    gap: var(--ui-space-1);
+    width: 280px;
+    padding: var(--ui-space-2);
+    border: 1px solid var(--ui-border-soft);
+    border-radius: var(--ui-radius-container);
+  }
+  .ui-tree-row { display: flex; align-items: center; min-height: 24px; gap: var(--ui-space-1); }
+  .ui-tree-toggle {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    color: var(--ui-text-tertiary);
+    border: 0;
+    background: transparent;
+  }
+  .ui-tree-children { display: grid; gap: var(--ui-space-1); padding-left: var(--ui-space-6); }
+  .ui-tree-node[aria-expanded="false"] + .ui-tree-children { display: none; }
+
+  /* 页内 Tabs。 */
+  .ui-tabs { border-bottom: 1px solid var(--ui-border-soft); }
+  .ui-tab-list { display: flex; gap: var(--ui-space-6); }
+  .ui-tab {
+    position: relative;
+    height: 40px;
+    padding: 0;
+    color: var(--ui-text-secondary);
+    border: 0;
+    background: transparent;
+  }
+  /* ponytail: Tabs 选中态未采集；取得真实状态后替换当前近似。 */
+  .ui-tab[aria-selected="true"] { color: var(--ui-primary); }
+  .ui-tab[aria-selected="true"]::after {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    content: "";
+    background: var(--ui-primary);
+  }
+  .ui-tab-panel { display: none; padding: var(--ui-space-4) 0; color: var(--ui-text-secondary); }
+  .ui-tab-panel.is-active { display: block; }
+</style>
+
+<!-- 顶部与侧栏最小结构。 -->
+<header class="ui-header" id="uiHeader">
+  <div class="ui-brand" id="uiBrand"><span class="ui-brand-mark" aria-hidden="true">UI</span><span>系统名称</span></div>
+  <nav class="ui-topnav" id="uiTopnav" aria-label="一级导航"><a href="#" aria-current="page">当前模块</a></nav>
+  <div class="ui-header-actions" id="uiHeaderActions"><button class="ui-button ui-button--text">用户菜单</button></div>
+</header>
+<aside class="ui-sider" id="uiSider">
+  <nav class="ui-menu" id="uiSiderMenu" aria-label="侧栏菜单">
+    <button class="ui-menu-item is-active"><span aria-hidden="true">◇</span><span>当前菜单</span></button>
+  </nav>
+</aside>
+
+<!-- 树和 Tabs 声明式交互。 -->
+<script>
+  /* 切换树节点展开状态；完整键盘树行为待采集后升级。 */
+  function toggleUiTree(button) {
+    const node = button.closest('.ui-tree-node');
+    const expanded = node.getAttribute('aria-expanded') !== 'false';
+    node.setAttribute('aria-expanded', String(!expanded));
+    button.textContent = expanded ? '›' : '⌄';
+    button.setAttribute('aria-label', expanded ? '展开分组' : '折叠分组');
+  }
+
+  /* 切换 Tabs 选中项和对应内容面板。 */
+  function activateUiTab(tab) {
+    const tabs = tab.closest('[data-ui-tabs]');
+    tabs.querySelectorAll('[role="tab"]').forEach((item) => {
+      item.setAttribute('aria-selected', String(item === tab));
+    });
+    tabs.querySelectorAll('[role="tabpanel"]').forEach((panel) => {
+      panel.classList.toggle('is-active', panel.id === tab.getAttribute('aria-controls'));
+    });
+  }
+
+  /* 使用事件委托连接树与 Tabs 声明式接口。 */
+  document.addEventListener('click', (event) => {
+    const treeToggle = event.target.closest('[data-ui-tree-toggle]');
+    if (treeToggle) toggleUiTree(treeToggle);
+    const tab = event.target.closest('[role="tab"]');
+    if (tab) activateUiTab(tab);
+  });
+</script>

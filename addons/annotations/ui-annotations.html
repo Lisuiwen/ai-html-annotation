@@ -1,0 +1,58 @@
+<!--
+  UI 正式标注包：只有用户需要右侧说明和 SVG 连线时读取。
+  右栏 DOM、样式和连线逻辑由本 Skill 的 runtime/viewer.js 运行时创建，
+  原型 HTML 不得硬编码右栏结构、卡片正文或连线逻辑。
+  卡片只展示标题与正文；target.label 保留为结构化数据，不在卡片内重复显示。
+  作者态操作由 ca-prototype 本地服务（serve.mjs）注入到卡片右上角和面板底部。
+-->
+
+<!-- 原型中只给可绑定目标添加稳定属性；交互标记与正式标注仍彼此独立。 -->
+<button
+  class="ui-button ui-button--primary"
+  data-prototype-note-target="primary-action"
+  data-ui-interactive>
+  主操作
+</button>
+<section class="ui-component-box" data-prototype-note-target="content-area">内容区域</section>
+
+<!--
+  prototype.notes.snapshot.js：唯一标注数据源。
+  实际生成时写入独立 UTF-8 文件，不要把该脚本块内联到 prototype.html，也不要再生成 notes.json。
+-->
+<script>
+/* 为只读 Viewer、作者编辑器和 AI 提供同一份结构化标注数据。 */
+window.__PROTOTYPE_NOTES__ = {
+  schemaVersion: 1,
+  activeGroup: "base",
+  header: {
+    title: "功能说明",
+    subtitle: "仅展示当前页面或浮层状态"
+  },
+  cards: [
+    {
+      id: "primary-action",
+      group: "base",
+      title: "主操作",
+      body: "说明该操作的业务目的。",
+      target: {
+        selector: "[data-prototype-note-target=\"primary-action\"]",
+        label: "主操作"
+      }
+    },
+    {
+      id: "content-area",
+      group: "common",
+      title: "内容区域",
+      body: "说明该区域的数据和状态。",
+      target: {
+        selector: "[data-prototype-note-target=\"content-area\"]",
+        label: "内容区域"
+      }
+    }
+  ]
+};
+</script>
+
+<!-- prototype.html 末尾只保留以下只读引用；viewer.js 从 runtime/viewer.js 复制。 -->
+<script src="./prototype.notes.snapshot.js"></script>
+<script src="./prototype-notes/viewer.js" data-prototype-notes-viewer></script>
