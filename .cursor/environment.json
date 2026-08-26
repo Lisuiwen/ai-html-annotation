@@ -1,0 +1,4 @@
+{
+  "name": "CA Prototype",
+  "install": "node --version && chrome --version"
+}

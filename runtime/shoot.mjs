@@ -61,8 +61,11 @@ function shoot(group, exe) {
   return new Promise((resolveShot) => {
     const url = pathToFileURL(htmlPath).href + '?state=' + encodeURIComponent(group) + '&collapsed=1';
     const outFile = join(outDir, group + '.png');
+    /* --no-sandbox / --disable-dev-shm-usage：Linux 容器与 CI 无头环境下必需，Windows/Mac 上无副作用。 */
     const child = spawn(exe, [
       '--headless=new',
+      '--no-sandbox',
+      '--disable-dev-shm-usage',
       '--disable-gpu',
       '--hide-scrollbars',
       '--force-device-scale-factor=1',
@@ -71,37 +74,41 @@ function shoot(group, exe) {
       '--screenshot=' + outFile,
       url
     ], { stdio: 'ignore' });
+    let settled = false;
+    /* 统一收尾：主动结束浏览器并按产物是否落盘判定成败，兼容截图后不自动退出的无头 Chrome。 */
+    const finish = (ok, code) => {
+      if (settled) return;
+      settled = true;
+      try { child.kill('SIGKILL'); } catch (_) { /* 进程可能已退出 */ }
+      if (ok) {
+        console.log(`✓ [${group}] ${outFile}`);
+      } else {
+        console.error(`✗ [${group}] 截图失败（${code}）：${url}`);
+        process.exitCode = 1;
+      }
+      resolveShot(ok);
+    };
     child.on('error', () => {
       console.error(`✗ 启动浏览器失败：${exe}`);
-      process.exitCode = 1;
-      resolveShot(false);
+      finish(false, 'spawn');
     });
-    /* 用 close（stdio 完全关闭）而非 exit：Edge 截图文件可能在进程退出后仍有落盘延迟。 */
-    child.on('close', (code) => {
-      if (code === 0) waitForFile(outFile, 4000).then((exists) => {
-        if (exists) {
-          console.log(`✓ [${group}] ${outFile}`);
-          resolveShot(true);
-        } else {
-          console.error(`✗ [${group}] 截图文件未生成（exit ${code}）：${url}`);
-          resolveShot(false);
-        }
-      });
-      else {
-        console.error(`✗ [${group}] 截图失败（exit ${code}）：${url}`);
-        resolveShot(false);
-      }
-    });
+    /* 部分无头 Chrome 截图后不自动退出：轮询产物落盘（大小稳定）后主动收尾，不再依赖 close 事件。 */
+    waitForFile(outFile, 20000).then((exists) => finish(exists, 'timeout'));
   });
 }
 
-/* 轮询等待截图文件落盘，最多等待 timeout 毫秒。 */
+/* 轮询等待截图文件落盘，最多等待 timeout 毫秒。要求大小非零且连续两次相等，避免读到写入中途的半截文件。 */
 function waitForFile(path, timeout) {
   return new Promise((resolveWait) => {
     const start = Date.now();
+    let lastSize = -1;
     (function check() {
-      if (existsSync(path)) return resolveWait(true);
-      if (Date.now() - start >= timeout) return resolveWait(false);
+      if (existsSync(path)) {
+        const size = statSync(path).size;
+        if (size > 0 && size === lastSize) return resolveWait(true);
+        lastSize = size;
+      }
+      if (Date.now() - start >= timeout) return resolveWait(existsSync(path) && statSync(path).size > 0);
       setTimeout(check, 150);
     })();
   });
@@ -114,6 +121,10 @@ function resolveBrowser() {
   const candidates = [
     'msedge',
     'chrome',
+    'google-chrome',
+    'google-chrome-stable',
+    'chromium',
+    'chromium-browser',
     'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
     'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
     'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
