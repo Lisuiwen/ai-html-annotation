@@ -1,0 +1,42 @@
+<style>
+  .ui-toast-region {
+    position: fixed;
+    top: var(--ui-space-6);
+    left: 50%;
+    z-index: 120;
+    display: grid;
+    transform: translateX(-50%);
+    gap: var(--ui-space-2);
+    pointer-events: none;
+  }
+  .ui-toast {
+    min-width: 260px;
+    padding: var(--ui-space-3) var(--ui-space-4);
+    color: var(--ui-text);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg);
+    box-shadow: 0 8px 24px var(--ui-border-subtle);
+  }
+</style>
+
+<button class="ui-button" type="button" data-ui-toast="操作已完成">显示 Toast</button>
+<div class="ui-toast-region" id="uiToastRegion" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+  /* 创建自动消失的中性 Toast。 */
+  function showUiToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'ui-toast';
+    toast.textContent = message;
+    document.getElementById('uiToastRegion').appendChild(toast);
+    window.setTimeout(() => toast.remove(), 2400);
+  }
+
+  /* 使用声明式属性触发 Toast。 */
+  document.addEventListener('click', (event) => {
+    const toastButton = event.target.closest('[data-ui-toast]');
+    if (toastButton) showUiToast(toastButton.dataset.uiToast);
+  });
+</script>
+

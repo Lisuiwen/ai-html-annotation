@@ -1,0 +1,62 @@
+<style>
+  /* Header 高度由组件声明，Application Shell 复用该 Token。 */
+  :root { --ui-header-height: 64px; }
+  .ui-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    height: var(--ui-header-height);
+    border-bottom: 1px solid var(--ui-border-subtle);
+    background: var(--ui-bg);
+  }
+  .ui-brand {
+    display: flex;
+    align-items: center;
+    width: var(--ui-sider-width);
+    height: 100%;
+    padding: 0 var(--ui-space-6);
+    gap: var(--ui-space-2);
+    font-weight: var(--ui-font-weight-semibold);
+  }
+  .ui-brand-mark {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    color: var(--ui-text-on-primary);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-primary);
+  }
+  .ui-topnav { display: flex; align-items: center; height: 100%; gap: var(--ui-space-2); }
+  .ui-topnav a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 var(--ui-space-4);
+    color: var(--ui-text-secondary);
+    text-decoration: none;
+    font-size: 16px;
+  }
+  /* ponytail: 顶部导航选中态未采集；取得真实状态截图后替换当前近似。 */
+  .ui-topnav a[aria-current="page"] { color: var(--ui-primary); box-shadow: inset 0 -2px var(--ui-primary); }
+  .ui-header-actions {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    padding-right: var(--ui-space-6);
+    gap: var(--ui-space-2);
+  }
+</style>
+
+<header class="ui-header" id="uiHeader">
+  <div class="ui-brand" id="uiBrand">
+    <span class="ui-brand-mark" aria-hidden="true">UI</span>
+    <span>系统名称</span>
+  </div>
+  <nav class="ui-topnav" id="uiTopnav" aria-label="一级导航">
+    <a href="#" aria-current="page">当前模块</a>
+  </nav>
+  <div class="ui-header-actions" id="uiHeaderActions"><!-- slot: optional action.button --></div>
+</header>

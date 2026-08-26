@@ -7,18 +7,19 @@
 ## 读取顺序
 
 1. 读取 `../ui/catalog.md`，根据用户材料选择唯一 foundation 和所需组件 provider；无法判断时先询问。
-2. 读取 `../ui/contract.md` 与已选 UI 包的 `PACK.md`。
-3. 完整读取所选 foundation 的 `design-system.md` 和 `foundation.html`。
-4. 只读取当前页面需要的 provider 组件文件，禁止加载未使用类别。
-5. 读取 [generation-contract.md](generation-contract.md) 中的需求边界、代码质量、依赖、状态和无障碍约束。
-6. 只有需要正式产品说明时，继续执行 [product-annotations.md](product-annotations.md)。
+2. 读取 `../ui/contract.md`、已选 UI 包的 `PACK.md` 和 `manifest.json`。
+3. 完整读取 `design-system.md`、foundation 契约及 manifest 声明的 foundation sources。
+4. 从 manifest 匹配 Component、Pattern 或 Preset，递归展开 `requires`；`optional` 仅在当前需求明确需要时加入。
+5. 只读取依赖闭包中的契约与实现，禁止遍历整个组件类别或 UI 包。
+6. 读取 [generation-contract.md](generation-contract.md) 中的需求边界、代码质量、依赖、状态和无障碍约束。
+7. 只有需要正式产品说明时，继续执行 [product-annotations.md](product-annotations.md)。
 
 当前已有完整 UI 包为 `../ui/packs/antd-admin/`，用于 Ant Design 风格的桌面中后台原型。
 
 ## 生成流程
 
 1. 从用户材料提取系统名、页面、菜单、字段、数据、可见状态和交互；不明确的信息先询问。
-2. 记录本次选择的 foundation、各组件 provider 和 Addon，并从这些资源复制最小 HTML、CSS 和 JavaScript 片段。
+2. 记录本次选择的 foundation、provider、Component、Pattern、Preset 和 Addon，并从依赖闭包复制最小 CSS、HTML 和 JavaScript 片段。
 3. 产品视觉只使用所选 foundation 和 provider 已声明的 Token；标注层颜色不得成为产品视觉。
 4. 实现用户明确要求的最小交互和 URL state，不补造未确认业务规则。
 5. 按共享契约完成无障碍、依赖、注释和 `ponytail:` 检查。

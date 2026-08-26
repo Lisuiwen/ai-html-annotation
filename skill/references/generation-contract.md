@@ -5,8 +5,8 @@
 本契约约束后续 AI 生成的所有单文件 HTML 产品原型。发生冲突时按以下顺序执行：
 
 1. 用户在当前任务中的明确要求。
-2. 当前所选 UI foundation 的 `design-system.md`。
-3. 当前所选 UI provider 的 foundation 与组件实现。
+2. 当前所选 UI foundation 的 `design-system.md`、foundation 契约与基础源文件。
+3. 当前所选 UI provider 的 manifest、组件契约与组件实现。
 4. `ui/contract.md` 和对应 `PACK.md` 中的组合约束。
 5. `addons/annotations/` 中的标注契约，以及 `runtime/viewer.js` 的只读渲染行为。
 
@@ -21,17 +21,17 @@
 - `ui/catalog.md`
 - `ui/contract.md`
 - 当前所选 UI 包的 `PACK.md`
-- 当前 foundation 的 `design-system.md` 与 `foundation.html`
+- 当前 UI 包的 `manifest.json`
+- 当前 foundation 的 `design-system.md`、foundation 契约与 manifest 声明的 sources
 
-随后只读取当前页面需要的 provider：
+随后根据需求从 manifest 匹配最小资源：
 
-- 导航、侧栏、树、Tabs → navigation provider
-- 输入、搜索、Select、字段 → form provider
-- 筛选、工具栏、表格、分页 → data provider
-- 提示、Modal、Drawer、Toast → feedback provider
+- 单一控件或独立能力 → Component
+- 已知的跨组件布局 → Pattern
+- 标准页面起点 → Preset
 - 右侧说明和 SVG 连线 → `addons/annotations/`，并复用 `runtime/viewer.js`
 
-禁止为了方便一次性读取全部 UI 包或组件类别。不得只凭 `SKILL.md`、旧示例或模型记忆生成视觉和状态。
+对选中的 Component、Pattern 或 Preset 递归展开 `requires`；`optional` 仅在当前需求确实需要时加入。随后只读取依赖闭包中的契约与实现。禁止遍历全部组件、按类别加载全部资源，或直接选择 `visibility: internal` 的组件。不得只凭 `SKILL.md`、旧示例或模型记忆生成视觉和状态。
 
 ### 第二步：确认需求边界
 
@@ -40,16 +40,18 @@
 - 系统名未明确时使用“系统名称”“业务工作台”等中性占位，或直接省略品牌文字。
 - 未确认的组件状态和行为不得按 Ant Design、Tailwind 或常见中后台经验补造。
 
-### 第三步：选择最小组件片段
+### 第三步：解析最小依赖闭包
 
-- 从已选择的 foundation 和 provider 复制满足需求的最小 HTML、CSS 和 JavaScript 片段，不复制无关组件或演示数据。
+- 先选择最贴近需求的 Component、Pattern 或 Preset，再按 manifest 递归展开强依赖并去重。
+- Pattern 只决定组件组合与槽位；Preset 只提供页面起点。两者不得替代 Component 实现。
+- 从 foundation sources 和依赖闭包复制满足需求的最小 CSS、HTML 和 JavaScript，不复制无关组件或演示数据。
 - 保留所选 UI 包声明的语义类、`role`、`aria-*`、`data-*` 和配套脚本。
 - 删除未使用的组件样式和函数优于保留完整 UI Kit。
 - 不新增未被要求的抽象、框架、构建工具、依赖或样板。
 
 ### 第四步：建立 token 驱动视觉
 
-- 单文件内定义并使用与当前 foundation 的 `design-system.md`、`foundation.html` 一致的 Token。
+- 单文件内定义并使用与当前 foundation 的 `design-system.md` 和 `foundation/tokens.css` 一致的 Token。
 - 颜色、字体、字号、行高、间距、控件尺寸、边框、圆角和阴影都必须引用 token；不得在业务组件中散落“相近”硬编码值。
 - 若需求新增视觉值但证据不足，不得创建猜测 token；应省略该视觉或用 `ponytail:` 标明当前上限与升级证据。
 - Tailwind 若使用只能负责布局，例如 flex/grid、定位、宽高、溢出和响应式显隐；不得使用 Tailwind 颜色、边框、圆角、阴影、字体、字号、行高、间距或交互状态类覆盖 `ui-*` 视觉 token。
@@ -179,7 +181,7 @@ prototype-assets/
 ## 3. 内容与数据约束
 
 - 禁止从历史原型或其他任务带入任何示例业务名、系统名、菜单名、字段名、编码、人员、部门、渠道、日期或数据。
-- 禁止把类别包中的“系统名称”“示例条目”等结构示例误当成用户业务内容；复制后必须替换为当前需求或中性占位。
+- 禁止把组件、Pattern 或 Preset 中的“系统名称”“示例条目”等结构示例误当成用户业务内容；复制后必须替换为当前需求或中性占位。
 - 不得使用真实登录凭据、token、接口地址、个人信息、生产数据或未经授权的品牌资源。
 - 本地 mock 只表达当前交互所需的最小数据关系，不扩写用户未要求的业务规则。
 - 用户给出的信息不足以确定业务含义时，保持中性并明确待确认，不得“补全得更像真实系统”。
@@ -202,9 +204,10 @@ prototype-assets/
 ### 输入与来源
 
 - [ ] 已通过 `ui/catalog.md` 确定唯一 foundation 和所需 provider。
-- [ ] 已读取 `ui/contract.md`、所选 `PACK.md`、foundation 的设计事实和基础实现。
-- [ ] 只读取了当前需求需要的类别包，没有一次性加载全部组件资源。
-- [ ] 只复制了当前需求需要的最小组件片段。
+- [ ] 已读取 `ui/contract.md`、所选 `PACK.md`、`manifest.json`、foundation 的设计事实和基础源。
+- [ ] 已从 manifest 选择 Component、Pattern 或 Preset，并完整展开 `requires`。
+- [ ] `optional` 依赖仅在当前需求需要时加入，未直接选择内部组件。
+- [ ] 只读取并复制依赖闭包中的资源，没有遍历全部组件或按类别加载。
 - [ ] 未从旧示例带入任何业务名或业务数据。
 - [ ] 系统名不明确时没有猜测。
 

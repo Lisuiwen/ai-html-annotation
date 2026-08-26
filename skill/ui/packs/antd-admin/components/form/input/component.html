@@ -1,0 +1,21 @@
+<style>
+  .ui-input {
+    width: 100%;
+    height: var(--ui-control-height);
+    padding: 0 var(--ui-control-padding-inline);
+    color: var(--ui-text);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg);
+  }
+  .ui-input::placeholder { color: var(--ui-text-tertiary); }
+  .ui-input:disabled { color: var(--ui-text-disabled); background: var(--ui-bg-soft); }
+  /* ponytail: focus 视觉未采集；取得真实焦点态后替换当前可见焦点近似。 */
+  .ui-input:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 1px; }
+</style>
+
+<label>
+  <span>字段名称</span>
+  <input class="ui-input" placeholder="请输入">
+</label>
+

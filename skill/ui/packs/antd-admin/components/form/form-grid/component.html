@@ -1,0 +1,16 @@
+<style>
+  .ui-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+    gap: var(--ui-space-4);
+  }
+  /* ponytail: 600px 为原型容错断点；取得真实窄屏布局证据后替换。 */
+  @media (max-width: 600px) {
+    .ui-form-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+
+<div class="ui-form-grid" id="uiFormGrid">
+  <!-- slot: form controls -->
+</div>
+

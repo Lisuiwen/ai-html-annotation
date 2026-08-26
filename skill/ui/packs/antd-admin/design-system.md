@@ -9,73 +9,11 @@
 - 本文服务于纯 HTML 原型。组件应被视为评审用实现，不得仿造或宣称具备完整框架行为。
 - 当前材料未确认的 hover、focus、active、disabled、loading、error、折叠、展开、滚动、校验及复杂组件状态，均不得按框架常识自行补全。
 
-## 2. 通用 CSS Variables
+## 2. Token 权威来源
 
-后续单文件 HTML 应在 `:root` 中直接复用以下通用变量。若当前 Case 已提供经确认的设计 Token，应以该 Case 的材料为准，并在原型内保持引用一致；不得以“相近”色值随意替换。
+`foundation/tokens.css` 是跨组件基础 Token 值的唯一事实来源。本文只解释设计边界，不复制完整数值表；生成单文件 HTML 时必须原样读取并合并该文件。
 
-```css
-/* 通用颜色：具体 Case 可在已确认材料中提供覆盖值。 */
-:root {
-  --ui-bg-page: #f3f4f7;
-  --ui-bg: #ffffff;
-  --ui-bg-soft: #fafafa;
-  --ui-primary: #1677ff;
-  --ui-text: rgba(0, 0, 0, 0.88);
-  --ui-text-secondary: rgba(0, 0, 0, 0.65);
-  --ui-text-tertiary: rgba(0, 0, 0, 0.45);
-  --ui-text-disabled: rgba(0, 0, 0, 0.25);
-  --ui-border: #d9d9d9;
-  --ui-border-soft: #f0f0f0;
-  --ui-border-subtle: rgba(0, 0, 0, 0.06);
-  --ui-text-on-primary: #ffffff;
-
-  /* 通用字体栈；品牌字体须由当前 Case 明确提供。 */
-  --ui-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --ui-font-size-caption: 12px;
-  --ui-font-size-body: 14px;
-  --ui-font-size-nav: 16px;
-  --ui-font-size-page-title: 16px;
-  --ui-line-height-caption: 12px;
-  --ui-line-height-body: 22px;
-  --ui-line-height-tree-node: 24px;
-  --ui-line-height-nav: 64px;
-  --ui-line-height-page-title: 18.4px;
-  --ui-font-weight-regular: 400;
-  --ui-font-weight-semibold: 600;
-
-  /* 通用 4px 间距基线。 */
-  --ui-space-1: 4px;
-  --ui-space-2: 8px;
-  --ui-space-3: 12px;
-  --ui-space-4: 16px;
-  --ui-space-6: 24px;
-
-  /* 通用控件尺寸。 */
-  --ui-control-height: 32px;
-  --ui-control-width-default: 214px;
-  --ui-control-padding-inline: 11px;
-  --ui-button-padding-inline: 15px;
-  --ui-icon-button-size: 32px;
-  --ui-search-width: 269px;
-  --ui-filter-height: 102px;
-  --ui-toolbar-height: 44px;
-  --ui-table-header-height: 39px;
-  --ui-table-cell-padding: 8px;
-  --ui-page-titlebar-height: 56px;
-
-  /* 通用壳层布局：导航高度与侧栏宽度。 */
-  --ui-header-height: 64px;
-  --ui-sider-width: 224px;
-
-  /* 通用圆角与阴影。 */
-  --ui-radius-control: 6px;
-  --ui-radius-container: 8px;
-  --ui-shadow-button: 0 2px 0 rgba(0, 0, 0, 0.02);
-  --ui-shadow-primary: 0 2px 0 rgba(5, 145, 255, 0.1);
-}
-```
+组件或 Pattern 专用尺寸不进入 foundation。例如 Header、Sider、Search、Filter、Toolbar、Table、Button 与 Page Header 的尺寸和阴影由各自的 `component.html` 或 `pattern.html` 声明。若当前 Case 提供经确认的覆盖值，应在最终原型中保持同名引用一致，不得以“相近”色值替换。
 
 文字色在白底上的合成近似值仅用于理解和对比度复核，不应替代上面的 rgba Token：
 
@@ -88,7 +26,7 @@
 
 ### 3.1 顶部导航
 
-- 页面存在顶部导航时，导航文字可使用 `--ui-font-size-nav`、`--ui-font-weight-regular` 与 `--ui-space-4`。
+- 页面存在顶部导航时，必须读取 `navigation.app-header`，不得只凭本文重建组件。
 - 顶部导航的高度、品牌区宽度、导航项状态和溢出行为必须来自当前 Case 的材料；未提供时应保持最小静态结构。
 
 ### 3.2 左侧导航、树与 Tabs
@@ -100,34 +38,35 @@
 
 - 默认态可使用 `--ui-control-height`、`--ui-border`、`--ui-radius-control`、`--ui-control-padding-inline` 与通用文字 Token。
 - 常规筛选控件宽度和筛选项数量必须由当前 Case 材料确认。
-- placeholder 使用辅助文字色 `rgba(0,0,0,.45)`。
-- 组合搜索框的输入区圆角为 `6px 0 0 6px`，搜索按钮圆角为 `0 6px 6px 0`。
+- placeholder 使用 `--ui-text-tertiary`。
+- 组合搜索框、Select 与 Field 的结构和组件专用 Token 以各自 `component.html` 为准。
 - 未确认 hover、focus、active、disabled、loading、error 状态。
 
 ### 3.4 按钮
 
-- 默认态使用 `--ui-control-height`、`--ui-radius-control`、`--ui-button-padding-inline` 与通用文字 Token。
-- 主按钮使用 `--ui-primary` 背景、`--ui-text-on-primary` 文字与 `--ui-shadow-primary`。
+- 必须读取 `action.button`；Button 专用 padding、图标尺寸和阴影由组件声明，不属于 foundation。
+- 主按钮使用 `--ui-primary` 背景、`--ui-text-on-primary` 文字与 Button 自身声明的主按钮阴影 Token。
 - 次按钮使用 `--ui-bg` 背景、`--ui-border` 边框和 `--ui-text`。
 - 文字按钮使用透明背景、透明边框和次要文字色。
-- 图标按钮使用 `--ui-icon-button-size`。
+- 图标按钮使用 Button 自身声明的图标尺寸 Token。
 - 未确认 hover、focus、active、disabled、loading 状态。
 
 ### 3.5 筛选栏与工具栏
 
-- 筛选栏可使用 `--ui-filter-height`、`--ui-space-4`；工具栏可使用 `--ui-toolbar-height` 与 `--ui-space-4`。
+- 筛选栏和工具栏必须分别读取 `data.filter-bar` 与 `data.toolbar`；其专用尺寸由组件声明。
 - 筛选字段、行数、展开收起、操作顺序和过渡必须来自当前 Case 的材料。
 
 ### 3.6 表格与空状态
 
-- 表头使用 `--ui-table-header-height`、`--ui-bg-soft`、`--ui-font-weight-semibold` 与 `--ui-table-cell-padding`。
+- 表格必须读取 `data.data-table`；表头高度和单元格 padding 由组件声明。
 - 表格容器使用 `--ui-bg`、`--ui-border-soft` 与 `--ui-radius-container`。
 - 空状态文案、插图、触发条件、表格列宽和布局必须来自当前 Case 的材料。
 - 未确认行 hover、选中、loading、error 状态。
 
 ### 3.7 内容容器
 
-- 使用 `--ui-bg`、`--ui-radius-container` 和 `--ui-border-subtle` 建立基础层级。
+- 中后台页面容器必须读取 `pattern.application-shell`；页面标题区按需读取 `pattern.page-header`。
+- 内容表面使用 `--ui-bg`、`--ui-radius-container` 和 `--ui-border-subtle` 建立基础层级。
 - 是否使用悬浮阴影应由当前 Case 的材料确认。
 
 ## 4. 可访问性硬约束

@@ -1,0 +1,60 @@
+<style>
+  /* Button 专用尺寸和阴影不进入全局 Foundation。 */
+  :root {
+    --ui-button-padding-inline: 15px;
+    --ui-button-icon-size: 32px;
+    --ui-button-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+    --ui-button-primary-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+  }
+  .ui-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--ui-button-icon-size);
+    height: var(--ui-control-height);
+    padding: 0 var(--ui-button-padding-inline);
+    gap: var(--ui-space-2);
+    color: var(--ui-text);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg);
+    box-shadow: var(--ui-button-shadow);
+  }
+  /* ponytail: hover 和 focus 视觉未采集；取得真实计算样式后替换当前近似。 */
+  .ui-button:hover:not(:disabled) { color: var(--ui-primary); border-color: var(--ui-primary); }
+  .ui-button:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 1px; }
+  .ui-button--primary {
+    color: var(--ui-text-on-primary);
+    border-color: var(--ui-primary);
+    background: var(--ui-primary);
+    box-shadow: var(--ui-button-primary-shadow);
+  }
+  .ui-button--text {
+    padding-inline: var(--ui-space-2);
+    color: var(--ui-text-secondary);
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+  }
+  .ui-button--icon {
+    width: var(--ui-button-icon-size);
+    padding: 0;
+    font-size: 16px;
+  }
+  .ui-button:disabled {
+    color: var(--ui-text-disabled);
+    border-color: var(--ui-border-soft);
+    background: var(--ui-bg-soft);
+    box-shadow: none;
+  }
+  .ui-button-row { display: flex; flex-wrap: wrap; gap: var(--ui-space-2); }
+</style>
+
+<!-- 按需保留实际使用的按钮变体。 -->
+<div class="ui-button-row">
+  <button class="ui-button" type="button">次操作</button>
+  <button class="ui-button ui-button--primary" type="button">主操作</button>
+  <button class="ui-button ui-button--text" type="button">文字操作</button>
+  <button class="ui-button ui-button--icon" type="button" aria-label="图标操作">◇</button>
+</div>
+
