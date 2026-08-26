@@ -37,74 +37,75 @@
   const STORE_KEY = 'html-mark:' + location.pathname;
 
   // ---------- Styles ----------
+  /* 视觉 Token 内联自 skill/ui/packs/antd-admin/foundation.html：
+     html-mark 是 drop-in 注入任意 HTML，不能依赖宿主页面的 --ui-* 变量，故写死色值。 */
   const css = `
 .mm-ui, .mm-ui *, .mm-pin, .mm-pin *, .mm-note-pop, .mm-note-pop * {
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
-/* 仅按住 Ctrl 时切换十字光标，避免开启 Mark 后普通点击被抢。 */
+/* 仅按住 Ctrl 时切换十字光标，避免开启标注后普通点击被抢。 */
 body.mm-on.mm-armed, body.mm-on.mm-armed * { cursor: crosshair !important; }
 body.mm-on.mm-armed .mm-ui, body.mm-on.mm-armed .mm-ui *,
 body.mm-on.mm-armed .mm-note-pop, body.mm-on.mm-armed .mm-note-pop * { cursor: default !important; }
 body.mm-on.mm-armed .mm-note-pop textarea { cursor: text !important; }
 body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 
+/* 主色高亮：实线=已打点，虚线=悬停预览。 */
 .mm-target-hl, .mm-hover-hl {
-  outline: 2px solid rgba(255,141,107,0.85) !important;
+  outline: 2px solid #1677ff !important;
   outline-offset: 2px !important;
-  box-shadow: 0 0 0 6px rgba(255,141,107,0.14) !important;
+  box-shadow: 0 0 0 6px rgba(22,119,255,0.12) !important;
   transition: outline 0.15s ease, box-shadow 0.15s ease !important;
 }
 .mm-hover-hl {
   outline-style: dashed !important;
-  box-shadow: 0 0 0 6px rgba(255,141,107,0.1) !important;
+  box-shadow: 0 0 0 6px rgba(22,119,255,0.08) !important;
 }
 
-/* ---------- Toggle: glass pill ---------- */
+/* ---------- Toggle: 白底胶囊开关 ---------- */
 .mm-toggle {
   position: fixed; top: 14px; right: 14px; z-index: 2147483600;
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 9px 16px;
-  background: linear-gradient(155deg, rgba(48,38,32,0.86) 0%, rgba(38,30,26,0.74) 100%);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 999px;
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em;
+  padding: 0 16px;
+  height: 32px;
+  background: #ffffff;
+  color: rgba(0,0,0,0.65);
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  font-size: 12.5px; font-weight: 400; letter-spacing: 0.02em;
   cursor: pointer; user-select: none;
-  box-shadow:
-    0 8px 24px rgba(0,0,0,0.3),
-    0 1px 2px rgba(0,0,0,0.14),
-    inset 0 1px 0 rgba(255,255,255,0.2),
-    inset 0 0 0 1px rgba(255,255,255,0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.02);
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 .mm-toggle:hover {
-  transform: translateY(-1px);
-  background: linear-gradient(155deg, rgba(62,50,42,0.94) 0%, rgba(50,40,34,0.84) 100%);
-  box-shadow:
-    0 14px 32px rgba(0,0,0,0.35),
-    0 1px 2px rgba(0,0,0,0.16),
-    inset 0 1px 0 rgba(255,255,255,0.24),
-    inset 0 0 0 1px rgba(255,255,255,0.08);
+  color: #1677ff;
+  border-color: #1677ff;
 }
 .mm-toggle-dot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: #d0c8be;
-  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  background: rgba(0,0,0,0.25);
+  transition: background 0.2s ease;
+}
+.mm-toggle.on {
+  background: #1677ff;
+  border-color: #1677ff;
+  color: #ffffff;
+  box-shadow: 0 2px 0 rgba(5,145,255,0.1);
+}
+.mm-toggle.on:hover {
+  color: #ffffff;
 }
 .mm-toggle.on .mm-toggle-dot {
-  background: linear-gradient(135deg, #ff8d6b 0%, #ffaf7a 50%, #ffd29c 100%);
-  box-shadow: 0 0 14px rgba(255,141,107,0.95), 0 0 5px rgba(255,200,144,0.7);
-  transform: scale(1.15);
+  background: #ffffff;
 }
 .mm-toggle.on .mm-toggle-txt {
-  color: #ffd29c;
-  text-shadow: 0 0 10px rgba(255,141,107,0.55);
+  color: #ffffff;
+  text-shadow: none;
 }
 
-/* ---------- Pin: gradient orb ---------- */
+/* ---------- Pin: 主蓝数字圆点 ---------- */
 @keyframes mm-pin-in {
   0%   { opacity: 0; transform: scale(0); }
   55%  { opacity: 1; transform: scale(1.22); }
@@ -113,56 +114,43 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 .mm-pin {
   position: absolute;
   width: 22px; height: 22px;
-  background: linear-gradient(135deg, #ff8d6b 0%, #ffaf7a 55%, #ffc890 100%);
+  background: #1677ff;
   color: #fff;
-  border: 2px solid rgba(255,255,255,0.95);
+  border: 2px solid #ffffff;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 11.5px; font-weight: 700; line-height: 1;
+  font-size: 11.5px; font-weight: 600; line-height: 1;
   z-index: 2147483500;
-  box-shadow:
-    0 4px 12px rgba(255,141,107,0.45),
-    0 1px 2px rgba(255,141,107,0.25),
-    inset 0 1px 0 rgba(255,255,255,0.55);
+  box-shadow: 0 2px 0 rgba(5,145,255,0.1), 0 4px 10px rgba(22,119,255,0.25);
   transition: transform 0.18s cubic-bezier(0.22,1,0.36,1), box-shadow 0.18s ease, border-color 0.18s ease;
   user-select: none;
-  text-shadow: 0 1px 1px rgba(180,80,40,0.3);
+  text-shadow: none;
   animation: mm-pin-in 0.42s cubic-bezier(0.22,1,0.36,1);
 }
 .mm-pin:hover, .mm-pin.mm-pin-hl {
   transform: scale(1.22);
-  box-shadow:
-    0 6px 18px rgba(255,141,107,0.55),
-    0 1px 2px rgba(255,141,107,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.65);
+  box-shadow: 0 4px 12px rgba(22,119,255,0.35);
 }
 .mm-pin.mm-pin-active {
   box-shadow:
-    0 0 0 4px rgba(255,141,107,0.32),
-    0 6px 16px rgba(255,141,107,0.5),
-    inset 0 1px 0 rgba(255,255,255,0.65);
-}
-.mm-pin.mm-has-note::after {
-  content: ''; position: absolute; top: -3px; right: -3px;
-  width: 9px; height: 9px; border-radius: 50%;
-  background: linear-gradient(135deg, #ffd29c, #ffaf7a);
-  border: 1.5px solid #fff;
-  box-shadow: 0 0 6px rgba(255,175,122,0.75);
+    0 0 0 4px rgba(22,119,255,0.25),
+    0 4px 12px rgba(22,119,255,0.35);
 }
 .mm-pin-del {
   position: absolute; top: -7px; right: -7px;
   width: 16px; height: 16px;
-  background: #1f1c1a; color: #fff;
+  background: #ffffff; color: rgba(0,0,0,0.65);
   border-radius: 50%;
   display: none;
   align-items: center; justify-content: center;
   font-size: 10px; line-height: 1;
-  border: 1.5px solid #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  border: 1px solid #d9d9d9;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
+.mm-pin-del:hover { color: #1677ff; border-color: #1677ff; }
 .mm-pin:hover .mm-pin-del { display: flex; }
 
-/* ---------- Note popup: glass + gradient highlight ---------- */
+/* ---------- Note popup: 白底卡片 ---------- */
 @keyframes mm-pop-in {
   from { opacity: 0; transform: scale(0.94) translateY(-2px); }
   to   { opacity: 1; transform: scale(1) translateY(0); }
@@ -170,16 +158,10 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 .mm-note-pop {
   position: absolute;
   width: 300px;
-  background: linear-gradient(155deg, rgba(255,255,255,0.72) 0%, rgba(255,240,225,0.46) 100%);
-  border: 1px solid rgba(255,255,255,0.78);
-  border-radius: 14px;
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  box-shadow:
-    0 18px 48px rgba(255,141,107,0.22),
-    0 2px 4px rgba(255,141,107,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.95),
-    inset 0 0 0 1px rgba(255,255,255,0.1);
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
   padding: 12px;
   z-index: 2147483520;
   display: flex; flex-direction: column; gap: 8px;
@@ -187,80 +169,62 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   transform-origin: top left;
   animation: mm-pop-in 0.22s cubic-bezier(0.22,1,0.36,1);
 }
-.mm-note-pop::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,141,107,0.7), rgba(255,210,156,0.7), transparent);
-  pointer-events: none;
-}
 .mm-note-pop > * { position: relative; z-index: 1; }
 .mm-note-pop-head {
   display: flex; align-items: center; gap: 8px;
-  font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
-  color: #6f6864; text-transform: uppercase;
+  font-size: 12px; font-weight: 400;
+  color: rgba(0,0,0,0.45);
 }
-.mm-note-pop-head b { color: #1f1c1a; font-weight: 700; letter-spacing: 0.04em; }
+.mm-note-pop-head b { color: rgba(0,0,0,0.88); font-weight: 600; }
 .mm-note-pop-head .mm-np-text {
-  flex: 1; text-align: right; text-transform: none;
-  letter-spacing: 0; font-weight: 500;
+  flex: 1; text-align: right;
+  font-weight: 400;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  color: #8a847e;
+  color: rgba(0,0,0,0.45);
 }
 .mm-note-pop textarea {
   width: 100%; min-height: 68px; max-height: 200px;
   resize: vertical;
-  background: rgba(255,255,255,0.88);
-  border: 1px solid rgba(255,200,170,0.45);
-  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
   padding: 9px 11px;
   font-size: 13px; line-height: 1.5;
-  color: #1f1c1a;
+  color: rgba(0,0,0,0.88);
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
   font-family: inherit;
 }
 .mm-note-pop textarea:focus {
-  border-color: rgba(255,141,107,0.7);
-  background: rgba(255,255,255,0.98);
-  box-shadow: 0 0 0 3px rgba(255,141,107,0.14);
+  border-color: #1677ff;
+  box-shadow: 0 0 0 2px rgba(22,119,255,0.14);
 }
-.mm-note-pop textarea::placeholder { color: #b8b0a8; }
+.mm-note-pop textarea::placeholder { color: rgba(0,0,0,0.45); }
 .mm-note-pop-hint {
-  font-size: 10.5px; color: #8a847e;
+  font-size: 10.5px; color: rgba(0,0,0,0.45);
   display: flex; justify-content: space-between; align-items: center;
 }
 .mm-note-pop-hint kbd {
   font-family: ui-monospace, 'JetBrains Mono', monospace;
-  background: rgba(255,255,255,0.7); color: #6f6864;
+  background: #fafafa; color: rgba(0,0,0,0.65);
   padding: 1px 5px; border-radius: 3px;
   font-size: 10px;
-  border: 1px solid rgba(255,255,255,0.9);
-  box-shadow: 0 1px 1px rgba(0,0,0,0.03);
+  border: 1px solid #f0f0f0;
 }
 
-/* ---------- Panel: glass with gradient highlight ---------- */
+/* ---------- Panel: 白底卡片 ---------- */
 .mm-panel {
   position: fixed; right: 20px; bottom: 20px;
   width: 348px; max-height: 60vh;
-  background: linear-gradient(155deg, rgba(255,255,255,0.72) 0%, rgba(255,240,225,0.42) 100%);
-  border: 1px solid rgba(255,255,255,0.78);
-  border-radius: 16px;
-  backdrop-filter: blur(28px) saturate(160%);
-  -webkit-backdrop-filter: blur(28px) saturate(160%);
-  box-shadow:
-    0 20px 56px rgba(255,141,107,0.18),
-    0 2px 4px rgba(255,141,107,0.06),
-    inset 0 1px 0 rgba(255,255,255,0.95),
-    inset 0 0 0 1px rgba(255,255,255,0.08);
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
   z-index: 2147483550;
   display: none;
   flex-direction: column;
   overflow: hidden;
-  color: #1f1c1a;
-}
-.mm-panel::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,141,107,0.7), rgba(255,210,156,0.7), transparent);
-  pointer-events: none; z-index: 2;
+  color: rgba(0,0,0,0.88);
 }
 .mm-panel.show { display: flex; }
 .mm-panel.collapsed { width: auto; max-height: none; }
@@ -270,7 +234,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 .mm-panel-head {
   display: flex; align-items: center; gap: 8px;
   padding: 11px 14px;
-  border-bottom: 1px solid rgba(255,255,255,0.5);
+  border-bottom: 1px solid #f0f0f0;
   cursor: grab;
   user-select: none;
   position: relative;
@@ -278,34 +242,32 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 .mm-panel-head.dragging { cursor: grabbing; }
 .mm-panel-title {
   flex: 1;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-  color: #1f1c1a; text-transform: uppercase;
+  font-size: 13px; font-weight: 600;
+  color: rgba(0,0,0,0.88);
   display: inline-flex; align-items: center;
 }
 .mm-panel-count {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 18px; height: 18px; padding: 0 5px;
-  background: linear-gradient(135deg, #e8633c 0%, #f08d4f 100%);
+  background: #1677ff;
   color: #fff;
   border-radius: 9px;
-  font-size: 10px; font-weight: 700;
+  font-size: 10px; font-weight: 600;
   margin-left: 8px;
-  letter-spacing: 0;
-  box-shadow: 0 2px 6px rgba(232,99,60,0.5), inset 0 1px 0 rgba(255,255,255,0.4);
 }
 .mm-panel-iconbtn {
   width: 26px; height: 26px;
-  background: transparent; color: #6f6864;
+  background: transparent; color: rgba(0,0,0,0.65);
   border: 1px solid transparent;
-  border-radius: 7px;
+  border-radius: 6px;
   display: inline-flex; align-items: center; justify-content: center;
-  font-size: 14px; line-height: 1; font-weight: 700;
+  font-size: 14px; line-height: 1; font-weight: 600;
   cursor: pointer;
   transition: color 0.15s ease, background 0.15s ease;
 }
 .mm-panel-iconbtn:hover {
-  color: #e8633c;
-  background: rgba(255,255,255,0.55);
+  color: #1677ff;
+  background: #fafafa;
 }
 
 .mm-panel-body {
@@ -319,72 +281,67 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   max-height: calc(60vh - 110px);
 }
 .mm-list::-webkit-scrollbar { width: 6px; }
-.mm-list::-webkit-scrollbar-thumb { background: rgba(255,141,107,0.3); border-radius: 3px; }
-.mm-list::-webkit-scrollbar-thumb:hover { background: rgba(255,141,107,0.5); }
+.mm-list::-webkit-scrollbar-thumb { background: #d9d9d9; border-radius: 3px; }
+.mm-list::-webkit-scrollbar-thumb:hover { background: #bfbfbf; }
 
 .mm-item {
   display: flex; gap: 10px;
   padding: 10px 12px;
-  background: rgba(255,255,255,0.65);
-  border: 1px solid rgba(255,255,255,0.65);
-  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
   margin-bottom: 7px;
   font-size: 12.5px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 .mm-item:hover {
-  background: rgba(255,255,255,0.88);
-  border-color: rgba(255,255,255,0.88);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(255,141,107,0.15);
+  border-color: #1677ff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 .mm-item.active {
-  border-color: rgba(255,141,107,0.55);
-  background: rgba(255,255,255,0.94);
-  box-shadow: 0 0 0 2px rgba(255,141,107,0.18);
+  border-color: #1677ff;
+  box-shadow: 0 0 0 2px rgba(22,119,255,0.14);
 }
 .mm-item.has-note::before {
   content: ''; position: absolute; left: 0; top: 0; bottom: 0;
   width: 3px;
-  background: linear-gradient(180deg, #ff8d6b, #ffd29c);
+  background: #1677ff;
 }
 .mm-item-num {
   width: 22px; height: 22px;
-  background: #1a1612; color: #fff;
+  background: #1677ff; color: #fff;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font: 700 11px/1 inherit;
+  font: 600 11px/1 inherit;
   flex-shrink: 0;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.18);
 }
 .mm-item.has-note .mm-item-num {
-  background: linear-gradient(135deg, #e8633c 0%, #f08d4f 100%);
-  box-shadow: 0 2px 6px rgba(232,99,60,0.55), inset 0 1px 0 rgba(255,255,255,0.35);
+  background: #1677ff;
 }
 .mm-item-body { flex: 1; min-width: 0; }
 .mm-item-note {
-  font-size: 13px; font-weight: 500; color: #1f1c1a;
+  font-size: 13px; font-weight: 500; color: rgba(0,0,0,0.88);
   line-height: 1.45;
   margin-bottom: 3px;
   white-space: pre-wrap;
   word-break: break-word;
 }
 .mm-item-note-empty {
-  font-size: 12px; color: #b8b0a8; font-style: italic;
+  font-size: 12px; color: rgba(0,0,0,0.45); font-style: italic;
   margin-bottom: 3px;
 }
 .mm-item-meta {
-  font-size: 11px; color: #8a847e;
+  font-size: 11px; color: rgba(0,0,0,0.45);
   line-height: 1.4;
   word-break: break-word;
 }
-.mm-item-meta b { color: #6f6864; font-weight: 600; }
+.mm-item-meta b { color: rgba(0,0,0,0.65); font-weight: 600; }
 .mm-item-del {
   width: 22px; height: 22px;
-  background: transparent; color: #b8b0a8;
+  background: transparent; color: rgba(0,0,0,0.45);
   border: none;
   border-radius: 5px;
   font-size: 15px; line-height: 1;
@@ -397,21 +354,21 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 }
 .mm-item:hover .mm-item-del { display: block; }
 .mm-item-del:hover {
-  color: #e8633c;
-  background: rgba(255,141,107,0.1);
+  color: #1677ff;
+  background: #fafafa;
 }
 
 .mm-empty {
   padding: 30px 16px; text-align: center;
-  color: #8a847e; font-size: 12.5px;
+  color: rgba(0,0,0,0.45); font-size: 12.5px;
   line-height: 1.7;
 }
 .mm-empty kbd {
   font-family: ui-monospace, 'JetBrains Mono', monospace;
-  background: rgba(255,255,255,0.7); color: #6f6864;
+  background: #fafafa; color: rgba(0,0,0,0.65);
   padding: 1px 6px; border-radius: 3px;
   font-size: 10.5px;
-  border: 1px solid rgba(255,255,255,0.9);
+  border: 1px solid #f0f0f0;
   margin: 0 2px;
 }
 
@@ -419,83 +376,77 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 .mm-panel-foot {
   display: flex; gap: 7px;
   padding: 10px 12px;
-  border-top: 1px solid rgba(255,255,255,0.5);
-  background: rgba(255,255,255,0.32);
+  border-top: 1px solid #f0f0f0;
+  background: #fafafa;
   flex-shrink: 0;
 }
 .mm-fmt-select {
-  background: rgba(255,255,255,0.82);
-  border: 1px solid rgba(255,255,255,0.88);
-  border-radius: 7px;
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
   padding: 0 8px;
-  font-size: 11px;
-  color: #6f6864;
+  font-size: 12px;
+  color: rgba(0,0,0,0.65);
   height: 32px;
   cursor: pointer;
   outline: none;
   font-family: inherit;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  transition: border-color 0.15s ease;
 }
-.mm-fmt-select:focus, .mm-fmt-select:hover { border-color: rgba(255,141,107,0.5); background: rgba(255,255,255,0.98); }
+.mm-fmt-select:focus, .mm-fmt-select:hover { border-color: #1677ff; }
 .mm-btn {
   height: 32px; padding: 0 14px;
-  border-radius: 7px;
-  font-size: 11.5px; font-weight: 600;
+  border-radius: 6px;
+  font-size: 12px; font-weight: 400;
   cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.88);
-  background: rgba(255,255,255,0.82); color: #6f6864;
-  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  border: 1px solid #d9d9d9;
+  background: #ffffff; color: rgba(0,0,0,0.88);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.02);
+  transition: color 0.15s ease, border-color 0.15s ease;
   font-family: inherit;
 }
 .mm-btn:hover {
-  color: #1f1c1a;
-  background: rgba(255,255,255,0.98);
-  border-color: rgba(255,141,107,0.4);
+  color: #1677ff;
+  border-color: #1677ff;
 }
 .mm-btn.primary {
-  background: linear-gradient(135deg, #ff8d6b 0%, #ffaf7a 55%, #ffd29c 100%);
+  background: #1677ff;
   color: #fff;
-  border-color: transparent;
+  border-color: #1677ff;
   flex: 1;
-  box-shadow: 0 4px 14px rgba(255,141,107,0.32), inset 0 1px 0 rgba(255,255,255,0.35);
-  text-shadow: 0 1px 1px rgba(180,80,40,0.2);
+  box-shadow: 0 2px 0 rgba(5,145,255,0.1);
+  text-shadow: none;
 }
 .mm-btn.primary:hover {
-  background: linear-gradient(135deg, #ff7a55 0%, #ff9c64 55%, #ffc890 100%);
+  background: #1677ff;
   color: #fff;
-  box-shadow: 0 6px 20px rgba(255,141,107,0.45), inset 0 1px 0 rgba(255,255,255,0.4);
-  border-color: transparent;
+  border-color: #1677ff;
 }
 
-/* ---------- Toast: glass dark ---------- */
+/* ---------- Toast: 白底中性提示 ---------- */
 .mm-toast {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-  background: linear-gradient(155deg, rgba(31,28,26,0.9) 0%, rgba(50,40,35,0.86) 100%);
-  color: #fff;
+  background: #ffffff;
+  color: rgba(0,0,0,0.88);
   padding: 10px 20px;
-  border-radius: 999px;
-  font-size: 12.5px; font-weight: 500;
+  border-radius: 6px;
+  font-size: 12.5px; font-weight: 400;
   z-index: 2147483640;
   opacity: 0;
   transition: opacity 0.2s ease, transform 0.2s ease;
   pointer-events: none;
-  box-shadow:
-    0 12px 32px rgba(0,0,0,0.22),
-    inset 0 1px 0 rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.08);
-  letter-spacing: 0.01em;
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  border: 1px solid #d9d9d9;
 }
 .mm-toast.show { opacity: 1; transform: translate(-50%, -4px); }
 .mm-toast.mm-undoable { pointer-events: auto; }
 .mm-undo-btn {
   background: none; border: none; cursor: pointer;
-  color: #ffd29c; font-weight: 700; font-size: 12.5px;
+  color: #1677ff; font-weight: 600; font-size: 12.5px;
   font-family: inherit; padding: 0; margin-left: 12px;
   text-decoration: underline; text-underline-offset: 2px;
 }
-.mm-undo-btn:hover { color: #ffc890; }
+.mm-undo-btn:hover { color: #1677ff; }
 
 @media (prefers-reduced-motion: reduce) {
   .mm-pin, .mm-toggle, .mm-item, .mm-btn, .mm-panel-iconbtn, .mm-toast,
@@ -513,27 +464,27 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   // ---------- Build UI ----------
   const toggle = document.createElement('button');
   toggle.className = 'mm-toggle mm-ui';
-  toggle.innerHTML = '<span class="mm-toggle-dot"></span><span class="mm-toggle-txt">Mark</span>';
-  toggle.title = 'Toggle mark mode · M to toggle · Esc to exit';
+  toggle.innerHTML = '<span class="mm-toggle-dot"></span><span class="mm-toggle-txt">标注</span>';
+  toggle.title = '切换标注模式 · 按 M 切换 · Esc 退出';
 
   const panel = document.createElement('div');
   panel.className = 'mm-panel mm-ui';
   panel.innerHTML =
     '<div class="mm-panel-head" id="mm-head">' +
-    '  <div class="mm-panel-title">Annotations<span class="mm-panel-count" id="mm-count">0</span></div>' +
-    '  <button class="mm-panel-iconbtn" id="mm-collapse" title="Collapse">−</button>' +
+    '  <div class="mm-panel-title">标注<span class="mm-panel-count" id="mm-count">0</span></div>' +
+    '  <button class="mm-panel-iconbtn" id="mm-collapse" title="收起">−</button>' +
     '</div>' +
     '<div class="mm-panel-body">' +
     '  <div class="mm-list" id="mm-list"></div>' +
     '  <div class="mm-panel-foot">' +
-    '    <select class="mm-fmt-select" id="mm-fmt" title="Export format">' +
+    '    <select class="mm-fmt-select" id="mm-fmt" title="导出格式">' +
     '      <option value="md">Markdown</option>' +
-    '      <option value="txt">Plain</option>' +
+    '      <option value="txt">纯文本</option>' +
     '      <option value="json">JSON</option>' +
-    '      <option value="ai">For AI</option>' +
+    '      <option value="ai">AI 定位</option>' +
     '    </select>' +
-    '    <button class="mm-btn" id="mm-clear">Clear</button>' +
-    '    <button class="mm-btn primary" id="mm-copy">Copy all</button>' +
+    '    <button class="mm-btn" id="mm-clear">清空</button>' +
+    '    <button class="mm-btn primary" id="mm-copy">复制全部</button>' +
     '  </div>' +
     '</div>';
 
@@ -575,7 +526,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
     document.body.classList.toggle('mm-on', markMode);
     panel.classList.toggle('show', markMode);
     toggle.classList.toggle('on', markMode);
-    toggle.querySelector('.mm-toggle-txt').textContent = markMode ? 'Marking' : 'Mark';
+    toggle.querySelector('.mm-toggle-txt').textContent = markMode ? '标注中' : '标注';
     if (!markMode) {
       setArmed(false);
       closeNotePop();
@@ -784,7 +735,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
     });
     nextId = annotations.reduce(function (m, a) { return Math.max(m, a.id); }, 0) + 1;
     render();
-    showToast('Restored ' + annotations.length + ' annotation' + (annotations.length > 1 ? 's' : '') + ' from last session');
+    showToast('已从上次会话恢复 ' + annotations.length + ' 条标注');
   }
 
   function getContext() {
@@ -847,10 +798,10 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
       '  <span><b>#' + ann.id + '</b> · ' + esc(ann.label) + '</span>' +
       '  <span class="mm-np-text">' + (ann.text ? esc(ann.text) : '') + '</span>' +
       '</div>' +
-      '<textarea placeholder="What should change here? (optional)"></textarea>' +
+      '<textarea placeholder="这里需要改什么？（可选）"></textarea>' +
       '<div class="mm-note-pop-hint">' +
-      '  <span><kbd>↵</kbd> save · <kbd>⇧↵</kbd> newline · <kbd>Esc</kbd> close</span>' +
-      '  <span style="color:#b8b0a8">' + (ann.note ? 'editing' : 'new') + '</span>' +
+      '  <span><kbd>↵</kbd> 保存 · <kbd>⇧↵</kbd> 换行 · <kbd>Esc</kbd> 关闭</span>' +
+      '  <span style="color:rgba(0,0,0,0.45)">' + (ann.note ? '编辑中' : '新建') + '</span>' +
       '</div>';
 
     document.body.appendChild(notePop);
@@ -1026,7 +977,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
     nextId = 1;
     render();
     save();
-    showUndoToast('Cleared ' + undoStash.length + ' annotation' + (undoStash.length > 1 ? 's' : ''));
+    showUndoToast('已清空 ' + undoStash.length + ' 条标注');
   }
 
   function undoClear() {
@@ -1039,7 +990,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
     nextId = annotations.reduce(function (m, a) { return Math.max(m, a.id); }, 0) + 1;
     render();
     save();
-    showToast('✓ Annotations restored');
+    showToast('✓ 已恢复标注');
   }
 
   // ---------- Render ----------
@@ -1049,8 +1000,8 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
     if (annotations.length === 0) {
       list.innerHTML =
         '<div class="mm-empty">' +
-        'Hold <kbd>Ctrl</kbd> and click to drop a pin.<br/>' +
-        '<kbd>M</kbd> toggle · <kbd>Esc</kbd> exit · <kbd>⌫</kbd> undo' +
+        '按住 <kbd>Ctrl</kbd> 并点击页面元素，即可落下 pin。<br/>' +
+        '<kbd>M</kbd> 切换模式 · <kbd>Esc</kbd> 退出 · <kbd>⌫</kbd> 删除上一条' +
         '</div>';
       return;
     }
@@ -1062,13 +1013,13 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
         '<div class="mm-item-body">' +
           (hasNote
             ? '<div class="mm-item-note">' + esc(a.note) + '</div>'
-            : '<div class="mm-item-note-empty">No note · click to add</div>') +
+            : '<div class="mm-item-note-empty">暂无反馈 · 点击补充</div>') +
           '<div class="mm-item-meta">' +
             '<b>' + esc(a.label) + '</b>' +
             (a.text ? ' · ' + esc(a.text).slice(0, 50) : '') +
           '</div>' +
         '</div>' +
-        '<button class="mm-item-del" data-del="' + a.id + '" title="Delete">×</button>' +
+        '<button class="mm-item-del" data-del="' + a.id + '" title="删除">×</button>' +
       '</div>';
     }).join('');
 
@@ -1114,7 +1065,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   // ---------- Copy ----------
   function copyAll() {
     if (annotations.length === 0) {
-      showToast('Nothing to copy yet — drop a pin first.');
+      showToast('还没有标注 — 先按住 Ctrl 点击打一个 pin。');
       return;
     }
     const fmt = document.getElementById('mm-fmt').value;
@@ -1169,9 +1120,9 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 
     navigator.clipboard.writeText(txt).then(function () {
       const n = annotations.length;
-      showToast('✓ ' + n + ' annotation' + (n > 1 ? 's' : '') + ' copied as ' + fmt.toUpperCase());
+      showToast('✓ 已复制 ' + n + ' 条标注（' + fmt.toUpperCase() + '）');
     }).catch(function () {
-      showToast('Failed to copy — check clipboard permission.');
+      showToast('复制失败 — 请检查剪贴板权限。');
     });
   }
 
@@ -1187,7 +1138,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
     toast.textContent = msg;
     const btn = document.createElement('button');
     btn.className = 'mm-undo-btn';
-    btn.textContent = 'Undo';
+    btn.textContent = '撤销';
     btn.addEventListener('click', function () {
       undoClear();
       toast.classList.remove('show', 'mm-undoable');

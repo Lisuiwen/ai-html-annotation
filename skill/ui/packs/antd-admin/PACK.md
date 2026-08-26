@@ -31,3 +31,4 @@ compatible-foundations:
 - 同一类别不得与其他 provider 同时加载。
 - 其他包只有显式声明兼容 `antd-admin` foundation 后，才可替换本包某个组件类别。
 - 本包只模拟已确认的 Ant Design 中后台视觉特征，不代表正式项目依赖特定 Ant Design 版本。
+
