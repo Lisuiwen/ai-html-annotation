@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /* 无头截图：按标注组分别截图；URL 带 state=<组>&collapsed=1。
    Viewer 在 collapsed=1 时进入纯页面态，自动隐藏 Mark、右下角折叠钮与交互闪电。 */
-import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync } from 'node:fs';
 import { spawn, spawnSync } from 'node:child_process';
 import { dirname, join, resolve } from 'node:path';
+import { tmpdir } from 'node:os';
 import { pathToFileURL } from 'node:url';
 
 const args = process.argv.slice(2);
@@ -61,6 +62,8 @@ function shoot(group, exe) {
   return new Promise((resolveShot) => {
     const url = pathToFileURL(htmlPath).href + '?state=' + encodeURIComponent(group) + '&collapsed=1';
     const outFile = join(outDir, group + '.png');
+    /* 独立临时 profile：避免与已打开的浏览器争用默认用户目录导致 SingletonLock 启动失败。 */
+    const profileDir = mkdtempSync(join(tmpdir(), 'ca-shoot-'));
     /* --no-sandbox / --disable-dev-shm-usage：Linux 容器与 CI 无头环境下必需，Windows/Mac 上无副作用。 */
     const child = spawn(exe, [
       '--headless=new',
@@ -69,6 +72,7 @@ function shoot(group, exe) {
       '--disable-gpu',
       '--hide-scrollbars',
       '--force-device-scale-factor=1',
+      '--user-data-dir=' + profileDir,
       '--window-size=' + width + ',' + height,
       '--virtual-time-budget=2000',
       '--screenshot=' + outFile,
@@ -80,6 +84,7 @@ function shoot(group, exe) {
       if (settled) return;
       settled = true;
       try { child.kill('SIGKILL'); } catch (_) { /* 进程可能已退出 */ }
+      try { rmSync(profileDir, { recursive: true, force: true }); } catch (_) { /* 临时目录清理失败可忽略 */ }
       if (ok) {
         console.log(`✓ [${group}] ${outFile}`);
       } else {
