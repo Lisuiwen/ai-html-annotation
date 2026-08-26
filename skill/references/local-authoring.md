@@ -13,7 +13,7 @@
 node <skill-root>/runtime/serve.mjs <prototype.html> [--port=4178]
 
 # 启用正式说明数据写回。
-node <skill-root>/runtime/serve.mjs <prototype.html> --snapshot=prototype.notes.snapshot.js
+node <skill-root>/runtime/serve.mjs <prototype.html> --snapshot=prototype-assets/notes.snapshot.js
 ```
 
 打开 `http://127.0.0.1:4178/<prototype.html>`。

@@ -56,7 +56,7 @@
 
 ### 第五步：建立唯一标注数据源与说明分组
 
-- 需要正式标注时生成 `prototype.notes.snapshot.js`，它是唯一标注数据源；禁止重复生成 `notes.json` 或把同一份卡片数据写进 HTML。
+- 需要正式标注时生成 `prototype-assets/notes.snapshot.js`，它是唯一标注数据源；禁止重复生成 `notes.json` 或把同一份卡片数据写进 HTML。
 - 数据文件必须把对象赋给 `window.__PROTOTYPE_NOTES__`，并包含 `schemaVersion`、`header`、`cards`。
 - 先列出原型中的菜单状态、页面状态和浮层状态，再给卡片设置 `group`。
 - 基础页面可用 `base`；其他页面、菜单或浮层使用稳定的中性标识，例如 `list`、`detail`、`modal`、`drawer`。
@@ -143,13 +143,15 @@ html-mark 的 `describeElement` 按以下优先级识别标注目标：
 
 ```text
 prototype.html
-prototype.notes.snapshot.js
-prototype-notes/viewer.js
+prototype-assets/
+├─ notes.snapshot.js
+├─ viewer.js
+└─ screenshots/    # 需要交付验收截图时保留
 ```
 
-- HTML 在 `</body>` 前依次加载 snapshot 与 Viewer，路径必须相对 HTML，可在 `file://` 下直接双击使用。
-- `viewer.js` 从本 Skill 的 `runtime/viewer.js` 原样复制；不要把共享 Viewer 实现内联回 HTML。
-- 标注编辑器、Inspector、Author Loader、本地服务和源码定位信息不属于交付物；Mark 仅用于默认生成的评审稿，可随时剥离。
+- HTML 在 `</body>` 前依次加载 `./prototype-assets/notes.snapshot.js` 与 `./prototype-assets/viewer.js`，路径必须相对 HTML，可在 `file://` 下直接双击使用。
+- `prototype-assets/viewer.js` 从本 Skill 的 `runtime/viewer.js` 原样复制；不要把共享 Viewer 实现内联回 HTML。
+- 标注编辑器、Inspector、Author Loader、本地服务、源码定位信息和 html-mark 都不属于正式交付物；Mark 仅用于单独生成的评审稿，可随时剥离。
 - 研发作者态按 [local-authoring.md](local-authoring.md) 动态加载，不写入源 HTML；评审稿和正式交付稿的清理规则见 [delivery.md](delivery.md)。
 
 ### 第十步：代码质量与注释
@@ -168,7 +170,7 @@ prototype-notes/viewer.js
 
 ### 第十二步（可选）：评审层注入
 
-原型生成完毕后默认按 [review-mark.md](review-mark.md) 注入 html-mark；用户明确说「不要打点」「不用评审」或「不加 html-mark」时跳过。
+原型生成完毕后，只有用户明确需要评审稿时才按 [review-mark.md](review-mark.md) 注入 html-mark；正式交付默认不注入，用户明确说「不要打点」「不用评审」或「不加 html-mark」时跳过。
 
 - 评审层必须使用 `<!-- html-mark-injection-begin -->` / `<!-- html-mark-injection-end -->` 边界，与产品代码隔离并可剥离。
 - `.mm-*` 类前缀不得与设计系统 `ui-*` 类前缀混用。
@@ -218,7 +220,7 @@ prototype-notes/viewer.js
 
 - [ ] 每个需要交互描述或逻辑说明的语义单元都有标注，无凑数连线也无遗漏。
 - [ ] 相邻控件已按语义单元合并，未按 DOM 节点逐个拆分标注。
-- [ ] `prototype.notes.snapshot.js` 是唯一标注数据源，没有重复 `notes.json` 或内嵌卡片副本。
+- [ ] `prototype-assets/notes.snapshot.js` 是唯一标注数据源，没有重复 `notes.json` 或内嵌卡片副本。
 - [ ] 说明按菜单、页面、Modal、Drawer 或其他可见状态分组，需要始终显示的说明归入 `common`。
 - [ ] 只连接当前可见说明和当前可见元素。
 - [ ] `?state=<group>` 能恢复到对应标注组与 DOM 状态；`?collapsed=1` 能折叠右栏与连线。
@@ -242,7 +244,7 @@ prototype-notes/viewer.js
 
 ### 代码与依赖
 
-- [ ] 无正式标注时为单文件 HTML；有正式标注时严格为 HTML + snapshot.js + viewer.js 三类文件。
+- [ ] 无正式标注时为单文件 HTML；有正式标注时外层只保留 HTML，`prototype-assets/` 内严格只有 snapshot.js、viewer.js 和可选的 `screenshots/`。
 - [ ] HTML 为 UTF-8、`lang="zh-CN"`，snapshot 与 Viewer 也使用 UTF-8。
 - [ ] 正式交付 HTML 中没有 Author Loader、编辑器、Mark 或 Inspector；评审稿仅允许保留边界明确的 Mark 注入块。
 - [ ] 函数和主要代码块都有中文注释。
@@ -252,6 +254,6 @@ prototype-notes/viewer.js
 
 ### 评审层注入
 
-- [ ] 已运行 `runtime/prepare-mark.mjs --inline`（除非用户明确跳过）。
-- [ ] 注入块使用 `<!-- html-mark-injection-begin -->` / `<!-- html-mark-injection-end -->` 边界。
-- [ ] html-mark 的 `.mm-*` 样式与设计系统 `ui-*` 不冲突。
+- [ ] 仅交付评审稿时才运行 `runtime/prepare-mark.mjs --inline`；正式交付稿不得注入。
+- [ ] 评审稿的注入块使用 `<!-- html-mark-injection-begin -->` / `<!-- html-mark-injection-end -->` 边界。
+- [ ] 评审稿中 html-mark 的 `.mm-*` 样式与设计系统 `ui-*` 不冲突。

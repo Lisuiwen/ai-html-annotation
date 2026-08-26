@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OTA 管理系统 - 前置条件维护</title>
+  <title>项目配置中心 - 配置项维护</title>
   <style>
     /* 产品视觉 Token：复用 ca-prototype 已确认的通用设计系统。 */
     :root {
@@ -332,15 +332,15 @@
 </head>
 <body>
   <div class="ui-preview" id="uiPreview">
-    <!-- OTA 管理系统列表页。 -->
+    <!-- 项目配置中心列表页。 -->
     <div class="ui-shell">
       <header class="ui-header">
-        <div class="ui-brand"><span class="ui-brand-mark" aria-hidden="true">V</span><span>OTA管理系统</span></div>
-        <div class="ui-breadcrumb">⌂　/　零部件管理　/　前置条件</div>
+        <div class="ui-brand"><span class="ui-brand-mark" aria-hidden="true">D</span><span>项目配置中心</span></div>
+        <div class="ui-breadcrumb">⌂　/　配置管理　/　配置项</div>
         <div class="ui-header-actions">
           <span aria-hidden="true">文</span>
-          <select class="ui-tenant" aria-label="租户"><option>深蓝汽车</option></select>
-          <span aria-hidden="true">♙</span><span>202214308</span>
+          <select class="ui-tenant" aria-label="工作区"><option>示例工作区</option></select>
+          <span aria-hidden="true">♙</span><span>demo-user</span>
         </div>
       </header>
 
@@ -348,24 +348,23 @@
         <aside class="ui-sider">
           <nav class="ui-menu" aria-label="系统菜单">
             <span class="ui-menu-item">欢迎</span>
-            <span class="ui-menu-group">零部件管理 <span>⌄</span></span>
-            <span class="ui-menu-item">升级对象</span>
-            <span class="ui-menu-item">SubMaster</span>
-            <span class="ui-menu-item">软件版本管理</span>
-            <span class="ui-menu-group">车系OTA管理 <span>›</span></span>
-            <span class="ui-menu-group">任务管理 <span>›</span></span>
-            <span class="ui-menu-group">OTA工具 <span>›</span></span>
+            <span class="ui-menu-group">项目管理 <span>⌄</span></span>
+            <span class="ui-menu-item">项目列表</span>
+            <span class="ui-menu-item">成员管理</span>
+            <span class="ui-menu-item">版本记录</span>
+            <span class="ui-menu-group">任务中心 <span>›</span></span>
+            <span class="ui-menu-group">资源管理 <span>›</span></span>
             <span class="ui-menu-group">数据分析 <span>›</span></span>
-            <span class="ui-menu-group">移动端OTA <span>›</span></span>
-            <span class="ui-menu-group">统计分析 <span>›</span></span>
-            <span class="ui-menu-group">系统管理 <span>⌄</span></span>
+            <span class="ui-menu-group">通知中心 <span>›</span></span>
+            <span class="ui-menu-group">统计报表 <span>›</span></span>
+            <span class="ui-menu-group">系统设置 <span>⌄</span></span>
             <div class="ui-menu-sub">
               <button
                 class="ui-menu-item is-active"
                 type="button"
-                data-prototype-note-target="menu-precondition"
+                data-prototype-note-target="menu-config"
                 data-ui-interactive>
-                前置条件
+                配置项
               </button>
             </div>
           </nav>
@@ -375,8 +374,8 @@
           <article class="ui-content-card">
             <section class="ui-filter" id="filterArea" data-prototype-note-target="filter-area">
               <div class="ui-filter-fields">
-                <input class="ui-input" id="filterName" aria-label="前置条件名称" placeholder="前置条件名称 请输入">
-                <input class="ui-input" id="filterCode" aria-label="前置条件编码" placeholder="前置条件编码 请输入">
+                <input class="ui-input" id="filterName" aria-label="配置项名称" placeholder="配置项名称 请输入">
+                <input class="ui-input" id="filterCode" aria-label="配置项编码" placeholder="配置项编码 请输入">
               </div>
               <div class="ui-actions">
                 <button class="ui-button" type="button" id="resetButton">重置</button>
@@ -392,7 +391,7 @@
                 data-ui-open="createModal"
                 data-prototype-note-target="create-action"
                 data-ui-interactive>
-                新建
+                新建配置项
               </button>
             </div>
 
@@ -401,8 +400,8 @@
                 <table class="ui-table">
                   <thead>
                     <tr>
-                      <th>前置条件名称</th>
-                      <th>前置条件编码</th>
+                      <th>配置项名称</th>
+                      <th>配置项编码</th>
                       <th>描述</th>
                       <th>创建者</th>
                       <th>创建时间</th>
@@ -411,11 +410,11 @@
                   </thead>
                   <tbody id="preconditionRows">
                     <tr>
-                      <td>变速器档位1</td>
-                      <td>shift_gear1</td>
-                      <td>是否为P档(0:非P档，1：P档)</td>
-                      <td>201802332</td>
-                      <td>2021-05-11 16:17:16</td>
+                      <td>通知开关</td>
+                      <td>notification_enabled</td>
+                      <td>是否启用通知，0 表示关闭，1 表示开启</td>
+                      <td>maintainer-a</td>
+                      <td>2026-01-15 09:30:00</td>
                       <td>
                         <div class="ui-table-actions">
                           <button class="ui-button ui-button--text" type="button" data-ui-edit data-ui-interactive>编辑</button>
@@ -423,13 +422,12 @@
                         </div>
                       </td>
                     </tr>
-                    <tr><td>环境温度</td><td>env_temperature</td><td>安装允许的最低温度，单位摄氏度，默认值为 -10</td><td>201802332</td><td>2021-05-11 16:17:22</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
-                    <tr><td>手刹</td><td>handBrake</td><td>是否拉起手刹(0:不拉起手刹，1：拉起手刹)</td><td>201802332</td><td>2021-05-11 16:17:40</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
-                    <tr><td>安装允许的动力电池电量绝对值</td><td>install_start_allow_bms_soc...</td><td>有效值0-99，配置值=实际值×10，单位：kWh</td><td>202305976</td><td>2025-04-09 10:25:24</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
-                    <tr><td>安装允许的电源档位条件</td><td>install_allow_power_gear</td><td>安装允许的电源档位条件</td><td>201802332</td><td>2021-05-14 12:09:53</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
-                    <tr><td>安装截止时动力电池电量百分比</td><td>install_end_allow_bms_soc...</td><td>值可选0-99，单位：%</td><td>202305976</td><td>2025-04-09 10:22:47</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
-                    <tr><td>安装允许的最大超时时间</td><td>install_allow_max_time</td><td>有效值0-120，单位：min</td><td>202020079</td><td>2026-06-04 17:48:23</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
-                    <tr><td>安装允许的蓄电池电压</td><td>install_start_allow_battery</td><td>安装允许的蓄电池电量</td><td>201802332</td><td>2021-05-11 16:17:11</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
+                    <tr><td>默认超时时间</td><td>default_timeout</td><td>任务默认超时时间，单位为分钟</td><td>maintainer-b</td><td>2026-01-16 10:15:00</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
+                    <tr><td>显示名称</td><td>display_name</td><td>列表中展示的配置项名称</td><td>maintainer-a</td><td>2026-01-16 14:20:00</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
+                    <tr><td>自动归档</td><td>auto_archive</td><td>是否自动归档已完成记录，0 表示关闭，1 表示开启</td><td>maintainer-c</td><td>2026-01-17 09:00:00</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
+                    <tr><td>最大重试次数</td><td>max_retry_count</td><td>任务失败后的最大重试次数</td><td>maintainer-b</td><td>2026-01-17 11:45:00</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
+                    <tr><td>语言偏好</td><td>locale</td><td>界面默认语言设置</td><td>maintainer-a</td><td>2026-01-18 16:30:00</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
+                    <tr><td>页面主题</td><td>theme_mode</td><td>界面主题，可选 light 或 dark</td><td>maintainer-c</td><td>2026-01-19 08:40:00</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
                   </tbody>
                 </table>
               </div>
@@ -442,7 +440,7 @@
       </div>
     </div>
 
-    <!-- 新建前置条件 Modal。 -->
+    <!-- 新建配置项 Modal。 -->
     <div class="ui-overlay" id="createModal" data-ui-layer="create" role="dialog" aria-modal="true" aria-labelledby="createTitle">
       <div class="ui-modal">
         <div class="ui-layer-head"><strong id="createTitle">新建</strong><button class="ui-close" type="button" data-ui-close aria-label="关闭">×</button></div>
@@ -455,20 +453,20 @@
       </div>
     </div>
 
-    <!-- 编辑前置条件 Modal。 -->
+    <!-- 编辑配置项 Modal。 -->
     <div class="ui-overlay" id="editModal" data-ui-layer="edit" role="dialog" aria-modal="true" aria-labelledby="editTitle">
       <div class="ui-modal">
         <div class="ui-layer-head"><strong id="editTitle">编辑</strong><button class="ui-close" type="button" data-ui-close aria-label="关闭">×</button></div>
         <div class="ui-layer-body" data-prototype-note-target="edit-form">
-          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 名称：</span><input class="ui-input" value="变速器档位1"></label>
-          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 编码：</span><input class="ui-input" value="shift_gear1"></label>
-          <label class="ui-field"><span class="ui-field-label">描述：</span><textarea class="ui-input">是否为P档(0:非P档，1：P档)</textarea></label>
+          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 名称：</span><input class="ui-input" value="通知开关"></label>
+          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 编码：</span><input class="ui-input" value="notification_enabled"></label>
+          <label class="ui-field"><span class="ui-field-label">描述：</span><textarea class="ui-input">是否启用通知，0 表示关闭，1 表示开启</textarea></label>
         </div>
         <div class="ui-layer-foot"><button class="ui-button" type="button" data-ui-close>取消</button><button class="ui-button ui-button--primary" type="button" data-ui-confirm="edit">确定</button></div>
       </div>
     </div>
 
-    <!-- 车型升级策略中新建条件的关联示意。 -->
+    <!-- 项目任务中新建配置项的关联示意。 -->
     <div class="ui-overlay" id="strategyModal" data-ui-layer="strategy" role="dialog" aria-modal="true" aria-labelledby="strategyTitle">
       <div class="ui-modal ui-modal--strategy">
         <div class="ui-layer-head"><strong id="strategyTitle">新建</strong><button class="ui-close" type="button" data-ui-close aria-label="关闭">×</button></div>
@@ -478,9 +476,9 @@
             <div class="ui-select" data-ui-select>
               <button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-ui-interactive><span data-ui-select-value>请选择</span><span aria-hidden="true">⌄</span></button>
               <div class="ui-select-menu" role="listbox">
-                <button class="ui-select-option" type="button" role="option" aria-selected="false">变速器档位1</button>
-                <button class="ui-select-option" type="button" role="option" aria-selected="false">环境温度</button>
-                <button class="ui-select-option" type="button" role="option" aria-selected="false">手刹</button>
+                <button class="ui-select-option" type="button" role="option" aria-selected="false">通知开关</button>
+                <button class="ui-select-option" type="button" role="option" aria-selected="false">默认超时时间</button>
+                <button class="ui-select-option" type="button" role="option" aria-selected="false">显示名称</button>
               </div>
             </div>
           </div>
@@ -547,7 +545,7 @@
       if (editButton) openLayer('editModal');
 
       const deleteButton = event.target.closest('[data-ui-delete]');
-      if (deleteButton && window.confirm('确认删除该前置条件吗？')) showToast('删除成功');
+      if (deleteButton && window.confirm('确认删除该配置项吗？')) showToast('删除成功');
 
       const closeButton = event.target.closest('[data-ui-close]');
       if (closeButton) closeLayer(closeButton.closest('.ui-overlay'));
@@ -588,10 +586,7 @@
     restoreUrlState();
   </script>
   <!-- 正式只读标注：snapshot 是唯一数据源，Viewer 复用仓库共享实现。 -->
-  <script src="./prototype.notes.snapshot.js"></script>
-  <script src="./prototype-notes/viewer.js" data-prototype-notes-viewer></script>
-<!-- prototype-author-injection-begin -->
-<script src="/__prototype-author/author-loader.js"></script>
-<!-- prototype-author-injection-end -->
+  <script src="./prototype-assets/notes.snapshot.js"></script>
+  <script src="./prototype-assets/viewer.js" data-prototype-notes-viewer></script>
 </body>
 </html>

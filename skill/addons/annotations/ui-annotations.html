@@ -16,7 +16,7 @@
 <section class="ui-component-box" data-prototype-note-target="content-area">内容区域</section>
 
 <!--
-  prototype.notes.snapshot.js：唯一标注数据源。
+  prototype-assets/notes.snapshot.js：唯一标注数据源。
   实际生成时写入独立 UTF-8 文件，不要把该脚本块内联到 prototype.html，也不要再生成 notes.json。
 -->
 <script>
@@ -53,6 +53,6 @@ window.__PROTOTYPE_NOTES__ = {
 };
 </script>
 
-<!-- prototype.html 末尾只保留以下只读引用；viewer.js 从 runtime/viewer.js 复制。 -->
-<script src="./prototype.notes.snapshot.js"></script>
-<script src="./prototype-notes/viewer.js" data-prototype-notes-viewer></script>
+<!-- prototype.html 末尾只保留以下只读引用；viewer.js 从 runtime/viewer.js 复制到配套目录。 -->
+<script src="./prototype-assets/notes.snapshot.js"></script>
+<script src="./prototype-assets/viewer.js" data-prototype-notes-viewer></script>

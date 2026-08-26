@@ -1,10 +1,41 @@
 # CA Prototype
 
+> 实验性项目（0.x）：面向中文 AI 协作工作流的零依赖原生 HTML 原型 Skill。
+
+## English summary
+
+CA Prototype is an experimental, zero-runtime-dependency toolkit for creating,
+reviewing, documenting, and screenshotting native HTML product prototypes in
+AI-assisted workflows. It provides composable local UI packs, formal product
+annotations, temporary review pins, a localhost authoring service, and
+state-based screenshots.
+
+It is not a production UI component library, a complete accessibility
+implementation, or an official Ant Design project. APIs and directory layouts
+may change before the first stable release.
+
+### English quick start
+
+Requirements: Node.js 18 or later. State screenshots additionally require a
+local Microsoft Edge or Google Chrome installation.
+
+```powershell
+# Start the local authoring service for the included example.
+node skill/runtime/serve.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype-assets/notes.snapshot.js
+
+# Generate state screenshots for the included example.
+node skill/runtime/shoot.mjs examples/minimal-notes/prototype.html
+```
+
+Open the printed `http://127.0.0.1:<port>/...` address in a browser. The
+authoring service is for trusted local files only; do not run it against
+untrusted HTML or snapshot files.
+
 用于生成、评审和交付原生 HTML 产品原型的 Agent Skill。它将可组合 UI 包、正式功能说明、临时评审打点、本地作者工具和按状态截图组合为一个可渐进读取的工作流。
 
 ## 当前状态
 
-本仓库当前为私有调整阶段，接口和目录仍可能变化。运行时只依赖 Node.js 内建模块；截图功能还需要本机 Edge 或 Chrome。
+本仓库当前为实验性 0.x 阶段，接口和目录仍可能变化。运行时只依赖 Node.js 内建模块；截图功能还需要本机 Edge 或 Chrome。
 
 ## 能力
 
@@ -16,28 +47,44 @@
 
 ## 快速开始
 
-将本目录安装到你的 Agent Skill 路径，或在 Agent 会话中读取 `SKILL.md`。脚本均可从任意位置调用：
+将 `skill/` 目录安装到你的 Agent Skill 路径，或在 Agent 会话中读取 `skill/SKILL.md`。脚本均可从任意位置调用：
 
 ```powershell
 # 为 HTML 注入可双击打开的评审层。
 node <skill-root>/runtime/prepare-mark.mjs <prototype.html> --inline
 
 # 启动本地作者服务。
-node <skill-root>/runtime/serve.mjs <prototype.html> --snapshot=prototype.notes.snapshot.js
+node <skill-root>/runtime/serve.mjs <prototype.html> --snapshot=prototype-assets/notes.snapshot.js
 
 # 按正式说明分组生成纯页面截图。
 node <skill-root>/runtime/shoot.mjs <prototype.html>
 ```
 
-完整约束与按任务分流见 [SKILL.md](SKILL.md)。可运行的三文件正式标注样例位于 [examples/minimal-notes](examples/minimal-notes)。
+完整约束与按任务分流见 [skill/SKILL.md](skill/SKILL.md)。可运行的正式标注样例位于 [examples/minimal-notes](examples/minimal-notes)。
+
+## 案例截图
+
+最小案例使用 `skill/runtime/shoot.mjs` 按正式标注分组生成纯页面截图，截图不包含右侧说明、SVG 连线或作者工具：
+
+![基础列表状态](examples/minimal-notes/prototype-assets/screenshots/base.png)
+
+| 状态 | 截图 |
+|---|---|
+| 基础列表 | [base.png](examples/minimal-notes/prototype-assets/screenshots/base.png) |
+| 新建配置项 | [create.png](examples/minimal-notes/prototype-assets/screenshots/create.png) |
+| 编辑配置项 | [edit.png](examples/minimal-notes/prototype-assets/screenshots/edit.png) |
+| 任务关联配置项 | [strategy.png](examples/minimal-notes/prototype-assets/screenshots/strategy.png) |
+
+重新生成案例截图：
+
+```powershell
+node skill/runtime/shoot.mjs examples/minimal-notes/prototype.html
+```
 
 ## 目录
 
 ```text
-addons/       可选正式标注能力
-references/   按任务渐进读取的工作流与生成契约
-runtime/      无依赖 Node.js 工具和浏览器运行时
-ui/           可组合 UI 包、Token 与组件片段
+skill/        可独立复制的完整 Skill（含 SKILL.md 与全部依赖资源）
 examples/     可直接打开的最小原型
 ```
 
@@ -47,6 +94,23 @@ examples/     可直接打开的最小原型
 - 说明写回仅允许目标 HTML 所在目录内的 snapshot 文件。
 - `.env` 仅供本机 Inspector 指定 IDE 使用，不应提交。
 - 原型中不应包含真实凭据、生产数据、个人信息或未授权品牌资源。
+- `shoot.mjs` 只应对自己信任的 HTML 和 snapshot 运行。
+- 本地作者服务会按 `CODE_EDITOR` 配置启动 IDE；不要使用来源不明的 `.env`。
+- `html-mark` 是临时评审层，不属于正式交付物；它可能把页面片段保存到浏览器本地存储或复制到剪贴板。
+
+## 开源协作
+
+- 贡献规范见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+- 安全漏洞请按 [SECURITY.md](SECURITY.md) 私下报告，不要在公开 Issue 中提交可利用细节。
+- 行为规范见 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)。
+- 当前项目为实验性 0.x 版本，尚未承诺稳定 API；问题反馈和功能建议请使用仓库的 Issue 或 Discussion。
+
+## 第三方名称与归属
+
+`Ant Design` 是其权利人的商标。本项目中的 `antd-admin` 仅表示对已确认
+Ant Design 风格特征的原生 HTML 视觉模拟；本项目未获 Ant Design 官方背书，
+不代表官方实现，不捆绑 Ant Design 代码或设计资源，也不承诺与任何特定
+Ant Design 版本兼容。详见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。
 
 ## 许可证
 

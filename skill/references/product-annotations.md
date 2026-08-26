@@ -12,18 +12,20 @@
 2. `../addons/annotations/ADDON.md` 与 `../addons/annotations/ui-annotations.html`。
 3. 若标注 Modal 或 Drawer，同时读取当前已选 feedback provider。
 
-## 三文件产物
+## 正式产物结构
 
 ```text
 prototype.html
-prototype.notes.snapshot.js
-prototype-notes/viewer.js
+prototype-assets/
+├─ notes.snapshot.js
+└─ viewer.js
 ```
 
-- `prototype.notes.snapshot.js` 是唯一标注数据源，赋给 `window.__PROTOTYPE_NOTES__`。
-- `prototype-notes/viewer.js` 从本 Skill 的 `runtime/viewer.js` 原样复制。
+- 外层只保留 `prototype.html`；全部正式配套文件都收进同一层 `prototype-assets/`。
+- `prototype-assets/notes.snapshot.js` 是唯一标注数据源，赋给 `window.__PROTOTYPE_NOTES__`。
+- `prototype-assets/viewer.js` 从本 Skill 的 `runtime/viewer.js` 原样复制。
 - HTML 只保留稳定目标 selector 和 snapshot、Viewer 的相对路径引用。
-- 禁止生成重复 `notes.json`，也禁止把同一份卡片数据内嵌进 HTML。
+- 禁止生成重复 `notes.json`，也禁止把同一份卡片数据内嵌进 HTML 或在外层新增其他配套目录。
 
 ## 标注边界
 

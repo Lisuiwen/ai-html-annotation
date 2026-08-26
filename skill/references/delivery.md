@@ -20,10 +20,13 @@
 
 ```text
 prototype.html
-prototype.notes.snapshot.js
-prototype-notes/viewer.js
+prototype-assets/
+├─ notes.snapshot.js
+├─ viewer.js
+└─ screenshots/    # 需要交付验收截图时保留
 ```
 
+- 外层只保留 HTML，其他正式配套资源均收进 `prototype-assets/`；不要再创建额外层级或在外层散落 snapshot、Viewer、截图。
 - 无正式产品说明时默认只交付单文件 HTML。
 
 ## 迭代分流

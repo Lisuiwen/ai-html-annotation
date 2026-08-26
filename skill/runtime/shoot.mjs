@@ -24,22 +24,42 @@ if (!existsSync(htmlPath) || !statSync(htmlPath).isFile()) {
   process.exit(1);
 }
 
-const outDir = resolve(flag('out', join(dirname(htmlPath), 'screenshots')));
+/* 正式产物将所有 HTML 配套资源收拢到 assets，截图在其中按类别归档。 */
+const outDir = resolve(flag('out', join(dirname(htmlPath), 'prototype-assets', 'screenshots')));
 const width = flag('width', '1440');
 const height = flag('height', '900');
 mkdirSync(outDir, { recursive: true });
 
-/* 解析唯一标注数据源：默认 <原型目录>/prototype.notes.snapshot.js，可 --snapshot= 覆盖。 */
-const snapshotPath = resolve(flag('snapshot', join(dirname(htmlPath), 'prototype.notes.snapshot.js')));
+/* 解析唯一标注数据源：默认 <原型目录>/prototype-assets/notes.snapshot.js，可 --snapshot= 覆盖。 */
+const snapshotPath = resolve(flag('snapshot', join(dirname(htmlPath), 'prototype-assets', 'notes.snapshot.js')));
 if (!existsSync(snapshotPath)) {
   console.error(`✗ 找不到标注数据：${snapshotPath}`);
   process.exit(1);
 }
 
+/* 严格读取由作者服务生成的静态 snapshot，拒绝执行其中的任意 JavaScript。 */
+function readNotes() {
+  const code = readFileSync(snapshotPath, 'utf8');
+  const match = code.match(/^\s*(?:(?:\/\*[\s\S]*?\*\/|\/\/[^\r\n]*(?:\r?\n|$))\s*)*window\.__PROTOTYPE_NOTES__\s*=\s*([\s\S]*?)\s*;\s*$/);
+  if (!match) {
+    throw new Error('标注数据必须是单个 window.__PROTOTYPE_NOTES__ = <JSON>; 赋值，不能包含可执行代码。');
+  }
+  try {
+    return JSON.parse(match[1]);
+  } catch {
+    throw new Error('标注数据中的 __PROTOTYPE_NOTES__ 必须是有效 JSON。');
+  }
+}
+
 /* 从 snapshot 提取所有非 common 分组作为组清单，保持出现顺序并去重。 */
 function collectGroups() {
-  const code = readFileSync(snapshotPath, 'utf8');
-  const notes = new Function('window', `${code}\n;return window.__PROTOTYPE_NOTES__;`)({});
+  let notes;
+  try {
+    notes = readNotes();
+  } catch (error) {
+    console.error('✗ ' + error.message);
+    process.exit(1);
+  }
   if (!notes || !Array.isArray(notes.cards)) {
     console.error('✗ 标注数据不符合契约：缺少 cards 数组。');
     process.exit(1);

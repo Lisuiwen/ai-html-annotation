@@ -35,7 +35,7 @@ function loadEnvFile(filePath) {
 loadEnvFile(join(here, '.env'));
 
 if (!input) {
-  console.error('用法：node serve.mjs <prototype.html> [--port=4178] [--snapshot=prototype.notes.snapshot.js]');
+  console.error('用法：node serve.mjs <prototype.html> [--port=4178] [--snapshot=prototype-assets/notes.snapshot.js]');
   process.exit(1);
 }
 
@@ -210,9 +210,9 @@ function injectAuthorLoader(content) {
   return content + '\n' + script + '\n';
 }
 
-/* 尝试启动指定 IDE；spawn 失败走 error 事件，不能靠 try/catch。 */
+/* 尝试启动指定 IDE；禁用 shell，避免把 .env 值当作命令行解释。 */
 function spawnIDE(cmd, args, onFail) {
-  var child = spawn(cmd, args, { stdio: 'ignore', detached: true, shell: true });
+  var child = spawn(cmd, args, { stdio: 'ignore', detached: true, shell: false });
   child.on('error', function () {
     if (typeof onFail === 'function') onFail();
   });

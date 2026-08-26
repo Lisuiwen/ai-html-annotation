@@ -17,12 +17,12 @@
 node <skill-root>/runtime/shoot.mjs <prototype.html>
 
 # 可选参数。
-node <skill-root>/runtime/shoot.mjs <prototype.html> --out=screenshots --width=1440 --height=900
+node <skill-root>/runtime/shoot.mjs <prototype.html> --out=prototype-assets/screenshots --width=1440 --height=900
 node <skill-root>/runtime/shoot.mjs <prototype.html> --browser="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-node <skill-root>/runtime/shoot.mjs <prototype.html> --snapshot=prototype.notes.snapshot.js
+node <skill-root>/runtime/shoot.mjs <prototype.html> --snapshot=prototype-assets/notes.snapshot.js
 ```
 
-脚本使用系统 Edge 或 Chrome，按每个非 `common` 组串行截图到 `<原型目录>/screenshots/<组>.png`。
+脚本使用系统 Edge 或 Chrome，按每个非 `common` 组串行截图到 `<原型目录>/prototype-assets/screenshots/<组>.png`。
 
 ## 验收
 
