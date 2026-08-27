@@ -8,7 +8,7 @@
 
 ## 必读资源
 
-1. [generation-contract.md](generation-contract.md) 中的“唯一标注数据源”“连线与交互标记”“浮层边界”“移动端”和“生成交付文件”章节。
+1. [generation-contract.md](generation-contract.md) 中的“状态与场景”“标注”“浮层”和“交付文件”章节。
 2. `../addons/annotations/ADDON.md` 与 `../addons/annotations/ui-annotations.html`。
 3. 若标注 Modal 或 Drawer，从当前包的 manifest 选择 `feedback.modal` 或 `feedback.drawer` 并完整展开依赖。
 
@@ -30,12 +30,12 @@ prototype-assets/
 ## 标注边界
 
 - snapshot 使用 `schemaVersion: 2` 和显式 `scenarios`；场景保存页面、浮层、Tab、数据态等可恢复的组合 state。
-- `PrototypeViewers` 统一持有状态，业务 Adapter 只把 state 渲染为 DOM；不得为状态专门添加标签属性。
-- 卡片优先用 `when` 匹配组合状态；无 `when` 时才兼容旧 `group`，其中 `common` 始终显示。
+- 标注显示条件读取 `PrototypeViewers` state；标注不得创建独立业务状态。
+- 卡片用 `when` 匹配组合状态；无 `when` 的卡片始终显示。
 - 一个说明绑定一个业务语义单元，不按 DOM 节点逐个拆分，也不为凑数连线。
 - `target.anchor` 优先引用元素已有的稳定 id（值不带 `#`）；无合适 id 时才用 `data-prototype-note-target` 和 `target.selector` 兜底。
 - `data-ui-interactive` 只标本次迭代需要用户操作的业务入口，不生成说明卡片或连线。
-- 原型必须支持 `?scene=<id>` 与 `?collapsed=1`；`?state=<group>` 仅兼容旧链接。
+- 原型必须支持 `?scene=<id>` 与 `?collapsed=1`。
 
 ## 后续路径
 

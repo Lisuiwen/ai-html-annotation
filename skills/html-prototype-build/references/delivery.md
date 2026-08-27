@@ -16,16 +16,6 @@
 
 - 运行 `node <skill-root>/runtime/prepare-mark.mjs <prototype.html> --remove`。
 - HTML 中不得存在 Author Loader、Editor、html-mark、Inspector 或源码定位 token。
-- 所有原型统一交付：
-
-```text
-prototype.html
-prototype-assets/
-├─ notes.snapshot.js
-├─ viewer.js
-└─ screenshots/    # 需要交付验收截图时保留
-```
-
 - 外层只保留 HTML，其他正式配套资源均收进 `prototype-assets/`；不要再创建额外层级或在外层散落 snapshot、Viewer、截图。
 
 ## 迭代分流

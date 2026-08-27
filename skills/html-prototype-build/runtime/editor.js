@@ -10,25 +10,10 @@
   var pickCardId = '';
   var pickTooltip = null;
 
-  /* 读取统一协调器中的活动场景；未升级页面回退到旧 Notes 分组。 */
+  /* 读取统一协调器中的活动场景。 */
   function getActiveScenario() {
     if (window.PrototypeViewers && typeof window.PrototypeViewers.getActiveScenario === 'function') {
       return window.PrototypeViewers.getActiveScenario() || '';
-    }
-    if (window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.getActiveGroup === 'function') {
-      return window.PrototypeNotesViewer.getActiveGroup() || '';
-    }
-    return '';
-  }
-
-  /* 读取 Notes 当前分组；v2 从统一 state 获取，旧页面仍使用 getActiveGroup。 */
-  function getActiveNotesGroup() {
-    if (window.PrototypeViewers && typeof window.PrototypeViewers.getState === 'function') {
-      var state = window.PrototypeViewers.getState();
-      if (state && typeof state.activeGroup === 'string') return state.activeGroup;
-    }
-    if (window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.getActiveGroup === 'function') {
-      return window.PrototypeNotesViewer.getActiveGroup() || '';
     }
     return '';
   }
@@ -42,10 +27,6 @@
       if (window.PrototypeViewers.getActiveScenario() !== activeScenario) {
         window.PrototypeViewers.activateScenario(activeScenario);
       }
-      return;
-    }
-    if (window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.setGroup === 'function') {
-      window.PrototypeNotesViewer.setGroup(activeScenario);
     }
   }
 
@@ -168,13 +149,11 @@
     return 'note-' + index;
   }
 
-  /* 新增一张归入当前场景所恢复 Notes 分组的空白卡片，group 同时兼容 v1。 */
+  /* 新增一张始终显示的空白卡片；需要按场景显示时再补充 when。 */
   function addCard() {
     var id = createCardId();
-    var activeGroup = getActiveNotesGroup() || 'base';
     var card = {
       id: id,
-      group: activeGroup,
       title: '新说明',
       body: '双击编辑说明内容。',
       target: { selector: '', label: '' }
@@ -399,10 +378,10 @@
     return parts.join(' > ');
   }
 
-  /* v2 对已有 ID 使用简洁 anchor；其他目标保留 selector，兼容无 ID 与旧 snapshot。 */
+  /* 对已有 ID 使用简洁 anchor；无 ID 的目标保留 selector。 */
   function targetFor(element) {
     var label = (element.getAttribute('aria-label') || element.textContent || element.tagName).trim().slice(0, 60);
-    if (data.schemaVersion === 2 && element.id) return { anchor: element.id, label: label };
+    if (element.id) return { anchor: element.id, label: label };
     return { selector: selectorFor(element), label: label };
   }
 
@@ -531,7 +510,7 @@
     document.removeEventListener('pointercancel', onSortPointerUp, true);
     sortState = null;
     if (!wasActive || !dropId || dropId === fromId) return;
-    /* Viewer 已完成 group/when 过滤，直接采用当前 DOM 清单，避免编辑器重复实现组合条件。 */
+    /* Viewer 已完成 when 过滤，直接采用当前 DOM 清单，避免编辑器重复实现组合条件。 */
     var visibleIds = Array.prototype.map.call(document.querySelectorAll('.pn-card'), function (card) {
       return card.dataset.noteId;
     });
@@ -634,7 +613,7 @@
     element.addEventListener('dblclick', function () { startEdit(element, getter, setter, multiline); });
   }
 
-  /* 在说明面板底部操作区创建唯一的新增说明按钮。 */
+  /* 在说明面板底部操作区创建唯一的新增说明按钮（位于场景切换与折叠钮之间）。 */
   function buildToolbar() {
     var actions = document.querySelector('.pn-panel-actions');
     if (!actions) return null;
@@ -652,7 +631,8 @@
       event.preventDefault();
       addCard();
     });
-    actions.insertBefore(toolbar, actions.firstChild);
+    var before = actions.querySelector('.pn-toggle') || null;
+    actions.insertBefore(toolbar, before);
     return toolbar;
   }
 

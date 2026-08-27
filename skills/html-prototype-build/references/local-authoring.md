@@ -20,11 +20,9 @@ node <skill-root>/runtime/serve.mjs <prototype.html> --snapshot=prototype-assets
 
 ## 工具边界
 
-- `author-loader.js`：协调 Editor、html-mark 和 Inspector 的互斥模式。
-- `editor.js`：编辑 snapshot 中的说明卡片和稳定 selector；未配置 `--snapshot` 时保存会被拒绝。
-- `html-mark.js`：临时评审 pin，保存到 localStorage，不写入 snapshot。
-- `inspector.js`：`Alt+Shift` 悬停并点击源码目标。
-- `author-chrome.js`：统一作者 overlay 和纯页面截图态边界。
+- 编辑说明卡片 / 稳定 selector → 使用 Editor；未配置 `--snapshot` 时保存会被拒绝。
+- 临时评审 pin → 使用 html-mark，保存到 localStorage，不写入 snapshot。
+- 跳转源码 → 使用 Inspector（`Alt+Shift` 悬停并点击）。
 
 ## Inspector
 

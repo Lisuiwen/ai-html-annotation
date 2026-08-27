@@ -8,14 +8,14 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import vm from 'node:vm';
-import { collectScenarios } from '../skill/runtime/shoot.mjs';
-import { validateSnapshot } from '../skill/runtime/serve.mjs';
+import { collectScenarios } from '../skills/html-prototype-build/runtime/shoot.mjs';
+import { validateSnapshot } from '../skills/html-prototype-build/runtime/serve.mjs';
 
-const runtimeViewerUrl = new URL('../skill/runtime/viewer.js', import.meta.url);
+const runtimeViewerUrl = new URL('../skills/html-prototype-build/runtime/viewer.js', import.meta.url);
 const exampleViewerUrl = new URL('../examples/minimal-notes/prototype-assets/viewer.js', import.meta.url);
 const prototypeUrl = new URL('../examples/minimal-notes/prototype.html', import.meta.url);
 const snapshotUrl = new URL('../examples/minimal-notes/prototype-assets/notes.snapshot.js', import.meta.url);
-const packManifestUrl = new URL('../skill/ui/packs/antd-admin/manifest.json', import.meta.url);
+const packManifestUrl = new URL('../skills/html-prototype-build/ui/packs/antd-admin/manifest.json', import.meta.url);
 
 /** 读取 UI pack manifest，验证最终原型可发现有状态组件的投影接口。 */
 async function readPackManifest() {
@@ -45,7 +45,7 @@ function createV2Snapshot(overrides = {}) {
   return {
     schemaVersion: 2,
     activeScenario: 'base',
-    state: { activeGroup: 'base', product: { page: 'list', layers: [] } },
+    state: { product: { page: 'list', layers: [] } },
     header: { title: '功能说明' },
     scenarios: { base: { state: { product: { page: 'list' } } } },
     cards: [{ id: 'query', target: { anchor: 'queryButton' }, when: { 'product.page': 'list' } }],
@@ -106,33 +106,24 @@ test('scenarios v2 按声明顺序枚举', () => {
   ]);
 });
 
-/** 确保旧 snapshot 仍能从卡片 group 去重生成 state 截图清单。 */
-test('schema v1 缺少 scenarios 时回退 cards.group', () => {
-  const shots = collectScenarios({
-    schemaVersion: 1,
-    activeGroup: 'base',
-    cards: [
-      { group: 'common' },
-      { group: 'base' },
-      { group: 'edit' },
-      { group: 'edit' }
-    ]
-  });
-  assert.deepEqual(shots, [
-    { id: 'base', query: 'state' },
-    { id: 'edit', query: 'state' }
-  ]);
+/** 确保没有显式 scenarios 的 snapshot 被截图工具拒绝。 */
+test('缺少 scenarios 时截图工具报错', () => {
+  assert.throws(() => collectScenarios({
+    schemaVersion: 2,
+    cards: [{ id: 'a', target: { anchor: 'x' } }]
+  }), /scenarios/);
 });
 
-/** 确保作者服务同时接受合法 v1/v2，并拒绝缺失稳定锚点的 v2 数据。 */
-test('snapshot schema 验证覆盖 v1、v2 与非法锚点', () => {
+/** 确保作者服务仅接受 v2，并拒绝缺失稳定锚点的数据与 v1 数据。 */
+test('snapshot schema 验证仅接受 v2 并拒绝非法锚点与 v1', () => {
   assert.equal(validateSnapshot(createV2Snapshot()), true);
   assert.equal(validateSnapshot(createV2Snapshot({ cards: [{ id: 'broken', target: {} }] })), false);
   assert.equal(validateSnapshot({
     schemaVersion: 1,
     header: { title: '旧数据' },
+    scenarios: { base: { state: {} } },
     cards: [{ id: 'legacy', target: { selector: '#legacy' } }]
-  }), true);
+  }), false);
 });
 
 /** 确保状态提交按固定顺序执行、对象深合并、数组整体替换且返回防篡改副本。 */
@@ -161,39 +152,37 @@ test('统一状态内核深合并并按 normalize/apply/render 顺序提交', as
   assert.deepEqual(plain(api.getState()).product.layers, ['edit']);
 });
 
-/** 确保场景继承可组合多维状态，并把新 scene 写回兼容 URL。 */
+/** 确保场景继承可组合多维状态，并把新 scene 写回 URL。 */
 test('场景继承合并多维状态并同步 scene URL', async () => {
-  const { api, historyCalls } = await createViewerHarness('?state=legacy');
+  const { api, historyCalls } = await createViewerHarness();
   api.setState({ product: { page: 'list', layers: [], tabs: { modal: 'basic' } } }, { baseline: true });
-  api.registerScenario('base', { state: { activeGroup: 'base', product: { page: 'list' } } });
+  api.registerScenario('base', { state: { product: { page: 'list' } } });
   api.registerScenario('edit-rules', {
     extends: 'base',
-    state: { activeGroup: 'edit', product: { layers: ['edit'], tabs: { modal: 'rules' } } }
+    state: { product: { layers: ['edit'], tabs: { modal: 'rules' } } }
   });
   assert.equal(api.activateScenario('edit-rules', { history: 'replace' }), true);
   assert.equal(api.getActiveScenario(), 'edit-rules');
   assert.deepEqual(plain(api.getState()), {
-    activeGroup: 'edit',
     product: { page: 'list', layers: ['edit'], tabs: { modal: 'rules' } }
   });
   assert.equal(historyCalls.length, 1);
   assert.match(historyCalls[0][1], /[?&]scene=edit-rules(?:&|$)/);
-  assert.doesNotMatch(historyCalls[0][1], /[?&]state=/);
 });
 
-/** 静态守护初始化分支：scene 必须优先于旧 state，旧 state 仍保留兼容入口。 */
-test('Viewer 深链恢复优先 scene 并兼容 state', async () => {
+/** 静态守护初始化分支：scene 恢复优先，且不再存在旧 state 兼容分支。 */
+test('Viewer 深链恢复仅读取 scene', async () => {
   const source = await readFile(runtimeViewerUrl, 'utf8');
   const start = source.indexOf('function activateInitialState');
   const end = source.indexOf('\n  }', start);
   assert.ok(start >= 0 && end > start, '应存在深链恢复函数');
   const body = source.slice(start, end);
   const sceneRead = body.indexOf("readUrlParam('scene')");
-  const stateRead = body.indexOf("readUrlParam('state')");
   const sceneBranch = body.indexOf('if (scene)');
   const stateBranch = body.indexOf('if (legacyState)');
-  assert.ok(sceneRead >= 0 && stateRead >= 0, '应同时读取 scene 与旧 state');
-  assert.ok(sceneBranch >= 0 && stateBranch > sceneBranch, 'scene 分支必须先于旧 state 分支');
+  assert.ok(sceneRead >= 0, '应读取 scene 参数');
+  assert.ok(sceneBranch >= 0, 'scene 分支应存在');
+  assert.equal(stateBranch, -1, '旧 state 兼容分支应已移除');
 });
 
 /** 确保复制到示例的 Viewer 不会与正式运行时发生版本漂移。 */
@@ -247,8 +236,8 @@ test('UI pack 有状态组件提供局部状态 Adapter 且静态片段不再绑
     const entry = manifest.components[id];
     assert.ok(entry?.adapter, `${id} 应声明可选状态 Adapter`);
     const [source, adapter] = await Promise.all([
-      readFile(new URL(`../skill/ui/packs/antd-admin/${entry.source}`, import.meta.url), 'utf8'),
-      readFile(new URL(`../skill/ui/packs/antd-admin/${entry.adapter}`, import.meta.url), 'utf8')
+      readFile(new URL(`../skills/html-prototype-build/ui/packs/antd-admin/${entry.source}`, import.meta.url), 'utf8'),
+      readFile(new URL(`../skills/html-prototype-build/ui/packs/antd-admin/${entry.adapter}`, import.meta.url), 'utf8')
     ]);
     assert.doesNotMatch(source, /<script\b/i, `${id} 静态组件片段不应注册全局事件`);
     assert.deepEqual([...source.matchAll(deprecatedAttribute)].map((match) => match[0]), [], `${id} 不应依赖旧 data-ui 状态协议`);

@@ -88,8 +88,8 @@
 
   if (window.PrototypeViewers) return;
 
-  var currentState = { activeGroup: 'base' };
-  var scenarioBaseState = { activeGroup: 'base' };
+  var currentState = {};
+  var scenarioBaseState = {};
   var activeScenario = '';
   var stateAdapters = {};
   var viewers = {};
@@ -124,10 +124,9 @@
     return result;
   }
 
-  /* 依注册顺序归一化各命名空间，始终保证旧标注组拥有稳定默认值。 */
+  /* 依注册顺序归一化各命名空间，保证业务状态具有稳定结构。 */
   function normalizeState(nextState) {
     var normalized = isPlainObject(nextState) ? cloneValue(nextState) : {};
-    if (!normalized.activeGroup) normalized.activeGroup = 'base';
     Object.keys(stateAdapters).forEach(function (name) {
       var adapter = stateAdapters[name];
       if (!adapter || typeof adapter.normalize !== 'function') return;
@@ -148,7 +147,6 @@
       var url = new URL(window.location.href);
       if (scene) url.searchParams.set('scene', scene);
       else url.searchParams.delete('scene');
-      url.searchParams.delete('state');
       if (historyMode === 'push') window.history.pushState(null, '', url.toString());
       else if (historyMode === 'replace') window.history.replaceState(null, '', url.toString());
     } catch (_) {
@@ -479,14 +477,12 @@
     });
   }
 
-  /* 返回当前应显示的卡片：when 支持组合状态，旧 group 继续兼容。 */
+  /* 返回当前应显示的卡片：无 when 的卡片始终显示，有 when 的按组合状态匹配。 */
   function visibleCards() {
     var cards = Array.isArray(state.data.cards) ? state.data.cards : [];
     var appState = window.PrototypeViewers.getState();
-    var activeGroup = appState.activeGroup || 'base';
     return cards.filter(function (card) {
-      if (card.when) return matchesWhen(card.when, appState);
-      return (card.group || 'common') === 'common' || card.group === activeGroup;
+      return !card.when || matchesWhen(card.when, appState);
     });
   }
 
@@ -587,12 +583,7 @@
     });
   }
 
-  /* 兼容旧调用：标注组写入统一状态，由 notes consumer 自动重新渲染。 */
-  function setGroup(group) {
-    window.PrototypeViewers.patchState({ activeGroup: group || 'base' });
-  }
-
-  /* 更新说明数据，但不读取 snapshot.activeGroup 覆盖当前统一状态。 */
+  /* 更新说明数据；标注组已统一由组合状态表达，这里只重渲染卡片。 */
   function setData(data) {
     state.data = data;
     render();
@@ -659,30 +650,18 @@
     });
   }
 
-  /* 读取 snapshot 默认 state；schema v1 的 activeGroup 自动迁入统一状态。 */
+  /* 读取 snapshot 顶层 state 作为初始统一状态。 */
   function snapshotInitialState(data) {
-    var initial = data && (data.state || data.initialState);
-    var result = initial && Object.prototype.toString.call(initial) === '[object Object]' ? initial : {};
-    if (!result.activeGroup) {
-      var copy = {};
-      Object.keys(result).forEach(function (key) { copy[key] = result[key]; });
-      copy.activeGroup = data.activeGroup || 'base';
-      result = copy;
-    }
-    return result;
+    var initial = data && data.state;
+    return initial && Object.prototype.toString.call(initial) === '[object Object]' ? initial : {};
   }
 
-  /* 按 scene 优先、state 兼容的规则恢复深链；scene 无效时保持 snapshot 默认状态。 */
+  /* 按 ?scene=<id> 恢复深链；无 scene 时回退 snapshot.activeScenario，否则保持默认状态。 */
   function activateInitialState(data) {
     var scene = readUrlParam('scene');
-    var legacyState = readUrlParam('state');
     window.PrototypeViewers.setState(snapshotInitialState(data), { baseline: true, scene: '' });
     if (scene) {
       window.PrototypeViewers.activateScenario(scene);
-      return;
-    }
-    if (legacyState) {
-      if (!window.PrototypeViewers.activateScenario(legacyState)) setGroup(legacyState);
       return;
     }
     if (data.activeScenario) window.PrototypeViewers.activateScenario(data.activeScenario);
@@ -707,9 +686,6 @@
     state.notes.addEventListener('scroll', function () { requestAnimationFrame(draw); });
     window.addEventListener('resize', scheduleDraw);
     window.addEventListener('ui:layout-change', scheduleDraw);
-    window.addEventListener('ui:layer-change', function (event) {
-      setGroup(event.detail && event.detail.page);
-    });
     window.addEventListener('load', scheduleDraw, { once: true });
     window.setTimeout(scheduleDraw, 300);
   }
@@ -718,12 +694,10 @@
     init: init,
     draw: draw,
     clearHighlights: clearHighlights,
-    setGroup: setGroup,
     setData: setData,
     setPickCardId: setPickCardId,
     clearPickCardId: clearPickCardId,
-    getData: function () { return state.data; },
-    getActiveGroup: function () { return window.PrototypeViewers.getState().activeGroup || 'base'; }
+    getData: function () { return state.data; }
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

@@ -6,7 +6,6 @@
 window.__PROTOTYPE_NOTES__ = {
   "schemaVersion": 2,
   "state": {
-    "activeGroup": "base",
     "product": {
       "layer": "base",
       "selects": {
@@ -20,15 +19,15 @@ window.__PROTOTYPE_NOTES__ = {
     "base": { "state": {} },
     "create": {
       "extends": "base",
-      "state": { "activeGroup": "create", "product": { "layer": "create" } }
+      "state": { "product": { "layer": "create" } }
     },
     "edit": {
       "extends": "base",
-      "state": { "activeGroup": "edit", "product": { "layer": "edit" } }
+      "state": { "product": { "layer": "edit" } }
     },
     "strategy": {
       "extends": "base",
-      "state": { "activeGroup": "strategy", "product": { "layer": "strategy" } }
+      "state": { "product": { "layer": "strategy" } }
     }
   },
   "header": {

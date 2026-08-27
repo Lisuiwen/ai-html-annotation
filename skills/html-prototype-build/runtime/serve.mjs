@@ -93,16 +93,15 @@ function validateScenarios(scenarios) {
     ));
 }
 
-/* 验证最小 snapshot 契约；v1 保留 selector，v2 支持 anchor、when 与 scenarios。 */
+/* 验证最小 snapshot 契约：仅接受 schema v2，要求 anchor、when 与显式 scenarios。 */
 export function validateSnapshot(data) {
-  if (!isObject(data) || ![1, 2].includes(data.schemaVersion)) return false;
+  if (!isObject(data) || data.schemaVersion !== 2) return false;
   if (!isObject(data.header) || typeof data.header.title !== 'string' || !Array.isArray(data.cards)) return false;
-  if (data.schemaVersion === 2 && data.scenarios !== undefined && !validateScenarios(data.scenarios)) return false;
+  if (data.scenarios === undefined || !validateScenarios(data.scenarios)) return false;
   return data.cards.every((card) => {
     if (!isObject(card) || typeof card.id !== 'string' || !isObject(card.target)) return false;
     const hasSelector = typeof card.target.selector === 'string';
     const hasAnchor = typeof card.target.anchor === 'string' && card.target.anchor.length > 0;
-    if (data.schemaVersion === 1) return hasSelector;
     if (!hasAnchor && !hasSelector) return false;
     return card.when === undefined || (isObject(card.when) && validateWhenValue(card.when));
   });
@@ -138,7 +137,7 @@ const server = createServer(async (request, response) => {
       }
       const data = await readJson(request);
       if (!validateSnapshot(data)) {
-        response.writeHead(400).end('标注数据不符合 schemaVersion 1/2 最小契约。');
+        response.writeHead(400).end('标注数据不符合 schema v2 最小契约。');
         return;
       }
       writeSnapshot(data);

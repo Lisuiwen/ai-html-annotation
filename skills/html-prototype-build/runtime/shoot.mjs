@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* 无头截图：优先按显式场景分别截图；v1 回退到标注组与 state 参数。
+/* 无头截图：按显式场景分别截图。
    Viewer 在 collapsed=1 时进入纯页面态，自动隐藏 Mark、右下角折叠钮与交互闪电。 */
 import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs';
 import { spawn, spawnSync } from 'node:child_process';
@@ -52,30 +52,21 @@ function assertSafeFileName(id) {
   return id;
 }
 
-/* 从 snapshot 纯数据提取截图场景，返回包含 id 与查询参数名的稳定清单。 */
+/* 从 snapshot 纯数据提取截图场景，仅接受显式声明的 scenarios。 */
 export function collectScenarios(notes) {
   if (!notes || !Array.isArray(notes.cards)) {
     throw new Error('标注数据不符合契约：缺少 cards 数组。');
   }
-  if (notes.scenarios && typeof notes.scenarios === 'object') {
-    const ids = Array.isArray(notes.scenarios)
-      ? notes.scenarios.map((scenario) => scenario && (scenario.id || scenario.name))
-      : Object.keys(notes.scenarios);
-    if (ids.length === 0 || ids.some((id) => typeof id !== 'string' || !id)) {
-      throw new Error('scenarios 必须包含带有效 ID 的场景。');
-    }
-    return ids.map((id) => ({ id: assertSafeFileName(id), query: 'scene' }));
+  if (!notes.scenarios || typeof notes.scenarios !== 'object') {
+    throw new Error('snapshot 必须显式声明 scenarios。');
   }
-  const groups = [];
-  for (const card of notes.cards) {
-    const group = card && card.group;
-    if (group && group !== 'common' && !groups.includes(group)) groups.push(group);
+  const ids = Array.isArray(notes.scenarios)
+    ? notes.scenarios.map((scenario) => scenario && (scenario.id || scenario.name))
+    : Object.keys(notes.scenarios);
+  if (ids.length === 0 || ids.some((id) => typeof id !== 'string' || !id)) {
+    throw new Error('scenarios 必须包含带有效 ID 的场景。');
   }
-  if (groups.length === 0) {
-    const fallback = notes.state && notes.state.activeGroup || notes.activeGroup || 'base';
-    groups.push(fallback);
-  }
-  return groups.map((id) => ({ id: assertSafeFileName(id), query: 'state' }));
+  return ids.map((id) => ({ id: assertSafeFileName(id), query: 'scene' }));
 }
 
 /* 读取 snapshot 后调用纯场景提取函数，CLI 层统一处理错误与退出码。 */
@@ -83,7 +74,7 @@ function collectShots() {
   return collectScenarios(readNotes());
 }
 
-/* 逐场景执行截图；v2 使用 scene，v1 继续使用 state，均折叠右栏与连线。 */
+/* 逐场景执行截图；统一使用 scene 查询参数并折叠右栏与连线。 */
 function shoot(shot, exe) {
   return new Promise((resolveShot) => {
     const url = pathToFileURL(htmlPath).href + '?' + shot.query + '=' + encodeURIComponent(shot.id) + '&collapsed=1';
@@ -191,7 +182,7 @@ async function main() {
     process.exit(1);
   }
   if (shots.length === 0) {
-    console.error('✗ 未在标注数据中找到任何场景或分组。');
+    console.error('✗ 未在标注数据中找到任何场景。');
     process.exit(1);
   }
   const exe = resolveBrowser();
@@ -199,7 +190,7 @@ async function main() {
     console.error('✗ 未找到 Edge/Chrome 浏览器，请用 --browser= 指定可执行文件路径。');
     process.exit(1);
   }
-  console.log(`发现 ${shots.length} 个${shots[0].query === 'scene' ? '场景' : '标注组'}：${shots.map((shot) => shot.id).join(', ')}`);
+  console.log(`发现 ${shots.length} 个场景：${shots.map((shot) => shot.id).join(', ')}`);
   let ok = 0;
   for (const shot of shots) {
     if (await shoot(shot, exe)) ok++;

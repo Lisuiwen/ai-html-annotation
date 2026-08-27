@@ -3,7 +3,7 @@
   右栏 DOM、样式和连线逻辑由本 Skill 的 runtime/viewer.js 运行时创建，
   原型 HTML 不得硬编码右栏结构、卡片正文或连线逻辑。
   卡片只展示标题与正文；target.label 保留为结构化数据，不在卡片内重复显示。
-  作者态操作由 ca-prototype 本地服务（serve.mjs）注入到卡片右上角和面板底部。
+  作者态操作由 html-prototype-build 本地服务（serve.mjs）注入到卡片右上角和面板底部。
 -->
 
 <!-- 原型优先复用语义 id 作为稳定锚点；状态不存入 DOM 属性。 -->
@@ -27,7 +27,6 @@
 window.__PROTOTYPE_NOTES__ = {
   "schemaVersion": 2,
   "state": {
-    "activeGroup": "base",
     "product": { "page": "list", "layers": [] }
   },
   "activeScenario": "base",
@@ -39,7 +38,7 @@ window.__PROTOTYPE_NOTES__ = {
     "base": { "state": {} },
     "create": {
       "extends": "base",
-      "state": { "activeGroup": "create", "product": { "layers": ["create"] } }
+      "state": { "product": { "layers": ["create"] } }
     }
   },
   "cards": [

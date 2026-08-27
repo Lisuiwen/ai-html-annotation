@@ -37,7 +37,7 @@
   const STORE_KEY = 'html-mark:' + location.pathname;
 
   // ---------- Styles ----------
-  /* 视觉 Token 对齐 skill/ui/packs/antd-admin/foundation/tokens.css：
+  /* 视觉 Token 对齐 skills/html-prototype-build/ui/packs/antd-admin/foundation/tokens.css：
      html-mark 是 drop-in 注入任意 HTML，不能依赖宿主页面的 --ui-* 变量，故写死色值。 */
   const css = `
 .mm-ui, .mm-ui *, .mm-pin, .mm-pin *, .mm-note-pop, .mm-note-pop * {

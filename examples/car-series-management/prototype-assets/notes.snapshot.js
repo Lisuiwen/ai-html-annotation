@@ -5,14 +5,13 @@
 window.__PROTOTYPE_NOTES__ = {
   "schemaVersion": 2,
   "state": {
-    "activeGroup": "list",
     "product": { "layer": "list" }
   },
   "activeScenario": "list",
   "scenarios": {
     "list": { "state": {} },
-    "create": { "extends": "list", "state": { "activeGroup": "create", "product": { "layer": "create" } } },
-    "edit": { "extends": "list", "state": { "activeGroup": "edit", "product": { "layer": "edit" } } }
+    "create": { "extends": "list", "state": { "product": { "layer": "create" } } },
+    "edit": { "extends": "list", "state": { "product": { "layer": "edit" } } }
   },
   "header": {
     "title": "功能说明",

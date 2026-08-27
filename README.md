@@ -1,10 +1,10 @@
-# CA Prototype
+# HTML Prototype Build
 
 > 实验性项目（0.x）：面向中文 AI 协作工作流的零依赖原生 HTML 原型 Skill。
 
 ## English summary
 
-CA Prototype is an experimental, zero-runtime-dependency toolkit for creating,
+HTML Prototype Build is an experimental, zero-runtime-dependency toolkit for creating,
 reviewing, documenting, and screenshotting native HTML product prototypes in
 AI-assisted workflows. It provides composable local UI packs, formal product
 annotations, temporary review pins, a localhost authoring service, and
@@ -21,10 +21,10 @@ local Microsoft Edge or Google Chrome installation.
 
 ```powershell
 # Start the local authoring service for the included example.
-node skill/runtime/serve.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype-assets/notes.snapshot.js
+node skills/html-prototype-build/runtime/serve.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype-assets/notes.snapshot.js
 
 # Generate state screenshots for the included example.
-node skill/runtime/shoot.mjs examples/minimal-notes/prototype.html
+node skills/html-prototype-build/runtime/shoot.mjs examples/minimal-notes/prototype.html
 ```
 
 Open the printed `http://127.0.0.1:<port>/...` address in a browser. The
@@ -44,11 +44,11 @@ untrusted HTML or snapshot files.
 - 向现有 HTML 注入可移除的 html-mark 评审层。
 - 在 `127.0.0.1` 本地作者服务中编辑说明并使用 Inspector 定位源码。
 - 由 `PrototypeViewers` 在 JavaScript 中统一管理组合业务状态，DOM 仅保留语义、稳定锚点和渲染输出。
-- 根据 snapshot 的显式 `scenarios` 与 `?scene=<id>&collapsed=1` 按场景批量截图；旧 `?state=` 链接继续兼容。
+- 根据 snapshot 的显式 `scenarios` 与 `?scene=<id>&collapsed=1` 按场景批量截图。
 
 ## 快速开始
 
-将 `skill/` 目录安装到你的 Agent Skill 路径，或在 Agent 会话中读取 `skill/SKILL.md`。脚本均可从任意位置调用：
+将 `skills/html-prototype-build/` 目录安装到你的 Agent Skill 路径（安装为 `<skills-root>/html-prototype-build/`），或在 Agent 会话中读取 `skills/html-prototype-build/SKILL.md`。脚本均可从任意位置调用：
 
 ```powershell
 # 为 HTML 注入可双击打开的评审层。
@@ -61,11 +61,11 @@ node <skill-root>/runtime/serve.mjs <prototype.html> --snapshot=prototype-assets
 node <skill-root>/runtime/shoot.mjs <prototype.html>
 ```
 
-完整约束与按任务分流见 [skill/SKILL.md](skill/SKILL.md)。可运行的正式标注样例位于 [examples/minimal-notes](examples/minimal-notes)。
+完整约束与按任务分流见 [skills/html-prototype-build/SKILL.md](skills/html-prototype-build/SKILL.md)。可运行的正式标注样例位于 [examples/minimal-notes](examples/minimal-notes)。
 
 ## 案例截图
 
-最小案例使用 `skill/runtime/shoot.mjs` 从 `notes.snapshot.js` 的 `scenarios` 枚举场景并生成纯页面截图，截图不包含右侧说明、SVG 连线或作者工具：
+最小案例使用 `skills/html-prototype-build/runtime/shoot.mjs` 从 `notes.snapshot.js` 的 `scenarios` 枚举场景并生成纯页面截图，截图不包含右侧说明、SVG 连线或作者工具：
 
 ![基础列表状态](examples/minimal-notes/prototype-assets/screenshots/base.png)
 
@@ -79,14 +79,15 @@ node <skill-root>/runtime/shoot.mjs <prototype.html>
 重新生成案例截图：
 
 ```powershell
-node skill/runtime/shoot.mjs examples/minimal-notes/prototype.html
+node skills/html-prototype-build/runtime/shoot.mjs examples/minimal-notes/prototype.html
 ```
 
 ## 目录
 
 ```text
-skill/        可独立复制的完整 Skill（含 SKILL.md 与全部依赖资源）
-examples/     可直接打开的最小原型
+skills/
+└─ html-prototype-build/   可独立复制的完整 Skill（含 SKILL.md 与全部依赖资源）
+examples/                  可直接打开的最小原型
 ```
 
 ## 安全边界

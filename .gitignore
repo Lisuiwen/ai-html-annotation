@@ -1,5 +1,5 @@
 # 本机 Inspector 配置。
-skill/runtime/.env
+skills/html-prototype-build/runtime/.env
 
 # 评审注入和截图的临时产物。
 *.bak.*

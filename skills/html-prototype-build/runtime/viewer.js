@@ -88,8 +88,8 @@
 
   if (window.PrototypeViewers) return;
 
-  var currentState = { activeGroup: 'base' };
-  var scenarioBaseState = { activeGroup: 'base' };
+  var currentState = {};
+  var scenarioBaseState = {};
   var activeScenario = '';
   var stateAdapters = {};
   var viewers = {};
@@ -124,10 +124,9 @@
     return result;
   }
 
-  /* 依注册顺序归一化各命名空间，始终保证旧标注组拥有稳定默认值。 */
+  /* 依注册顺序归一化各命名空间，保证业务状态具有稳定结构。 */
   function normalizeState(nextState) {
     var normalized = isPlainObject(nextState) ? cloneValue(nextState) : {};
-    if (!normalized.activeGroup) normalized.activeGroup = 'base';
     Object.keys(stateAdapters).forEach(function (name) {
       var adapter = stateAdapters[name];
       if (!adapter || typeof adapter.normalize !== 'function') return;
@@ -148,7 +147,6 @@
       var url = new URL(window.location.href);
       if (scene) url.searchParams.set('scene', scene);
       else url.searchParams.delete('scene');
-      url.searchParams.delete('state');
       if (historyMode === 'push') window.history.pushState(null, '', url.toString());
       else if (historyMode === 'replace') window.history.replaceState(null, '', url.toString());
     } catch (_) {
@@ -339,11 +337,14 @@
       '.pn-line-text{fill:var(--ui-text-on-primary,#fff);font-size:11px;font-weight:600;text-anchor:middle;dominant-baseline:central}',
       '.pn-panel-actions{position:fixed;right:16px;bottom:16px;z-index:90;display:flex;align-items:center;gap:8px}',
       '.pn-toggle{display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid var(--ui-border,#d9d9d9);border-radius:50%;background:var(--ui-bg,#fff);color:var(--ui-text-secondary,#595959);box-shadow:0 4px 12px rgba(0,0,0,.12)}',
+      '.pn-scene-switch{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 10px;border:1px solid var(--ui-border,#d9d9d9);border-radius:16px;background:var(--ui-bg,#fff);color:var(--ui-text-secondary,#595959);box-shadow:0 4px 12px rgba(0,0,0,.12);font-size:12px;line-height:1;cursor:pointer}',
+      /* 折叠右栏时只保留展开钮；场景切换与作者加号一并隐藏。 */
+      '.pn-page.pn-collapsed~.pn-panel-actions .pn-scene-switch,.pn-page.pn-collapsed~.pn-panel-actions .pn-author-toolbar{display:none!important}',
       '.pn-page.pn-collapsed~.pn-connections{display:none}',
       '.pn-mobile-toggle{display:none}',
       '[data-ui-interactive]{position:relative}',
       '[data-ui-interactive]::after{position:absolute;top:2px;right:2px;z-index:5;width:14px;height:14px;content:"";background:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Ccircle cx=%278%27 cy=%278%27 r=%278%27 fill=%27%23ff8d6b%27/%3E%3Cpath d=%27M10 1.6 3.4 9.8h4L6 14.4 12.6 6H8.4z%27 fill=%27%23fff%27/%3E%3C/svg%3E") center/contain no-repeat;pointer-events:none}',
-      '@media(max-width:768px){body{overflow:auto}.pn-page{display:block;height:auto;min-height:100vh}.pn-preview{min-height:100vh;border:0}.pn-notes{display:none;min-height:100vh}.pn-page.pn-notes-visible .pn-preview{display:none}.pn-page.pn-notes-visible .pn-notes{display:block}.pn-connections,.pn-toggle{display:none}.pn-mobile-toggle{position:fixed;right:16px;bottom:16px;z-index:130;display:inline-flex;padding:8px 12px;border:0;border-radius:6px;background:var(--ui-primary,#1677ff);color:#fff}}'
+      '@media(max-width:768px){body{overflow:auto}.pn-page{display:block;height:auto;min-height:100vh}.pn-preview{min-height:100vh;border:0}.pn-notes{display:none;min-height:100vh}.pn-page.pn-notes-visible .pn-preview{display:none}.pn-page.pn-notes-visible .pn-notes{display:block}.pn-connections,.pn-toggle,.pn-scene-switch{display:none}.pn-mobile-toggle{position:fixed;right:16px;bottom:16px;z-index:130;display:inline-flex;padding:8px 12px;border:0;border-radius:6px;background:var(--ui-primary,#1677ff);color:#fff}}'
     ].join('');
     document.head.appendChild(style);
   }
@@ -384,6 +385,52 @@
     buildControls(viewerScript);
   }
 
+  /* 读取 snapshot 中 scenarios 的声明顺序 id 列表。 */
+  function listScenarioIds() {
+    var definitions = state.data && state.data.scenarios;
+    if (Array.isArray(definitions)) {
+      return definitions.map(function (scenario) { return scenario && scenario.id; }).filter(Boolean);
+    }
+    if (definitions && Object.prototype.toString.call(definitions) === '[object Object]') {
+      return Object.keys(definitions);
+    }
+    return [];
+  }
+
+  /* 按声明顺序循环激活下一场景。 */
+  function cycleScenario() {
+    var ids = listScenarioIds();
+    if (ids.length < 2) return;
+    var current = window.PrototypeViewers.getActiveScenario();
+    var index = ids.indexOf(current);
+    var next = index === -1 ? ids[0] : ids[(index + 1) % ids.length];
+    window.PrototypeViewers.activateScenario(next);
+  }
+
+  /* 同步场景切换钮文案与位置（加号左侧；无加号时在折叠钮左侧）。 */
+  function ensureSceneSwitch() {
+    var ids = listScenarioIds();
+    var btn = state.actions.querySelector('.pn-scene-switch');
+    if (ids.length < 2) {
+      if (btn) btn.remove();
+      return;
+    }
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.className = 'pn-scene-switch';
+      btn.type = 'button';
+      btn.title = '切换场景';
+      btn.setAttribute('aria-label', '切换场景');
+      btn.addEventListener('click', cycleScenario);
+    }
+    var active = window.PrototypeViewers.getActiveScenario() || ids[0];
+    btn.textContent = active;
+    btn.title = '切换场景（当前：' + active + '）';
+    var before = state.actions.querySelector('.pn-author-toolbar') || state.actions.querySelector('.pn-toggle');
+    if (before) state.actions.insertBefore(btn, before);
+    else state.actions.appendChild(btn);
+  }
+
   /* 创建桌面收起按钮和移动端整页切换按钮。 */
   function buildControls(beforeNode) {
     var toggle = document.createElement('button');
@@ -400,6 +447,7 @@
       scheduleDraw();
     });
     state.actions.appendChild(toggle);
+    ensureSceneSwitch();
 
     var mobile = document.createElement('button');
     mobile.className = 'pn-mobile-toggle';
@@ -440,6 +488,7 @@
       state.cards.appendChild(article);
     });
     state.notes.appendChild(state.cards);
+    ensureSceneSwitch();
     document.body.appendChild(state.actions);
     scheduleDraw();
   }
@@ -479,14 +528,12 @@
     });
   }
 
-  /* 返回当前应显示的卡片：when 支持组合状态，旧 group 继续兼容。 */
+  /* 返回当前应显示的卡片：无 when 的卡片始终显示，有 when 的按组合状态匹配。 */
   function visibleCards() {
     var cards = Array.isArray(state.data.cards) ? state.data.cards : [];
     var appState = window.PrototypeViewers.getState();
-    var activeGroup = appState.activeGroup || 'base';
     return cards.filter(function (card) {
-      if (card.when) return matchesWhen(card.when, appState);
-      return (card.group || 'common') === 'common' || card.group === activeGroup;
+      return !card.when || matchesWhen(card.when, appState);
     });
   }
 
@@ -587,12 +634,7 @@
     });
   }
 
-  /* 兼容旧调用：标注组写入统一状态，由 notes consumer 自动重新渲染。 */
-  function setGroup(group) {
-    window.PrototypeViewers.patchState({ activeGroup: group || 'base' });
-  }
-
-  /* 更新说明数据，但不读取 snapshot.activeGroup 覆盖当前统一状态。 */
+  /* 更新说明数据；标注组已统一由组合状态表达，这里只重渲染卡片。 */
   function setData(data) {
     state.data = data;
     render();
@@ -659,30 +701,18 @@
     });
   }
 
-  /* 读取 snapshot 默认 state；schema v1 的 activeGroup 自动迁入统一状态。 */
+  /* 读取 snapshot 顶层 state 作为初始统一状态。 */
   function snapshotInitialState(data) {
-    var initial = data && (data.state || data.initialState);
-    var result = initial && Object.prototype.toString.call(initial) === '[object Object]' ? initial : {};
-    if (!result.activeGroup) {
-      var copy = {};
-      Object.keys(result).forEach(function (key) { copy[key] = result[key]; });
-      copy.activeGroup = data.activeGroup || 'base';
-      result = copy;
-    }
-    return result;
+    var initial = data && data.state;
+    return initial && Object.prototype.toString.call(initial) === '[object Object]' ? initial : {};
   }
 
-  /* 按 scene 优先、state 兼容的规则恢复深链；scene 无效时保持 snapshot 默认状态。 */
+  /* 按 ?scene=<id> 恢复深链；无 scene 时回退 snapshot.activeScenario，否则保持默认状态。 */
   function activateInitialState(data) {
     var scene = readUrlParam('scene');
-    var legacyState = readUrlParam('state');
     window.PrototypeViewers.setState(snapshotInitialState(data), { baseline: true, scene: '' });
     if (scene) {
       window.PrototypeViewers.activateScenario(scene);
-      return;
-    }
-    if (legacyState) {
-      if (!window.PrototypeViewers.activateScenario(legacyState)) setGroup(legacyState);
       return;
     }
     if (data.activeScenario) window.PrototypeViewers.activateScenario(data.activeScenario);
@@ -707,9 +737,6 @@
     state.notes.addEventListener('scroll', function () { requestAnimationFrame(draw); });
     window.addEventListener('resize', scheduleDraw);
     window.addEventListener('ui:layout-change', scheduleDraw);
-    window.addEventListener('ui:layer-change', function (event) {
-      setGroup(event.detail && event.detail.page);
-    });
     window.addEventListener('load', scheduleDraw, { once: true });
     window.setTimeout(scheduleDraw, 300);
   }
@@ -718,12 +745,10 @@
     init: init,
     draw: draw,
     clearHighlights: clearHighlights,
-    setGroup: setGroup,
     setData: setData,
     setPickCardId: setPickCardId,
     clearPickCardId: clearPickCardId,
-    getData: function () { return state.data; },
-    getActiveGroup: function () { return window.PrototypeViewers.getState().activeGroup || 'base'; }
+    getData: function () { return state.data; }
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

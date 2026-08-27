@@ -28,7 +28,7 @@ packs/<pack-id>/
         └── seed.html
 ```
 
-未提供的类别、Pattern 和 Preset 可以省略，但必须在 `PACK.md` 与 `manifest.json` 中准确声明。
+未提供的类别、Pattern 和 Preset 可以省略，但必须在 `manifest.json` 中准确声明。
 
 ## 资源职责
 
@@ -51,28 +51,21 @@ packs/<pack-id>/
 
 ## 包内自由度
 
-共享契约不强制不同 UI 包使用相同 DOM、CSS 类名或 JavaScript 接口。每个包可以独立定义实现，只需满足：
-
+- 不要求不同 UI Pack 使用相同 DOM、CSS 类名或 JS API。
+- 每个 Pack 只需满足本契约的 manifest、foundation、component 和 adapter 边界。
 - 纯 HTML、CSS、JavaScript，默认零构建和无外部 CDN。
 - 组件资源必须能按叶子组件单独读取；生成时递归展开 `requires`，`optional` 只在需求确实需要时加入。
 - 组件契约只声明局部状态形状（如 Select 的 `open/value`）；最终原型负责把业务 state 映射到该接口，并通过 `PrototypeViewers` 提交状态。
 - `component.html` 中的示例 `id` 仅表达所需锚点；复制多个实例时必须替换为页面内唯一、稳定的 id，并把对应 root 传给 state Adapter。
-
-最终原型通过业务 Adapter 调用组件投影接口：
-
-```js
-const selectAdapter = window.PrototypeUiAdapters['form.select'];
-selectAdapter.render(document.getElementById('statusSelect'), product.filters.status);
-```
-
-`product.filters.status` 由 `PrototypeViewers` 持有；UI pack Adapter 只消费它，不反向读取 DOM 推断业务 state。
+- 最终原型必须由业务 Adapter 把 `PrototypeViewers` state 映射给组件 Adapter。
+- UI Pack Adapter 只消费传入 state，不得直接访问 `PrototypeViewers` 或反向读取 DOM 推断业务 state。
 - 仅实现用户材料确认的状态；有意简化使用 `ponytail:`。
 - 满足共享生成契约中的语义化、无障碍、注释和依赖要求。
 
 ## PACK.md 最小信息
 
+`PACK.md` 只保存 Agent 需要阅读的“为什么”与特殊约束（何时选用、设计意图、已知组合限制、使用注意事项）。`version`、前缀、`provides`、兼容 foundation 等机器事实全部由 `manifest.json` 决定，不得在 `PACK.md` 中重复维护。
+
 - 唯一 `id` 和人类可读名称。
-- 提供的 foundation 与组件类别。
-- 兼容的 foundation。
-- Token 和类名前缀。
+- 提供的 foundation 与组件类别（用于人类理解，机器以 manifest 为准）。
 - `manifest.json` 读取入口与已知组合限制。

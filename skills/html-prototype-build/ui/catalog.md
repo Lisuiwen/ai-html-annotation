@@ -6,7 +6,7 @@
 
 ## 选择规则
 
-1. 每个原型必须且只能选择一个 foundation；foundation 是无 DOM 的 Token 与 CSS 基线，不是页面模板。
+1. 每个原型必须且只能选择一个 foundation。
 2. action、navigation、form、data、feedback 等类别各最多选择一个 provider。
 3. provider 必须在自身 `PACK.md` 中声明兼容当前 foundation。
 4. 用户材料能够确定 UI 类型时选择对应包；无法确定时先询问，禁止默认套用任一视觉体系。

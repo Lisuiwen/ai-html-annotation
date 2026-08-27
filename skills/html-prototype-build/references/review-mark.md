@@ -19,7 +19,7 @@ node <skill-root>/runtime/prepare-mark.mjs <dir> --inline
 node <skill-root>/runtime/prepare-mark.mjs <html-file> --remove
 ```
 
-生成或修改原型后默认运行 `--inline`。用户明确说“不要打点”“不用评审”或“不加 html-mark”时跳过。
+默认不注入 html-mark。仅当用户要求评审、打点、review pin 或导出 For AI 时运行 `--inline`。
 
 ## 浏览器操作
 

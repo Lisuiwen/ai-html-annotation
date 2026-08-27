@@ -6,11 +6,11 @@
 
 ## 最小路径
 
-1. 选择一个 foundation 和 UI pack，并从 manifest 读取最小依赖闭包。
+1. 选择唯一 foundation，再按 action / navigation / form / data / feedback 各选择最多一个兼容 provider，并从 manifest 读取最小依赖闭包。
 2. 生成 snapshot + Viewer；所有原型都通过 Viewer 管理场景和 state。
 3. 交付前核对场景、锚点、Token 和正式文件结构。
 
-当前已有完整 UI 包为 `../ui/packs/antd-admin/`，用于 Ant Design 风格的桌面中后台原型。
+当前已有完整 UI 包为 `../ui/packs/antd-admin/`，提供 foundation 与 action / navigation / form / data / feedback 全部类别的 provider，用于 Ant Design 风格的桌面中后台原型。
 
 ## 生成流程
 
@@ -21,5 +21,5 @@
 ## 完成后分流
 
 - Viewer、场景和标注：读取 [product-annotations.md](product-annotations.md)。
-- 默认需要浏览器评审：读取 [review-mark.md](review-mark.md)。
+- 用户要求评审、打点、review pin 或导出 For AI：读取 [review-mark.md](review-mark.md)。
 - 用户明确不要打点或评审层：直接进入 [delivery.md](delivery.md)。

@@ -9,8 +9,8 @@
 - snapshot 使用 `schemaVersion: 2`，并以 `scenarios` 对象显式声明截图清单和每个场景的组合 state。
 - HTML 支持 `?scene=<id>`，由 `PrototypeViewers` 激活场景并通过业务 Adapter 恢复 DOM 状态。
 - `?collapsed=1` 折叠右栏、SVG 连线、Mark 和交互闪电。
-- 截图器只枚举 `scenarios`，不再从 `cards[].group` 或 `when` 反推场景；因此没有说明卡片的业务场景也可截图。
-- `?state=<group>` 只用于 schema v1 与旧链接兼容，新截图固定生成 `?scene=<id>&collapsed=1`。
+- 截图场景必须来自 `snapshot.scenarios`。
+- 截图固定生成 `?scene=<id>&collapsed=1`。
 
 ## 命令
 

@@ -8,8 +8,6 @@
 2. 所有业务状态只经 `PrototypeViewers` 提交；UI pack Adapter 仅渲染局部 state。
 3. 交付前核对场景、锚点、Token 和正式文件结构。
 
-页面 CSS 的颜色字面量必须位于 `:root` token 声明中；Case 特有颜色使用 `--case-*`。布局尺寸可按当前材料写入页面 CSS。
-
 ## 1. 适用范围与优先级
 
 本契约约束后续 AI 生成的所有单文件 HTML 产品原型。发生冲突时按以下顺序执行：
@@ -34,17 +32,16 @@
 - 所有原型都生成 `prototype-assets/notes.snapshot.js`，它既是唯一标注数据源，也是 `PrototypeViewers` 的场景状态来源；禁止重复生成 `notes.json` 或把同一份卡片数据写进 HTML。
 - 数据文件必须把对象赋给 `window.__PROTOTYPE_NOTES__`，并包含 `schemaVersion: 2`、基础完整 `state`、`activeScenario`、`scenarios`、`header`、`cards`。
 - `scenarios` 使用以稳定场景 id 为键的对象；每个场景标准结构为 `{ extends?, state }`。`state` 表达页面、浮层、Tab、数据态等可组合业务状态；通过 `extends` 复用基础场景时只保存差异。
-- `state.activeGroup` 是旧 `group` 与现有作者工具的唯一兼容分组来源，不另设 `notesGroup`。
-- `PrototypeViewers` 是状态单一来源。业务代码通过 `registerState` 注册 Adapter，通过 `setState` / `patchState` / `activateScenario` 提交状态；Adapter 再把状态渲染为 DOM 的 `hidden`、class 与 `aria-*`。
+- `PrototypeViewers` 是状态单一来源；提交状态只使用 `registerState` / `setState` / `patchState` / `activateScenario`。
 - UI pack 的 `state-adapter.js` 只提供组件局部 state 的 `normalize` / `render` 投影；原型业务 Adapter 负责调用它，UI pack 不得直接持有业务 state 或订阅 `PrototypeViewers`。
 - 不得读取 DOM class、ARIA 或状态专用 `data-*` 反推业务状态，也不得为页面、浮层、Tab 或数据态新增标签属性协议。
-- 卡片优先使用 `when` 对规范化后的完整 state 做 AND 匹配。主格式为平铺点路径，例如 `{ "product.page": "list", "product.layers.includes": "create", "product.tabs.modal": "rules" }`；简单等值也兼容嵌套对象。无 `when` 时才按旧 `group` 规则兼容。
-- 无 `when` 且无旧 `group` 的卡片始终显示。旧 `group: "common"` 仍始终显示，其他旧 group 按 `state.activeGroup` 匹配。
+- 卡片使用 `when` 对规范化后的完整 state 做 AND 匹配。主格式为平铺点路径，例如 `{ "product.page": "list", "product.layers.includes": "create", "product.tabs.modal": "rules" }`；简单等值也兼容嵌套对象。禁止生成 legacy `group` 规则。
+- 无 `when` 的卡片始终显示。
 - `header` 不参与分组，始终显示；右栏只展示带连线的说明卡片，不再使用统一说明框（`overview`）。
 
 ## 4. URL 场景
 
-Viewer 负责 `?scene=<id>` 与 `?collapsed=1` 的恢复；业务 Adapter 不解析 URL，只消费统一 state。旧 `?state=<group>` 仅保留兼容，新产物只生成 `scene` 链接。
+Viewer 负责 `?scene=<id>` 与 `?collapsed=1` 的恢复；业务 Adapter 不解析 URL，只消费统一 state。新产物只生成 `scene` 链接。
 
 截图操作和验收见 [screenshots.md](screenshots.md)。
 
