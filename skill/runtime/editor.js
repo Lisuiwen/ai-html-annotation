@@ -10,6 +10,45 @@
   var pickCardId = '';
   var pickTooltip = null;
 
+  /* 读取统一协调器中的活动场景；未升级页面回退到旧 Notes 分组。 */
+  function getActiveScenario() {
+    if (window.PrototypeViewers && typeof window.PrototypeViewers.getActiveScenario === 'function') {
+      return window.PrototypeViewers.getActiveScenario() || '';
+    }
+    if (window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.getActiveGroup === 'function') {
+      return window.PrototypeNotesViewer.getActiveGroup() || '';
+    }
+    return '';
+  }
+
+  /* 读取 Notes 当前分组；v2 从统一 state 获取，旧页面仍使用 getActiveGroup。 */
+  function getActiveNotesGroup() {
+    if (window.PrototypeViewers && typeof window.PrototypeViewers.getState === 'function') {
+      var state = window.PrototypeViewers.getState();
+      if (state && typeof state.activeGroup === 'string') return state.activeGroup;
+    }
+    if (window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.getActiveGroup === 'function') {
+      return window.PrototypeNotesViewer.getActiveGroup() || '';
+    }
+    return '';
+  }
+
+  /* 刷新标注数据时保留运行时活动场景，避免 snapshot 的默认值导致编辑后回跳。 */
+  function renderData() {
+    var activeScenario = getActiveScenario();
+    window.PrototypeNotesViewer.setData(data);
+    if (!activeScenario) return;
+    if (window.PrototypeViewers && typeof window.PrototypeViewers.activateScenario === 'function') {
+      if (window.PrototypeViewers.getActiveScenario() !== activeScenario) {
+        window.PrototypeViewers.activateScenario(activeScenario);
+      }
+      return;
+    }
+    if (window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.setGroup === 'function') {
+      window.PrototypeNotesViewer.setGroup(activeScenario);
+    }
+  }
+
   /* 注入只在作者环境出现的编辑控件样式。 */
   function installStyles() {
     var style = document.createElement('style');
@@ -104,7 +143,7 @@
     /* 提交当前字段并刷新只读 Viewer。 */
     function commit() {
       setter(control.value);
-      window.PrototypeNotesViewer.setData(data);
+      renderData();
       enhance();
       save();
     }
@@ -113,7 +152,7 @@
     control.addEventListener('keydown', function (event) {
       if (event.key === 'Escape') {
         event.preventDefault();
-        window.PrototypeNotesViewer.setData(data);
+        renderData();
         enhance();
       } else if (event.key === 'Enter' && (!multiline || event.ctrlKey)) {
         event.preventDefault();
@@ -129,17 +168,19 @@
     return 'note-' + index;
   }
 
-  /* 新增一张归入当前组的空白卡片。 */
+  /* 新增一张归入当前场景所恢复 Notes 分组的空白卡片，group 同时兼容 v1。 */
   function addCard() {
     var id = createCardId();
-    data.cards.push({
+    var activeGroup = getActiveNotesGroup() || 'base';
+    var card = {
       id: id,
-      group: window.PrototypeNotesViewer.getActiveGroup() || 'base',
+      group: activeGroup,
       title: '新说明',
       body: '双击编辑说明内容。',
       target: { selector: '', label: '' }
-    });
-    window.PrototypeNotesViewer.setData(data);
+    };
+    data.cards.push(card);
+    renderData();
     enhance();
     save();
   }
@@ -160,7 +201,7 @@
     pop.querySelector('.pn-danger').addEventListener('click', function () {
       data.cards = data.cards.filter(function (item) { return item.id !== card.id; });
       article.remove();
-      window.PrototypeNotesViewer.setData(data);
+      renderData();
       enhance();
       save();
     });
@@ -358,6 +399,13 @@
     return parts.join(' > ');
   }
 
+  /* v2 对已有 ID 使用简洁 anchor；其他目标保留 selector，兼容无 ID 与旧 snapshot。 */
+  function targetFor(element) {
+    var label = (element.getAttribute('aria-label') || element.textContent || element.tagName).trim().slice(0, 60);
+    if (data.schemaVersion === 2 && element.id) return { anchor: element.id, label: label };
+    return { selector: selectorFor(element), label: label };
+  }
+
   /* 处理目标选择点击，作者工具区域和右侧说明区域不可作为绑定目标。 */
   function handlePick(event) {
     if (!pickCardId) return;
@@ -368,13 +416,10 @@
     event.stopPropagation();
     var card = data.cards.find(function (item) { return item.id === pickCardId; });
     if (card) {
-      card.target = {
-        selector: selectorFor(target),
-        label: (target.getAttribute('aria-label') || target.textContent || target.tagName).trim().slice(0, 60)
-      };
+      card.target = targetFor(target);
     }
     stopPick();
-    window.PrototypeNotesViewer.setData(data);
+    renderData();
     enhance();
     save();
   }
@@ -424,7 +469,7 @@
       if (!visibleSet[card.id]) return card;
       return queue[qi++];
     });
-    window.PrototypeNotesViewer.setData(data);
+    renderData();
     enhance();
     save();
   }
@@ -486,10 +531,9 @@
     document.removeEventListener('pointercancel', onSortPointerUp, true);
     sortState = null;
     if (!wasActive || !dropId || dropId === fromId) return;
-    var visibleIds = [];
-    var activeGroup = window.PrototypeNotesViewer.getActiveGroup();
-    data.cards.forEach(function (card) {
-      if ((card.group || 'common') === 'common' || card.group === activeGroup) visibleIds.push(card.id);
+    /* Viewer 已完成 group/when 过滤，直接采用当前 DOM 清单，避免编辑器重复实现组合条件。 */
+    var visibleIds = Array.prototype.map.call(document.querySelectorAll('.pn-card'), function (card) {
+      return card.dataset.noteId;
     });
     var fromIdx = visibleIds.indexOf(fromId);
     if (fromIdx < 0 || visibleIds.indexOf(dropId) < 0) return;
@@ -563,7 +607,7 @@
       var bind = document.createElement('div');
       bind.className = 'pn-card-icon';
       bind.type = 'button';
-      bind.title = card.target && card.target.selector ? '重新绑定目标' : '绑定目标';
+      bind.title = card.target && (card.target.anchor || card.target.selector) ? '重新绑定目标' : '绑定目标';
       bind.setAttribute('aria-label', bind.title);
       bind.innerHTML = bindIconSvg();
       bind.addEventListener('click', function () { startPick(card.id); });

@@ -6,53 +6,66 @@
   作者态操作由 ca-prototype 本地服务（serve.mjs）注入到卡片右上角和面板底部。
 -->
 
-<!-- 原型中只给可绑定目标添加稳定属性；交互标记与正式标注仍彼此独立。 -->
+<!-- 原型优先复用语义 id 作为稳定锚点；状态不存入 DOM 属性。 -->
 <button
+  id="primaryAction"
   class="ui-button ui-button--primary"
-  data-prototype-note-target="primary-action"
   data-ui-interactive>
   主操作
 </button>
-<section class="ui-component-box" data-prototype-note-target="content-area">内容区域</section>
+<section id="contentArea" class="ui-component-box">内容区域</section>
 
 <!--
   prototype-assets/notes.snapshot.js：唯一标注数据源。
   实际生成时写入独立 UTF-8 文件，不要把该脚本块内联到 prototype.html，也不要再生成 notes.json。
 -->
 <script>
-/* 为只读 Viewer、作者编辑器和 AI 提供同一份结构化标注数据。 */
+/*
+ * 为只读 Viewer、作者编辑器和 AI 提供同一份结构化标注数据。
+ * 赋值右侧保持严格 JSON；顶层 state 是基础状态，scenarios 只保存可恢复差异。
+ */
 window.__PROTOTYPE_NOTES__ = {
-  schemaVersion: 1,
-  activeGroup: "base",
-  header: {
-    title: "功能说明",
-    subtitle: "仅展示当前页面或浮层状态"
+  "schemaVersion": 2,
+  "state": {
+    "activeGroup": "base",
+    "product": { "page": "list", "layers": [] }
   },
-  cards: [
+  "activeScenario": "base",
+  "header": {
+    "title": "功能说明",
+    "subtitle": "按统一业务状态展示匹配说明"
+  },
+  "scenarios": {
+    "base": { "state": {} },
+    "create": {
+      "extends": "base",
+      "state": { "activeGroup": "create", "product": { "layers": ["create"] } }
+    }
+  },
+  "cards": [
     {
-      id: "primary-action",
-      group: "base",
-      title: "主操作",
-      body: "说明该操作的业务目的。",
-      target: {
-        selector: "[data-prototype-note-target=\"primary-action\"]",
-        label: "主操作"
+      "id": "primary-action",
+      "when": { "product.page": "list", "product.layers": [] },
+      "title": "主操作",
+      "body": "说明该操作的业务目的。",
+      "target": {
+        "anchor": "primaryAction",
+        "label": "主操作"
       }
     },
     {
-      id: "content-area",
-      group: "common",
-      title: "内容区域",
-      body: "说明该区域的数据和状态。",
-      target: {
-        selector: "[data-prototype-note-target=\"content-area\"]",
-        label: "内容区域"
+      "id": "content-area",
+      "title": "内容区域",
+      "body": "说明该区域的数据和状态。",
+      "target": {
+        "anchor": "contentArea",
+        "label": "内容区域"
       }
     }
   ]
 };
 </script>
 
-<!-- prototype.html 末尾只保留以下只读引用；viewer.js 从 runtime/viewer.js 复制到配套目录。 -->
+<!-- prototype.html 末尾只保留以下只读引用；Viewer 同时提供 PrototypeViewers 状态协调器。 -->
 <script src="./prototype-assets/notes.snapshot.js"></script>
 <script src="./prototype-assets/viewer.js" data-prototype-notes-viewer></script>
