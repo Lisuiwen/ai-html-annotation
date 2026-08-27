@@ -234,13 +234,34 @@ function injectAuthorLoader(content) {
   return content + '\n' + script + '\n';
 }
 
-/* 尝试启动指定 IDE；禁用 shell，避免把 .env 值当作命令行解释。 */
+/* 给 Windows cmd /c 参数加引号，避免路径空格被拆词。 */
+function quoteWinArg(arg) {
+  var s = String(arg);
+  if (!/[\s"]/g.test(s)) return s;
+  return '"' + s.replace(/"/g, '\\"') + '"';
+}
+
+/* 尝试启动指定 IDE。禁用 shell，避免把 .env 值当作命令行解释。
+   Windows + Node 22：shell:false 直接 spawn .cmd 会同步抛 EINVAL；
+   裸 CLI 名也不走 PATHEXT，故非 .exe 一律经 cmd.exe /d /s /c。 */
 function spawnIDE(cmd, args, onFail) {
-  var child = spawn(cmd, args, { stdio: 'ignore', detached: true, shell: false });
-  child.on('error', function () {
+  function fail() {
     if (typeof onFail === 'function') onFail();
-  });
-  child.unref();
+  }
+  try {
+    var opts = { stdio: 'ignore', detached: true, shell: false, windowsHide: true };
+    var child;
+    if (process.platform === 'win32' && !/\.exe$/i.test(cmd)) {
+      var line = [cmd].concat(args).map(quoteWinArg).join(' ');
+      child = spawn(process.env.ComSpec || 'cmd.exe', ['/d', '/s', '/c', line], opts);
+    } else {
+      child = spawn(cmd, args, opts);
+    }
+    child.on('error', fail);
+    child.unref();
+  } catch (error) {
+    fail();
+  }
 }
 
 /* 按 .env 的 CODE_EDITOR（或回退链）打开 IDE 并定位到文件行号。 */
