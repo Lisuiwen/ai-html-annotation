@@ -2,22 +2,24 @@
 
 ## 可用包
 
-- `antd-admin`：Ant Design 风格的桌面中后台 UI，提供 foundation、navigation、form、data、feedback。
+- `antd-admin`：Ant Design 风格的桌面中后台 UI，提供 foundation、action、navigation、form、data、feedback，以及可选 Pattern 与 Preset。
 
 ## 选择规则
 
-1. 每个原型必须且只能选择一个 foundation。
-2. navigation、form、data、feedback 等类别各最多选择一个 provider。
+1. 每个原型必须且只能选择一个 foundation；foundation 是无 DOM 的 Token 与 CSS 基线，不是页面模板。
+2. action、navigation、form、data、feedback 等类别各最多选择一个 provider。
 3. provider 必须在自身 `PACK.md` 中声明兼容当前 foundation。
 4. 用户材料能够确定 UI 类型时选择对应包；无法确定时先询问，禁止默认套用任一视觉体系。
 5. Addon 不属于 UI provider，可在不改变产品视觉 Token 的前提下按需叠加。
+6. 选定包后读取其 `manifest.json`，按 Component、Pattern 或 Preset 展开最小依赖闭包，禁止按类别加载全部组件。
 
 ## 当前组合
 
 当前仅有一个完整包：
 
 ```text
-foundation: antd-admin
+foundation: antd-admin.default
+action: antd-admin
 navigation: antd-admin
 form: antd-admin
 data: antd-admin

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-/* 无头截图：按标注组分别截图；URL 带 state=<组>&collapsed=1。
+/* 无头截图：优先按显式场景分别截图；v1 回退到标注组与 state 参数。
    Viewer 在 collapsed=1 时进入纯页面态，自动隐藏 Mark、右下角折叠钮与交互闪电。 */
 import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs';
 import { spawn, spawnSync } from 'node:child_process';
-import { dirname, join, resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { dirname, join, relative, resolve } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const args = process.argv.slice(2);
 const input = args.find((arg) => !arg.startsWith('--'));
@@ -13,32 +13,19 @@ const flag = (name, fallback) => {
   return hit ? hit.split('=').slice(1).join('=') : fallback;
 };
 
-if (!input) {
-  console.error('用法：node shoot.mjs <prototype.html> [--out=目录] [--browser=exe路径] [--width=1440] [--height=900] [--snapshot=标注数据路径]');
-  process.exit(1);
-}
-
-const htmlPath = resolve(input);
-if (!existsSync(htmlPath) || !statSync(htmlPath).isFile()) {
-  console.error(`找不到原型 HTML：${htmlPath}`);
-  process.exit(1);
-}
+const isDirectExecution = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+const htmlPath = input ? resolve(input) : '';
 
 /* 正式产物将所有 HTML 配套资源收拢到 assets，截图在其中按类别归档。 */
-const outDir = resolve(flag('out', join(dirname(htmlPath), 'prototype-assets', 'screenshots')));
+const outDir = resolve(flag('out', htmlPath ? join(dirname(htmlPath), 'prototype-assets', 'screenshots') : 'prototype-assets/screenshots'));
 const width = flag('width', '1440');
 const height = flag('height', '900');
-mkdirSync(outDir, { recursive: true });
 
 /* 解析唯一标注数据源：默认 <原型目录>/prototype-assets/notes.snapshot.js，可 --snapshot= 覆盖。 */
-const snapshotPath = resolve(flag('snapshot', join(dirname(htmlPath), 'prototype-assets', 'notes.snapshot.js')));
-if (!existsSync(snapshotPath)) {
-  console.error(`✗ 找不到标注数据：${snapshotPath}`);
-  process.exit(1);
-}
+const snapshotPath = resolve(flag('snapshot', htmlPath ? join(dirname(htmlPath), 'prototype-assets', 'notes.snapshot.js') : 'prototype-assets/notes.snapshot.js'));
 
 /* 严格读取由作者服务生成的静态 snapshot，拒绝执行其中的任意 JavaScript。 */
-function readNotes() {
+export function readNotes() {
   const code = readFileSync(snapshotPath, 'utf8');
   const match = code.match(/^\s*(?:(?:\/\*[\s\S]*?\*\/|\/\/[^\r\n]*(?:\r?\n|$))\s*)*window\.__PROTOTYPE_NOTES__\s*=\s*([\s\S]*?)\s*;\s*$/);
   if (!match) {
@@ -51,18 +38,33 @@ function readNotes() {
   }
 }
 
-/* 从 snapshot 提取所有非 common 分组作为组清单，保持出现顺序并去重。 */
-function collectGroups() {
-  let notes;
-  try {
-    notes = readNotes();
-  } catch (error) {
-    console.error('✗ ' + error.message);
-    process.exit(1);
+/* 校验场景 ID 可安全作为跨平台文件名，避免路径穿越、设备名和隐式覆盖。 */
+function assertSafeFileName(id) {
+  if (typeof id !== 'string' || !id || id.length > 120) {
+    throw new Error('场景 ID 必须是 1～120 个字符的字符串。');
   }
+  if (id === '.' || id === '..' || /[<>:"/\\|?*\u0000-\u001f]/.test(id) || /[. ]$/.test(id)) {
+    throw new Error(`场景 ID 不能安全用作截图文件名：${id}`);
+  }
+  if (/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\..*)?$/i.test(id)) {
+    throw new Error(`场景 ID 命中 Windows 保留设备名：${id}`);
+  }
+  return id;
+}
+
+/* 从 snapshot 纯数据提取截图场景，返回包含 id 与查询参数名的稳定清单。 */
+export function collectScenarios(notes) {
   if (!notes || !Array.isArray(notes.cards)) {
-    console.error('✗ 标注数据不符合契约：缺少 cards 数组。');
-    process.exit(1);
+    throw new Error('标注数据不符合契约：缺少 cards 数组。');
+  }
+  if (notes.scenarios && typeof notes.scenarios === 'object') {
+    const ids = Array.isArray(notes.scenarios)
+      ? notes.scenarios.map((scenario) => scenario && (scenario.id || scenario.name))
+      : Object.keys(notes.scenarios);
+    if (ids.length === 0 || ids.some((id) => typeof id !== 'string' || !id)) {
+      throw new Error('scenarios 必须包含带有效 ID 的场景。');
+    }
+    return ids.map((id) => ({ id: assertSafeFileName(id), query: 'scene' }));
   }
   const groups = [];
   for (const card of notes.cards) {
@@ -70,17 +72,28 @@ function collectGroups() {
     if (group && group !== 'common' && !groups.includes(group)) groups.push(group);
   }
   if (groups.length === 0) {
-    const fallback = notes.activeGroup || 'base';
+    const fallback = notes.state && notes.state.activeGroup || notes.activeGroup || 'base';
     groups.push(fallback);
   }
-  return groups;
+  return groups.map((id) => ({ id: assertSafeFileName(id), query: 'state' }));
 }
 
-/* 逐组执行无头浏览器截图，URL 带 state=<组>&collapsed=1 折叠右栏与连线。 */
-function shoot(group, exe) {
+/* 读取 snapshot 后调用纯场景提取函数，CLI 层统一处理错误与退出码。 */
+function collectShots() {
+  return collectScenarios(readNotes());
+}
+
+/* 逐场景执行截图；v2 使用 scene，v1 继续使用 state，均折叠右栏与连线。 */
+function shoot(shot, exe) {
   return new Promise((resolveShot) => {
-    const url = pathToFileURL(htmlPath).href + '?state=' + encodeURIComponent(group) + '&collapsed=1';
-    const outFile = join(outDir, group + '.png');
+    const url = pathToFileURL(htmlPath).href + '?' + shot.query + '=' + encodeURIComponent(shot.id) + '&collapsed=1';
+    const outFile = resolve(outDir, shot.id + '.png');
+    /* 双重验证最终路径仍在输出目录中，防止未来放宽名称规则后引入穿越。 */
+    if (relative(outDir, outFile).startsWith('..')) {
+      console.error(`✗ 不安全的截图输出路径：${outFile}`);
+      resolveShot(false);
+      return;
+    }
     const child = spawn(exe, [
       '--headless=new',
       '--disable-gpu',
@@ -100,15 +113,15 @@ function shoot(group, exe) {
     child.on('close', (code) => {
       if (code === 0) waitForFile(outFile, 4000).then((exists) => {
         if (exists) {
-          console.log(`✓ [${group}] ${outFile}`);
+          console.log(`✓ [${shot.id}] ${outFile}`);
           resolveShot(true);
         } else {
-          console.error(`✗ [${group}] 截图文件未生成（exit ${code}）：${url}`);
+          console.error(`✗ [${shot.id}] 截图文件未生成（exit ${code}）：${url}`);
           resolveShot(false);
         }
       });
       else {
-        console.error(`✗ [${group}] 截图失败（exit ${code}）：${url}`);
+        console.error(`✗ [${shot.id}] 截图失败（exit ${code}）：${url}`);
         resolveShot(false);
       }
     });
@@ -157,9 +170,28 @@ function commandExists(cmd) {
 
 /* 串行截图，避免多个无头实例同时抢占同一输出文件。 */
 async function main() {
-  const groups = collectGroups();
-  if (groups.length === 0) {
-    console.error('✗ 未在标注数据中找到任何分组。');
+  if (!input) {
+    console.error('用法：node shoot.mjs <prototype.html> [--out=目录] [--browser=exe路径] [--width=1440] [--height=900] [--snapshot=标注数据路径]');
+    process.exit(1);
+  }
+  if (!existsSync(htmlPath) || !statSync(htmlPath).isFile()) {
+    console.error(`找不到原型 HTML：${htmlPath}`);
+    process.exit(1);
+  }
+  if (!existsSync(snapshotPath)) {
+    console.error(`✗ 找不到标注数据：${snapshotPath}`);
+    process.exit(1);
+  }
+  mkdirSync(outDir, { recursive: true });
+  let shots;
+  try {
+    shots = collectShots();
+  } catch (error) {
+    console.error('✗ ' + error.message);
+    process.exit(1);
+  }
+  if (shots.length === 0) {
+    console.error('✗ 未在标注数据中找到任何场景或分组。');
     process.exit(1);
   }
   const exe = resolveBrowser();
@@ -167,13 +199,13 @@ async function main() {
     console.error('✗ 未找到 Edge/Chrome 浏览器，请用 --browser= 指定可执行文件路径。');
     process.exit(1);
   }
-  console.log(`发现 ${groups.length} 个标注组：${groups.join(', ')}`);
+  console.log(`发现 ${shots.length} 个${shots[0].query === 'scene' ? '场景' : '标注组'}：${shots.map((shot) => shot.id).join(', ')}`);
   let ok = 0;
-  for (const group of groups) {
-    if (await shoot(group, exe)) ok++;
+  for (const shot of shots) {
+    if (await shoot(shot, exe)) ok++;
   }
-  console.log(`完成：${ok}/${groups.length}，输出目录 ${outDir}`);
-  process.exit(ok === groups.length ? 0 : 1);
+  console.log(`完成：${ok}/${shots.length}，输出目录 ${outDir}`);
+  process.exit(ok === shots.length ? 0 : 1);
 }
 
-main();
+if (isDirectExecution) main();

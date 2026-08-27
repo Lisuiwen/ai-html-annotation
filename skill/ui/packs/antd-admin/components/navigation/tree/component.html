@@ -1,0 +1,27 @@
+<style>
+  .ui-tree { display: grid; gap: var(--ui-space-1); margin: 0; padding: 0; list-style: none; }
+  .ui-tree-node { color: var(--ui-text-secondary); }
+  .ui-tree-row { display: flex; align-items: center; min-height: 24px; gap: var(--ui-space-1); }
+  .ui-tree-toggle {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    color: inherit;
+    border: 0;
+    background: transparent;
+  }
+  .ui-tree-children { display: grid; gap: var(--ui-space-1); padding-left: var(--ui-space-6); }
+  .ui-tree-node[aria-expanded="false"] > .ui-tree-children { display: none; }
+</style>
+
+<!-- ponytail: 当前只实现点击展开；取得键盘行为记录后再升级为完整交互树。 -->
+<ul class="ui-tree" id="uiTree" role="tree">
+  <li class="ui-tree-node" id="uiTreeRoot" role="treeitem" aria-expanded="true">
+    <div class="ui-tree-row">
+      <button class="ui-tree-toggle" type="button" aria-label="折叠分组">⌄</button>
+      <span>分组</span>
+    </div>
+    <div class="ui-tree-children"><span>子项</span></div>
+  </li>
+</ul>
+

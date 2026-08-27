@@ -1,0 +1,36 @@
+<style>
+  .ui-tabs { border-bottom: 1px solid var(--ui-border-soft); }
+  .ui-tab-list { display: flex; gap: var(--ui-space-6); }
+  .ui-tab {
+    position: relative;
+    height: 40px;
+    padding: 0;
+    color: var(--ui-text-secondary);
+    border: 0;
+    background: transparent;
+  }
+  /* ponytail: Tabs 选中态未采集；取得真实状态后替换当前近似。 */
+  .ui-tab[aria-selected="true"] { color: var(--ui-primary); }
+  .ui-tab[aria-selected="true"]::after {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    content: "";
+    background: var(--ui-primary);
+  }
+  .ui-tab-panel { display: block; padding: var(--ui-space-4) 0; color: var(--ui-text-secondary); }
+  .ui-tab-panel[hidden] { display: none; }
+</style>
+
+<div class="ui-tabs-root" id="uiTabs">
+  <div class="ui-tabs" role="tablist" aria-label="内容分组">
+    <div class="ui-tab-list">
+      <button class="ui-tab" id="uiTabOne" type="button" role="tab" aria-selected="true" aria-controls="uiPanelOne">分组一</button>
+      <button class="ui-tab" id="uiTabTwo" type="button" role="tab" aria-selected="false" aria-controls="uiPanelTwo">分组二</button>
+    </div>
+  </div>
+  <div class="ui-tab-panel" id="uiPanelOne" role="tabpanel" aria-labelledby="uiTabOne">内容一</div>
+  <div class="ui-tab-panel" id="uiPanelTwo" role="tabpanel" aria-labelledby="uiTabTwo" hidden>内容二</div>
+</div>

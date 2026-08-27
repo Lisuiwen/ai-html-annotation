@@ -1,0 +1,30 @@
+<style>
+  /* 浮层限制在左侧产品区，不覆盖正式说明区域。 */
+  .ui-preview, .ui-overlay-host { position: relative; }
+  .ui-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 80;
+    display: none;
+    background: rgba(0, 0, 0, 0.45);
+  }
+  .ui-overlay.is-open { display: flex; }
+  .ui-layer-head, .ui-layer-foot {
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    padding: 0 var(--ui-space-4);
+    gap: var(--ui-space-2);
+  }
+  .ui-layer-head { border-bottom: 1px solid var(--ui-border-soft); }
+  .ui-layer-head strong { font-size: 16px; }
+  .ui-layer-head .ui-button { margin-left: auto; }
+  .ui-layer-body { padding: var(--ui-space-6); }
+  .ui-layer-foot {
+    justify-content: flex-end;
+    border-top: 1px solid var(--ui-border-soft);
+    background: var(--ui-bg-soft);
+  }
+</style>

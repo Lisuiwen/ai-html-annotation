@@ -1,0 +1,27 @@
+<style>
+  /* ponytail: Modal 视觉未采集；取得真实状态后替换视觉和焦点管理。 */
+  .ui-modal-overlay { align-items: center; justify-content: center; padding: var(--ui-space-6); }
+  .ui-modal {
+    width: min(520px, 100%);
+    overflow: hidden;
+    border-radius: var(--ui-radius-container);
+    background: var(--ui-bg);
+  }
+</style>
+
+<!-- 将本结构放入左侧产品区 .ui-preview。 -->
+<button class="ui-button ui-button--primary" id="uiDemoModalOpen" type="button" aria-controls="uiDemoModal" aria-haspopup="dialog">打开 Modal</button>
+<div class="ui-overlay ui-modal-overlay" id="uiDemoModal" role="dialog" aria-modal="true" aria-labelledby="uiModalTitle" aria-hidden="true" hidden>
+  <div class="ui-modal">
+    <div class="ui-layer-head">
+      <strong id="uiModalTitle">Modal 标题</strong>
+      <button class="ui-button ui-button--icon" id="uiDemoModalClose" type="button" aria-label="关闭">×</button>
+    </div>
+    <div class="ui-layer-body">通用内容区域</div>
+    <div class="ui-layer-foot">
+      <button class="ui-button" id="uiDemoModalCancel" type="button">取消</button>
+      <button class="ui-button ui-button--primary" id="uiDemoModalConfirm" type="button">确定</button>
+    </div>
+  </div>
+</div>
+

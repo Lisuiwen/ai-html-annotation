@@ -1,0 +1,25 @@
+<style>
+  .ui-toast-region {
+    position: fixed;
+    top: var(--ui-space-6);
+    left: 50%;
+    z-index: 120;
+    display: grid;
+    transform: translateX(-50%);
+    gap: var(--ui-space-2);
+    pointer-events: none;
+  }
+  .ui-toast {
+    min-width: 260px;
+    padding: var(--ui-space-3) var(--ui-space-4);
+    color: var(--ui-text);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg);
+    box-shadow: 0 8px 24px var(--ui-border-subtle);
+  }
+</style>
+
+<button class="ui-button" id="uiToastTrigger" type="button">显示 Toast</button>
+<div class="ui-toast-region" id="uiToastRegion" aria-live="polite" aria-atomic="true"></div>
+

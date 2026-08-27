@@ -1,0 +1,18 @@
+<style>
+  /* ponytail: Drawer 视觉未采集；取得真实状态后替换当前近似。 */
+  .ui-drawer-overlay { justify-content: flex-end; }
+  .ui-drawer { width: min(420px, 92vw); height: 100%; background: var(--ui-bg); }
+</style>
+
+<!-- 将本结构放入左侧产品区 .ui-preview。 -->
+<button class="ui-button ui-button--primary" id="uiDemoDrawerOpen" type="button" aria-controls="uiDemoDrawer" aria-haspopup="dialog">打开 Drawer</button>
+<div class="ui-overlay ui-drawer-overlay" id="uiDemoDrawer" role="dialog" aria-modal="true" aria-labelledby="uiDrawerTitle" aria-hidden="true" hidden>
+  <aside class="ui-drawer">
+    <div class="ui-layer-head">
+      <strong id="uiDrawerTitle">Drawer 标题</strong>
+      <button class="ui-button ui-button--icon" id="uiDemoDrawerClose" type="button" aria-label="关闭">×</button>
+    </div>
+    <div class="ui-layer-body">通用内容区域</div>
+  </aside>
+</div>
+

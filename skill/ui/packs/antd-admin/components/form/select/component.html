@@ -1,0 +1,57 @@
+<style>
+  :root { --ui-select-width: 214px; }
+  .ui-select { position: relative; width: var(--ui-select-width); }
+  .ui-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: var(--ui-control-height);
+    padding: 0 var(--ui-control-padding-inline);
+    color: var(--ui-text);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg);
+    cursor: pointer;
+  }
+  /* ponytail: focus 视觉未采集；取得真实焦点态后替换当前近似。 */
+  .ui-select-trigger:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 1px; }
+  /* ponytail: 下拉层与选项状态未采集；取得真实展开态后替换当前近似。 */
+  .ui-select-menu {
+    position: absolute;
+    top: calc(100% + var(--ui-space-1));
+    left: 0;
+    z-index: 45;
+    display: none;
+    width: 100%;
+    padding: var(--ui-space-1);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg);
+    box-shadow: 0 8px 24px var(--ui-border-subtle);
+  }
+  .ui-select.is-open .ui-select-menu { display: block; }
+  .ui-select-option {
+    width: 100%;
+    padding: 5px var(--ui-space-2);
+    color: var(--ui-text);
+    text-align: left;
+    border: 0;
+    border-radius: var(--ui-space-1);
+    background: transparent;
+  }
+  .ui-select-option:hover, .ui-select-option[aria-selected="true"] {
+    color: var(--ui-primary);
+    background: var(--ui-bg-soft);
+  }
+</style>
+
+<div class="ui-select" id="uiSelect">
+  <button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-controls="uiSelectOptions" aria-expanded="false">
+    <span class="ui-select-value">请选择</span><span aria-hidden="true">⌄</span>
+  </button>
+  <div class="ui-select-menu" id="uiSelectOptions" role="listbox">
+    <button class="ui-select-option" type="button" role="option" aria-selected="false">选项一</button>
+  </div>
+</div>
+

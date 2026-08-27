@@ -1,0 +1,19 @@
+<style>
+  :root { --ui-toolbar-min-height: 44px; }
+  .ui-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    min-height: var(--ui-toolbar-min-height);
+    padding-inline: var(--ui-space-4);
+    gap: var(--ui-space-3);
+  }
+  .ui-toolbar-group { display: flex; align-items: center; gap: var(--ui-space-2); }
+</style>
+
+<div class="ui-toolbar" id="uiToolbar">
+  <div class="ui-toolbar-group" id="uiToolbarLeft"><!-- slot: primary actions --></div>
+  <div class="ui-toolbar-group" id="uiToolbarRight"><!-- slot: secondary actions --></div>
+</div>
+

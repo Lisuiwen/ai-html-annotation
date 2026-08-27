@@ -1,0 +1,30 @@
+<style>
+  /* 中后台页面壳层尺寸只服务于该组合模式。 */
+  .ui-shell { min-width: 1040px; min-height: 100vh; background: var(--ui-bg-page); }
+  .ui-shell-body {
+    display: grid;
+    grid-template-columns: var(--ui-sider-width) minmax(0, 1fr);
+    min-height: calc(100vh - var(--ui-header-height));
+  }
+  .ui-content { min-width: 0; padding: var(--ui-space-4); }
+  .ui-content-card {
+    min-height: calc(100vh - var(--ui-header-height) - 2 * var(--ui-space-4));
+    overflow: hidden;
+    border: 1px solid var(--ui-border-subtle);
+    border-radius: var(--ui-radius-container);
+    background: var(--ui-bg);
+  }
+</style>
+
+<!-- 先从依赖组件插入 Header，再把 Sider 和业务内容放入对应槽位。 -->
+<div class="ui-shell ui-overlay-host" id="uiShell">
+  <!-- slot: navigation.app-header -->
+  <div class="ui-shell-body" id="uiShellBody">
+    <!-- slot: navigation.sider-menu -->
+    <main class="ui-content" id="uiContent">
+      <article class="ui-content-card" id="uiContentCard">
+        <!-- slot: page content -->
+      </article>
+    </main>
+  </div>
+</div>

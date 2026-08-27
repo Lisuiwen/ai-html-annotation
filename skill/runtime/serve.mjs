@@ -9,6 +9,7 @@ import { spawn } from 'node:child_process';
 const here = dirname(fileURLToPath(import.meta.url));
 const markPath = join(here, 'html-mark.js');
 const input = process.argv.slice(2).find((arg) => !arg.startsWith('--'));
+const isDirectExecution = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 const portArg = process.argv.find((arg) => arg.startsWith('--port='));
 const port = Number(portArg && portArg.split('=')[1] || 4178);
 
@@ -34,24 +35,11 @@ function loadEnvFile(filePath) {
 
 loadEnvFile(join(here, '.env'));
 
-if (!input) {
-  console.error('用法：node serve.mjs <prototype.html> [--port=4178] [--snapshot=prototype-assets/notes.snapshot.js]');
-  process.exit(1);
-}
+const htmlPath = input ? resolve(input) : '';
 
-const htmlPath = resolve(input);
-if (!existsSync(htmlPath) || !statSync(htmlPath).isFile()) {
-  console.error(`找不到原型 HTML：${htmlPath}`);
-  process.exit(1);
-}
-
-const root = dirname(htmlPath);
+const root = htmlPath ? dirname(htmlPath) : '';
 const snapshotArg = process.argv.find((arg) => arg.startsWith('--snapshot='));
-const snapshotPath = snapshotArg ? resolve(root, snapshotArg.split('=').slice(1).join('=')) : null;
-if (snapshotArg && relative(root, snapshotPath).startsWith('..')) {
-  console.error('snapshot 文件必须位于原型目录内。');
-  process.exit(1);
-}
+const snapshotPath = snapshotArg && root ? resolve(root, snapshotArg.split('=').slice(1).join('=')) : null;
 /* 无 snapshot 时不要求文件存在，直接跳过标注写回功能。 */
 
 /* 将请求体限制在 2MB，避免作者接口被意外大请求占满内存。 */
@@ -74,13 +62,50 @@ function readJson(request) {
   });
 }
 
-/* 验证最小数据契约，防止把任意 JSON 写成不可用 snapshot。 */
-function validate(data) {
-  return data
-    && data.schemaVersion === 1
-    && data.header && typeof data.header.title === 'string'
-    && Array.isArray(data.cards)
-    && data.cards.every((card) => card && typeof card.id === 'string' && card.target && typeof card.target.selector === 'string');
+/* 判断值是否为普通 JSON 对象，排除数组与 null。 */
+function isObject(value) {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+/* 验证 v2 卡片组合条件：仅接收可序列化的对象/数组/标量结构。 */
+function validateWhenValue(value, depth = 0) {
+  if (depth > 8) return false;
+  if (value === null || ['string', 'number', 'boolean'].includes(typeof value)) return true;
+  if (Array.isArray(value)) return value.every((item) => validateWhenValue(item, depth + 1));
+  return isObject(value)
+    && Object.keys(value).every((key) => key && validateWhenValue(value[key], depth + 1));
+}
+
+/* 验证显式场景清单，兼容对象映射与带 id 的数组两种静态表示。 */
+function validateScenarios(scenarios) {
+  if (Array.isArray(scenarios)) {
+    return scenarios.length > 0 && scenarios.every((scenario) => (
+      isObject(scenario)
+      && typeof scenario.id === 'string' && scenario.id.length > 0
+      && (scenario.state === undefined || isObject(scenario.state))
+    ));
+  }
+  return isObject(scenarios)
+    && Object.keys(scenarios).length > 0
+    && Object.entries(scenarios).every(([id, scenario]) => (
+      id.length > 0 && isObject(scenario)
+      && (scenario.state === undefined || isObject(scenario.state))
+    ));
+}
+
+/* 验证最小 snapshot 契约；v1 保留 selector，v2 支持 anchor、when 与 scenarios。 */
+export function validateSnapshot(data) {
+  if (!isObject(data) || ![1, 2].includes(data.schemaVersion)) return false;
+  if (!isObject(data.header) || typeof data.header.title !== 'string' || !Array.isArray(data.cards)) return false;
+  if (data.schemaVersion === 2 && data.scenarios !== undefined && !validateScenarios(data.scenarios)) return false;
+  return data.cards.every((card) => {
+    if (!isObject(card) || typeof card.id !== 'string' || !isObject(card.target)) return false;
+    const hasSelector = typeof card.target.selector === 'string';
+    const hasAnchor = typeof card.target.anchor === 'string' && card.target.anchor.length > 0;
+    if (data.schemaVersion === 1) return hasSelector;
+    if (!hasAnchor && !hasSelector) return false;
+    return card.when === undefined || (isObject(card.when) && validateWhenValue(card.when));
+  });
 }
 
 /* 使用临时文件替换目标文件，避免保存中断留下半个 snapshot。 */
@@ -112,8 +137,8 @@ const server = createServer(async (request, response) => {
         return;
       }
       const data = await readJson(request);
-      if (!validate(data)) {
-        response.writeHead(400).end('标注数据不符合 schemaVersion 1 最小契约。');
+      if (!validateSnapshot(data)) {
+        response.writeHead(400).end('标注数据不符合 schemaVersion 1/2 最小契约。');
         return;
       }
       writeSnapshot(data);
@@ -243,8 +268,25 @@ function openIDE(filePath, line) {
   tryNext(0);
 }
 
-server.listen(port, '127.0.0.1', () => {
-  console.log(`作者服务：http://127.0.0.1:${port}/${htmlPath.split(/[\\/]/).pop()}`);
-  console.log('Inspector IDE：' + ((process.env.CODE_EDITOR || '').trim() || '未配置，回退 cursor → code'));
-  console.log('关闭服务：Ctrl+C');
-});
+/* 启动作者服务；独立导出便于测试导入校验函数时不监听端口。 */
+export function startServer() {
+  if (!input) {
+    console.error('用法：node serve.mjs <prototype.html> [--port=4178] [--snapshot=prototype-assets/notes.snapshot.js]');
+    process.exit(1);
+  }
+  if (!existsSync(htmlPath) || !statSync(htmlPath).isFile()) {
+    console.error(`找不到原型 HTML：${htmlPath}`);
+    process.exit(1);
+  }
+  if (snapshotArg && relative(root, snapshotPath).startsWith('..')) {
+    console.error('snapshot 文件必须位于原型目录内。');
+    process.exit(1);
+  }
+  server.listen(port, '127.0.0.1', () => {
+    console.log(`作者服务：http://127.0.0.1:${port}/${htmlPath.split(/[\\/]/).pop()}`);
+    console.log('Inspector IDE：' + ((process.env.CODE_EDITOR || '').trim() || '未配置，回退 cursor → code'));
+    console.log('关闭服务：Ctrl+C');
+  });
+}
+
+if (isDirectExecution) startServer();

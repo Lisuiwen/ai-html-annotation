@@ -360,9 +360,9 @@
             <span class="ui-menu-group">系统设置 <span>⌄</span></span>
             <div class="ui-menu-sub">
               <button
+                id="menuConfig"
                 class="ui-menu-item is-active"
                 type="button"
-                data-prototype-note-target="menu-config"
                 data-ui-interactive>
                 配置项
               </button>
@@ -372,7 +372,7 @@
 
         <main class="ui-content">
           <article class="ui-content-card">
-            <section class="ui-filter" id="filterArea" data-prototype-note-target="filter-area">
+            <section class="ui-filter" id="filterArea">
               <div class="ui-filter-fields">
                 <input class="ui-input" id="filterName" aria-label="配置项名称" placeholder="配置项名称 请输入">
                 <input class="ui-input" id="filterCode" aria-label="配置项编码" placeholder="配置项编码 请输入">
@@ -388,14 +388,12 @@
                 class="ui-button ui-button--primary"
                 type="button"
                 id="createButton"
-                data-ui-open="createModal"
-                data-prototype-note-target="create-action"
                 data-ui-interactive>
                 新建配置项
               </button>
             </div>
 
-            <section class="ui-table-area" id="tableArea" data-prototype-note-target="table-area">
+            <section class="ui-table-area" id="tableArea">
               <div class="ui-table-wrap">
                 <table class="ui-table">
                   <thead>
@@ -417,17 +415,17 @@
                       <td>2026-01-15 09:30:00</td>
                       <td>
                         <div class="ui-table-actions">
-                          <button class="ui-button ui-button--text" type="button" data-ui-edit data-ui-interactive>编辑</button>
-                          <button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button>
+                          <button class="ui-button ui-button--text" type="button" data-action="edit" data-ui-interactive>编辑</button>
+                          <button class="ui-button ui-button--text" type="button" data-action="delete">删除</button>
                         </div>
                       </td>
                     </tr>
-                    <tr><td>默认超时时间</td><td>default_timeout</td><td>任务默认超时时间，单位为分钟</td><td>maintainer-b</td><td>2026-01-16 10:15:00</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
-                    <tr><td>显示名称</td><td>display_name</td><td>列表中展示的配置项名称</td><td>maintainer-a</td><td>2026-01-16 14:20:00</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
-                    <tr><td>自动归档</td><td>auto_archive</td><td>是否自动归档已完成记录，0 表示关闭，1 表示开启</td><td>maintainer-c</td><td>2026-01-17 09:00:00</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
-                    <tr><td>最大重试次数</td><td>max_retry_count</td><td>任务失败后的最大重试次数</td><td>maintainer-b</td><td>2026-01-17 11:45:00</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
-                    <tr><td>语言偏好</td><td>locale</td><td>界面默认语言设置</td><td>maintainer-a</td><td>2026-01-18 16:30:00</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
-                    <tr><td>页面主题</td><td>theme_mode</td><td>界面主题，可选 light 或 dark</td><td>maintainer-c</td><td>2026-01-19 08:40:00</td><td><button class="ui-button ui-button--text" type="button" data-ui-edit>编辑</button>　<button class="ui-button ui-button--text" type="button" data-ui-delete>删除</button></td></tr>
+                    <tr><td>默认超时时间</td><td>default_timeout</td><td>任务默认超时时间，单位为分钟</td><td>maintainer-b</td><td>2026-01-16 10:15:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">编辑</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">删除</button></td></tr>
+                    <tr><td>显示名称</td><td>display_name</td><td>列表中展示的配置项名称</td><td>maintainer-a</td><td>2026-01-16 14:20:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">编辑</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">删除</button></td></tr>
+                    <tr><td>自动归档</td><td>auto_archive</td><td>是否自动归档已完成记录，0 表示关闭，1 表示开启</td><td>maintainer-c</td><td>2026-01-17 09:00:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">编辑</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">删除</button></td></tr>
+                    <tr><td>最大重试次数</td><td>max_retry_count</td><td>任务失败后的最大重试次数</td><td>maintainer-b</td><td>2026-01-17 11:45:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">编辑</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">删除</button></td></tr>
+                    <tr><td>语言偏好</td><td>locale</td><td>界面默认语言设置</td><td>maintainer-a</td><td>2026-01-18 16:30:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">编辑</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">删除</button></td></tr>
+                    <tr><td>页面主题</td><td>theme_mode</td><td>界面主题，可选 light 或 dark</td><td>maintainer-c</td><td>2026-01-19 08:40:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">编辑</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">删除</button></td></tr>
                   </tbody>
                 </table>
               </div>
@@ -441,152 +439,246 @@
     </div>
 
     <!-- 新建配置项 Modal。 -->
-    <div class="ui-overlay" id="createModal" data-ui-layer="create" role="dialog" aria-modal="true" aria-labelledby="createTitle">
+    <div class="ui-overlay" id="createModal" role="dialog" aria-modal="true" aria-labelledby="createTitle" aria-hidden="true" hidden>
       <div class="ui-modal">
-        <div class="ui-layer-head"><strong id="createTitle">新建</strong><button class="ui-close" type="button" data-ui-close aria-label="关闭">×</button></div>
-        <div class="ui-layer-body" data-prototype-note-target="create-form">
+        <div class="ui-layer-head"><strong id="createTitle">新建</strong><button class="ui-close" type="button" data-action="close" aria-label="关闭">×</button></div>
+        <div class="ui-layer-body" id="createForm">
           <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 名称：</span><input class="ui-input" id="createName" maxlength="36" placeholder="请输入不超过36字符"></label>
           <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 编码：</span><input class="ui-input" id="createCode" maxlength="36" placeholder="请输入不超过36字符"></label>
           <label class="ui-field"><span class="ui-field-label">描述：</span><textarea class="ui-input" id="createDescription" placeholder="请输入描述"></textarea></label>
         </div>
-        <div class="ui-layer-foot"><button class="ui-button" type="button" data-ui-close>取消</button><button class="ui-button ui-button--primary" type="button" data-ui-confirm="create">确定</button></div>
+        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">取消</button><button class="ui-button ui-button--primary" type="button" data-action="save">确定</button></div>
       </div>
     </div>
 
     <!-- 编辑配置项 Modal。 -->
-    <div class="ui-overlay" id="editModal" data-ui-layer="edit" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+    <div class="ui-overlay" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editTitle" aria-hidden="true" hidden>
       <div class="ui-modal">
-        <div class="ui-layer-head"><strong id="editTitle">编辑</strong><button class="ui-close" type="button" data-ui-close aria-label="关闭">×</button></div>
-        <div class="ui-layer-body" data-prototype-note-target="edit-form">
+        <div class="ui-layer-head"><strong id="editTitle">编辑</strong><button class="ui-close" type="button" data-action="close" aria-label="关闭">×</button></div>
+        <div class="ui-layer-body" id="editForm">
           <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 名称：</span><input class="ui-input" value="通知开关"></label>
           <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 编码：</span><input class="ui-input" value="notification_enabled"></label>
           <label class="ui-field"><span class="ui-field-label">描述：</span><textarea class="ui-input">是否启用通知，0 表示关闭，1 表示开启</textarea></label>
         </div>
-        <div class="ui-layer-foot"><button class="ui-button" type="button" data-ui-close>取消</button><button class="ui-button ui-button--primary" type="button" data-ui-confirm="edit">确定</button></div>
+        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">取消</button><button class="ui-button ui-button--primary" type="button" data-action="save">确定</button></div>
       </div>
     </div>
 
     <!-- 项目任务中新建配置项的关联示意。 -->
-    <div class="ui-overlay" id="strategyModal" data-ui-layer="strategy" role="dialog" aria-modal="true" aria-labelledby="strategyTitle">
+    <div class="ui-overlay" id="strategyModal" role="dialog" aria-modal="true" aria-labelledby="strategyTitle" aria-hidden="true" hidden>
       <div class="ui-modal ui-modal--strategy">
-        <div class="ui-layer-head"><strong id="strategyTitle">新建</strong><button class="ui-close" type="button" data-ui-close aria-label="关闭">×</button></div>
+        <div class="ui-layer-head"><strong id="strategyTitle">新建</strong><button class="ui-close" type="button" data-action="close" aria-label="关闭">×</button></div>
         <div class="ui-layer-body">
-          <div class="ui-field" data-prototype-note-target="strategy-name">
+          <div class="ui-field" id="strategyNameField">
             <span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 名称：</span>
-            <div class="ui-select" data-ui-select>
-              <button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-ui-interactive><span data-ui-select-value>请选择</span><span aria-hidden="true">⌄</span></button>
-              <div class="ui-select-menu" role="listbox">
-                <button class="ui-select-option" type="button" role="option" aria-selected="false">通知开关</button>
-                <button class="ui-select-option" type="button" role="option" aria-selected="false">默认超时时间</button>
-                <button class="ui-select-option" type="button" role="option" aria-selected="false">显示名称</button>
+            <div class="ui-select" id="strategyNameSelect">
+              <button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-controls="strategyNameOptions" aria-expanded="false" data-action="select-toggle" data-ui-interactive><span id="strategyNameValue">请选择</span><span aria-hidden="true">⌄</span></button>
+              <div class="ui-select-menu" id="strategyNameOptions" role="listbox">
+                <button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">通知开关</button>
+                <button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">默认超时时间</button>
+                <button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">显示名称</button>
               </div>
             </div>
           </div>
           <label class="ui-field"><span class="ui-field-label">编码：</span><input class="ui-input" placeholder="请输入"></label>
-          <div class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 条件：</span><div class="ui-select" data-ui-select><button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false"><span data-ui-select-value>请选择</span><span aria-hidden="true">⌄</span></button><div class="ui-select-menu" role="listbox"><button class="ui-select-option" type="button" role="option" aria-selected="false">等于</button><button class="ui-select-option" type="button" role="option" aria-selected="false">大于</button></div></div></div>
+          <div class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 条件：</span><div class="ui-select" id="strategyConditionSelect"><button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-controls="strategyConditionOptions" aria-expanded="false" data-action="select-toggle"><span id="strategyConditionValue">请选择</span><span aria-hidden="true">⌄</span></button><div class="ui-select-menu" id="strategyConditionOptions" role="listbox"><button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">等于</button><button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">大于</button></div></div></div>
           <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 状态：</span><input class="ui-input" placeholder="请输入"></label>
         </div>
-        <div class="ui-layer-foot"><button class="ui-button" type="button" data-ui-close>取消</button><button class="ui-button ui-button--primary" type="button" data-ui-confirm="strategy">确定</button></div>
+        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">取消</button><button class="ui-button ui-button--primary" type="button" data-action="save">确定</button></div>
       </div>
     </div>
   </div>
 
   <div class="ui-toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
 
-  <script>
-    /* 打开指定业务浮层，并把正式说明切换到同名分组。 */
-    function openLayer(id) {
-      document.querySelectorAll('.ui-overlay.is-open').forEach((layer) => layer.classList.remove('is-open'));
-      const layer = document.getElementById(id);
-      if (!layer) return;
-      layer.classList.add('is-open');
-      const focusTarget = layer.querySelector('input, button, textarea');
-      if (focusTarget) focusTarget.focus();
-      window.dispatchEvent(new CustomEvent('ui:layer-change', { detail: { page: layer.dataset.uiLayer } }));
-    }
-
-    /* 关闭当前业务浮层，并恢复列表页说明。 */
-    function closeLayer(layer) {
-      if (!layer) return;
-      layer.classList.remove('is-open');
-      window.dispatchEvent(new CustomEvent('ui:layer-change', { detail: { page: 'base' } }));
-    }
-
-    /* 显示简短结果反馈；当前仅服务于原型操作闭环。 */
-    function showToast(message) {
-      const region = document.getElementById('toastRegion');
-      const toast = document.createElement('div');
-      toast.className = 'ui-toast';
-      toast.textContent = message;
-      region.replaceChildren(toast);
-      window.setTimeout(() => toast.remove(), 1800);
-    }
-
-    /* 切换自定义 Select，并同步展开状态。 */
-    function toggleSelect(select, forceOpen) {
-      const open = typeof forceOpen === 'boolean' ? forceOpen : !select.classList.contains('is-open');
-      select.classList.toggle('is-open', open);
-      select.querySelector('.ui-select-trigger').setAttribute('aria-expanded', String(open));
-    }
-
-    /* 按 URL state 恢复列表、新建、编辑或车型策略浮层，供截图与深链使用。 */
-    function restoreUrlState() {
-      const state = new URLSearchParams(window.location.search).get('state');
-      const layerByState = { create: 'createModal', edit: 'editModal', strategy: 'strategyModal' };
-      if (layerByState[state]) openLayer(layerByState[state]);
-    }
-
-    /* 集中处理当前原型中的新建、编辑、删除、查询和下拉交互。 */
-    document.addEventListener('click', (event) => {
-      const openButton = event.target.closest('[data-ui-open]');
-      if (openButton) openLayer(openButton.dataset.uiOpen);
-
-      const editButton = event.target.closest('[data-ui-edit]');
-      if (editButton) openLayer('editModal');
-
-      const deleteButton = event.target.closest('[data-ui-delete]');
-      if (deleteButton && window.confirm('确认删除该配置项吗？')) showToast('删除成功');
-
-      const closeButton = event.target.closest('[data-ui-close]');
-      if (closeButton) closeLayer(closeButton.closest('.ui-overlay'));
-
-      const confirmButton = event.target.closest('[data-ui-confirm]');
-      if (confirmButton) {
-        closeLayer(confirmButton.closest('.ui-overlay'));
-        showToast('保存成功');
-      }
-
-      const trigger = event.target.closest('.ui-select-trigger');
-      if (trigger) toggleSelect(trigger.closest('[data-ui-select]'));
-
-      const option = event.target.closest('.ui-select-option');
-      if (option) {
-        const select = option.closest('[data-ui-select]');
-        select.querySelector('[data-ui-select-value]').textContent = option.textContent;
-        select.querySelectorAll('.ui-select-option').forEach((item) => item.setAttribute('aria-selected', String(item === option)));
-        toggleSelect(select, false);
-      }
-
-      if (event.target.id === 'resetButton') {
-        document.getElementById('filterName').value = '';
-        document.getElementById('filterCode').value = '';
-      }
-      if (event.target.id === 'queryButton') showToast('查询完成');
-      if (!event.target.closest('[data-ui-select]')) {
-        document.querySelectorAll('[data-ui-select].is-open').forEach((select) => toggleSelect(select, false));
-      }
-    });
-
-    /* 支持 Escape 关闭最上层 Modal。 */
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeLayer(document.querySelector('.ui-overlay.is-open'));
-    });
-
-    /* ponytail: 当前只还原截图确认的静态状态和评审流程；取得真实接口、校验和完整页面截图后替换 mock 行为。 */
-    restoreUrlState();
-  </script>
-  <!-- 正式只读标注：snapshot 是唯一数据源，Viewer 复用仓库共享实现。 -->
+  <!-- 先加载状态内核，业务脚本随后注册 Adapter；URL 与场景恢复只由 Viewer 处理。 -->
   <script src="./prototype-assets/notes.snapshot.js"></script>
   <script src="./prototype-assets/viewer.js" data-prototype-notes-viewer></script>
+  <script>
+    (() => {
+      /* 业务 DOM 只作为状态输出目标，所有组合状态统一存入 PrototypeViewers。 */
+      const viewers = window.PrototypeViewers;
+      if (!viewers) throw new Error('PrototypeViewers 状态协调器未加载');
+
+      const modalByLayer = {
+        create: document.getElementById('createModal'),
+        edit: document.getElementById('editModal'),
+        strategy: document.getElementById('strategyModal')
+      };
+      const selectById = {
+        strategyName: {
+          root: document.getElementById('strategyNameSelect'),
+          trigger: document.querySelector('#strategyNameSelect [data-action="select-toggle"]'),
+          value: document.getElementById('strategyNameValue'),
+          options: [...document.querySelectorAll('#strategyNameOptions [data-action="select-option"]')]
+        },
+        strategyCondition: {
+          root: document.getElementById('strategyConditionSelect'),
+          trigger: document.querySelector('#strategyConditionSelect [data-action="select-toggle"]'),
+          value: document.getElementById('strategyConditionValue'),
+          options: [...document.querySelectorAll('#strategyConditionOptions [data-action="select-option"]')]
+        }
+      };
+      let lastAppliedLayer = 'base';
+
+      /* 将外部场景或局部更新归一为完整、可预测的产品状态。 */
+      function normalizeProductState(value) {
+        const source = value && typeof value === 'object' ? value : {};
+        const sourceSelects = source.selects && typeof source.selects === 'object' ? source.selects : {};
+        const allowedLayers = new Set(['base', 'create', 'edit', 'strategy']);
+        return {
+          ...source,
+          layer: allowedLayers.has(source.layer) ? source.layer : 'base',
+          selects: Object.fromEntries(Object.keys(selectById).map((id) => {
+            const select = sourceSelects[id] && typeof sourceSelects[id] === 'object' ? sourceSelects[id] : {};
+            return [id, {
+              open: Boolean(select.open),
+              value: typeof select.value === 'string' ? select.value : ''
+            }];
+          }))
+        };
+      }
+
+      /* Adapter 负责把单一 JS 状态投影为 hidden、视觉 class 与 ARIA。 */
+      function applyProductState(value) {
+        const product = normalizeProductState(value);
+        Object.entries(modalByLayer).forEach(([layerName, modal]) => {
+          const active = product.layer === layerName;
+          modal.hidden = !active;
+          modal.classList.toggle('is-open', active);
+          modal.setAttribute('aria-hidden', String(!active));
+        });
+
+        Object.entries(selectById).forEach(([id, elements]) => {
+          const select = product.selects[id];
+          elements.root.classList.toggle('is-open', select.open);
+          elements.trigger.setAttribute('aria-expanded', String(select.open));
+          elements.value.textContent = select.value || '请选择';
+          elements.options.forEach((option) => {
+            option.setAttribute('aria-selected', String(Boolean(select.value) && option.textContent.trim() === select.value));
+          });
+        });
+
+        /* 仅在用户或场景真正切换浮层时移动焦点，避免普通状态补丁打断输入。 */
+        if (product.layer !== 'base' && product.layer !== lastAppliedLayer) {
+          const focusTarget = modalByLayer[product.layer].querySelector('input, button, textarea');
+          if (focusTarget) window.requestAnimationFrame(() => focusTarget.focus());
+        }
+        lastAppliedLayer = product.layer;
+      }
+
+      viewers.registerState('product', {
+        normalize: normalizeProductState,
+        apply: applyProductState
+      });
+
+      /* 合并产品状态的嵌套维度，避免一次 Select 更新覆盖当前浮层或其他选择器。 */
+      function patchProductState(partial) {
+        const current = normalizeProductState(viewers.getState().product);
+        viewers.patchState({
+          product: {
+            ...current,
+            ...partial,
+            selects: partial.selects ? { ...current.selects, ...partial.selects } : current.selects
+          }
+        });
+      }
+
+      /* 激活稳定场景名，由协调器同时恢复业务组合状态与对应说明。 */
+      function activateLayerScenario(id) {
+        viewers.activateScenario(id);
+      }
+
+      /* 更新一个 Select 的展开或选中状态，其余组合状态保持不变。 */
+      function patchSelectState(id, partial) {
+        const current = normalizeProductState(viewers.getState().product);
+        patchProductState({
+          selects: {
+            [id]: { ...current.selects[id], ...partial }
+          }
+        });
+      }
+
+      /* 根据事件节点定位已注册的 Select，不读取样式 class 推断业务身份。 */
+      function findSelectId(node) {
+        return Object.keys(selectById).find((id) => selectById[id].root.contains(node));
+      }
+
+      /* 关闭点击目标之外的下拉框，并以一次事务提交组合状态。 */
+      function closeOtherSelects(target) {
+        const current = normalizeProductState(viewers.getState().product);
+        let changed = false;
+        const nextSelects = { ...current.selects };
+        Object.entries(selectById).forEach(([id, elements]) => {
+          if (current.selects[id].open && !elements.root.contains(target)) {
+            nextSelects[id] = { ...current.selects[id], open: false };
+            changed = true;
+          }
+        });
+        if (changed) patchProductState({ selects: nextSelects });
+      }
+
+      /* 显示简短结果反馈；当前仅服务于原型操作闭环。 */
+      function showToast(message) {
+        const region = document.getElementById('toastRegion');
+        const toast = document.createElement('div');
+        toast.className = 'ui-toast';
+        toast.textContent = message;
+        region.replaceChildren(toast);
+        window.setTimeout(() => toast.remove(), 1800);
+      }
+
+      /* 唯一入口按钮直接绑定稳定 id，不需要额外动作标签。 */
+      document.getElementById('createButton').addEventListener('click', () => activateLayerScenario('create'));
+      document.getElementById('resetButton').addEventListener('click', () => {
+        document.getElementById('filterName').value = '';
+        document.getElementById('filterCode').value = '';
+      });
+      document.getElementById('queryButton').addEventListener('click', () => showToast('查询完成'));
+
+      /* 重复的表格、浮层与 Select 操作统一使用一个 data-action 入口。 */
+      document.addEventListener('click', (event) => {
+        const actionTarget = event.target.closest('[data-action]');
+        if (!actionTarget) {
+          closeOtherSelects(event.target);
+          return;
+        }
+
+        const action = actionTarget.dataset.action;
+        if (action === 'edit') activateLayerScenario('edit');
+        if (action === 'delete' && window.confirm('确认删除该配置项吗？')) showToast('删除成功');
+        if (action === 'close') activateLayerScenario('base');
+        if (action === 'save') {
+          activateLayerScenario('base');
+          showToast('保存成功');
+        }
+        if (action === 'select-toggle') {
+          const id = findSelectId(actionTarget);
+          const current = normalizeProductState(viewers.getState().product);
+          if (id) patchSelectState(id, { open: !current.selects[id].open });
+        }
+        if (action === 'select-option') {
+          const id = findSelectId(actionTarget);
+          if (id) patchSelectState(id, { open: false, value: actionTarget.textContent.trim() });
+        }
+        closeOtherSelects(event.target);
+      });
+
+      /* Escape 优先关闭当前浮层，否则收起所有下拉框。 */
+      document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return;
+        const current = normalizeProductState(viewers.getState().product);
+        if (current.layer !== 'base') {
+          activateLayerScenario('base');
+          return;
+        }
+        patchProductState({
+          selects: Object.fromEntries(Object.entries(current.selects).map(([id, select]) => [id, { ...select, open: false }]))
+        });
+      });
+
+      /* ponytail: 当前只还原截图确认的静态状态和评审流程；取得真实接口、校验和完整页面截图后替换 mock 行为。 */
+    })();
+  </script>
 </body>
 </html>

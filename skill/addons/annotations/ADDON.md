@@ -6,16 +6,19 @@
 
 ## 依赖
 
-- 稳定目标 selector。
+- 稳定目标锚点，优先使用元素现有的 `id`。
 - `window.__PROTOTYPE_NOTES__` snapshot。
 - `runtime/viewer.js`。
-- 业务状态与 Viewer 使用相同的 `?state=<group>`。
+- 业务状态通过 `PrototypeViewers` 协调器注册和渲染。
+- snapshot 使用显式 `scenarios`，深链使用 `?scene=<id>`；旧 `?state=<group>` 仅作兼容。
 
 ## 边界
 
 - 本 Addon 不提供产品导航、表单、数据或反馈组件。
 - 标注层专用视觉不得写入所选 UI 包的产品 Token。
 - html-mark 评审 pin、Editor、Inspector 和本地服务不属于本 Addon。
+- DOM 的 `hidden`、class 和 `aria-*` 是统一 JS 状态的渲染输出，不是业务状态真值源。
+- 不为状态新增 `data-*`；无合适 `id` 时才使用 `data-prototype-note-target` 作为锚点兜底。
 
 ## 视觉约束
 

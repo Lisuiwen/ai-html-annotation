@@ -8,7 +8,7 @@ CA Prototype is an experimental, zero-runtime-dependency toolkit for creating,
 reviewing, documenting, and screenshotting native HTML product prototypes in
 AI-assisted workflows. It provides composable local UI packs, formal product
 annotations, temporary review pins, a localhost authoring service, and
-state-based screenshots.
+scenario-based screenshots driven by a shared JavaScript state coordinator.
 
 It is not a production UI component library, a complete accessibility
 implementation, or an official Ant Design project. APIs and directory layouts
@@ -43,7 +43,8 @@ untrusted HTML or snapshot files.
 - 通过 `snapshot.js + viewer.js` 生成正式右侧说明与 SVG 连线。
 - 向现有 HTML 注入可移除的 html-mark 评审层。
 - 在 `127.0.0.1` 本地作者服务中编辑说明并使用 Inspector 定位源码。
-- 根据 `?state=<group>&collapsed=1` 按状态批量截图。
+- 由 `PrototypeViewers` 在 JavaScript 中统一管理组合业务状态，DOM 仅保留语义、稳定锚点和渲染输出。
+- 根据 snapshot 的显式 `scenarios` 与 `?scene=<id>&collapsed=1` 按场景批量截图；旧 `?state=` 链接继续兼容。
 
 ## 快速开始
 
@@ -56,7 +57,7 @@ node <skill-root>/runtime/prepare-mark.mjs <prototype.html> --inline
 # 启动本地作者服务。
 node <skill-root>/runtime/serve.mjs <prototype.html> --snapshot=prototype-assets/notes.snapshot.js
 
-# 按正式说明分组生成纯页面截图。
+# 按 snapshot 显式场景生成纯页面截图。
 node <skill-root>/runtime/shoot.mjs <prototype.html>
 ```
 
@@ -64,7 +65,7 @@ node <skill-root>/runtime/shoot.mjs <prototype.html>
 
 ## 案例截图
 
-最小案例使用 `skill/runtime/shoot.mjs` 按正式标注分组生成纯页面截图，截图不包含右侧说明、SVG 连线或作者工具：
+最小案例使用 `skill/runtime/shoot.mjs` 从 `notes.snapshot.js` 的 `scenarios` 枚举场景并生成纯页面截图，截图不包含右侧说明、SVG 连线或作者工具：
 
 ![基础列表状态](examples/minimal-notes/prototype-assets/screenshots/base.png)
 
