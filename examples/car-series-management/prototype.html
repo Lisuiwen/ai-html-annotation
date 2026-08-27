@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>基础数据管理平台 - 车系车型</title>
+  <style>
+    /* 基础 Token：来自 antd-admin foundation；页面组件只引用这些 Token。 */
+    :root {
+      --ui-primary: #1677ff; --ui-bg-page: #f3f4f7; --ui-bg: #ffffff; --ui-bg-soft: #fafafa;
+      --ui-text: rgba(0, 0, 0, .88); --ui-text-secondary: rgba(0, 0, 0, .65); --ui-text-tertiary: rgba(0, 0, 0, .45);
+      --ui-border: #d9d9d9; --ui-border-soft: #f0f0f0; --ui-border-subtle: rgba(0, 0, 0, .06); --ui-text-on-primary: #ffffff;
+      --ui-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      --ui-font-size-caption: 12px; --ui-font-size-body: 14px; --ui-font-size-title: 20px; --ui-line-height-body: 22px; --ui-font-weight-semibold: 600;
+      --ui-space-1: 4px; --ui-space-2: 8px; --ui-space-3: 12px; --ui-space-4: 16px; --ui-space-6: 24px;
+      --ui-control-height: 32px; --ui-control-padding-inline: 11px; --ui-radius-control: 6px; --ui-radius-container: 8px;
+      --ui-header-height: 52px; --ui-sider-width: 220px; --ui-shadow-primary: 0 2px 0 rgba(5, 145, 255, .1);
+    }
+    /* 基础排版与壳层。 */
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body { margin: 0; color: var(--ui-text); background: var(--ui-bg-page); font: var(--ui-font-size-body)/var(--ui-line-height-body) var(--ui-font); }
+    button, input, select { font: inherit; } button { cursor: pointer; }
+    .ui-preview { position: relative; min-height: 100vh; }
+    .ui-shell { min-width: 1080px; min-height: 100vh; background: var(--ui-bg-page); }
+    .ui-header { display: flex; align-items: center; height: var(--ui-header-height); padding: 0 var(--ui-space-6); border-top: 1px solid var(--ui-text-secondary); background: var(--ui-bg); }
+    .ui-brand { font-size: var(--ui-font-size-title); font-weight: var(--ui-font-weight-semibold); }
+    .ui-user { display: flex; align-items: center; gap: var(--ui-space-2); margin-left: auto; color: var(--ui-text-secondary); }
+    .ui-avatar { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #d9ead3; font-size: var(--ui-font-size-caption); }
+    .ui-shell-body { display: grid; grid-template-columns: var(--ui-sider-width) minmax(0, 1fr); min-height: calc(100vh - var(--ui-header-height)); }
+    /* 截图中可见的侧栏导航。 */
+    .ui-sider { padding: var(--ui-space-2) var(--ui-space-3); background: var(--ui-bg); }
+    .ui-menu, .ui-menu-sub { display: grid; gap: var(--ui-space-1); } .ui-menu-sub { padding-left: 32px; }
+    .ui-menu-group, .ui-menu-item { display: flex; align-items: center; width: 100%; min-height: 36px; padding: 0 var(--ui-space-3); color: var(--ui-text); text-align: left; border: 0; border-radius: var(--ui-radius-control); background: transparent; }
+    .ui-menu-group { justify-content: space-between; } .ui-menu-item.is-active { background: #f0f2f5; }
+    .ui-menu-icon { color: var(--ui-text-tertiary); }
+    .ui-content { min-width: 0; padding: 34px 40px; }
+    .ui-page-head { padding: 16px 24px 20px; background: var(--ui-bg); }
+    .ui-crumb { color: var(--ui-text-secondary); } .ui-crumb strong { color: var(--ui-text); }
+    .ui-page-head h1 { margin: 12px 0 18px; font-size: var(--ui-font-size-title); font-weight: var(--ui-font-weight-regular, 400); }
+    .ui-notice { margin: 0; color: var(--ui-text); white-space: nowrap; } .ui-notice a { color: var(--ui-primary); text-decoration: none; }
+    /* 工作区：树、筛选条件与表格。 */
+    .ui-workspace { display: grid; grid-template-columns: 288px minmax(0, 1fr); gap: var(--ui-space-6); margin-top: 36px; }
+    .ui-tree-panel, .ui-list-panel { min-height: 540px; padding: var(--ui-space-3); background: var(--ui-bg); }
+    .ui-tree-title { display: flex; align-items: center; gap: var(--ui-space-2); font-size: var(--ui-font-size-title); }
+    .ui-tree-search { position: relative; margin-top: var(--ui-space-2); } .ui-tree-search input { width: 100%; }
+    .ui-search-glyph { position: absolute; right: var(--ui-space-3); top: 5px; color: var(--ui-text-tertiary); }
+    .ui-tree { margin-top: var(--ui-space-3); padding: 0; list-style: none; }
+    .ui-tree li { min-height: 34px; padding: 5px 8px; } .ui-tree .is-current { background: #dceeff; }
+    .ui-tree-children { margin: 2px 0 0 20px; padding: 0; border-left: 1px dashed var(--ui-border); list-style: none; }
+    .ui-tree-actions { float: right; color: var(--ui-text-tertiary); }
+    .ui-filter { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: var(--ui-space-4); align-items: end; }
+    .ui-field { display: grid; grid-template-columns: 70px minmax(180px, 1fr); gap: var(--ui-space-2); align-items: center; }
+    .ui-field label { text-align: right; font-weight: var(--ui-font-weight-semibold); }
+    .ui-input, .ui-select { width: 100%; height: var(--ui-control-height); padding: 0 var(--ui-control-padding-inline); color: var(--ui-text); border: 1px solid var(--ui-border); border-radius: var(--ui-radius-control); background: var(--ui-bg); }
+    .ui-input::placeholder { color: var(--ui-text-tertiary); }
+    .ui-button { display: inline-flex; align-items: center; justify-content: center; min-width: 64px; height: var(--ui-control-height); padding: 0 15px; color: var(--ui-text); border: 1px solid var(--ui-border); border-radius: var(--ui-radius-control); background: var(--ui-bg); }
+    .ui-button--primary { color: var(--ui-text-on-primary); border-color: var(--ui-primary); background: var(--ui-primary); box-shadow: var(--ui-shadow-primary); }
+    .ui-button--text { min-width: 0; height: auto; padding: 0; color: var(--ui-primary); border: 0; background: transparent; }
+    .ui-filter-actions { display: flex; gap: var(--ui-space-2); }
+    .ui-toolbar { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 22px; }
+    .ui-import { color: var(--ui-text-secondary); }
+    .ui-table-wrap { overflow: auto; border: 1px solid var(--ui-border-soft); }
+    .ui-table { width: 100%; min-width: 960px; border-collapse: collapse; } .ui-table th, .ui-table td { height: 52px; padding: var(--ui-space-2); text-align: center; border-bottom: 1px solid var(--ui-border-soft); white-space: nowrap; }
+    .ui-table th { font-weight: var(--ui-font-weight-semibold); background: var(--ui-bg-soft); } .ui-table td { color: var(--ui-text-secondary); }
+    .ui-table-actions { display: flex; justify-content: center; gap: var(--ui-space-2); }
+    /* Modal 位于 ui-preview 内，只遮罩左侧产品区域。 */
+    .ui-overlay { position: absolute; inset: 0; z-index: 10; display: none; align-items: center; justify-content: center; padding: var(--ui-space-6); background: rgba(0, 0, 0, .45); }
+    .ui-overlay.is-open { display: flex; } .ui-modal { width: min(700px, 100%); border-radius: var(--ui-radius-container); background: var(--ui-bg); box-shadow: 0 6px 16px rgba(0, 0, 0, .08); }
+    .ui-modal-head, .ui-modal-foot { display: flex; align-items: center; min-height: 54px; padding: 0 var(--ui-space-6); } .ui-modal-head { border-bottom: 1px solid var(--ui-border-soft); } .ui-modal-title { font-size: 18px; font-weight: var(--ui-font-weight-semibold); }
+    .ui-close { margin-left: auto; color: var(--ui-text-tertiary); border: 0; background: transparent; font-size: 22px; } .ui-modal-body { padding: 28px 24px 18px; }
+    .ui-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 34px; } .ui-form-grid .ui-field { grid-template-columns: 96px minmax(0, 1fr); } .ui-form-grid .ui-field--wide { grid-column: 1 / -1; }
+    .ui-unit { display: grid; grid-template-columns: minmax(0, 1fr) 48px; gap: var(--ui-space-2); align-items: center; } .ui-unit span { color: var(--ui-text-secondary); }
+    .ui-divider { margin: 26px 0 14px; border: 0; border-top: 1px solid var(--ui-border-soft); } .ui-hint { color: #ff4d9a; line-height: 20px; }
+    .ui-modal-foot { justify-content: flex-end; gap: var(--ui-space-3); border-top: 1px solid var(--ui-border-soft); }
+    /* ponytail: 当前只实现截图确认的静态默认态、弹窗开关和模拟提交；获得真实校验、下拉选项和接口规则后再扩展。 */
+    .ui-input:focus-visible, .ui-select:focus-visible, .ui-button:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 1px; }
+  </style>
+</head>
+<body>
+  <div class="ui-preview" id="uiPreview">
+    <!-- 车系车型维护列表。 -->
+    <div class="ui-shell">
+      <header class="ui-header"><div class="ui-brand">基础数据管理平台</div><div class="ui-user"><span class="ui-avatar" aria-hidden="true">水</span><span>水哥哥</span></div></header>
+      <div class="ui-shell-body">
+        <aside class="ui-sider"><nav class="ui-menu" aria-label="系统菜单">
+          <div class="ui-menu-group"><span><span class="ui-menu-icon">◴</span>　租户管理</span><span>⌃</span></div><div class="ui-menu-sub"><button class="ui-menu-item is-active" type="button">租户管理</button></div>
+          <div class="ui-menu-group"><span><span class="ui-menu-icon">◴</span>　品牌管理</span><span>⌃</span></div><div class="ui-menu-sub"><button class="ui-menu-item" type="button">品牌管理</button></div>
+          <div class="ui-menu-group"><span><span class="ui-menu-icon">◴</span>　车系车型</span><span>⌃</span></div><div class="ui-menu-sub"><button class="ui-menu-item" type="button">车系车型</button><button class="ui-menu-item" type="button">自动同步车型管理</button><button class="ui-menu-item" type="button">车主认证类型</button></div>
+          <div class="ui-menu-group"><span><span class="ui-menu-icon">◴</span>　车辆管理</span><span>⌃</span></div><div class="ui-menu-sub"><button class="ui-menu-item" type="button">车辆查询</button><button class="ui-menu-item" type="button">车辆分组</button><button class="ui-menu-item" type="button">测试车管理</button><button class="ui-menu-item" type="button">正式车管理</button></div>
+        </nav></aside>
+        <main class="ui-content"><section class="ui-page-head"><div class="ui-crumb">车系车型　/　<strong>车系车型</strong></div><h1>车系车型</h1><p class="ui-notice">注意：（1）不可配置功能（配置功能在车云配置中心的车系车型配置菜单）；（2）可批量导入导出车系车型信息。（3）若有车系/LEVEL/车型新增，需要在<a href="#">执剑者表</a>执行与会签流程。</p></section>
+          <section class="ui-workspace"><aside class="ui-tree-panel"><div class="ui-tree-title">车系车型 <button class="ui-button ui-button--primary" type="button" data-action="create" data-ui-interactive>新增</button></div><div class="ui-tree-search"><input class="ui-input" aria-label="搜索车系车型" placeholder="请输入"><span class="ui-search-glyph" aria-hidden="true">⌕</span></div>
+            <ul class="ui-tree" id="carTree"><li class="is-current">车系车型</li><li>⊟　长安启源A07[C236] <span class="ui-tree-actions">✎ ⊖ ⊕</span><ul class="ui-tree-children"><li>⊞　增程式LEVEL1</li><li>⊞　增程式LEVEL2</li><li>⊟　增程式LEVEL3 <span class="ui-tree-actions">✎ ⊖</span></li></ul></li><li>⊞　UNI-V[C281]</li><li>⊞　睿骋CC[C301]</li><li>⊞　UNI-K[CD569]</li><li>⊞　第二代CS75PLUS[S311-MCA]</li><li>⊞　C589[C589]</li></ul></aside>
+            <section class="ui-list-panel"><div class="ui-filter" id="modelQuery"><div class="ui-field"><label for="configName">配置名称：</label><input class="ui-input" id="configName" placeholder="请输入"></div><div class="ui-field"><label for="configCode">配置编码：</label><input class="ui-input" id="configCode" placeholder="请选择"></div><div class="ui-filter-actions"><button class="ui-button ui-button--primary" id="queryButton" type="button">查询</button><button class="ui-button" id="resetButton" type="button">重置</button></div></div>
+              <div class="ui-toolbar"><button class="ui-button ui-button--primary" id="createModel" type="button" data-action="create" data-ui-interactive>＋ 新建</button><button class="ui-button ui-import" type="button">批量导入导出⌄</button></div>
+              <div class="ui-table-wrap" id="modelTable"><table class="ui-table"><thead><tr><th>配置名称</th><th>配置编码</th><th>状态</th><th>协议</th><th>所属LEVEL</th><th>主控设备</th><th>前装设备</th><th>可插拔设备</th><th>基础服务年限</th><th>操作</th></tr></thead><tbody><tr><td>C236EXTDM27...</td><td>SC7007AABBEV.CNH2001-L</td><td>在研</td><td>TLV</td><td>LEVEL3/C236_LEVEL3</td><td>TBOX</td><td>2</td><td>0</td><td>20</td><td><div class="ui-table-actions"><button class="ui-button ui-button--text" type="button" data-action="edit" data-ui-interactive>编辑</button><button class="ui-button ui-button--text" type="button">删除</button><button class="ui-button ui-button--text" type="button">移动</button></div></td></tr><tr><td>C236XTDM27...</td><td>SC7007AABEV.CNH2001-L</td><td>在研</td><td>TLV</td><td>LEVEL3/C236_LEVEL3</td><td>EDC</td><td>3</td><td>1</td><td>10</td><td><div class="ui-table-actions"><button class="ui-button ui-button--text" type="button" data-action="edit">编辑</button><button class="ui-button ui-button--text" type="button">删除</button><button class="ui-button ui-button--text" type="button">移动</button></div></td></tr></tbody></table></div>
+            </section></section>
+        </main>
+      </div>
+    </div>
+    <!-- 新增与编辑共用车型信息表单。 -->
+    <div class="ui-overlay" id="vehicleModal" role="dialog" aria-modal="true" aria-labelledby="vehicleTitle" aria-hidden="true" hidden><section class="ui-modal"><header class="ui-modal-head"><strong class="ui-modal-title" id="vehicleTitle">新增车型</strong><button class="ui-close" type="button" aria-label="关闭" data-action="close">×</button></header><div class="ui-modal-body"><form id="vehicleForm"><div class="ui-form-grid"><div class="ui-field"><label for="architecture">车系架构：</label><select class="ui-select" id="architecture"><option>C11 1.5</option></select></div><div class="ui-field"><label for="cockpitChip">座舱芯片：</label><select class="ui-select" id="cockpitChip"><option>8655</option></select></div><div class="ui-field"><label for="drivePlan">智驾方案：</label><select class="ui-select" id="drivePlan"><option>C3B</option></select></div><div class="ui-field"><label for="driveChip">智驾主芯片型号：</label><select class="ui-select" id="driveChip"><option>J6M</option></select></div><div class="ui-field"><label for="frontSuspension">前悬架类型：</label><select class="ui-select" id="frontSuspension"><option>麦佛逊</option></select></div><div class="ui-field"><label for="rearSuspension">后悬架类型：</label><select class="ui-select" id="rearSuspension"><option>多连杆</option></select></div><div class="ui-field ui-field--wide"><label for="range">CLTC工况续航里程：</label><div class="ui-unit"><input class="ui-input" id="range" placeholder="22"><span>km</span></div></div><div class="ui-field ui-field--wide"><label for="energy">百公里电耗：</label><div class="ui-unit"><input class="ui-input" id="energy" placeholder="22"><span>kWh/100km</span></div></div><div class="ui-field ui-field--wide"><label for="speakerCount">扬声器个数：</label><div class="ui-unit"><input class="ui-input" id="speakerCount" placeholder="22"><span>个</span></div></div></div></form><hr class="ui-divider"><div class="ui-hint" id="levelHint">1. 默认继承LEVEL的配置；<br>2. 也可以自行设置，设置后以设置的为准；<br>3. LEVEL更新后，以LEVEL最新的为准来继承。</div></div><footer class="ui-modal-foot"><button class="ui-button" type="button" data-action="close">取消</button><button class="ui-button ui-button--primary" type="button" data-action="save">提交</button></footer></section></div>
+  </div>
+  <script src="./prototype-assets/notes.snapshot.js"></script>
+  <script src="./prototype-assets/viewer.js"></script>
+  <script>
+    /* 产品 Adapter 只把统一状态投影到弹窗显示，不从 DOM 反推业务状态。 */
+    (function () {
+      'use strict';
+      const viewers = window.PrototypeViewers;
+      const modal = document.getElementById('vehicleModal');
+      const title = document.getElementById('vehicleTitle');
+
+      /* 规范化场景中的车型维护层级，缺省时回退到列表。 */
+      function normalizeProduct(value) { return { layer: value && ['list', 'create', 'edit'].includes(value.layer) ? value.layer : 'list' }; }
+
+      /* 根据统一状态更新弹窗与标题，确保右侧说明只连接当前可见场景。 */
+      function applyProduct(value) {
+        const product = normalizeProduct(value);
+        const open = product.layer !== 'list';
+        modal.hidden = !open; modal.classList.toggle('is-open', open); modal.setAttribute('aria-hidden', String(!open));
+        title.textContent = product.layer === 'edit' ? '编辑车型' : '新增车型';
+      }
+
+      /* 激活 snapshot 中的显式场景，并保持 URL 可分享。 */
+      function activate(scene) { viewers.activateScenario(scene, { history: 'replace' }); }
+
+      viewers.registerState('product', { normalize: normalizeProduct, apply: applyProduct });
+      document.addEventListener('click', function (event) {
+        const action = event.target.closest('[data-action]');
+        if (!action) return;
+        if (action.dataset.action === 'create') activate('create');
+        if (action.dataset.action === 'edit') activate('edit');
+        if (action.dataset.action === 'close' || action.dataset.action === 'save') activate('list');
+      });
+      document.getElementById('resetButton').addEventListener('click', function () { document.getElementById('configName').value = ''; document.getElementById('configCode').value = ''; });
+      /* ponytail: 查询和提交只完成界面闭环；取得真实请求、字段校验与反馈规范后替换为业务行为。 */
+    })();
+  </script>
+</body>
+</html>

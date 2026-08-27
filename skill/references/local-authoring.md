@@ -39,9 +39,3 @@ CODE_EDITOR=cursor
 
 未配置时依次回退 `cursor` → `code`；`.env` 仅本机使用，不提交或分发。
 
-## 浏览器操作
-
-1. 按住 `Alt+Shift` 进入 Inspector。
-2. 悬停查看标签、CSS 路径和短 token。
-3. 点击后，服务实时重读源文件并重算 token 对应行号。
-4. IDE 打开对应文件和行号；源文件编辑后无需维护静态行号。
