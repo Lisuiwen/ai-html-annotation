@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 2,
+  "id": "antd-admin",
+  "version": 2,
+  "classPrefix": "ui-",
+  "tokenPrefix": "ui-",
+  "foundation": {
+    "id": "antd-admin.default",
+    "contract": "foundation/FOUNDATION.md",
+    "sources": [
+      "foundation/tokens.css",
+      "foundation/base.css"
+    ]
+  },
+  "providers": {
+    "action": { "compatibleFoundations": ["antd-admin.default"] },
+    "navigation": { "compatibleFoundations": ["antd-admin.default"] },
+    "form": { "compatibleFoundations": ["antd-admin.default"] },
+    "data": { "compatibleFoundations": ["antd-admin.default"] },
+    "feedback": { "compatibleFoundations": ["antd-admin.default"] }
+  },
+  "components": {
+    "action.button": {
+      "category": "action",
+      "keywords": ["按钮", "主操作", "次操作", "文字按钮", "图标按钮"],
+      "contract": "components/action/button/COMPONENT.md",
+      "source": "components/action/button/component.html",
+      "requires": []
+    },
+    "navigation.app-header": {
+      "category": "navigation",
+      "keywords": ["顶部导航", "全局导航", "品牌区", "用户菜单"],
+      "contract": "components/navigation/app-header/COMPONENT.md",
+      "source": "components/navigation/app-header/component.html",
+      "requires": [],
+      "optional": ["action.button"]
+    },
+    "navigation.sider-menu": {
+      "category": "navigation",
+      "keywords": ["侧栏", "侧边菜单", "左侧菜单"],
+      "contract": "components/navigation/sider-menu/COMPONENT.md",
+      "source": "components/navigation/sider-menu/component.html",
+      "requires": []
+    },
+    "navigation.tree": {
+      "category": "navigation",
+      "keywords": ["树", "层级结构", "树节点"],
+      "contract": "components/navigation/tree/COMPONENT.md",
+      "source": "components/navigation/tree/component.html",
+      "requires": []
+    },
+    "navigation.tabs": {
+      "category": "navigation",
+      "keywords": ["Tabs", "页签", "标签页", "内容切换"],
+      "contract": "components/navigation/tabs/COMPONENT.md",
+      "source": "components/navigation/tabs/component.html",
+      "requires": []
+    },
+    "form.input": {
+      "category": "form",
+      "keywords": ["输入框", "文本输入"],
+      "contract": "components/form/input/COMPONENT.md",
+      "source": "components/form/input/component.html",
+      "requires": []
+    },
+    "form.field": {
+      "category": "form",
+      "keywords": ["字段", "表单项", "框内标签"],
+      "contract": "components/form/field/COMPONENT.md",
+      "source": "components/form/field/component.html",
+      "requires": [],
+      "optional": ["form.input", "form.select"]
+    },
+    "form.search": {
+      "category": "form",
+      "keywords": ["搜索框", "关键词搜索", "组合搜索"],
+      "contract": "components/form/search/COMPONENT.md",
+      "source": "components/form/search/component.html",
+      "requires": ["form.input", "action.button"]
+    },
+    "form.select": {
+      "category": "form",
+      "keywords": ["选择器", "下拉框", "筛选选项"],
+      "contract": "components/form/select/COMPONENT.md",
+      "source": "components/form/select/component.html",
+      "requires": []
+    },
+    "form.form-grid": {
+      "category": "form",
+      "keywords": ["表单布局", "字段网格", "两列表单"],
+      "contract": "components/form/form-grid/COMPONENT.md",
+      "source": "components/form/form-grid/component.html",
+      "requires": []
+    },
+    "data.filter-bar": {
+      "category": "data",
+      "keywords": ["筛选栏", "查询条件", "过滤区域"],
+      "contract": "components/data/filter-bar/COMPONENT.md",
+      "source": "components/data/filter-bar/component.html",
+      "requires": [],
+      "optional": ["form.field", "form.select", "action.button"]
+    },
+    "data.toolbar": {
+      "category": "data",
+      "keywords": ["工具栏", "列表操作", "操作区"],
+      "contract": "components/data/toolbar/COMPONENT.md",
+      "source": "components/data/toolbar/component.html",
+      "requires": [],
+      "optional": ["action.button"]
+    },
+    "data.tag": {
+      "category": "data",
+      "keywords": ["标签", "状态标签", "分类标签"],
+      "contract": "components/data/tag/COMPONENT.md",
+      "source": "components/data/tag/component.html",
+      "requires": []
+    },
+    "data.data-table": {
+      "category": "data",
+      "keywords": ["表格", "数据表格", "空态", "加载态"],
+      "contract": "components/data/data-table/COMPONENT.md",
+      "source": "components/data/data-table/component.html",
+      "requires": [],
+      "optional": ["action.button", "data.tag"]
+    },
+    "data.pagination": {
+      "category": "data",
+      "keywords": ["分页", "翻页"],
+      "contract": "components/data/pagination/COMPONENT.md",
+      "source": "components/data/pagination/component.html",
+      "requires": ["action.button"]
+    },
+    "feedback._overlay-core": {
+      "category": "feedback",
+      "visibility": "internal",
+      "keywords": [],
+      "contract": "components/feedback/_overlay-core/COMPONENT.md",
+      "source": "components/feedback/_overlay-core/component.html",
+      "requires": []
+    },
+    "feedback.alert": {
+      "category": "feedback",
+      "keywords": ["提示条", "提醒", "Alert"],
+      "contract": "components/feedback/alert/COMPONENT.md",
+      "source": "components/feedback/alert/component.html",
+      "requires": []
+    },
+    "feedback.modal": {
+      "category": "feedback",
+      "keywords": ["弹窗", "对话框", "Modal"],
+      "contract": "components/feedback/modal/COMPONENT.md",
+      "source": "components/feedback/modal/component.html",
+      "requires": ["feedback._overlay-core", "action.button"]
+    },
+    "feedback.drawer": {
+      "category": "feedback",
+      "keywords": ["抽屉", "侧滑面板", "Drawer"],
+      "contract": "components/feedback/drawer/COMPONENT.md",
+      "source": "components/feedback/drawer/component.html",
+      "requires": ["feedback._overlay-core", "action.button"]
+    },
+    "feedback.toast": {
+      "category": "feedback",
+      "keywords": ["Toast", "消息反馈", "自动消失提示"],
+      "contract": "components/feedback/toast/COMPONENT.md",
+      "source": "components/feedback/toast/component.html",
+      "requires": ["action.button"]
+    }
+  },
+  "patterns": {
+    "pattern.application-shell": {
+      "keywords": ["中后台壳层", "顶部导航加侧栏", "应用框架"],
+      "contract": "patterns/application-shell/PATTERN.md",
+      "source": "patterns/application-shell/pattern.html",
+      "requires": ["navigation.app-header", "navigation.sider-menu"],
+      "optional": []
+    },
+    "pattern.page-header": {
+      "keywords": ["页面标题", "标题操作区"],
+      "contract": "patterns/page-header/PATTERN.md",
+      "source": "patterns/page-header/pattern.html",
+      "requires": [],
+      "optional": ["action.button"]
+    },
+    "pattern.filter-table": {
+      "keywords": ["筛选表格", "列表工作区", "查询列表"],
+      "contract": "patterns/filter-table/PATTERN.md",
+      "source": "patterns/filter-table/pattern.html",
+      "requires": ["data.filter-bar", "data.toolbar", "data.data-table"],
+      "optional": ["data.pagination"]
+    }
+  },
+  "presets": {
+    "preset.admin-list": {
+      "keywords": ["中后台列表页", "管理列表"],
+      "contract": "presets/admin-list/PRESET.md",
+      "source": "presets/admin-list/seed.html",
+      "uses": ["pattern.application-shell", "pattern.page-header", "pattern.filter-table"],
+      "optional": ["data.pagination"]
+    },
+    "preset.admin-form": {
+      "keywords": ["中后台表单页", "新建页", "编辑页"],
+      "contract": "presets/admin-form/PRESET.md",
+      "source": "presets/admin-form/seed.html",
+      "uses": ["pattern.application-shell", "pattern.page-header"],
+      "requires": ["form.form-grid", "form.field", "form.input", "action.button"],
+      "optional": ["form.select", "feedback.alert"]
+    }
+  }
+}

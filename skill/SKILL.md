@@ -18,7 +18,7 @@ description: 使用可组合 UI 包生成和迭代 HTML 原型，提供正式产
 | 按页面状态批量截图 | [分组截图](references/screenshots.md) | `shoot.mjs`、screenshots |
 | 清理作者层、整理最终文件 | [交付与迭代](references/delivery.md) | 评审稿或正式交付稿 |
 
-所有生成和修改任务同时读取 [共享生成契约](references/generation-contract.md)。视觉任务先通过 [UI 包目录](ui/catalog.md) 选择 foundation 和组件 provider，再按所选包的 `PACK.md` 读取资源；UI 包共同遵守 [UI 包契约](ui/contract.md)。所有运行时脚本位于本 Skill 的 `runtime/`，不依赖宿主仓库的其他目录。
+所有生成和修改任务同时读取 [共享生成契约](references/generation-contract.md)。视觉任务先通过 [UI 包目录](ui/catalog.md) 选择 foundation 和组件 provider，再按所选包的 `PACK.md` 与 `manifest.json` 定位最小组件依赖闭包；UI 包共同遵守 [UI 包契约](ui/contract.md)。所有运行时脚本位于本 Skill 的 `runtime/`，不依赖宿主仓库的其他目录。
 
 ## 核心边界
 

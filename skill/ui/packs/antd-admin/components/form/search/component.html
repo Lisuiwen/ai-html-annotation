@@ -1,0 +1,20 @@
+<style>
+  :root { --ui-search-width: 269px; }
+  .ui-search { display: flex; width: var(--ui-search-width); }
+  .ui-search .ui-input {
+    min-width: 0;
+    border-radius: var(--ui-radius-control) 0 0 var(--ui-radius-control);
+  }
+  .ui-search .ui-button {
+    flex: 0 0 var(--ui-button-icon-size);
+    padding: 0;
+    border-left: 0;
+    border-radius: 0 var(--ui-radius-control) var(--ui-radius-control) 0;
+  }
+</style>
+
+<div class="ui-search" role="search">
+  <input class="ui-input" aria-label="搜索内容" placeholder="请输入关键词">
+  <button class="ui-button" type="button" aria-label="搜索">⌕</button>
+</div>
+

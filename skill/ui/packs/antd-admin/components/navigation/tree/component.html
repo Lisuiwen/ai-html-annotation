@@ -1,0 +1,44 @@
+<style>
+  .ui-tree { display: grid; gap: var(--ui-space-1); margin: 0; padding: 0; list-style: none; }
+  .ui-tree-node { color: var(--ui-text-secondary); }
+  .ui-tree-row { display: flex; align-items: center; min-height: 24px; gap: var(--ui-space-1); }
+  .ui-tree-toggle {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    color: inherit;
+    border: 0;
+    background: transparent;
+  }
+  .ui-tree-children { display: grid; gap: var(--ui-space-1); padding-left: var(--ui-space-6); }
+  .ui-tree-node[aria-expanded="false"] > .ui-tree-children { display: none; }
+</style>
+
+<!-- ponytail: 当前只实现点击展开；取得键盘行为记录后再升级为完整交互树。 -->
+<ul class="ui-tree">
+  <li class="ui-tree-node" aria-expanded="true">
+    <div class="ui-tree-row">
+      <button class="ui-tree-toggle" type="button" data-ui-tree-toggle aria-label="折叠分组">⌄</button>
+      <span>分组</span>
+    </div>
+    <div class="ui-tree-children"><span>子项</span></div>
+  </li>
+</ul>
+
+<script>
+  /* 切换当前树节点的有限展开状态。 */
+  function toggleUiTree(button) {
+    const node = button.closest('.ui-tree-node');
+    const expanded = node.getAttribute('aria-expanded') !== 'false';
+    node.setAttribute('aria-expanded', String(!expanded));
+    button.textContent = expanded ? '›' : '⌄';
+    button.setAttribute('aria-label', expanded ? '展开分组' : '折叠分组');
+  }
+
+  /* 使用声明式属性连接树节点。 */
+  document.addEventListener('click', (event) => {
+    const treeToggle = event.target.closest('[data-ui-tree-toggle]');
+    if (treeToggle) toggleUiTree(treeToggle);
+  });
+</script>
+

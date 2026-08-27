@@ -10,7 +10,7 @@
 
 1. [generation-contract.md](generation-contract.md) 中的“唯一标注数据源”“连线与交互标记”“浮层边界”“移动端”和“生成交付文件”章节。
 2. `../addons/annotations/ADDON.md` 与 `../addons/annotations/ui-annotations.html`。
-3. 若标注 Modal 或 Drawer，同时读取当前已选 feedback provider。
+3. 若标注 Modal 或 Drawer，从当前包的 manifest 选择 `feedback.modal` 或 `feedback.drawer` 并完整展开依赖。
 
 ## 正式产物结构
 

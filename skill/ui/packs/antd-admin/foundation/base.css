@@ -1,0 +1,13 @@
+/* 所有原型共享的文档级 CSS 基线。 */
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  color: var(--ui-text);
+  background: var(--ui-bg-page);
+  font: var(--ui-font-size-body)/var(--ui-line-height-body) var(--ui-font);
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+

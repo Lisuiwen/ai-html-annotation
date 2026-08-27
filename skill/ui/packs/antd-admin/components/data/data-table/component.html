@@ -1,0 +1,65 @@
+<style>
+  :root {
+    --ui-table-header-height: 39px;
+    --ui-table-cell-padding: 8px;
+  }
+  .ui-table-wrap {
+    overflow: auto;
+    border: 1px solid var(--ui-border-soft);
+    border-radius: var(--ui-radius-container);
+  }
+  .ui-table { width: 100%; min-width: 680px; border-collapse: collapse; }
+  .ui-table th, .ui-table td {
+    height: var(--ui-table-header-height);
+    padding: var(--ui-table-cell-padding);
+    text-align: left;
+    border-bottom: 1px solid var(--ui-border-soft);
+  }
+  .ui-table th { font-weight: var(--ui-font-weight-semibold); background: var(--ui-bg-soft); }
+  /* ponytail: 表格行 hover 未采集；取得真实状态后替换当前近似。 */
+  .ui-table tbody tr:hover { background: var(--ui-bg-soft); }
+  .ui-table-state {
+    display: none;
+    place-items: center;
+    min-height: 160px;
+    color: var(--ui-text-tertiary);
+    text-align: center;
+  }
+  .ui-table-state.is-active { display: grid; }
+  .ui-table-data.is-hidden { display: none; }
+  .ui-empty-icon { font-size: 32px; color: var(--ui-text-disabled); }
+  /* ponytail: 加载骨架未采集；取得真实 loading 状态后替换当前近似。 */
+  .ui-loading-lines { display: grid; width: 180px; gap: var(--ui-space-2); }
+  .ui-loading-line { height: var(--ui-table-cell-padding); border-radius: var(--ui-space-1); background: var(--ui-border-soft); }
+  .ui-loading-line:nth-child(2) { width: 70%; }
+</style>
+
+<div class="ui-table-wrap" id="uiTableWrap">
+  <table class="ui-table ui-table-data" id="uiDataTable">
+    <thead><tr><th>名称</th><th>状态</th><th>操作</th></tr></thead>
+    <tbody><tr><td>示例条目</td><td>状态</td><td>操作</td></tr></tbody>
+  </table>
+  <div class="ui-table-state" id="uiTableEmpty">
+    <div><div class="ui-empty-icon" aria-hidden="true">□</div><div>暂无数据</div></div>
+  </div>
+  <div class="ui-table-state" id="uiTableLoading" aria-label="正在加载">
+    <div class="ui-loading-lines"><span class="ui-loading-line"></span><span class="ui-loading-line"></span></div>
+  </div>
+</div>
+
+<script>
+  /* 切换表格的数据、空态和加载态。 */
+  function setUiTableState(state) {
+    document.getElementById('uiDataTable').classList.toggle('is-hidden', state !== 'data');
+    document.getElementById('uiTableEmpty').classList.toggle('is-active', state === 'empty');
+    document.getElementById('uiTableLoading').classList.toggle('is-active', state === 'loading');
+    window.dispatchEvent(new CustomEvent('ui:layout-change'));
+  }
+
+  /* 使用声明式属性连接外部状态操作。 */
+  document.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-table-state]');
+    if (button) setUiTableState(button.dataset.tableState);
+  });
+</script>
+
