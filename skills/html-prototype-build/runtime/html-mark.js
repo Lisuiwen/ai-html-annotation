@@ -64,46 +64,39 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   box-shadow: 0 0 0 6px rgba(22,119,255,0.08) !important;
 }
 
-/* ---------- Toggle: 白底胶囊开关 ---------- */
+/* ---------- Toggle: 嵌在面板头内的模式开关 ---------- */
 .mm-toggle {
-  position: fixed; top: 14px; right: 14px; z-index: 2147483600;
   display: inline-flex; align-items: center; gap: 8px;
   padding: 0 16px;
   height: 32px;
-  background: #ffffff;
+  background: transparent;
   color: rgba(0,0,0,0.65);
-  border: 1px solid #d9d9d9;
+  border: none;
   border-radius: 16px;
   font-size: 12.5px; font-weight: 400; letter-spacing: 0.02em;
   cursor: pointer; user-select: none;
-  box-shadow: 0 2px 0 rgba(0,0,0,0.02);
+  box-shadow: none;
   transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  font-family: inherit;
 }
-.mm-toggle:hover {
-  color: #1677ff;
-  border-color: #1677ff;
-}
+.mm-toggle:hover { color: #1677ff; }
 .mm-toggle-dot {
   width: 8px; height: 8px; border-radius: 50%;
   background: rgba(0,0,0,0.25);
   transition: background 0.2s ease;
+  flex-shrink: 0;
 }
 .mm-toggle.on {
   background: #1677ff;
   border-color: #1677ff;
   color: #ffffff;
   box-shadow: 0 2px 0 rgba(5,145,255,0.1);
+  height: 26px;
+  padding: 0 12px;
 }
-.mm-toggle.on:hover {
-  color: #ffffff;
-}
-.mm-toggle.on .mm-toggle-dot {
-  background: #ffffff;
-}
-.mm-toggle.on .mm-toggle-txt {
-  color: #ffffff;
-  text-shadow: none;
-}
+.mm-toggle.on:hover { color: #ffffff; }
+.mm-toggle.on .mm-toggle-dot { background: #ffffff; }
+.mm-toggle.on .mm-toggle-txt { color: #ffffff; text-shadow: none; }
 
 /* ---------- Pin: 主蓝数字圆点 ---------- */
 @keyframes mm-pin-in {
@@ -212,40 +205,50 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   border: 1px solid #f0f0f0;
 }
 
-/* ---------- Panel: 白底卡片 ---------- */
+/* ---------- Panel: 关=胶囊，开=卡片（与 toggle 一体） ---------- */
 .mm-panel {
   position: fixed; right: 20px; bottom: 20px;
-  width: 348px; max-height: 60vh;
+  width: auto; max-height: none;
   background: #ffffff;
   border: 1px solid #d9d9d9;
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  border-radius: 16px;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.02);
   z-index: 2147483550;
-  display: none;
+  display: flex;
   flex-direction: column;
   overflow: hidden;
   color: rgba(0,0,0,0.88);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.mm-panel.show { display: flex; }
-.mm-panel.collapsed { width: auto; max-height: none; }
-.mm-panel.collapsed .mm-panel-body { display: none; }
-.mm-panel.collapsed .mm-panel-head { border-bottom: none; padding: 7px 14px; }
+.mm-panel:not(.on):hover { border-color: #1677ff; }
+.mm-panel:not(.on) .mm-panel-body,
+.mm-panel:not(.on) .mm-panel-count,
+.mm-panel:not(.on) .mm-panel-iconbtn { display: none; }
+.mm-panel:not(.on) .mm-panel-head {
+  border-bottom: none;
+  padding: 0;
+}
+.mm-panel.on {
+  width: 348px; max-height: 60vh;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+.mm-panel.on.collapsed { width: auto; max-height: none; }
+.mm-panel.on.collapsed .mm-panel-body { display: none; }
+.mm-panel.on.collapsed .mm-panel-head { border-bottom: none; padding: 7px 10px 7px 8px; }
 
 .mm-panel-head {
   display: flex; align-items: center; gap: 8px;
-  padding: 11px 14px;
+  padding: 8px 10px 8px 8px;
   border-bottom: 1px solid #f0f0f0;
   cursor: grab;
   user-select: none;
   position: relative;
+  touch-action: none;
 }
 .mm-panel-head.dragging { cursor: grabbing; }
-.mm-panel-title {
-  flex: 1;
-  font-size: 13px; font-weight: 600;
-  color: rgba(0,0,0,0.88);
-  display: inline-flex; align-items: center;
-}
+.mm-panel-head .mm-toggle { flex: 0 0 auto; }
+.mm-panel:not(.on) .mm-panel-head .mm-toggle { flex: 1 1 auto; }
 .mm-panel-count {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 18px; height: 18px; padding: 0 5px;
@@ -253,7 +256,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   color: #fff;
   border-radius: 9px;
   font-size: 10px; font-weight: 600;
-  margin-left: 8px;
+  margin-right: auto;
 }
 .mm-panel-iconbtn {
   width: 26px; height: 26px;
@@ -264,6 +267,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   font-size: 14px; line-height: 1; font-weight: 600;
   cursor: pointer;
   transition: color 0.15s ease, background 0.15s ease;
+  flex-shrink: 0;
 }
 .mm-panel-iconbtn:hover {
   color: #1677ff;
@@ -462,17 +466,16 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   document.head.appendChild(style);
 
   // ---------- Build UI ----------
-  const toggle = document.createElement('button');
-  toggle.className = 'mm-toggle mm-ui';
-  toggle.innerHTML = '<span class="mm-toggle-dot"></span><span class="mm-toggle-txt">标注</span>';
-  toggle.title = '切换标注模式 · 按 M 切换 · Esc 退出';
-
+  /* 一体 shell：关=胶囊，开=面板；模式开关嵌在 head 内。 */
   const panel = document.createElement('div');
   panel.className = 'mm-panel mm-ui';
   panel.innerHTML =
     '<div class="mm-panel-head" id="mm-head">' +
-    '  <div class="mm-panel-title">标注<span class="mm-panel-count" id="mm-count">0</span></div>' +
-    '  <button class="mm-panel-iconbtn" id="mm-collapse" title="收起">−</button>' +
+    '  <button type="button" class="mm-toggle" id="mm-toggle" title="切换标注模式 · 按 M 切换 · Esc 退出">' +
+    '    <span class="mm-toggle-dot"></span><span class="mm-toggle-txt">标注</span>' +
+    '  </button>' +
+    '  <span class="mm-panel-count" id="mm-count">0</span>' +
+    '  <button type="button" class="mm-panel-iconbtn" id="mm-collapse" title="收起">−</button>' +
     '</div>' +
     '<div class="mm-panel-body">' +
     '  <div class="mm-list" id="mm-list"></div>' +
@@ -483,16 +486,17 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
     '      <option value="json">JSON</option>' +
     '      <option value="ai">AI 定位</option>' +
     '    </select>' +
-    '    <button class="mm-btn" id="mm-clear">清空</button>' +
-    '    <button class="mm-btn primary" id="mm-copy">复制全部</button>' +
+    '    <button type="button" class="mm-btn" id="mm-clear">清空</button>' +
+    '    <button type="button" class="mm-btn primary" id="mm-copy">复制全部</button>' +
     '  </div>' +
     '</div>';
+
+  const toggle = panel.querySelector('#mm-toggle');
 
   const toast = document.createElement('div');
   toast.className = 'mm-toast mm-ui';
 
   function init() {
-    document.body.appendChild(toggle);
     document.body.appendChild(panel);
     document.body.appendChild(toast);
 
@@ -524,14 +528,18 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   function toggleMarkMode() {
     markMode = !markMode;
     document.body.classList.toggle('mm-on', markMode);
-    panel.classList.toggle('show', markMode);
+    panel.classList.toggle('on', markMode);
     toggle.classList.toggle('on', markMode);
     toggle.querySelector('.mm-toggle-txt').textContent = markMode ? '标注中' : '标注';
     if (!markMode) {
       setArmed(false);
       closeNotePop();
       clearHoverHl();
+      panel.classList.remove('collapsed');
+      document.getElementById('mm-collapse').textContent = '−';
+      document.getElementById('mm-collapse').title = '收起';
     }
+    clampShellPosition();
   }
 
   /* Mark 开启后仅 Ctrl 按下时进入「可打点」态（光标 + 悬停预览）。 */
@@ -547,6 +555,8 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   function togglePanelCollapse() {
     const collapsed = panel.classList.toggle('collapsed');
     document.getElementById('mm-collapse').textContent = collapsed ? '+' : '−';
+    document.getElementById('mm-collapse').title = collapsed ? '展开' : '收起';
+    clampShellPosition();
   }
 
   /* 说明栏 / Viewer chrome：Mark 不可在此区域打点或悬停预览（不依赖 author-chrome 是否已加载）。 */
@@ -1154,30 +1164,96 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   }
 
   // ---------- Panel drag ----------
+  /* 一体 shell 拖拽：关/开共用同一锚点，位置写入 localStorage。 */
   function setupPanelDrag() {
     const head = document.getElementById('mm-head');
-    let dragging = false, sx = 0, sy = 0, sl = 0, st = 0;
-    head.addEventListener('mousedown', function (e) {
-      if (e.target.closest('.mm-panel-iconbtn')) return;
-      dragging = true;
-      head.classList.add('dragging');
-      const r = panel.getBoundingClientRect();
-      sx = e.clientX; sy = e.clientY;
-      sl = r.left; st = r.top;
-      panel.style.right = 'auto'; panel.style.bottom = 'auto';
-      panel.style.left = sl + 'px'; panel.style.top = st + 'px';
-      e.preventDefault();
+    const storageKey = 'html-mark:panel-position';
+    let start = null;
+    let dragged = false;
+
+    /* 把坐标限制在当前视口内。 */
+    function place(left, top) {
+      const maxLeft = Math.max(0, window.innerWidth - panel.offsetWidth);
+      const maxTop = Math.max(0, window.innerHeight - panel.offsetHeight);
+      panel.style.left = Math.min(Math.max(0, left), maxLeft) + 'px';
+      panel.style.top = Math.min(Math.max(0, top), maxTop) + 'px';
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
+    }
+
+    /* 从稳定 key 恢复；无效数据沿用默认右下角。 */
+    function restorePos() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey));
+        if (saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)) place(saved.left, saved.top);
+      } catch (_) {
+        /* localStorage 不可用时仍保留本次会话拖拽。 */
+      }
+    }
+
+    function onMove(event) {
+      if (!start || event.pointerId !== start.pointerId) return;
+      const dx = event.clientX - start.x;
+      const dy = event.clientY - start.y;
+      if (!dragged) {
+        if (Math.hypot(dx, dy) <= 6) return;
+        dragged = true;
+        head.classList.add('dragging');
+      }
+      place(start.left + dx, start.top + dy);
+    }
+
+    function onUp(event) {
+      if (!start || event.pointerId !== start.pointerId) return;
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerup', onUp);
+      document.removeEventListener('pointercancel', onUp);
+      if (dragged) {
+        const rect = panel.getBoundingClientRect();
+        try {
+          localStorage.setItem(storageKey, JSON.stringify({ left: rect.left, top: rect.top }));
+        } catch (_) {
+          /* 不阻断 Mark。 */
+        }
+        window.setTimeout(function () { dragged = false; }, 0);
+      }
+      head.classList.remove('dragging');
+      start = null;
+    }
+
+    head.addEventListener('pointerdown', function (event) {
+      if (event.button !== undefined && event.button !== 0) return;
+      if (event.target.closest('.mm-panel-iconbtn')) return;
+      const rect = panel.getBoundingClientRect();
+      start = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, left: rect.left, top: rect.top };
+      dragged = false;
+      document.addEventListener('pointermove', onMove);
+      document.addEventListener('pointerup', onUp);
+      document.addEventListener('pointercancel', onUp);
     });
-    document.addEventListener('mousemove', function (e) {
-      if (!dragging) return;
-      const w = panel.offsetWidth, h = panel.offsetHeight;
-      const nx = Math.max(4, Math.min(window.innerWidth - w - 4, sl + (e.clientX - sx)));
-      const ny = Math.max(4, Math.min(window.innerHeight - 40, st + (e.clientY - sy)));
-      panel.style.left = nx + 'px';
-      panel.style.top = ny + 'px';
+    /* 拖过之后吞掉 click，避免误开关模式。 */
+    toggle.addEventListener('click', function (event) {
+      if (!dragged) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      dragged = false;
+    }, true);
+
+    window.addEventListener('resize', function () {
+      if (panel.style.left) place(panel.getBoundingClientRect().left, panel.getBoundingClientRect().top);
     });
-    document.addEventListener('mouseup', function () {
-      if (dragging) { dragging = false; head.classList.remove('dragging'); }
-    });
+    restorePos();
+  }
+
+  /* 开合/收起后尺寸变化时把 shell 夹回视口。 */
+  function clampShellPosition() {
+    if (!panel.style.left) return;
+    const left = parseFloat(panel.style.left);
+    const top = parseFloat(panel.style.top);
+    if (!Number.isFinite(left) || !Number.isFinite(top)) return;
+    const maxLeft = Math.max(0, window.innerWidth - panel.offsetWidth);
+    const maxTop = Math.max(0, window.innerHeight - panel.offsetHeight);
+    panel.style.left = Math.min(Math.max(0, left), maxLeft) + 'px';
+    panel.style.top = Math.min(Math.max(0, top), maxTop) + 'px';
   }
 })();
