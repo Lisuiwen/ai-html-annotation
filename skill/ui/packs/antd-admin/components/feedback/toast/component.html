@@ -20,23 +20,6 @@
   }
 </style>
 
-<button class="ui-button" type="button" data-ui-toast="操作已完成">显示 Toast</button>
+<button class="ui-button" id="uiToastTrigger" type="button">显示 Toast</button>
 <div class="ui-toast-region" id="uiToastRegion" aria-live="polite" aria-atomic="true"></div>
-
-<script>
-  /* 创建自动消失的中性 Toast。 */
-  function showUiToast(message) {
-    const toast = document.createElement('div');
-    toast.className = 'ui-toast';
-    toast.textContent = message;
-    document.getElementById('uiToastRegion').appendChild(toast);
-    window.setTimeout(() => toast.remove(), 2400);
-  }
-
-  /* 使用声明式属性触发 Toast。 */
-  document.addEventListener('click', (event) => {
-    const toastButton = event.target.closest('[data-ui-toast]');
-    if (toastButton) showUiToast(toastButton.dataset.uiToast);
-  });
-</script>
 

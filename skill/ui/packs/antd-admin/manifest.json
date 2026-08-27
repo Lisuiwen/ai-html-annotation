@@ -47,6 +47,7 @@
       "keywords": ["树", "层级结构", "树节点"],
       "contract": "components/navigation/tree/COMPONENT.md",
       "source": "components/navigation/tree/component.html",
+      "adapter": "components/navigation/tree/state-adapter.js",
       "requires": []
     },
     "navigation.tabs": {
@@ -54,6 +55,7 @@
       "keywords": ["Tabs", "页签", "标签页", "内容切换"],
       "contract": "components/navigation/tabs/COMPONENT.md",
       "source": "components/navigation/tabs/component.html",
+      "adapter": "components/navigation/tabs/state-adapter.js",
       "requires": []
     },
     "form.input": {
@@ -83,6 +85,7 @@
       "keywords": ["选择器", "下拉框", "筛选选项"],
       "contract": "components/form/select/COMPONENT.md",
       "source": "components/form/select/component.html",
+      "adapter": "components/form/select/state-adapter.js",
       "requires": []
     },
     "form.form-grid": {
@@ -120,6 +123,7 @@
       "keywords": ["表格", "数据表格", "空态", "加载态"],
       "contract": "components/data/data-table/COMPONENT.md",
       "source": "components/data/data-table/component.html",
+      "adapter": "components/data/data-table/state-adapter.js",
       "requires": [],
       "optional": ["action.button", "data.tag"]
     },
@@ -136,6 +140,7 @@
       "keywords": [],
       "contract": "components/feedback/_overlay-core/COMPONENT.md",
       "source": "components/feedback/_overlay-core/component.html",
+      "adapter": "components/feedback/_overlay-core/state-adapter.js",
       "requires": []
     },
     "feedback.alert": {
@@ -150,6 +155,7 @@
       "keywords": ["弹窗", "对话框", "Modal"],
       "contract": "components/feedback/modal/COMPONENT.md",
       "source": "components/feedback/modal/component.html",
+      "adapter": "components/feedback/_overlay-core/state-adapter.js",
       "requires": ["feedback._overlay-core", "action.button"]
     },
     "feedback.drawer": {
@@ -157,6 +163,7 @@
       "keywords": ["抽屉", "侧滑面板", "Drawer"],
       "contract": "components/feedback/drawer/COMPONENT.md",
       "source": "components/feedback/drawer/component.html",
+      "adapter": "components/feedback/_overlay-core/state-adapter.js",
       "requires": ["feedback._overlay-core", "action.button"]
     },
     "feedback.toast": {
@@ -164,6 +171,7 @@
       "keywords": ["Toast", "消息反馈", "自动消失提示"],
       "contract": "components/feedback/toast/COMPONENT.md",
       "source": "components/feedback/toast/component.html",
+      "adapter": "components/feedback/toast/state-adapter.js",
       "requires": ["action.button"]
     }
   },

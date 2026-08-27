@@ -16,7 +16,8 @@ packs/<pack-id>/
 ├── components/
 │   └── <category>/<component-id>/
 │       ├── COMPONENT.md
-│       └── component.html
+│       ├── component.html
+│       └── state-adapter.js    # 可选：无状态投影接口
 ├── patterns/
 │   └── <pattern-id>/
 │       ├── PATTERN.md
@@ -33,7 +34,7 @@ packs/<pack-id>/
 
 - `manifest.json` 是组件、Pattern、Preset、路径和依赖关系的唯一索引。
 - foundation 必须唯一且无 DOM，只负责跨组件 Token 与文档级 CSS 基线。
-- `COMPONENT.md` 与 `component.html` 分别是组件契约和实现的唯一来源。
+- `COMPONENT.md` 与 `component.html` 分别是组件契约和静态实现的唯一来源；有状态组件可额外提供 `state-adapter.js`。
 - Pattern 只组合组件与布局槽位，不得复制组件实现。
 - Preset 只提供无业务事实的页面起点，不得携带可被误用的业务名称、字段或数据。
 - 不得保留按类别聚合的组件实现文件；AI 必须通过 manifest 读取叶子资源。
@@ -45,6 +46,7 @@ packs/<pack-id>/
 - provider 只能引用当前 foundation 明确提供的 Token、当前组件声明的私有 Token，或 manifest 中列出的依赖。
 - 内部组件只能被公开组件依赖，Pattern 和 Preset 不得直接选择内部组件。
 - UI 包不得引用作者服务、html-mark、Inspector、截图工具或正式说明 Viewer。
+- `state-adapter.js` 只接收外部 state 并渲染组件 DOM；不得保存业务状态、解析 URL、注册全局点击事件，或调用 `PrototypeViewers`。
 - Addon 不得覆盖产品组件视觉、Token 或组件行为。
 
 ## 包内自由度
@@ -53,6 +55,17 @@ packs/<pack-id>/
 
 - 纯 HTML、CSS、JavaScript，默认零构建和无外部 CDN。
 - 组件资源必须能按叶子组件单独读取；生成时递归展开 `requires`，`optional` 只在需求确实需要时加入。
+- 组件契约只声明局部状态形状（如 Select 的 `open/value`）；最终原型负责把业务 state 映射到该接口，并通过 `PrototypeViewers` 提交状态。
+- `component.html` 中的示例 `id` 仅表达所需锚点；复制多个实例时必须替换为页面内唯一、稳定的 id，并把对应 root 传给 state Adapter。
+
+最终原型通过业务 Adapter 调用组件投影接口：
+
+```js
+const selectAdapter = window.PrototypeUiAdapters['form.select'];
+selectAdapter.render(document.getElementById('statusSelect'), product.filters.status);
+```
+
+`product.filters.status` 由 `PrototypeViewers` 持有；UI pack Adapter 只消费它，不反向读取 DOM 推断业务 state。
 - 仅实现用户材料确认的状态；有意简化使用 `ponytail:`。
 - 满足共享生成契约中的语义化、无障碍、注释和依赖要求。
 

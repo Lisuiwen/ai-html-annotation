@@ -25,7 +25,7 @@ compatible-foundations:
 - 基础 Token：`foundation/tokens.css`
 - CSS 基线：`foundation/base.css`
 
-读取 `manifest.json` 后，根据用户需求选择 Component、Pattern 或 Preset，递归展开 `requires`，再读取命中的契约和实现文件。`optional` 依赖只有在当前页面实际需要时才加入；禁止按类别遍历或加载全部组件。
+读取 `manifest.json` 后，根据用户需求选择 Component、Pattern 或 Preset，递归展开 `requires`，再读取命中的契约和实现文件。需要组件交互时，再读取 manifest 声明的可选 `adapter`；它只渲染局部 state，由最终原型 Adapter 接入 `PrototypeViewers`。`optional` 依赖只有在当前页面实际需要时才加入；禁止按类别遍历或加载全部组件。
 
 ## 组合限制
 

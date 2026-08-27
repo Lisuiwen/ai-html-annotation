@@ -58,11 +58,12 @@
 
 ### 第五步：建立唯一标注数据源、统一状态与显式场景
 
-- 需要正式标注时生成 `prototype-assets/notes.snapshot.js`，它是唯一标注数据源；禁止重复生成 `notes.json` 或把同一份卡片数据写进 HTML。
+- 所有原型都生成 `prototype-assets/notes.snapshot.js`，它既是唯一标注数据源，也是 `PrototypeViewers` 的场景状态来源；禁止重复生成 `notes.json` 或把同一份卡片数据写进 HTML。
 - 数据文件必须把对象赋给 `window.__PROTOTYPE_NOTES__`，并包含 `schemaVersion: 2`、基础完整 `state`、`activeScenario`、`scenarios`、`header`、`cards`。
 - `scenarios` 使用以稳定场景 id 为键的对象；每个场景标准结构为 `{ extends?, state }`。`state` 表达页面、浮层、Tab、数据态等可组合业务状态；通过 `extends` 复用基础场景时只保存差异。
 - `state.activeGroup` 是旧 `group` 与现有作者工具的唯一兼容分组来源，不另设 `notesGroup`。
 - `PrototypeViewers` 是状态单一来源。业务代码通过 `registerState` 注册 Adapter，通过 `setState` / `patchState` / `activateScenario` 提交状态；Adapter 再把状态渲染为 DOM 的 `hidden`、class 与 `aria-*`。
+- UI pack 的 `state-adapter.js` 只提供组件局部 state 的 `normalize` / `render` 投影；原型业务 Adapter 负责调用它，UI pack 不得直接持有业务 state 或订阅 `PrototypeViewers`。
 - 不得读取 DOM class、ARIA 或状态专用 `data-*` 反推业务状态，也不得为页面、浮层、Tab 或数据态新增标签属性协议。
 - 卡片优先使用 `when` 对规范化后的完整 state 做 AND 匹配。主格式为平铺点路径，例如 `{ "product.page": "list", "product.layers.includes": "create", "product.tabs.modal": "rules" }`；简单等值也兼容嵌套对象。无 `when` 时才按旧 `group` 规则兼容。
 - 无 `when` 且无旧 `group` 的卡片始终显示。旧 `group: "common"` 仍始终显示，其他旧 group 按 `state.activeGroup` 匹配。
@@ -145,7 +146,7 @@ html-mark 的 `describeElement` 按以下优先级识别标注目标：
 
 ### 第九步：生成交付文件
 
-需要正式标注时只生成：
+所有原型统一生成：
 
 ```text
 prototype.html
@@ -253,7 +254,7 @@ prototype-assets/
 
 ### 代码与依赖
 
-- [ ] 无正式标注时为单文件 HTML；有正式标注时外层只保留 HTML，`prototype-assets/` 内严格只有 snapshot.js、viewer.js 和可选的 `screenshots/`。
+- [ ] 外层只保留 HTML，`prototype-assets/` 内严格只有 snapshot.js、viewer.js 和可选的 `screenshots/`；所有原型均携带 Viewer。
 - [ ] HTML 为 UTF-8、`lang="zh-CN"`，snapshot 与 Viewer 也使用 UTF-8。
 - [ ] 正式交付 HTML 中没有 Author Loader、编辑器、Mark 或 Inspector；评审稿仅允许保留边界明确的 Mark 注入块。
 - [ ] 函数和主要代码块都有中文注释。

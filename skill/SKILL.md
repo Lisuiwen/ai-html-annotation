@@ -12,7 +12,7 @@ description: 使用可组合 UI 包生成和迭代 HTML 原型，提供正式产
 | 用户目标 | 必读入口 | 主要产物或工具 |
 |---|---|---|
 | 生成、重建或大改 UI | [UI 生成](references/ui-generation.md) | HTML 原型与按需 UI 组件 |
-| 添加右侧说明、SVG 连线或交互闪电 | [产品说明标注](references/product-annotations.md) | snapshot + Viewer |
+| 理解 Viewer、说明卡片、SVG 连线或交互闪电 | [产品说明标注](references/product-annotations.md) | snapshot + Viewer |
 | 启动作者环境、编辑说明或跳转源码 | [本地作者服务](references/local-authoring.md) | `serve.mjs`、Editor、Inspector |
 | 给现有 HTML 加评审 pin、导出 For AI | [评审打点](references/review-mark.md) | `prepare-mark.mjs`、html-mark |
 | 按页面状态批量截图 | [分组截图](references/screenshots.md) | `shoot.mjs`、screenshots |
@@ -22,7 +22,7 @@ description: 使用可组合 UI 包生成和迭代 HTML 原型，提供正式产
 
 ## 核心边界
 
-- 产品说明标注是正式文档：右侧说明卡片 + SVG 连线，数据来自 snapshot。
+- Viewer 是所有原型的标准运行时：统一状态协调器、右侧说明卡片和 SVG 连线均由 snapshot 驱动。
 - html-mark 是临时评审层：浮动 pin + 玻璃便签，数据保存在 localStorage。
 - 作者服务只提供本地编辑和源码定位，不进入源 HTML 或正式交付物。
 - 截图只消费 URL state 与正式标注数据，不负责生成业务状态。
@@ -31,7 +31,7 @@ description: 使用可组合 UI 包生成和迭代 HTML 原型，提供正式产
 ## 默认闭环
 
 1. 按 UI 生成入口产出或修改原型。
-2. 用户需要产品说明时，再按产品说明标注入口生成三文件。
+2. 为每个原型生成 snapshot + Viewer，并按产品说明标注入口维护场景和卡片。
 3. 只有用户明确需要评审稿时才按评审打点入口注入 html-mark；正式交付默认不包含评审层。
 4. 需要浏览器编辑或 Inspector 时启动本地作者服务。
 5. 需要视觉验收时按分组截图入口生成截图。

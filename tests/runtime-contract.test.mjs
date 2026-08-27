@@ -15,6 +15,12 @@ const runtimeViewerUrl = new URL('../skill/runtime/viewer.js', import.meta.url);
 const exampleViewerUrl = new URL('../examples/minimal-notes/prototype-assets/viewer.js', import.meta.url);
 const prototypeUrl = new URL('../examples/minimal-notes/prototype.html', import.meta.url);
 const snapshotUrl = new URL('../examples/minimal-notes/prototype-assets/notes.snapshot.js', import.meta.url);
+const packManifestUrl = new URL('../skill/ui/packs/antd-admin/manifest.json', import.meta.url);
+
+/** 读取 UI pack manifest，验证最终原型可发现有状态组件的投影接口。 */
+async function readPackManifest() {
+  return JSON.parse(await readFile(packManifestUrl, 'utf8'));
+}
 
 /** 从静态 snapshot 赋值文件安全提取 JSON，不执行其中的 JavaScript。 */
 async function readSnapshot() {
@@ -219,5 +225,34 @@ test('示例 DOM id 唯一且 v2 卡片锚点均唯一命中', async () => {
     const anchor = normalizeAnchor(card?.target?.anchor);
     assert.ok(anchor, `卡片 ${card?.id || '<unknown>'} 应声明 target.anchor`);
     assert.equal(ids.filter((id) => id === anchor).length, 1, `锚点 ${anchor} 应唯一命中 DOM`);
+  }
+});
+
+/** 确保有状态 UI 组件提供无副作用 Adapter，最终原型不会复制旧的全局事件脚本。 */
+test('UI pack 有状态组件提供局部状态 Adapter 且静态片段不再绑定全局交互', async () => {
+  const manifest = await readPackManifest();
+  const statefulIds = [
+    'form.select',
+    'navigation.tabs',
+    'navigation.tree',
+    'data.data-table',
+    'feedback._overlay-core',
+    'feedback.modal',
+    'feedback.drawer',
+    'feedback.toast'
+  ];
+  const deprecatedAttribute = /\bdata-ui-(?:open|layer|close|confirm|select(?:-value)?|tree-toggle|tabs|toast|table-state)\b/gi;
+
+  for (const id of statefulIds) {
+    const entry = manifest.components[id];
+    assert.ok(entry?.adapter, `${id} 应声明可选状态 Adapter`);
+    const [source, adapter] = await Promise.all([
+      readFile(new URL(`../skill/ui/packs/antd-admin/${entry.source}`, import.meta.url), 'utf8'),
+      readFile(new URL(`../skill/ui/packs/antd-admin/${entry.adapter}`, import.meta.url), 'utf8')
+    ]);
+    assert.doesNotMatch(source, /<script\b/i, `${id} 静态组件片段不应注册全局事件`);
+    assert.deepEqual([...source.matchAll(deprecatedAttribute)].map((match) => match[0]), [], `${id} 不应依赖旧 data-ui 状态协议`);
+    assert.match(adapter, /PrototypeUiAdapters/, `${id} Adapter 应注册局部状态投影接口`);
+    assert.match(adapter, /render/, `${id} Adapter 应暴露 DOM 渲染能力`);
   }
 });

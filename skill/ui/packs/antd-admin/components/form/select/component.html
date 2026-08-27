@@ -46,47 +46,12 @@
   }
 </style>
 
-<div class="ui-select" data-ui-select>
-  <button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
-    <span data-ui-select-value>请选择</span><span aria-hidden="true">⌄</span>
+<div class="ui-select" id="uiSelect">
+  <button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-controls="uiSelectOptions" aria-expanded="false">
+    <span class="ui-select-value">请选择</span><span aria-hidden="true">⌄</span>
   </button>
-  <div class="ui-select-menu" role="listbox">
+  <div class="ui-select-menu" id="uiSelectOptions" role="listbox">
     <button class="ui-select-option" type="button" role="option" aria-selected="false">选项一</button>
   </div>
 </div>
-
-<script>
-  /* 切换 Select 展开状态并同步可访问属性。 */
-  function toggleUiSelect(select, forceOpen) {
-    const trigger = select.querySelector('.ui-select-trigger');
-    const isOpen = typeof forceOpen === 'boolean' ? forceOpen : !select.classList.contains('is-open');
-    select.classList.toggle('is-open', isOpen);
-    trigger.setAttribute('aria-expanded', String(isOpen));
-  }
-
-  /* 处理 Select 展开、选择和点击外部关闭。 */
-  document.addEventListener('click', (event) => {
-    const trigger = event.target.closest('.ui-select-trigger');
-    if (trigger) toggleUiSelect(trigger.closest('[data-ui-select]'));
-    const option = event.target.closest('.ui-select-option');
-    if (option) {
-      const select = option.closest('[data-ui-select]');
-      select.querySelector('[data-ui-select-value]').textContent = option.textContent;
-      select.querySelectorAll('.ui-select-option').forEach((item) => {
-        item.setAttribute('aria-selected', String(item === option));
-      });
-      toggleUiSelect(select, false);
-      select.querySelector('.ui-select-trigger').focus();
-    }
-    if (!event.target.closest('[data-ui-select]')) {
-      document.querySelectorAll('[data-ui-select].is-open').forEach((select) => toggleUiSelect(select, false));
-    }
-  });
-
-  /* 支持 Escape 关闭所有展开的 Select。 */
-  document.addEventListener('keydown', (event) => {
-    if (event.key !== 'Escape') return;
-    document.querySelectorAll('[data-ui-select].is-open').forEach((select) => toggleUiSelect(select, false));
-  });
-</script>
 

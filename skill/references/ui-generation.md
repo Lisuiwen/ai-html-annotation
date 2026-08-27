@@ -19,13 +19,13 @@
 ## 生成流程
 
 1. 从用户材料提取系统名、页面、菜单、字段、数据、可见状态和交互；不明确的信息先询问。
-2. 记录本次选择的 foundation、provider、Component、Pattern、Preset 和 Addon，并从依赖闭包复制最小 CSS、HTML 和 JavaScript 片段。
+2. 记录本次选择的 foundation、provider、Component、Pattern、Preset 和 Addon，并从依赖闭包复制最小 CSS、HTML 和 JavaScript 片段；有状态组件优先读取其 `state-adapter.js`，由原型业务 Adapter 映射到 `PrototypeViewers`，所有原型都接入 snapshot + Viewer 状态协调器。
 3. 产品视觉只使用所选 foundation 和 provider 已声明的 Token；标注层颜色不得成为产品视觉。
 4. 实现用户明确要求的最小交互和 URL state，不补造未确认业务规则。
 5. 按共享契约完成无障碍、依赖、注释和 `ponytail:` 检查。
 
 ## 完成后分流
 
-- 需要右侧说明或 SVG 连线：读取 [product-annotations.md](product-annotations.md)。
+- 所有原型：读取 [product-annotations.md](product-annotations.md)，维护 snapshot、Viewer 和场景状态。
 - 默认需要浏览器评审：读取 [review-mark.md](review-mark.md)。
 - 用户明确不要打点或评审层：直接进入 [delivery.md](delivery.md)。

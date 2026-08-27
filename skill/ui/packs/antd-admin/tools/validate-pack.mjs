@@ -61,6 +61,10 @@ for (const [id, entry] of Object.entries(registries)) {
   await requireFile(entry.source, `${id} 实现`);
   await validateTextFile(entry.contract);
   await validateTextFile(entry.source);
+  if (entry.adapter) {
+    await requireFile(entry.adapter, `${id} 状态 Adapter`);
+    await validateTextFile(entry.adapter);
+  }
   await validateContractId(id, entry.contract);
 
   for (const dependency of [...(entry.requires ?? []), ...(entry.optional ?? []), ...(entry.uses ?? [])]) {

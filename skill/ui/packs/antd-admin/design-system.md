@@ -99,9 +99,9 @@
 ```
 
 ```js
-// ponytail: 当前只切换已确认的静态页面状态；获得状态切换、动画和滚动证据后，再升级交互模型。
-function renderConfirmedState(state) {
-  document.body.dataset.pageState = state;
+// ponytail: 当前只提交已确认的静态页面状态；获得状态切换、动画和滚动证据后，再升级场景和 Adapter。
+function applyConfirmedState(partialState) {
+  window.PrototypeViewers.patchState(partialState);
 }
 ```
 

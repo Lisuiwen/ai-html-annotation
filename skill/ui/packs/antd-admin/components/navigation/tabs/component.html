@@ -20,37 +20,17 @@
     content: "";
     background: var(--ui-primary);
   }
-  .ui-tab-panel { display: none; padding: var(--ui-space-4) 0; color: var(--ui-text-secondary); }
-  .ui-tab-panel.is-active { display: block; }
+  .ui-tab-panel { display: block; padding: var(--ui-space-4) 0; color: var(--ui-text-secondary); }
+  .ui-tab-panel[hidden] { display: none; }
 </style>
 
-<div data-ui-tabs>
+<div class="ui-tabs-root" id="uiTabs">
   <div class="ui-tabs" role="tablist" aria-label="内容分组">
     <div class="ui-tab-list">
       <button class="ui-tab" id="uiTabOne" type="button" role="tab" aria-selected="true" aria-controls="uiPanelOne">分组一</button>
       <button class="ui-tab" id="uiTabTwo" type="button" role="tab" aria-selected="false" aria-controls="uiPanelTwo">分组二</button>
     </div>
   </div>
-  <div class="ui-tab-panel is-active" id="uiPanelOne" role="tabpanel" aria-labelledby="uiTabOne">内容一</div>
-  <div class="ui-tab-panel" id="uiPanelTwo" role="tabpanel" aria-labelledby="uiTabTwo">内容二</div>
+  <div class="ui-tab-panel" id="uiPanelOne" role="tabpanel" aria-labelledby="uiTabOne">内容一</div>
+  <div class="ui-tab-panel" id="uiPanelTwo" role="tabpanel" aria-labelledby="uiTabTwo" hidden>内容二</div>
 </div>
-
-<script>
-  /* 切换 Tabs 选中项和对应内容面板。 */
-  function activateUiTab(tab) {
-    const tabs = tab.closest('[data-ui-tabs]');
-    tabs.querySelectorAll('[role="tab"]').forEach((item) => {
-      item.setAttribute('aria-selected', String(item === tab));
-    });
-    tabs.querySelectorAll('[role="tabpanel"]').forEach((panel) => {
-      panel.classList.toggle('is-active', panel.id === tab.getAttribute('aria-controls'));
-    });
-  }
-
-  /* 使用事件委托连接所有 Tabs。 */
-  document.addEventListener('click', (event) => {
-    const tab = event.target.closest('[role="tab"]');
-    if (tab) activateUiTab(tab);
-  });
-</script>
-
