@@ -3,7 +3,7 @@ skills/html-prototype-build/runtime/.env
 
 # 评审注入和截图的临时产物。
 *.bak.*
-screenshots/
+!screenshots/
 !examples/minimal-notes/prototype-assets/
 !examples/minimal-notes/prototype-assets/screenshots/
 !examples/minimal-notes/prototype-assets/screenshots/*.png
