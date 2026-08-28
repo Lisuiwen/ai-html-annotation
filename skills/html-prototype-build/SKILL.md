@@ -1,9 +1,16 @@
 ---
 name: html-prototype-build
-description: 使用可组合 UI 包生成和迭代 HTML 原型，提供正式产品说明、浏览器评审打点、本地作者服务、Inspector、分组截图和交付清理。用户提到 /html-prototype-build、原型生成、UI 重建、功能说明、SVG 连线、html-mark、启动原型服务、源码定位、原型截图或原型交付时使用。
+description: 使用可组合 UI 包生成、评审和交付纯 HTML 产品原型，提供正式产品说明、浏览器评审打点、本地作者服务、Inspector 与场景截图。用户提到 /html-prototype-build，或需要在 HTML 原型中进行 UI 重建、功能标注、SVG 连线、html-mark、源码定位、原型截图或交付清理时使用；不用于一般源码定位、普通功能文档或正式前端应用开发。
 ---
 
 # HTML Prototype Build（生成 + 评审一体化）
+
+## Quick start
+
+1. 根据用户材料确认原型类型与业务事实；信息不足时先询问，不猜测。
+2. 生成或大改 UI 时运行 `node <skill-root>/scripts/resolve-pack.mjs --select=<preset、pattern 或 component id>`，只读取输出的最小文件闭包。
+3. 生成 `prototype.html`、`prototype-assets/notes.snapshot.js`，并复制 `runtime/viewer.js`；业务状态统一交给 `PrototypeViewers`。
+4. 完成后运行仓库根目录的 `npm run validate`；仅按任务需要启用截图、作者服务或 html-mark。
 
 ## 先判断任务
 
@@ -18,7 +25,7 @@ description: 使用可组合 UI 包生成和迭代 HTML 原型，提供正式产
 | 按页面状态批量截图 | [分组截图](references/screenshots.md) | `shoot.mjs`、screenshots |
 | 清理作者层、整理最终文件 | [交付与迭代](references/delivery.md) | 评审稿或正式交付稿 |
 
-生成或大改 UI 时读取 [共享生成契约](references/generation-contract.md)；标注、评审、截图与交付任务按上表对应入口读取，不必全量读取契约。视觉任务先通过 [UI 包目录](ui/catalog.md) 选择 foundation 和组件 provider，再按所选包的 `PACK.md` 与 `manifest.json` 定位最小组件依赖闭包；UI 包共同遵守 [UI 包契约](ui/contract.md)。所有运行时脚本位于本 Skill 的 `runtime/`，不依赖宿主仓库的其他目录。
+生成或大改 UI 时读取 [共享生成契约](references/generation-contract.md)；标注、评审、截图与交付任务按上表对应入口读取，不必全量读取契约。视觉任务先通过 [UI 包目录](ui/catalog.md) 选择 foundation 和组件 provider，再用 `scripts/resolve-pack.mjs` 定位最小组件依赖闭包；UI 包共同遵守 [UI 包契约](ui/contract.md)。`scripts/` 保存 Agent 使用的确定性工具，`runtime/` 保存原型运行时与本地作者工具，两者均不依赖宿主仓库的其他目录。
 
 ## 核心边界
 

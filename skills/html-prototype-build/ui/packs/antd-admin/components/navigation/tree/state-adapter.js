@@ -13,18 +13,20 @@
     return { expanded: result };
   }
 
-  /* 同步 treeitem 的 aria-expanded 与折叠按钮文字。 */
+  /* 同步普通层级列表的展开按钮、子列表可见性与按钮文案。 */
   function render(root, value) {
     if (!root) return;
     var state = normalize(value);
-    root.querySelectorAll('[role="treeitem"][aria-expanded]').forEach(function (node) {
-      var open = Object.prototype.hasOwnProperty.call(state.expanded, node.id) ? state.expanded[node.id] : node.getAttribute('aria-expanded') !== 'false';
+    root.querySelectorAll('.ui-tree-node[id]').forEach(function (node) {
       var toggle = node.querySelector('.ui-tree-toggle');
-      node.setAttribute('aria-expanded', String(open));
+      var children = node.querySelector('.ui-tree-children');
+      var open = Object.prototype.hasOwnProperty.call(state.expanded, node.id) ? state.expanded[node.id] : !toggle || toggle.getAttribute('aria-expanded') !== 'false';
       if (toggle) {
         toggle.textContent = open ? '⌄' : '›';
         toggle.setAttribute('aria-label', open ? '折叠分组' : '展开分组');
+        toggle.setAttribute('aria-expanded', String(open));
       }
+      if (children) children.hidden = !open;
     });
   }
 

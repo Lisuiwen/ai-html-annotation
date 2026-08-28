@@ -1,0 +1,4 @@
+interface:
+  display_name: "HTML 原型生成与评审"
+  short_description: "生成、标注、评审和交付可组合的纯 HTML 产品原型"
+  default_prompt: "使用 $html-prototype-build 根据当前材料生成并验证一个可评审的纯 HTML 产品原型。"

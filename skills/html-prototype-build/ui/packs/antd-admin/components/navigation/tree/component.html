@@ -11,17 +11,16 @@
     background: transparent;
   }
   .ui-tree-children { display: grid; gap: var(--ui-space-1); padding-left: var(--ui-space-6); }
-  .ui-tree-node[aria-expanded="false"] > .ui-tree-children { display: none; }
 </style>
 
-<!-- ponytail: 当前支持展开按钮直接操作；取得键盘行为记录后再升级为完整交互树。 -->
-<ul class="ui-tree" id="uiTree" role="tree">
-  <li class="ui-tree-node" id="uiTreeRoot" role="treeitem" aria-expanded="true">
+<!-- ponytail: 当前是带展开按钮的普通层级列表；取得完整键盘行为记录后才能升级为 ARIA Tree。 -->
+<ul class="ui-tree" id="uiTree">
+  <li class="ui-tree-node" id="uiTreeRoot">
     <div class="ui-tree-row">
-      <button class="ui-tree-toggle" type="button" aria-label="折叠分组">⌄</button>
+      <button class="ui-tree-toggle" type="button" aria-label="折叠分组" aria-expanded="true" aria-controls="uiTreeRootChildren">⌄</button>
       <span>分组</span>
     </div>
-    <div class="ui-tree-children"><span>子项</span></div>
+    <ul class="ui-tree-children" id="uiTreeRootChildren"><li>子项</li></ul>
   </li>
 </ul>
 

@@ -220,16 +220,10 @@ test('示例 DOM id 唯一且 v2 卡片锚点均唯一命中', async () => {
 /** 确保有状态 UI 组件提供无副作用 Adapter，最终原型不会复制旧的全局事件脚本。 */
 test('UI pack 有状态组件提供局部状态 Adapter 且静态片段不再绑定全局交互', async () => {
   const manifest = await readPackManifest();
-  const statefulIds = [
-    'form.select',
-    'navigation.tabs',
-    'navigation.tree',
-    'data.data-table',
-    'feedback._overlay-core',
-    'feedback.modal',
-    'feedback.drawer',
-    'feedback.toast'
-  ];
+  /* 从 manifest 自动发现全部 Adapter，避免新增组件后测试清单发生漂移。 */
+  const statefulIds = Object.entries(manifest.components)
+    .filter(([, entry]) => entry.adapter)
+    .map(([id]) => id);
   const deprecatedAttribute = /\bdata-ui-(?:open|layer|close|confirm|select(?:-value)?|tree-toggle|tabs|toast|table-state)\b/gi;
 
   for (const id of statefulIds) {
