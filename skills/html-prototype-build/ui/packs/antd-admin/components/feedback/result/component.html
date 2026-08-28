@@ -1,0 +1,6 @@
+<style>
+  .ui-result { display: grid; place-items: center; padding: var(--ui-space-6); text-align: center; }
+  .ui-result-icon { font-size: 40px; color: var(--ui-info); }.ui-result[data-status="success"] .ui-result-icon { color: var(--ui-success); }.ui-result[data-status="error"] .ui-result-icon { color: var(--ui-error); }.ui-result[data-status="warning"] .ui-result-icon { color: var(--ui-warning); }
+  .ui-result-title { margin: var(--ui-space-3) 0 var(--ui-space-2); color: var(--ui-text); font-size: 20px; }.ui-result-subtitle { margin: 0; color: var(--ui-text-secondary); }.ui-result-action { margin-top: var(--ui-space-4); }
+</style>
+<section class="ui-result" id="uiResult" data-status="success"><div><div class="ui-result-icon" aria-hidden="true">●</div><h2 class="ui-result-title">提交成功</h2><p class="ui-result-subtitle">配置已保存。</p><div class="ui-result-action"><button class="ui-button ui-button--primary" type="button">返回列表</button></div></div></section>

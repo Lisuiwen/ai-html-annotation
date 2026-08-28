@@ -1,0 +1,6 @@
+<style>
+  :root { --ui-descriptions-columns: 2; }
+  .ui-descriptions-data { display: grid; grid-template-columns: repeat(var(--ui-descriptions-columns), minmax(0, 1fr)); margin: 0; border-top: 1px solid var(--ui-border-soft); border-left: 1px solid var(--ui-border-soft); }
+  .ui-descriptions-item { display: grid; grid-template-columns: 108px minmax(0, 1fr); margin: 0; border-right: 1px solid var(--ui-border-soft); border-bottom: 1px solid var(--ui-border-soft); }.ui-descriptions-item dt { padding: var(--ui-space-3); color: var(--ui-text-secondary); background: var(--ui-bg-soft); }.ui-descriptions-item dd { margin: 0; padding: var(--ui-space-3); color: var(--ui-text); }.ui-descriptions-loading { padding: var(--ui-space-4); color: var(--ui-text-secondary); background: var(--ui-bg-soft); }
+</style>
+<section class="ui-descriptions" id="uiDescriptions"><dl class="ui-descriptions-data"><div class="ui-descriptions-item"><dt>创建人</dt><dd>张三</dd></div><div class="ui-descriptions-item"><dt>状态</dt><dd>已启用</dd></div></dl><div class="ui-descriptions-loading" hidden>正在加载详情…</div></section>

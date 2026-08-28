@@ -1,0 +1,11 @@
+<style>
+  :root { --ui-checkbox-size: 16px; }
+  .ui-checkbox-group { display: flex; flex-wrap: wrap; gap: var(--ui-space-3); }
+  .ui-checkbox-group label { display: inline-flex; align-items: center; gap: var(--ui-space-2); color: var(--ui-text); }
+  .ui-checkbox-group input { width: var(--ui-checkbox-size); height: var(--ui-checkbox-size); margin: 0; accent-color: var(--ui-primary); }
+  .ui-checkbox-group.has-error { outline: 1px solid var(--ui-error); outline-offset: var(--ui-space-1); border-radius: var(--ui-radius-control); }
+</style>
+<div class="ui-checkbox-group" id="uiCheckboxGroup">
+  <label><input type="checkbox" name="uiChoice" value="a"> 选项一</label>
+  <label><input type="checkbox" name="uiChoice" value="b"> 选项二</label>
+</div>

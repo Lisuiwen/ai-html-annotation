@@ -1,0 +1,14 @@
+<style>
+  :root { --ui-date-range-width: 260px; }
+  .ui-date-range { position: relative; width: var(--ui-date-range-width); }
+  .ui-date-range-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; height: var(--ui-control-height); padding: 0 var(--ui-control-padding-inline); color: var(--ui-text); border: 1px solid var(--ui-border); border-radius: var(--ui-radius-control); background: var(--ui-bg); }
+  .ui-date-range.has-error .ui-date-range-trigger { border-color: var(--ui-error); }
+  .ui-date-range-value { overflow: hidden; color: var(--ui-text-secondary); text-overflow: ellipsis; white-space: nowrap; }
+  /* ponytail: 日期面板与键盘选择未采集；取得真实日历交互证据后补充。 */
+  .ui-date-range-panel { display: none; position: absolute; z-index: 45; top: calc(100% + var(--ui-space-1)); width: 100%; padding: var(--ui-space-3); border: 1px solid var(--ui-border); border-radius: var(--ui-radius-container); background: var(--ui-bg); }
+  .ui-date-range.is-open .ui-date-range-panel { display: block; }
+</style>
+<div class="ui-date-range" id="uiDateRange">
+  <button class="ui-date-range-trigger" type="button" aria-haspopup="dialog" aria-controls="uiDateRangePanel" aria-expanded="false"><span class="ui-date-range-value">请选择日期范围</span><span aria-hidden="true">▣</span></button>
+  <div class="ui-date-range-panel" id="uiDateRangePanel" role="dialog" aria-label="选择日期范围">日期面板由最终原型提供。</div>
+</div>

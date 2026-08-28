@@ -2,6 +2,7 @@
   :root {
     --ui-table-header-height: 39px;
     --ui-table-cell-padding: 8px;
+    --ui-table-selection-width: 48px;
   }
   .ui-table-wrap {
     overflow: auto;
@@ -16,6 +17,10 @@
     border-bottom: 1px solid var(--ui-border-soft);
   }
   .ui-table th { font-weight: var(--ui-font-weight-semibold); background: var(--ui-bg-soft); }
+  .ui-table-selection { display: none; width: var(--ui-table-selection-width); text-align: center !important; }
+  .ui-table-wrap.has-selection .ui-table-selection { display: table-cell; }
+  .ui-table input[type="checkbox"] { accent-color: var(--ui-primary); }
+  .ui-table tbody tr:has(input[type="checkbox"]:checked) { background: var(--ui-info-bg); }
   /* ponytail: 表格行 hover 未采集；取得真实状态后替换当前近似。 */
   .ui-table tbody tr:hover { background: var(--ui-bg-soft); }
   .ui-table-state {
@@ -35,8 +40,8 @@
 
 <div class="ui-table-wrap" id="uiTableWrap">
   <table class="ui-table ui-table-data" id="uiDataTable">
-    <thead><tr><th>名称</th><th>状态</th><th>操作</th></tr></thead>
-    <tbody><tr><td>示例条目</td><td>状态</td><td>操作</td></tr></tbody>
+    <thead><tr><th class="ui-table-selection"><input type="checkbox" data-selection-all aria-label="全选当前页"></th><th>名称</th><th>状态</th><th>操作</th></tr></thead>
+    <tbody><tr><td class="ui-table-selection"><input type="checkbox" data-selection-key="item-1" aria-label="选择示例条目"></td><td>示例条目</td><td>状态</td><td>操作</td></tr></tbody>
   </table>
   <div class="ui-table-state" id="uiTableEmpty" hidden>
     <div><div class="ui-empty-icon" aria-hidden="true">□</div><div>暂无数据</div></div>

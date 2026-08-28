@@ -12,6 +12,14 @@
   --ui-border-soft: #f0f0f0;
   --ui-border-subtle: rgba(0, 0, 0, 0.06);
   --ui-text-on-primary: #ffffff;
+  --ui-success: #52c41a;
+  --ui-warning: #faad14;
+  --ui-error: #ff4d4f;
+  --ui-info: var(--ui-primary);
+  --ui-success-bg: #f6ffed;
+  --ui-warning-bg: #fffbe6;
+  --ui-error-bg: #fff2f0;
+  --ui-info-bg: #e6f4ff;
 
   --ui-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",

@@ -27,7 +27,7 @@
   .ui-field .ui-select-trigger:focus-visible { outline: none; }
   /* ponytail: focus 视觉未采集；取得真实焦点态后替换当前近似。 */
   .ui-field:focus-within { outline: 2px solid var(--ui-primary); outline-offset: 1px; }
-  .ui-required { color: var(--ui-primary); }
+  .ui-required { color: var(--ui-error); }
   /* ponytail: 错误颜色、图标和触发时机未采集；取得真实校验状态后替换。 */
   .ui-field--error { border-color: var(--ui-primary); box-shadow: 0 0 0 1px var(--ui-primary); }
   .ui-field-error {
@@ -38,6 +38,7 @@
 </style>
 
 <div class="ui-field">
-  <span class="ui-field-label">字段名称 <span class="ui-required" aria-hidden="true">*</span></span>
-  <!-- slot: form.input or form.select；插入后建立可访问标签关联。 -->
+  <label class="ui-field-label" for="uiFieldInput">字段名称 <span class="ui-required" aria-hidden="true">*</span></label>
+  <!-- 默认输入框使独立预览可聚焦；组合时可替换为 form.input 或 form.select。 -->
+  <input class="ui-input" id="uiFieldInput" type="text" placeholder="请输入">
 </div>

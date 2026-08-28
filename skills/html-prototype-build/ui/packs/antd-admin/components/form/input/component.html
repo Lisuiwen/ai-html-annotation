@@ -1,4 +1,5 @@
 <style>
+  .ui-input-field { display: grid; gap: var(--ui-space-2); }
   .ui-input {
     width: 100%;
     height: var(--ui-control-height);
@@ -14,7 +15,7 @@
   .ui-input:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 1px; }
 </style>
 
-<label>
+<label class="ui-input-field">
   <span>字段名称</span>
   <input class="ui-input" placeholder="请输入">
 </label>

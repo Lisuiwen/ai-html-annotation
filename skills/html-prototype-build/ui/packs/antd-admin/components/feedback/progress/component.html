@@ -1,0 +1,4 @@
+<style>
+  .ui-progress { display: grid; grid-template-columns: minmax(0, 1fr) 40px; align-items: center; gap: var(--ui-space-2); }.ui-progress-rail { height: var(--ui-space-2); overflow: hidden; border-radius: var(--ui-radius-control); background: var(--ui-border-soft); }.ui-progress-bar { height: 100%; background: var(--ui-primary); }.ui-progress[data-status="success"] .ui-progress-bar { background: var(--ui-success); }.ui-progress[data-status="exception"] .ui-progress-bar { background: var(--ui-error); }.ui-progress-text { color: var(--ui-text-secondary); text-align: right; }
+</style>
+<div class="ui-progress" id="uiProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40"><div class="ui-progress-rail"><div class="ui-progress-bar" style="width:40%"></div></div><span class="ui-progress-text">40%</span></div>

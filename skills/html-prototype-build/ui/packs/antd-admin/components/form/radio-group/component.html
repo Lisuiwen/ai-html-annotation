@@ -1,0 +1,11 @@
+<style>
+  :root { --ui-radio-size: 16px; }
+  .ui-radio-group { display: flex; flex-wrap: wrap; gap: var(--ui-space-3); }
+  .ui-radio-group label { display: inline-flex; align-items: center; gap: var(--ui-space-2); color: var(--ui-text); }
+  .ui-radio-group input { width: var(--ui-radio-size); height: var(--ui-radio-size); margin: 0; accent-color: var(--ui-primary); }
+  .ui-radio-group.has-error { outline: 1px solid var(--ui-error); outline-offset: var(--ui-space-1); border-radius: var(--ui-radius-control); }
+</style>
+<div class="ui-radio-group" id="uiRadioGroup" role="radiogroup">
+  <label><input type="radio" name="uiChoice" value="a"> 选项一</label>
+  <label><input type="radio" name="uiChoice" value="b"> 选项二</label>
+</div>

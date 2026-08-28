@@ -1,5 +1,6 @@
 <style>
   :root { --ui-select-width: 214px; }
+  .ui-select-field { display: grid; gap: var(--ui-space-2); }
   .ui-select { position: relative; width: var(--ui-select-width); }
   .ui-select-trigger {
     display: flex;
@@ -46,12 +47,15 @@
   }
 </style>
 
-<div class="ui-select" id="uiSelect">
-  <button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-controls="uiSelectOptions" aria-expanded="false">
-    <span class="ui-select-value">请选择</span><span aria-hidden="true">⌄</span>
-  </button>
-  <div class="ui-select-menu" id="uiSelectOptions" role="listbox">
-    <button class="ui-select-option" type="button" role="option" aria-selected="false">选项一</button>
+<label class="ui-select-field">
+  <span>字段名称</span>
+  <div class="ui-select" id="uiSelect">
+    <button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-controls="uiSelectOptions" aria-expanded="false">
+      <span class="ui-select-value">请选择</span><span aria-hidden="true">⌄</span>
+    </button>
+    <div class="ui-select-menu" id="uiSelectOptions" role="listbox">
+      <button class="ui-select-option" type="button" role="option" aria-selected="false">选项一</button>
+    </div>
   </div>
-</div>
+</label>
 

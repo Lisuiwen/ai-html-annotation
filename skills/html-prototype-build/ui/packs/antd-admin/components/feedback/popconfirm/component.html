@@ -1,0 +1,8 @@
+<style>
+  .ui-popconfirm { position: relative; display: inline-block; }
+  .ui-popconfirm-panel { position: absolute; z-index: 45; top: calc(100% + var(--ui-space-1)); left: 0; width: max-content; max-width: 280px; padding: var(--ui-space-3); border: 1px solid var(--ui-border); border-radius: var(--ui-radius-container); background: var(--ui-bg); }
+  .ui-popconfirm-panel p { margin: 0 0 var(--ui-space-3); color: var(--ui-text-secondary); }
+  .ui-popconfirm-actions { display: flex; justify-content: flex-end; gap: var(--ui-space-2); }
+  .ui-popconfirm.is-danger .ui-popconfirm-confirm { border-color: var(--ui-error); background: var(--ui-error); color: var(--ui-text-on-primary); }
+</style>
+<span class="ui-popconfirm" id="uiPopconfirm"><button class="ui-button ui-popconfirm-trigger" type="button" aria-controls="uiPopconfirmPanel" aria-expanded="false">删除</button><span class="ui-popconfirm-panel" id="uiPopconfirmPanel" role="alertdialog" hidden><p>删除后不可恢复，确认继续吗？</p><span class="ui-popconfirm-actions"><button class="ui-button" type="button">取消</button><button class="ui-button ui-popconfirm-confirm" type="button">确定</button></span></span></span>

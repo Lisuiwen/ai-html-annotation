@@ -1,0 +1,12 @@
+<style>
+  .ui-breadcrumb { color: var(--ui-text-secondary); font-size: var(--ui-font-size-body); }
+  .ui-breadcrumb-list { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ui-space-2); margin: 0; padding: 0; list-style: none; }
+  .ui-breadcrumb-separator { color: var(--ui-text-tertiary); }
+  .ui-breadcrumb-current { color: var(--ui-text); }
+</style>
+<nav class="ui-breadcrumb" aria-label="面包屑">
+  <ol class="ui-breadcrumb-list">
+    <li><a href="#">系统管理</a></li><li class="ui-breadcrumb-separator" aria-hidden="true">/</li>
+    <li class="ui-breadcrumb-current" aria-current="page">用户管理</li>
+  </ol>
+</nav>
