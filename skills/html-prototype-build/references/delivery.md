@@ -16,7 +16,7 @@
 
 - 运行 `node <skill-root>/runtime/prepare-mark.mjs <prototype.html> --remove`。
 - HTML 中不得存在 Author Loader、Editor、html-mark、Inspector 或源码定位 token。
-- 外层只保留 HTML，其他正式配套资源均收进 `prototype-assets/`；不要再创建额外层级或在外层散落 snapshot、Viewer、截图。
+- 根目录保留 `prototype.html`、`prototype/` 与 `screenshots/`；页面 CSS、业务 JS、snapshot 与 Viewer 均收进 `prototype/`。图片、字体等静态资源仅在需要时收进 `assets/`，不要在根目录散落 CSS、JS、snapshot 或 Viewer。
 
 ## 迭代分流
 

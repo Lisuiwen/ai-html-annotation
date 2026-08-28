@@ -291,7 +291,7 @@ function openIDE(filePath, line) {
 /* 启动作者服务；独立导出便于测试导入校验函数时不监听端口。 */
 export function startServer() {
   if (!input) {
-    console.error('用法：node serve.mjs <prototype.html> [--port=4178] [--snapshot=prototype-assets/notes.snapshot.js]');
+    console.error('用法：node serve.mjs <prototype.html> [--port=4178] [--snapshot=prototype/notes.snapshot.js]');
     process.exit(1);
   }
   if (!existsSync(htmlPath) || !statSync(htmlPath).isFile()) {

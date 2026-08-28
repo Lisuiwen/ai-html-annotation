@@ -1,4 +1,4 @@
-# 单文件 HTML 原型生成契约
+# 单页 HTML 原型生成契约
 
 ## 交付闭环
 
@@ -10,7 +10,7 @@
 
 ## 1. 适用范围与优先级
 
-本契约约束后续 AI 生成的所有单文件 HTML 产品原型。发生冲突时按以下顺序执行：
+本契约约束后续 AI 生成的所有单页 HTML 产品原型。根目录仅保留页面入口 HTML；配套 CSS、业务 JS、状态数据与运行时收进 `prototype/`。发生冲突时按以下顺序执行：
 
 1. 用户在当前任务中的明确要求。
 2. 当前所选 UI foundation 的 `design-system.md`、foundation 契约与基础源文件。
@@ -22,14 +22,14 @@
 
 ## 2. 视觉
 
-- 单文件内定义并使用与当前 foundation 的 `design-system.md` 和 `foundation/tokens.css` 一致的 Token。
+- 在 `prototype/prototype.css` 中定义并使用与当前 foundation 的 `design-system.md` 和 `foundation/tokens.css` 一致的 Token。
 - foundation 与 Case 色彩必须使用命名 token；布局尺寸只要来自当前材料，可保留在页面 CSS。
 - 若需求新增视觉值但证据不足，不得创建猜测 token；应省略该视觉或用 `ponytail:` 标明当前上限与升级证据。
 - Tailwind 若使用只能负责布局，例如 flex/grid、定位、宽高、溢出和响应式显隐；不得使用 Tailwind 颜色、边框、圆角、阴影、字体、字号、行高、间距或交互状态类覆盖 `ui-*` 视觉 token。
 
 ## 3. 状态与场景
 
-- 所有原型都生成 `prototype-assets/notes.snapshot.js`，它既是唯一标注数据源，也是 `PrototypeViewers` 的场景状态来源；禁止重复生成 `notes.json` 或把同一份卡片数据写进 HTML。
+- 所有原型都生成 `prototype/notes.snapshot.js`，它既是唯一标注数据源，也是 `PrototypeViewers` 的场景状态来源；禁止重复生成 `notes.json` 或把同一份卡片数据写进 HTML。
 - 数据文件必须把对象赋给 `window.__PROTOTYPE_NOTES__`，并包含 `schemaVersion: 2`、基础完整 `state`、`activeScenario`、`scenarios`、`header`、`cards`。
 - `scenarios` 使用以稳定场景 id 为键的对象；每个场景标准结构为 `{ extends?, state }`。`state` 表达页面、浮层、Tab、数据态等可组合业务状态；通过 `extends` 复用基础场景时只保存差异。
 - `PrototypeViewers` 是状态单一来源；提交状态只使用 `registerState` / `setState` / `patchState` / `activateScenario`。
@@ -78,14 +78,20 @@ Viewer 负责 `?scene=<id>` 与 `?collapsed=1` 的恢复；业务 Adapter 不解
 
 ```text
 prototype.html
-prototype-assets/
-├─ notes.snapshot.js
-├─ viewer.js
-└─ screenshots/    # 需要交付验收截图时保留
+prototype/
+├─ prototype.css       # 页面与组件样式
+├─ prototype.js        # 页面业务交互与状态 Adapter
+├─ notes.snapshot.js   # 正式说明、场景与基础 state
+└─ viewer.js           # 只读说明与状态协调运行时
+screenshots/           # 需要交付验收截图时保留
+assets/                # 仅出现图片、字体、音视频等静态资源时生成
 ```
 
-- HTML 在 `</body>` 前依次加载 `./prototype-assets/notes.snapshot.js` 与 `./prototype-assets/viewer.js`，路径必须相对 HTML，可在 `file://` 下直接双击使用。
-- `prototype-assets/viewer.js` 从本 Skill 的 `runtime/viewer.js` 原样复制；不要把共享 Viewer 实现内联回 HTML。
+- 根目录只允许 `prototype.html`、`prototype/`、`screenshots/`，以及按需创建的 `assets/`；不要在根目录散落 CSS、JS、snapshot 或运行时文件。
+- HTML 在 `<head>` 中加载 `./prototype/prototype.css`，在 `</body>` 前依次加载 `./prototype/notes.snapshot.js`、`./prototype/viewer.js` 与 `./prototype/prototype.js`。路径必须相对 HTML，可在 `file://` 下直接双击使用。
+- `prototype.html` 保留可读的页面 DOM、稳定锚点和少量资源引用；禁止内联大段 CSS 或业务脚本。超过少量启动配置的 JS 必须放入 `prototype/prototype.js`。
+- `prototype/viewer.js` 从本 Skill 的 `runtime/viewer.js` 原样复制；不要把共享 Viewer 实现内联回 HTML。
+- 截图只存入根目录 `screenshots/`，不作为页面运行依赖；`assets/` 不得为空目录。
 - 标注编辑器、Inspector、Author Loader、本地服务、源码定位信息和 html-mark 都不属于正式交付物；Mark 仅用于单独生成的评审稿，可随时剥离。
 
 ## 8. 依赖

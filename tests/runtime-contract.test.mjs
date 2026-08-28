@@ -12,9 +12,9 @@ import { collectScenarios } from '../skills/html-prototype-build/runtime/shoot.m
 import { validateSnapshot } from '../skills/html-prototype-build/runtime/serve.mjs';
 
 const runtimeViewerUrl = new URL('../skills/html-prototype-build/runtime/viewer.js', import.meta.url);
-const exampleViewerUrl = new URL('../examples/minimal-notes/prototype-assets/viewer.js', import.meta.url);
+const exampleViewerUrl = new URL('../examples/minimal-notes/prototype/viewer.js', import.meta.url);
 const prototypeUrl = new URL('../examples/minimal-notes/prototype.html', import.meta.url);
-const snapshotUrl = new URL('../examples/minimal-notes/prototype-assets/notes.snapshot.js', import.meta.url);
+const snapshotUrl = new URL('../examples/minimal-notes/prototype/notes.snapshot.js', import.meta.url);
 const packManifestUrl = new URL('../skills/html-prototype-build/ui/packs/antd-admin/manifest.json', import.meta.url);
 
 /** 读取 UI pack manifest，验证最终原型可发现有状态组件的投影接口。 */

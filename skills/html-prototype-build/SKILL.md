@@ -9,7 +9,7 @@ description: 使用可组合 UI 包生成、评审和交付纯 HTML 产品原型
 
 1. 根据用户材料确认原型类型与业务事实；信息不足时先询问，不猜测。
 2. 生成或大改 UI 时运行 `node <skill-root>/scripts/resolve-pack.mjs --select=<preset、pattern 或 component id>`，只读取输出的最小文件闭包。
-3. 生成 `prototype.html`、`prototype-assets/notes.snapshot.js`，并复制 `runtime/viewer.js`；业务状态统一交给 `PrototypeViewers`。
+3. 生成根目录 `prototype.html`，将页面 CSS、业务 JS、`notes.snapshot.js` 与 `viewer.js` 收进 `prototype/`；业务状态统一交给 `PrototypeViewers`。
 4. 完成后运行仓库根目录的 `npm run validate`；仅按任务需要启用截图、作者服务或 html-mark。
 
 ## 先判断任务

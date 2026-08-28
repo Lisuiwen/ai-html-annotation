@@ -21,7 +21,7 @@ local Microsoft Edge or Google Chrome installation.
 
 ```powershell
 # Start the local authoring service for the included example.
-node skills/html-prototype-build/runtime/serve.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype-assets/notes.snapshot.js
+node skills/html-prototype-build/runtime/serve.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype/notes.snapshot.js
 
 # Generate state screenshots for the included example.
 node skills/html-prototype-build/runtime/shoot.mjs examples/minimal-notes/prototype.html
@@ -55,7 +55,7 @@ untrusted HTML or snapshot files.
 node <skill-root>/runtime/prepare-mark.mjs <prototype.html> --inline
 
 # 启动本地作者服务。
-node <skill-root>/runtime/serve.mjs <prototype.html> --snapshot=prototype-assets/notes.snapshot.js
+node <skill-root>/runtime/serve.mjs <prototype.html> --snapshot=prototype/notes.snapshot.js
 
 # 按 snapshot 显式场景生成纯页面截图。
 node <skill-root>/runtime/shoot.mjs <prototype.html>
@@ -67,14 +67,14 @@ node <skill-root>/runtime/shoot.mjs <prototype.html>
 
 最小案例使用 `skills/html-prototype-build/runtime/shoot.mjs` 从 `notes.snapshot.js` 的 `scenarios` 枚举场景并生成纯页面截图，截图不包含右侧说明、SVG 连线或作者工具：
 
-![基础列表状态](examples/minimal-notes/prototype-assets/screenshots/base.png)
+![基础列表状态](examples/minimal-notes/screenshots/base.png)
 
 | 状态 | 截图 |
 |---|---|
-| 基础列表 | [base.png](examples/minimal-notes/prototype-assets/screenshots/base.png) |
-| 新建配置项 | [create.png](examples/minimal-notes/prototype-assets/screenshots/create.png) |
-| 编辑配置项 | [edit.png](examples/minimal-notes/prototype-assets/screenshots/edit.png) |
-| 任务关联配置项 | [strategy.png](examples/minimal-notes/prototype-assets/screenshots/strategy.png) |
+| 基础列表 | [base.png](examples/minimal-notes/screenshots/base.png) |
+| 新建配置项 | [create.png](examples/minimal-notes/screenshots/create.png) |
+| 编辑配置项 | [edit.png](examples/minimal-notes/screenshots/edit.png) |
+| 任务关联配置项 | [strategy.png](examples/minimal-notes/screenshots/strategy.png) |
 
 重新生成案例截图：
 

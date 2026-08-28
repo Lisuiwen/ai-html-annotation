@@ -8,7 +8,7 @@
   </style>
 </head>
 <body>
-  <header class="gallery-header"><h1 class="gallery-title">Ant Design 中后台组件展厅</h1><span class="gallery-subtitle">当前 UI Pack 的 34 个公开组件</span><nav class="gallery-nav" aria-label="组件分类"><a href="#category-action">操作</a><a href="#category-navigation">导航</a><a href="#category-form">表单</a><a href="#category-data">数据展示</a><a href="#category-feedback">反馈</a></nav></header>
+  <header class="gallery-header"><h1 class="gallery-title">Ant Design 中后台组件展厅</h1><span class="gallery-subtitle">当前 UI Pack 的 37 个公开组件</span><nav class="gallery-nav" aria-label="组件分类"><a href="#category-action">操作</a><a href="#category-navigation">导航</a><a href="#category-form">表单</a><a href="#category-data">数据展示</a><a href="#category-feedback">反馈</a><a href="#category-chart">图表</a></nav></header>
   <main class="gallery-main"><section class="gallery-section" id="category-action"><h2>操作</h2><div class="gallery-grid"><article class="gallery-card" data-component="action.button">
   <header class="gallery-card-head"><span class="gallery-category">操作</span><code>action.button</code><span class="gallery-hint">可直接操作</span></header>
   <iframe class="gallery-preview" title="action.button 组件预览" srcdoc="&lt;!doctype html&gt;&lt;html lang=&quot;zh-CN&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;style&gt;/* Ant Design 中后台原型的跨组件基础 Token。 */
@@ -6969,7 +6969,316 @@ window.addEventListener('message', function (event) {
   window.dispatchEvent(new Event('resize'));
 });
 &lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
-</article></div></section></main>
+</article></div></section><section class="gallery-section" id="category-chart"><h2>图表</h2><div class="gallery-grid"><article class="gallery-card" data-component="data.chart-line"><header class="gallery-card-head"><span class="gallery-category">图表</span><code>data.chart-line</code><button class="gallery-demo" type="button" data-demo-id="data.chart-line" data-demo-state='{"status":"empty"}'>展示空态</button></header><iframe class="gallery-preview" title="data.chart-line 组件预览" srcdoc="&lt;!doctype html&gt;&lt;html lang=&quot;zh-CN&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;style&gt;/* Ant Design 中后台原型的跨组件基础 Token。 */
+:root {
+  --ui-primary: #1677ff;
+  --ui-bg-page: #f3f4f7;
+  --ui-bg: #ffffff;
+  --ui-bg-soft: #fafafa;
+  --ui-text: rgba(0, 0, 0, 0.88);
+  --ui-text-secondary: rgba(0, 0, 0, 0.65);
+  --ui-text-tertiary: rgba(0, 0, 0, 0.45);
+  --ui-text-disabled: rgba(0, 0, 0, 0.25);
+  --ui-border: #d9d9d9;
+  --ui-border-soft: #f0f0f0;
+  --ui-border-subtle: rgba(0, 0, 0, 0.06);
+  --ui-text-on-primary: #ffffff;
+  --ui-success: #52c41a;
+  --ui-warning: #faad14;
+  --ui-error: #ff4d4f;
+  --ui-info: var(--ui-primary);
+  --ui-success-bg: #f6ffed;
+  --ui-warning-bg: #fffbe6;
+  --ui-error-bg: #fff2f0;
+  --ui-info-bg: #e6f4ff;
+
+  --ui-font: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto,
+    &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;,
+    &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;
+  --ui-font-size-caption: 12px;
+  --ui-font-size-body: 14px;
+  --ui-line-height-caption: 12px;
+  --ui-line-height-body: 22px;
+  --ui-font-weight-regular: 400;
+  --ui-font-weight-semibold: 600;
+
+  --ui-space-1: 4px;
+  --ui-space-2: 8px;
+  --ui-space-3: 12px;
+  --ui-space-4: 16px;
+  --ui-space-6: 24px;
+
+  --ui-control-height: 32px;
+  --ui-control-padding-inline: 11px;
+  --ui-radius-control: 6px;
+  --ui-radius-container: 8px;
+}
+
+
+/* 所有原型共享的文档级 CSS 基线。 */
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  color: var(--ui-text);
+  background: var(--ui-bg-page);
+  font: var(--ui-font-size-body)/var(--ui-line-height-body) var(--ui-font);
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+
+
+html,body{min-height:100%}body{padding:24px;background:var(--ui-bg-page)}[hidden]{display:none!important}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;main class=&quot;component-stage&quot;&gt;&lt;style&gt;
+  :root { --ui-chart-height: 240px; --ui-chart-grid: var(--ui-border-soft); }
+  .ui-chart { display: grid; gap: var(--ui-space-3); min-width: 0; }
+  .ui-chart-legend { display: flex; flex-wrap: wrap; gap: var(--ui-space-3); }
+  .ui-chart-legend-button { display: inline-flex; align-items: center; gap: var(--ui-space-1); padding: 0; color: var(--ui-text-secondary); border: 0; background: transparent; }
+  .ui-chart-legend-button::before { width: var(--ui-space-2); height: var(--ui-space-2); border-radius: 50%; background: var(--ui-chart-color); content: &quot;&quot;; }
+  .ui-chart-legend-button[aria-pressed=&quot;false&quot;] { color: var(--ui-text-disabled); text-decoration: line-through; }
+  .ui-chart-legend-button:focus-visible, .ui-chart-donut-slice:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 2px; }
+  .ui-chart-graphic { display: block; width: 100%; height: var(--ui-chart-height); overflow: visible; }
+  .ui-chart-axis, .ui-chart-grid-line { stroke: var(--ui-chart-grid); stroke-width: 1; }
+  .ui-chart-label { fill: var(--ui-text-tertiary); font: var(--ui-font-size-caption) var(--ui-font); }
+  .ui-chart-line-primary { fill: none; stroke: var(--ui-primary); stroke-width: 3; }
+  .ui-chart-line-success { fill: none; stroke: var(--ui-success); stroke-width: 3; }
+  .ui-chart-point-primary { fill: var(--ui-primary); }.ui-chart-point-success { fill: var(--ui-success); }
+  .ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }
+  .ui-chart[data-status=&quot;empty&quot;] .ui-chart-data { display: none; }
+  .ui-chart[data-status=&quot;data&quot;] .ui-chart-empty { display: none; }
+  /* ponytail: 当前用静态 SVG 表达已给定数据；获得真实 tooltip、缩放或大数据量需求后，以 ECharts 渲染层替换 SVG，并保持 Adapter state 契约。 */
+&lt;/style&gt;
+&lt;section class=&quot;ui-chart ui-chart-line&quot; id=&quot;uiChartLine&quot; data-status=&quot;data&quot; aria-labelledby=&quot;uiChartLineTitle&quot;&gt;
+  &lt;div class=&quot;ui-chart-legend&quot; aria-label=&quot;趋势系列&quot;&gt;
+    &lt;button class=&quot;ui-chart-legend-button&quot; type=&quot;button&quot; data-series-key=&quot;primary&quot; aria-pressed=&quot;true&quot; style=&quot;--ui-chart-color:var(--ui-primary)&quot;&gt;本期&lt;/button&gt;
+    &lt;button class=&quot;ui-chart-legend-button&quot; type=&quot;button&quot; data-series-key=&quot;success&quot; aria-pressed=&quot;true&quot; style=&quot;--ui-chart-color:var(--ui-success)&quot;&gt;上期&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;svg class=&quot;ui-chart-graphic ui-chart-data&quot; viewBox=&quot;0 0 360 240&quot; role=&quot;img&quot; aria-labelledby=&quot;uiChartLineTitle uiChartLineDescription&quot;&gt;
+    &lt;title id=&quot;uiChartLineTitle&quot;&gt;近六个月趋势&lt;/title&gt;&lt;desc id=&quot;uiChartLineDescription&quot;&gt;本期与上期的月度趋势对比。&lt;/desc&gt;
+    &lt;g aria-hidden=&quot;true&quot;&gt;&lt;line class=&quot;ui-chart-grid-line&quot; x1=&quot;40&quot; y1=&quot;30&quot; x2=&quot;340&quot; y2=&quot;30&quot;/&gt;&lt;line class=&quot;ui-chart-grid-line&quot; x1=&quot;40&quot; y1=&quot;90&quot; x2=&quot;340&quot; y2=&quot;90&quot;/&gt;&lt;line class=&quot;ui-chart-grid-line&quot; x1=&quot;40&quot; y1=&quot;150&quot; x2=&quot;340&quot; y2=&quot;150&quot;/&gt;&lt;line class=&quot;ui-chart-axis&quot; x1=&quot;40&quot; y1=&quot;210&quot; x2=&quot;340&quot; y2=&quot;210&quot;/&gt;&lt;/g&gt;
+    &lt;g class=&quot;ui-chart-series&quot; data-series-key=&quot;primary&quot;&gt;&lt;polyline class=&quot;ui-chart-line-primary&quot; points=&quot;40,172 100,145 160,158 220,98 280,114 340,58&quot;/&gt;&lt;circle class=&quot;ui-chart-point-primary&quot; cx=&quot;40&quot; cy=&quot;172&quot; r=&quot;4&quot;/&gt;&lt;circle class=&quot;ui-chart-point-primary&quot; cx=&quot;100&quot; cy=&quot;145&quot; r=&quot;4&quot;/&gt;&lt;circle class=&quot;ui-chart-point-primary&quot; cx=&quot;160&quot; cy=&quot;158&quot; r=&quot;4&quot;/&gt;&lt;circle class=&quot;ui-chart-point-primary&quot; cx=&quot;220&quot; cy=&quot;98&quot; r=&quot;4&quot;/&gt;&lt;circle class=&quot;ui-chart-point-primary&quot; cx=&quot;280&quot; cy=&quot;114&quot; r=&quot;4&quot;/&gt;&lt;circle class=&quot;ui-chart-point-primary&quot; cx=&quot;340&quot; cy=&quot;58&quot; r=&quot;4&quot;/&gt;&lt;/g&gt;
+    &lt;g class=&quot;ui-chart-series&quot; data-series-key=&quot;success&quot;&gt;&lt;polyline class=&quot;ui-chart-line-success&quot; points=&quot;40,188 100,166 160,132 220,140 280,92 340,105&quot;/&gt;&lt;/g&gt;
+    &lt;g class=&quot;ui-chart-label&quot; aria-hidden=&quot;true&quot;&gt;&lt;text x=&quot;34&quot; y=&quot;226&quot;&gt;1月&lt;/text&gt;&lt;text x=&quot;94&quot; y=&quot;226&quot;&gt;2月&lt;/text&gt;&lt;text x=&quot;154&quot; y=&quot;226&quot;&gt;3月&lt;/text&gt;&lt;text x=&quot;214&quot; y=&quot;226&quot;&gt;4月&lt;/text&gt;&lt;text x=&quot;274&quot; y=&quot;226&quot;&gt;5月&lt;/text&gt;&lt;text x=&quot;334&quot; y=&quot;226&quot;&gt;6月&lt;/text&gt;&lt;/g&gt;
+  &lt;/svg&gt;
+  &lt;div class=&quot;ui-chart-empty&quot; hidden&gt;暂无趋势数据&lt;/div&gt;&lt;div class=&quot;ui-chart-summary&quot; aria-live=&quot;polite&quot;&gt;当前显示：本期、上期&lt;/div&gt;
+&lt;/section&gt;
+&lt;/main&gt;&lt;script&gt;/* Line Chart 局部状态投影：只切换既有序列与空态。 */
+(function () {
+  'use strict';
+  var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
+  /* 归一化趋势图状态，未知序列不参与渲染。 */
+  function normalize(value) { var state = value &amp;&amp; typeof value === 'object' ? value : {}; var visible = Array.isArray(state.visibleSeries) ? state.visibleSeries.filter(function (key) { return ['primary', 'success'].indexOf(key) !== -1; }) : ['primary', 'success']; return { status: state.status === 'empty' ? 'empty' : 'data', visibleSeries: visible }; }
+  /* 同步序列显隐、图例按下态和文字摘要。 */
+  function render(root, value) { if (!root) return; var state = normalize(value); root.dataset.status = state.status; root.querySelectorAll('[data-series-key]').forEach(function (item) { var visible = state.visibleSeries.indexOf(item.dataset.seriesKey) !== -1; item.hidden = !visible; if (item.matches('button')) item.setAttribute('aria-pressed', String(visible)); }); var summary = root.querySelector('.ui-chart-summary'); if (summary) summary.textContent = state.status === 'empty' ? '暂无趋势数据' : '当前显示：' + state.visibleSeries.map(function (key) { return key === 'primary' ? '本期' : '上期'; }).join('、'); }
+  adapters['data.chart-line'] = { normalize: normalize, render: render };
+})();
+&lt;/script&gt;&lt;script&gt;
+  (function () {
+    'use strict';
+    var id = &quot;data.chart-line&quot;;
+    var root = document.querySelector('.component-stage');
+    var adapter = (window.PrototypeUiAdapters || {})[id];
+    var state = id === 'data.chart-donut' ? { visibleKeys: ['primary', 'success', 'warning'], selectedKey: 'primary' } : { visibleSeries: id === 'data.chart-bar' ? ['primary', 'warning'] : ['primary', 'success'] };
+    function render(next) { state = Object.assign({}, state, next || {}); if (adapter &amp;&amp; root) adapter.render(root, state); notify(); }
+    function notify() { parent.postMessage({ type: 'gallery-height', id: id, height: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) }, '*'); }
+    function toggle(key) { var field = id === 'data.chart-donut' ? 'visibleKeys' : 'visibleSeries'; var current = state[field].slice(); var index = current.indexOf(key); if (index === -1) current.push(key); else current.splice(index, 1); var next = {}; next[field] = current; if (id === 'data.chart-donut' &amp;&amp; state.selectedKey === key &amp;&amp; index !== -1) next.selectedKey = current[0] || null; render(next); }
+    document.addEventListener('click', function (event) { var legend = event.target.closest('.ui-chart-legend-button'); if (legend) { toggle(legend.dataset.seriesKey); return; } var slice = event.target.closest('.ui-chart-donut-slice'); if (slice) { render({ selectedKey: slice.dataset.seriesKey }); } });
+    document.addEventListener('keydown', function (event) { var slice = event.target.closest('.ui-chart-donut-slice'); if (slice &amp;&amp; (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); render({ selectedKey: slice.dataset.seriesKey }); } });
+    window.addEventListener('message', function (event) { var data = event.data; if (data &amp;&amp; data.type === 'gallery-demo' &amp;&amp; data.id === id) render(data.state); });
+    window.addEventListener('resize', notify); new ResizeObserver(notify).observe(document.body); requestAnimationFrame(notify);
+  })();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></article><article class="gallery-card" data-component="data.chart-bar"><header class="gallery-card-head"><span class="gallery-category">图表</span><code>data.chart-bar</code><button class="gallery-demo" type="button" data-demo-id="data.chart-bar" data-demo-state='{"status":"empty"}'>展示空态</button></header><iframe class="gallery-preview" title="data.chart-bar 组件预览" srcdoc="&lt;!doctype html&gt;&lt;html lang=&quot;zh-CN&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;style&gt;/* Ant Design 中后台原型的跨组件基础 Token。 */
+:root {
+  --ui-primary: #1677ff;
+  --ui-bg-page: #f3f4f7;
+  --ui-bg: #ffffff;
+  --ui-bg-soft: #fafafa;
+  --ui-text: rgba(0, 0, 0, 0.88);
+  --ui-text-secondary: rgba(0, 0, 0, 0.65);
+  --ui-text-tertiary: rgba(0, 0, 0, 0.45);
+  --ui-text-disabled: rgba(0, 0, 0, 0.25);
+  --ui-border: #d9d9d9;
+  --ui-border-soft: #f0f0f0;
+  --ui-border-subtle: rgba(0, 0, 0, 0.06);
+  --ui-text-on-primary: #ffffff;
+  --ui-success: #52c41a;
+  --ui-warning: #faad14;
+  --ui-error: #ff4d4f;
+  --ui-info: var(--ui-primary);
+  --ui-success-bg: #f6ffed;
+  --ui-warning-bg: #fffbe6;
+  --ui-error-bg: #fff2f0;
+  --ui-info-bg: #e6f4ff;
+
+  --ui-font: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto,
+    &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;,
+    &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;
+  --ui-font-size-caption: 12px;
+  --ui-font-size-body: 14px;
+  --ui-line-height-caption: 12px;
+  --ui-line-height-body: 22px;
+  --ui-font-weight-regular: 400;
+  --ui-font-weight-semibold: 600;
+
+  --ui-space-1: 4px;
+  --ui-space-2: 8px;
+  --ui-space-3: 12px;
+  --ui-space-4: 16px;
+  --ui-space-6: 24px;
+
+  --ui-control-height: 32px;
+  --ui-control-padding-inline: 11px;
+  --ui-radius-control: 6px;
+  --ui-radius-container: 8px;
+}
+
+
+/* 所有原型共享的文档级 CSS 基线。 */
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  color: var(--ui-text);
+  background: var(--ui-bg-page);
+  font: var(--ui-font-size-body)/var(--ui-line-height-body) var(--ui-font);
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+
+
+html,body{min-height:100%}body{padding:24px;background:var(--ui-bg-page)}[hidden]{display:none!important}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;main class=&quot;component-stage&quot;&gt;&lt;style&gt;
+  :root { --ui-chart-height: 240px; --ui-chart-grid: var(--ui-border-soft); }
+  .ui-chart { display: grid; gap: var(--ui-space-3); min-width: 0; }.ui-chart-legend { display: flex; flex-wrap: wrap; gap: var(--ui-space-3); }
+  .ui-chart-legend-button { display: inline-flex; align-items: center; gap: var(--ui-space-1); padding: 0; color: var(--ui-text-secondary); border: 0; background: transparent; }.ui-chart-legend-button::before { width: var(--ui-space-2); height: var(--ui-space-2); border-radius: 50%; background: var(--ui-chart-color); content: &quot;&quot;; }.ui-chart-legend-button[aria-pressed=&quot;false&quot;] { color: var(--ui-text-disabled); text-decoration: line-through; }.ui-chart-legend-button:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 2px; }
+  .ui-chart-graphic { display: block; width: 100%; height: var(--ui-chart-height); }.ui-chart-grid-line { stroke: var(--ui-chart-grid); stroke-width: 1; }.ui-chart-label { fill: var(--ui-text-tertiary); font: var(--ui-font-size-caption) var(--ui-font); }.ui-chart-bar-primary { fill: var(--ui-primary); }.ui-chart-bar-warning { fill: var(--ui-warning); }.ui-chart[data-mode=&quot;stacked&quot;] .ui-chart-series[data-series-key=&quot;warning&quot;] { transform: translateX(-26px); }.ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }.ui-chart[data-status=&quot;empty&quot;] .ui-chart-data { display: none; }.ui-chart[data-status=&quot;data&quot;] .ui-chart-empty { display: none; }
+  /* ponytail: 当前仅模拟分组与堆叠的静态几何；真实数据标签避让、动画和 tooltip 需要 ECharts 或等价渲染器后升级。 */
+&lt;/style&gt;
+&lt;section class=&quot;ui-chart ui-chart-bar&quot; id=&quot;uiChartBar&quot; data-status=&quot;data&quot; data-mode=&quot;grouped&quot; aria-labelledby=&quot;uiChartBarTitle&quot;&gt;
+  &lt;div class=&quot;ui-chart-legend&quot; aria-label=&quot;对比系列&quot;&gt;&lt;button class=&quot;ui-chart-legend-button&quot; type=&quot;button&quot; data-series-key=&quot;primary&quot; aria-pressed=&quot;true&quot; style=&quot;--ui-chart-color:var(--ui-primary)&quot;&gt;计划&lt;/button&gt;&lt;button class=&quot;ui-chart-legend-button&quot; type=&quot;button&quot; data-series-key=&quot;warning&quot; aria-pressed=&quot;true&quot; style=&quot;--ui-chart-color:var(--ui-warning)&quot;&gt;完成&lt;/button&gt;&lt;/div&gt;
+  &lt;svg class=&quot;ui-chart-graphic ui-chart-data&quot; viewBox=&quot;0 0 360 240&quot; role=&quot;img&quot; aria-labelledby=&quot;uiChartBarTitle uiChartBarDescription&quot;&gt;&lt;title id=&quot;uiChartBarTitle&quot;&gt;季度计划与完成对比&lt;/title&gt;&lt;desc id=&quot;uiChartBarDescription&quot;&gt;四个季度的计划和完成数值对比。&lt;/desc&gt;&lt;g aria-hidden=&quot;true&quot;&gt;&lt;line class=&quot;ui-chart-grid-line&quot; x1=&quot;40&quot; y1=&quot;30&quot; x2=&quot;340&quot; y2=&quot;30&quot;/&gt;&lt;line class=&quot;ui-chart-grid-line&quot; x1=&quot;40&quot; y1=&quot;90&quot; x2=&quot;340&quot; y2=&quot;90&quot;/&gt;&lt;line class=&quot;ui-chart-grid-line&quot; x1=&quot;40&quot; y1=&quot;150&quot; x2=&quot;340&quot; y2=&quot;150&quot;/&gt;&lt;line class=&quot;ui-chart-grid-line&quot; x1=&quot;40&quot; y1=&quot;210&quot; x2=&quot;340&quot; y2=&quot;210&quot;/&gt;&lt;/g&gt;&lt;g class=&quot;ui-chart-series&quot; data-series-key=&quot;primary&quot;&gt;&lt;rect class=&quot;ui-chart-bar-primary&quot; x=&quot;58&quot; y=&quot;92&quot; width=&quot;22&quot; height=&quot;118&quot; rx=&quot;2&quot;/&gt;&lt;rect class=&quot;ui-chart-bar-primary&quot; x=&quot;128&quot; y=&quot;65&quot; width=&quot;22&quot; height=&quot;145&quot; rx=&quot;2&quot;/&gt;&lt;rect class=&quot;ui-chart-bar-primary&quot; x=&quot;198&quot; y=&quot;105&quot; width=&quot;22&quot; height=&quot;105&quot; rx=&quot;2&quot;/&gt;&lt;rect class=&quot;ui-chart-bar-primary&quot; x=&quot;268&quot; y=&quot;48&quot; width=&quot;22&quot; height=&quot;162&quot; rx=&quot;2&quot;/&gt;&lt;/g&gt;&lt;g class=&quot;ui-chart-series&quot; data-series-key=&quot;warning&quot;&gt;&lt;rect class=&quot;ui-chart-bar-warning&quot; x=&quot;84&quot; y=&quot;118&quot; width=&quot;22&quot; height=&quot;92&quot; rx=&quot;2&quot;/&gt;&lt;rect class=&quot;ui-chart-bar-warning&quot; x=&quot;154&quot; y=&quot;82&quot; width=&quot;22&quot; height=&quot;128&quot; rx=&quot;2&quot;/&gt;&lt;rect class=&quot;ui-chart-bar-warning&quot; x=&quot;224&quot; y=&quot;126&quot; width=&quot;22&quot; height=&quot;84&quot; rx=&quot;2&quot;/&gt;&lt;rect class=&quot;ui-chart-bar-warning&quot; x=&quot;294&quot; y=&quot;72&quot; width=&quot;22&quot; height=&quot;138&quot; rx=&quot;2&quot;/&gt;&lt;/g&gt;&lt;g class=&quot;ui-chart-label&quot; aria-hidden=&quot;true&quot;&gt;&lt;text x=&quot;66&quot; y=&quot;226&quot;&gt;Q1&lt;/text&gt;&lt;text x=&quot;136&quot; y=&quot;226&quot;&gt;Q2&lt;/text&gt;&lt;text x=&quot;206&quot; y=&quot;226&quot;&gt;Q3&lt;/text&gt;&lt;text x=&quot;276&quot; y=&quot;226&quot;&gt;Q4&lt;/text&gt;&lt;/g&gt;&lt;/svg&gt;
+  &lt;div class=&quot;ui-chart-empty&quot; hidden&gt;暂无对比数据&lt;/div&gt;&lt;div class=&quot;ui-chart-summary&quot; aria-live=&quot;polite&quot;&gt;分组对比：计划、完成&lt;/div&gt;
+&lt;/section&gt;
+&lt;/main&gt;&lt;script&gt;/* Bar Chart 局部状态投影：只切换既有系列、模式标识和空态。 */
+(function () {
+  'use strict';
+  var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
+  /* 归一化柱状图展示状态。 */
+  function normalize(value) { var state = value &amp;&amp; typeof value === 'object' ? value : {}; var visible = Array.isArray(state.visibleSeries) ? state.visibleSeries.filter(function (key) { return ['primary', 'warning'].indexOf(key) !== -1; }) : ['primary', 'warning']; return { status: state.status === 'empty' ? 'empty' : 'data', mode: state.mode === 'stacked' ? 'stacked' : 'grouped', visibleSeries: visible }; }
+  /* 同步图例、既有柱组和可访问摘要。 */
+  function render(root, value) { if (!root) return; var state = normalize(value); root.dataset.status = state.status; root.dataset.mode = state.mode; root.querySelectorAll('.ui-chart-legend-button, .ui-chart-series').forEach(function (item) { var visible = state.visibleSeries.indexOf(item.dataset.seriesKey) !== -1; item.hidden = !visible; if (item.matches('button')) item.setAttribute('aria-pressed', String(visible)); }); var summary = root.querySelector('.ui-chart-summary'); if (summary) summary.textContent = state.status === 'empty' ? '暂无对比数据' : (state.mode === 'stacked' ? '堆叠对比：' : '分组对比：') + state.visibleSeries.map(function (key) { return key === 'primary' ? '计划' : '完成'; }).join('、'); }
+  adapters['data.chart-bar'] = { normalize: normalize, render: render };
+})();
+&lt;/script&gt;&lt;script&gt;
+  (function () {
+    'use strict';
+    var id = &quot;data.chart-bar&quot;;
+    var root = document.querySelector('.component-stage');
+    var adapter = (window.PrototypeUiAdapters || {})[id];
+    var state = id === 'data.chart-donut' ? { visibleKeys: ['primary', 'success', 'warning'], selectedKey: 'primary' } : { visibleSeries: id === 'data.chart-bar' ? ['primary', 'warning'] : ['primary', 'success'] };
+    function render(next) { state = Object.assign({}, state, next || {}); if (adapter &amp;&amp; root) adapter.render(root, state); notify(); }
+    function notify() { parent.postMessage({ type: 'gallery-height', id: id, height: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) }, '*'); }
+    function toggle(key) { var field = id === 'data.chart-donut' ? 'visibleKeys' : 'visibleSeries'; var current = state[field].slice(); var index = current.indexOf(key); if (index === -1) current.push(key); else current.splice(index, 1); var next = {}; next[field] = current; if (id === 'data.chart-donut' &amp;&amp; state.selectedKey === key &amp;&amp; index !== -1) next.selectedKey = current[0] || null; render(next); }
+    document.addEventListener('click', function (event) { var legend = event.target.closest('.ui-chart-legend-button'); if (legend) { toggle(legend.dataset.seriesKey); return; } var slice = event.target.closest('.ui-chart-donut-slice'); if (slice) { render({ selectedKey: slice.dataset.seriesKey }); } });
+    document.addEventListener('keydown', function (event) { var slice = event.target.closest('.ui-chart-donut-slice'); if (slice &amp;&amp; (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); render({ selectedKey: slice.dataset.seriesKey }); } });
+    window.addEventListener('message', function (event) { var data = event.data; if (data &amp;&amp; data.type === 'gallery-demo' &amp;&amp; data.id === id) render(data.state); });
+    window.addEventListener('resize', notify); new ResizeObserver(notify).observe(document.body); requestAnimationFrame(notify);
+  })();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></article><article class="gallery-card" data-component="data.chart-donut"><header class="gallery-card-head"><span class="gallery-category">图表</span><code>data.chart-donut</code><button class="gallery-demo" type="button" data-demo-id="data.chart-donut" data-demo-state='{"status":"empty"}'>展示空态</button></header><iframe class="gallery-preview" title="data.chart-donut 组件预览" srcdoc="&lt;!doctype html&gt;&lt;html lang=&quot;zh-CN&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;style&gt;/* Ant Design 中后台原型的跨组件基础 Token。 */
+:root {
+  --ui-primary: #1677ff;
+  --ui-bg-page: #f3f4f7;
+  --ui-bg: #ffffff;
+  --ui-bg-soft: #fafafa;
+  --ui-text: rgba(0, 0, 0, 0.88);
+  --ui-text-secondary: rgba(0, 0, 0, 0.65);
+  --ui-text-tertiary: rgba(0, 0, 0, 0.45);
+  --ui-text-disabled: rgba(0, 0, 0, 0.25);
+  --ui-border: #d9d9d9;
+  --ui-border-soft: #f0f0f0;
+  --ui-border-subtle: rgba(0, 0, 0, 0.06);
+  --ui-text-on-primary: #ffffff;
+  --ui-success: #52c41a;
+  --ui-warning: #faad14;
+  --ui-error: #ff4d4f;
+  --ui-info: var(--ui-primary);
+  --ui-success-bg: #f6ffed;
+  --ui-warning-bg: #fffbe6;
+  --ui-error-bg: #fff2f0;
+  --ui-info-bg: #e6f4ff;
+
+  --ui-font: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto,
+    &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;,
+    &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;
+  --ui-font-size-caption: 12px;
+  --ui-font-size-body: 14px;
+  --ui-line-height-caption: 12px;
+  --ui-line-height-body: 22px;
+  --ui-font-weight-regular: 400;
+  --ui-font-weight-semibold: 600;
+
+  --ui-space-1: 4px;
+  --ui-space-2: 8px;
+  --ui-space-3: 12px;
+  --ui-space-4: 16px;
+  --ui-space-6: 24px;
+
+  --ui-control-height: 32px;
+  --ui-control-padding-inline: 11px;
+  --ui-radius-control: 6px;
+  --ui-radius-container: 8px;
+}
+
+
+/* 所有原型共享的文档级 CSS 基线。 */
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  color: var(--ui-text);
+  background: var(--ui-bg-page);
+  font: var(--ui-font-size-body)/var(--ui-line-height-body) var(--ui-font);
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+
+
+html,body{min-height:100%}body{padding:24px;background:var(--ui-bg-page)}[hidden]{display:none!important}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;main class=&quot;component-stage&quot;&gt;&lt;style&gt;
+  :root { --ui-chart-height: 240px; --ui-chart-ring-width: 34px; }
+  .ui-chart { display: grid; gap: var(--ui-space-3); min-width: 0; }.ui-chart-layout { display: grid; grid-template-columns: minmax(160px, 1fr) minmax(120px, auto); align-items: center; gap: var(--ui-space-4); }.ui-chart-graphic { display: block; width: 100%; height: var(--ui-chart-height); }.ui-chart-legend { display: grid; gap: var(--ui-space-2); }.ui-chart-legend-button { display: inline-flex; align-items: center; gap: var(--ui-space-1); padding: 0; color: var(--ui-text-secondary); border: 0; background: transparent; text-align: left; }.ui-chart-legend-button::before { width: var(--ui-space-2); height: var(--ui-space-2); border-radius: 50%; background: var(--ui-chart-color); content: &quot;&quot;; }.ui-chart-legend-button[aria-pressed=&quot;false&quot;] { color: var(--ui-text-disabled); text-decoration: line-through; }.ui-chart-legend-button:focus-visible, .ui-chart-donut-slice:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 2px; }.ui-chart-donut-slice { cursor: pointer; stroke: var(--ui-bg); stroke-width: 2; }.ui-chart-donut-slice.is-selected { stroke-width: 4; }.ui-chart-donut-primary { fill: var(--ui-primary); }.ui-chart-donut-success { fill: var(--ui-success); }.ui-chart-donut-warning { fill: var(--ui-warning); }.ui-chart-center-label { fill: var(--ui-text-secondary); font: var(--ui-font-size-caption) var(--ui-font); }.ui-chart-center-value { fill: var(--ui-text); font: var(--ui-font-weight-semibold) 24px var(--ui-font); }.ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }.ui-chart[data-status=&quot;empty&quot;] .ui-chart-data { display: none; }.ui-chart[data-status=&quot;data&quot;] .ui-chart-empty { display: none; }
+  /* ponytail: 当前扇区形状和占比为 SVG 示例数据；获得真实构成数据、label 避让或 tooltip 需求后，以图表渲染层替换。 */
+&lt;/style&gt;
+&lt;section class=&quot;ui-chart ui-chart-donut&quot; id=&quot;uiChartDonut&quot; data-status=&quot;data&quot; aria-labelledby=&quot;uiChartDonutTitle&quot;&gt;
+  &lt;div class=&quot;ui-chart-layout ui-chart-data&quot;&gt;&lt;svg class=&quot;ui-chart-graphic&quot; viewBox=&quot;0 0 240 240&quot; role=&quot;img&quot; aria-labelledby=&quot;uiChartDonutTitle uiChartDonutDescription&quot;&gt;&lt;title id=&quot;uiChartDonutTitle&quot;&gt;来源构成&lt;/title&gt;&lt;desc id=&quot;uiChartDonutDescription&quot;&gt;线上、线下和转介绍三个来源的构成占比。&lt;/desc&gt;&lt;path class=&quot;ui-chart-donut-slice ui-chart-donut-primary is-selected&quot; data-series-key=&quot;primary&quot; data-label=&quot;线上&quot; data-value=&quot;62%&quot; d=&quot;M120 24 A96 96 0 1 1 30 154 L63 142 A61 61 0 1 0 120 59Z&quot; role=&quot;button&quot; tabindex=&quot;0&quot; aria-pressed=&quot;true&quot;&gt;&lt;title&gt;线上 62%&lt;/title&gt;&lt;/path&gt;&lt;path class=&quot;ui-chart-donut-slice ui-chart-donut-success&quot; data-series-key=&quot;success&quot; data-label=&quot;线下&quot; data-value=&quot;23%&quot; d=&quot;M30 154 A96 96 0 0 1 45 68 L72 86 A61 61 0 0 0 63 142Z&quot; role=&quot;button&quot; tabindex=&quot;0&quot; aria-pressed=&quot;false&quot;&gt;&lt;title&gt;线下 23%&lt;/title&gt;&lt;/path&gt;&lt;path class=&quot;ui-chart-donut-slice ui-chart-donut-warning&quot; data-series-key=&quot;warning&quot; data-label=&quot;转介绍&quot; data-value=&quot;15%&quot; d=&quot;M45 68 A96 96 0 0 1 120 24 L120 59 A61 61 0 0 0 72 86Z&quot; role=&quot;button&quot; tabindex=&quot;0&quot; aria-pressed=&quot;false&quot;&gt;&lt;title&gt;转介绍 15%&lt;/title&gt;&lt;/path&gt;&lt;text class=&quot;ui-chart-center-label&quot; x=&quot;120&quot; y=&quot;108&quot; text-anchor=&quot;middle&quot;&gt;当前来源&lt;/text&gt;&lt;text class=&quot;ui-chart-center-value&quot; x=&quot;120&quot; y=&quot;136&quot; text-anchor=&quot;middle&quot;&gt;线上&lt;/text&gt;&lt;/svg&gt;&lt;div class=&quot;ui-chart-legend&quot; aria-label=&quot;构成分类&quot;&gt;&lt;button class=&quot;ui-chart-legend-button&quot; type=&quot;button&quot; data-series-key=&quot;primary&quot; aria-pressed=&quot;true&quot; style=&quot;--ui-chart-color:var(--ui-primary)&quot;&gt;线上 62%&lt;/button&gt;&lt;button class=&quot;ui-chart-legend-button&quot; type=&quot;button&quot; data-series-key=&quot;success&quot; aria-pressed=&quot;true&quot; style=&quot;--ui-chart-color:var(--ui-success)&quot;&gt;线下 23%&lt;/button&gt;&lt;button class=&quot;ui-chart-legend-button&quot; type=&quot;button&quot; data-series-key=&quot;warning&quot; aria-pressed=&quot;true&quot; style=&quot;--ui-chart-color:var(--ui-warning)&quot;&gt;转介绍 15%&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;ui-chart-empty&quot; hidden&gt;暂无构成数据&lt;/div&gt;&lt;div class=&quot;ui-chart-summary&quot; aria-live=&quot;polite&quot;&gt;已选中：线上 62%&lt;/div&gt;
+&lt;/section&gt;
+&lt;/main&gt;&lt;script&gt;/* Donut Chart 局部状态投影：只切换既有扇区、图例和中心摘要。 */
+(function () {
+  'use strict';
+  var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
+  var keys = ['primary', 'success', 'warning'];
+  /* 归一化环图状态，并保证选中项属于可见项。 */
+  function normalize(value) { var state = value &amp;&amp; typeof value === 'object' ? value : {}; var visible = Array.isArray(state.visibleKeys) ? state.visibleKeys.filter(function (key) { return keys.indexOf(key) !== -1; }) : keys.slice(); var selected = typeof state.selectedKey === 'string' &amp;&amp; visible.indexOf(state.selectedKey) !== -1 ? state.selectedKey : (visible[0] || null); return { status: state.status === 'empty' ? 'empty' : 'data', visibleKeys: visible, selectedKey: selected }; }
+  /* 同步扇区按下态、中心标签和文字摘要。 */
+  function render(root, value) { if (!root) return; var state = normalize(value); root.dataset.status = state.status; root.querySelectorAll('[data-series-key]').forEach(function (item) { var key = item.dataset.seriesKey; var visible = state.visibleKeys.indexOf(key) !== -1; var selected = key === state.selectedKey; item.hidden = !visible; item.setAttribute('aria-pressed', String(selected)); item.classList.toggle('is-selected', selected); }); var slice = state.selectedKey &amp;&amp; root.querySelector('.ui-chart-donut-slice[data-series-key=&quot;' + state.selectedKey + '&quot;]'); var label = slice ? slice.dataset.label : '—'; var valueText = slice ? slice.dataset.value : '—'; var center = root.querySelector('.ui-chart-center-value'); var summary = root.querySelector('.ui-chart-summary'); if (center) center.textContent = label; if (summary) summary.textContent = state.status === 'empty' ? '暂无构成数据' : '已选中：' + label + ' ' + valueText; }
+  adapters['data.chart-donut'] = { normalize: normalize, render: render };
+})();
+&lt;/script&gt;&lt;script&gt;
+  (function () {
+    'use strict';
+    var id = &quot;data.chart-donut&quot;;
+    var root = document.querySelector('.component-stage');
+    var adapter = (window.PrototypeUiAdapters || {})[id];
+    var state = id === 'data.chart-donut' ? { visibleKeys: ['primary', 'success', 'warning'], selectedKey: 'primary' } : { visibleSeries: id === 'data.chart-bar' ? ['primary', 'warning'] : ['primary', 'success'] };
+    function render(next) { state = Object.assign({}, state, next || {}); if (adapter &amp;&amp; root) adapter.render(root, state); notify(); }
+    function notify() { parent.postMessage({ type: 'gallery-height', id: id, height: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) }, '*'); }
+    function toggle(key) { var field = id === 'data.chart-donut' ? 'visibleKeys' : 'visibleSeries'; var current = state[field].slice(); var index = current.indexOf(key); if (index === -1) current.push(key); else current.splice(index, 1); var next = {}; next[field] = current; if (id === 'data.chart-donut' &amp;&amp; state.selectedKey === key &amp;&amp; index !== -1) next.selectedKey = current[0] || null; render(next); }
+    document.addEventListener('click', function (event) { var legend = event.target.closest('.ui-chart-legend-button'); if (legend) { toggle(legend.dataset.seriesKey); return; } var slice = event.target.closest('.ui-chart-donut-slice'); if (slice) { render({ selectedKey: slice.dataset.seriesKey }); } });
+    document.addEventListener('keydown', function (event) { var slice = event.target.closest('.ui-chart-donut-slice'); if (slice &amp;&amp; (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); render({ selectedKey: slice.dataset.seriesKey }); } });
+    window.addEventListener('message', function (event) { var data = event.data; if (data &amp;&amp; data.type === 'gallery-demo' &amp;&amp; data.id === id) render(data.state); });
+    window.addEventListener('resize', notify); new ResizeObserver(notify).observe(document.body); requestAnimationFrame(notify);
+  })();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></article></div></section></main>
   <script>
     /* 按每个组件真实内容高度调整 iframe，消除固定高度的空白与裁切。 */
     window.addEventListener('message', function (event) {

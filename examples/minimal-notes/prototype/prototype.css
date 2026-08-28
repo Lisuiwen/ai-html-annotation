@@ -1,0 +1,324 @@
+/* 产品视觉 Token：复用 html-prototype-build 已确认的通用设计系统。 */
+    :root {
+      --ui-primary: #1677ff;
+      --ui-bg-page: #f3f4f7;
+      --ui-bg: #ffffff;
+      --ui-bg-soft: #fafafa;
+      --ui-text: rgba(0, 0, 0, 0.88);
+      --ui-text-secondary: rgba(0, 0, 0, 0.65);
+      --ui-text-tertiary: rgba(0, 0, 0, 0.45);
+      --ui-text-disabled: rgba(0, 0, 0, 0.25);
+      --ui-border: #d9d9d9;
+      --ui-border-soft: #f0f0f0;
+      --ui-border-subtle: rgba(0, 0, 0, 0.06);
+      --ui-text-on-primary: #ffffff;
+      --ui-space-1: 4px;
+      --ui-space-2: 8px;
+      --ui-space-3: 12px;
+      --ui-space-4: 16px;
+      --ui-space-6: 24px;
+      --ui-control-height: 32px;
+      --ui-radius-control: 6px;
+      --ui-radius-container: 8px;
+      --ui-header-height: 52px;
+      --ui-sider-width: 208px;
+      --ui-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      --ui-font-size-caption: 12px;
+      --ui-font-size-body: 14px;
+      --ui-font-size-nav: 16px;
+      --ui-line-height-body: 22px;
+      --ui-font-weight-semibold: 600;
+      --ui-control-padding-inline: 11px;
+      --ui-button-padding-inline: 15px;
+      --ui-icon-button-size: 32px;
+      --ui-table-header-height: 40px;
+      --ui-table-cell-padding: 8px;
+      --ui-shadow-button: 0 2px 0 rgba(0, 0, 0, 0.02);
+      --ui-shadow-primary: 0 2px 0 rgba(5, 145, 255, 0.1);
+    }
+
+    /* 页面基础与产品壳层。 */
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body {
+      margin: 0;
+      color: var(--ui-text);
+      background: var(--ui-bg-page);
+      font: var(--ui-font-size-body)/var(--ui-line-height-body) var(--ui-font);
+    }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .ui-shell { min-width: 1040px; min-height: 100vh; background: var(--ui-bg-page); }
+    .ui-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      height: var(--ui-header-height);
+      border-bottom: 1px solid var(--ui-border-subtle);
+      background: var(--ui-bg);
+    }
+    .ui-brand {
+      display: flex;
+      align-items: center;
+      width: var(--ui-sider-width);
+      height: 100%;
+      padding: 0 var(--ui-space-4);
+      gap: var(--ui-space-2);
+      font-weight: var(--ui-font-weight-semibold);
+    }
+    .ui-brand-mark {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      color: var(--ui-text-on-primary);
+      border-radius: 50%;
+      background: var(--ui-primary);
+      font-size: var(--ui-font-size-caption);
+    }
+    .ui-breadcrumb { color: var(--ui-text-tertiary); }
+    .ui-header-actions {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+      padding-right: var(--ui-space-4);
+      gap: var(--ui-space-4);
+      color: var(--ui-text-secondary);
+    }
+    .ui-tenant {
+      min-width: 140px;
+      height: var(--ui-control-height);
+      padding: 0 var(--ui-space-3);
+      color: var(--ui-text-secondary);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--ui-radius-control);
+      background: var(--ui-bg);
+    }
+    .ui-shell-body {
+      display: grid;
+      grid-template-columns: var(--ui-sider-width) minmax(0, 1fr);
+      min-height: calc(100vh - var(--ui-header-height));
+    }
+
+    /* 左侧多级菜单；只复刻截图中可见层级。 */
+    .ui-sider {
+      padding: var(--ui-space-3) var(--ui-space-2);
+      border-right: 1px solid var(--ui-border-subtle);
+      background: var(--ui-bg);
+    }
+    .ui-menu { display: grid; gap: var(--ui-space-1); }
+    .ui-menu-item, .ui-menu-group {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-height: 36px;
+      padding: 0 var(--ui-space-3);
+      color: var(--ui-text-secondary);
+      text-align: left;
+      border: 0;
+      border-radius: var(--ui-radius-control);
+      background: transparent;
+    }
+    .ui-menu-group { justify-content: space-between; }
+    .ui-menu-sub { padding-left: var(--ui-space-4); }
+    .ui-menu-item.is-active { color: var(--ui-primary); background: rgba(22, 119, 255, 0.08); }
+    /* ponytail: 菜单 hover、折叠动画和键盘导航未采集；取得真实交互记录后替换当前静态层级。 */
+    .ui-menu-item:hover { color: var(--ui-primary); }
+
+    /* 列表页工作区。 */
+    .ui-content { min-width: 0; padding: var(--ui-space-4); }
+    .ui-content-card {
+      min-height: calc(100vh - var(--ui-header-height) - 2 * var(--ui-space-4));
+      overflow: hidden;
+      border: 1px solid var(--ui-border-subtle);
+      border-radius: var(--ui-radius-container);
+      background: var(--ui-bg);
+    }
+    .ui-filter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 80px;
+      padding: var(--ui-space-4);
+      gap: var(--ui-space-4);
+    }
+    .ui-filter-fields, .ui-actions, .ui-table-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--ui-space-2);
+    }
+    .ui-input, .ui-select-trigger {
+      width: 220px;
+      height: var(--ui-control-height);
+      padding: 0 var(--ui-control-padding-inline);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--ui-radius-control);
+      background: var(--ui-bg);
+    }
+    textarea.ui-input { height: 72px; padding-block: var(--ui-space-2); resize: none; }
+    .ui-input::placeholder { color: var(--ui-text-tertiary); }
+    /* ponytail: 正式焦点样式未采集；当前保留明显焦点，取得计算样式后替换。 */
+    .ui-input:focus-visible, .ui-select-trigger:focus-visible, .ui-button:focus-visible {
+      outline: 2px solid var(--ui-primary);
+      outline-offset: 1px;
+    }
+    .ui-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: var(--ui-icon-button-size);
+      height: var(--ui-control-height);
+      padding: 0 var(--ui-button-padding-inline);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--ui-radius-control);
+      background: var(--ui-bg);
+      box-shadow: var(--ui-shadow-button);
+    }
+    .ui-button--primary {
+      color: var(--ui-text-on-primary);
+      border-color: var(--ui-primary);
+      background: var(--ui-primary);
+      box-shadow: var(--ui-shadow-primary);
+    }
+    .ui-button--text {
+      height: auto;
+      min-width: 0;
+      padding: 0;
+      color: var(--ui-primary);
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .ui-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 var(--ui-space-4) var(--ui-space-3);
+    }
+    .ui-table-area { margin: 0 var(--ui-space-4) var(--ui-space-4); }
+    .ui-table-wrap { overflow: auto; border: 1px solid var(--ui-border-soft); }
+    .ui-table { width: 100%; min-width: 900px; border-collapse: collapse; }
+    .ui-table th, .ui-table td {
+      height: var(--ui-table-header-height);
+      padding: var(--ui-table-cell-padding);
+      text-align: center;
+      border-bottom: 1px solid var(--ui-border-soft);
+    }
+    .ui-table th { font-weight: var(--ui-font-weight-semibold); background: var(--ui-bg-soft); }
+    .ui-table td:nth-child(3) { max-width: 360px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* ponytail: 表格行 hover 未采集；取得真实状态截图后替换当前轻量提示。 */
+    .ui-table tbody tr:hover { background: var(--ui-bg-soft); }
+    .ui-pagination {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-top: var(--ui-space-3);
+      gap: var(--ui-space-2);
+      color: var(--ui-text-secondary);
+    }
+    .ui-page-number {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      color: var(--ui-primary);
+      border: 1px solid var(--ui-primary);
+      border-radius: var(--ui-radius-control);
+    }
+
+    /* Modal 浮层只覆盖产品预览区，不遮挡正式说明栏。 */
+    .ui-preview { position: relative; min-height: 100vh; }
+    .ui-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 80;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: var(--ui-space-6);
+      background: rgba(0, 0, 0, 0.45);
+    }
+    .ui-overlay.is-open { display: flex; }
+    .ui-modal {
+      width: min(560px, 100%);
+      overflow: visible;
+      border-radius: var(--ui-radius-container);
+      background: var(--ui-bg);
+    }
+    .ui-modal--strategy { width: min(520px, 100%); }
+    .ui-layer-head, .ui-layer-foot {
+      display: flex;
+      align-items: center;
+      min-height: 52px;
+      padding: 0 var(--ui-space-4);
+      gap: var(--ui-space-2);
+    }
+    .ui-layer-head { border-bottom: 1px solid var(--ui-border-soft); }
+    .ui-layer-head strong { font-size: var(--ui-font-size-nav); }
+    .ui-close {
+      margin-left: auto;
+      padding: 0;
+      color: var(--ui-text-tertiary);
+      border: 0;
+      background: transparent;
+      font-size: 22px;
+    }
+    .ui-layer-body { display: grid; gap: var(--ui-space-4); padding: var(--ui-space-6); }
+    .ui-layer-foot { justify-content: flex-end; border-top: 1px solid var(--ui-border-soft); }
+    .ui-field {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      align-items: center;
+      gap: var(--ui-space-2);
+    }
+    .ui-field-label { color: var(--ui-text-secondary); text-align: right; }
+    .ui-field .ui-input, .ui-field .ui-select { width: 100%; }
+    .ui-required { color: var(--ui-primary); }
+    .ui-select { position: relative; }
+    .ui-select-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      cursor: pointer;
+    }
+    .ui-select-menu {
+      position: absolute;
+      top: calc(100% + var(--ui-space-1));
+      right: 0;
+      left: 0;
+      z-index: 90;
+      display: none;
+      padding: var(--ui-space-1);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--ui-radius-control);
+      background: var(--ui-bg);
+    }
+    .ui-select.is-open .ui-select-menu { display: block; }
+    .ui-select-option {
+      width: 100%;
+      padding: var(--ui-space-2);
+      color: var(--ui-text);
+      text-align: left;
+      border: 0;
+      background: transparent;
+    }
+    .ui-select-option[aria-selected="true"] { color: var(--ui-primary); background: var(--ui-bg-soft); }
+    .ui-toast-region {
+      position: fixed;
+      top: var(--ui-space-6);
+      left: 50%;
+      z-index: 120;
+      transform: translateX(-50%);
+    }
+    .ui-toast {
+      min-width: 240px;
+      padding: var(--ui-space-3) var(--ui-space-4);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--ui-radius-control);
+      background: var(--ui-bg);
+    }
+

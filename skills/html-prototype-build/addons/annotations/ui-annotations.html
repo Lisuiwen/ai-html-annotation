@@ -16,7 +16,7 @@
 <section id="contentArea" class="ui-component-box">内容区域</section>
 
 <!--
-  prototype-assets/notes.snapshot.js：唯一标注数据源。
+  prototype/notes.snapshot.js：唯一标注数据源。
   实际生成时写入独立 UTF-8 文件，不要把该脚本块内联到 prototype.html，也不要再生成 notes.json。
 -->
 <script>
@@ -66,5 +66,5 @@ window.__PROTOTYPE_NOTES__ = {
 </script>
 
 <!-- prototype.html 末尾只保留以下只读引用；Viewer 同时提供 PrototypeViewers 状态协调器。 -->
-<script src="./prototype-assets/notes.snapshot.js"></script>
-<script src="./prototype-assets/viewer.js" data-prototype-notes-viewer></script>
+<script src="./prototype/notes.snapshot.js"></script>
+<script src="./prototype/viewer.js" data-prototype-notes-viewer></script>

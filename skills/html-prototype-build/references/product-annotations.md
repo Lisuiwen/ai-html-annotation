@@ -16,16 +16,20 @@
 
 ```text
 prototype.html
-prototype-assets/
+prototype/
+├─ prototype.css
+├─ prototype.js
 ├─ notes.snapshot.js
 └─ viewer.js
+screenshots/
+assets/                # 仅存在静态资源时创建
 ```
 
-- 外层只保留 `prototype.html`；全部正式配套文件都收进同一层 `prototype-assets/`。
-- `prototype-assets/notes.snapshot.js` 是唯一标注数据源，赋给 `window.__PROTOTYPE_NOTES__`。
-- `prototype-assets/viewer.js` 从本 Skill 的 `runtime/viewer.js` 原样复制。
-- HTML 只保留稳定锚点和 snapshot、Viewer 的相对路径引用；已有 id 时不得重复添加 note-target。
-- 禁止生成重复 `notes.json`，也禁止把同一份卡片数据内嵌进 HTML 或在外层新增其他配套目录。
+- 根目录只保留 `prototype.html`、`prototype/`、`screenshots/` 及按需生成的 `assets/`；全部页面 CSS、业务 JS、说明数据和 Viewer 都收进 `prototype/`。
+- `prototype/notes.snapshot.js` 是唯一标注数据源，赋给 `window.__PROTOTYPE_NOTES__`。
+- `prototype/viewer.js` 从本 Skill 的 `runtime/viewer.js` 原样复制。
+- HTML 保留可读的页面 DOM、稳定锚点和配套资源的相对路径引用；已有 id 时不得重复添加 note-target。
+- 禁止生成重复 `notes.json`，也禁止把同一份卡片数据内嵌进 HTML 或在根目录新增散落的配套文件。
 
 ## 标注边界
 

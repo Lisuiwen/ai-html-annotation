@@ -1,0 +1,33 @@
+<style>
+  :root { --ui-chart-height: 240px; --ui-chart-grid: var(--ui-border-soft); }
+  .ui-chart { display: grid; gap: var(--ui-space-3); min-width: 0; }
+  .ui-chart-legend { display: flex; flex-wrap: wrap; gap: var(--ui-space-3); }
+  .ui-chart-legend-button { display: inline-flex; align-items: center; gap: var(--ui-space-1); padding: 0; color: var(--ui-text-secondary); border: 0; background: transparent; }
+  .ui-chart-legend-button::before { width: var(--ui-space-2); height: var(--ui-space-2); border-radius: 50%; background: var(--ui-chart-color); content: ""; }
+  .ui-chart-legend-button[aria-pressed="false"] { color: var(--ui-text-disabled); text-decoration: line-through; }
+  .ui-chart-legend-button:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 2px; }
+  .ui-chart-graphic { display: block; width: 100%; height: var(--ui-chart-height); overflow: visible; }
+  .ui-chart-axis, .ui-chart-grid-line { stroke: var(--ui-chart-grid); stroke-width: 1; }
+  .ui-chart-label { fill: var(--ui-text-tertiary); font: var(--ui-font-size-caption) var(--ui-font); }
+  .ui-chart-line-primary { fill: none; stroke: var(--ui-primary); stroke-width: 3; }
+  .ui-chart-line-success { fill: none; stroke: var(--ui-success); stroke-width: 3; }
+  .ui-chart-point-primary { fill: var(--ui-primary); }.ui-chart-point-success { fill: var(--ui-success); }
+  .ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }
+  .ui-chart[data-status="empty"] .ui-chart-data { display: none; }
+  .ui-chart[data-status="data"] .ui-chart-empty { display: none; }
+  /* ponytail: 当前用静态 SVG 表达已给定数据；获得真实 tooltip、缩放或大数据量需求后，以 ECharts 渲染层替换 SVG，并保持 Adapter state 契约。 */
+</style>
+<section class="ui-chart ui-chart-line" id="uiChartLine" data-status="data" aria-labelledby="uiChartLineTitle">
+  <div class="ui-chart-legend" aria-label="趋势系列">
+    <button class="ui-chart-legend-button" type="button" data-series-key="primary" aria-pressed="true" style="--ui-chart-color:var(--ui-primary)">本期</button>
+    <button class="ui-chart-legend-button" type="button" data-series-key="success" aria-pressed="true" style="--ui-chart-color:var(--ui-success)">上期</button>
+  </div>
+  <svg class="ui-chart-graphic ui-chart-data" viewBox="0 0 360 240" role="img" aria-labelledby="uiChartLineTitle uiChartLineDescription">
+    <title id="uiChartLineTitle">近六个月趋势</title><desc id="uiChartLineDescription">本期与上期的月度趋势对比。</desc>
+    <g aria-hidden="true"><line class="ui-chart-grid-line" x1="40" y1="30" x2="340" y2="30"/><line class="ui-chart-grid-line" x1="40" y1="90" x2="340" y2="90"/><line class="ui-chart-grid-line" x1="40" y1="150" x2="340" y2="150"/><line class="ui-chart-axis" x1="40" y1="210" x2="340" y2="210"/></g>
+    <g class="ui-chart-series" data-series-key="primary"><polyline class="ui-chart-line-primary" points="40,172 100,145 160,158 220,98 280,114 340,58"/><circle class="ui-chart-point-primary" cx="40" cy="172" r="4"/><circle class="ui-chart-point-primary" cx="100" cy="145" r="4"/><circle class="ui-chart-point-primary" cx="160" cy="158" r="4"/><circle class="ui-chart-point-primary" cx="220" cy="98" r="4"/><circle class="ui-chart-point-primary" cx="280" cy="114" r="4"/><circle class="ui-chart-point-primary" cx="340" cy="58" r="4"/></g>
+    <g class="ui-chart-series" data-series-key="success"><polyline class="ui-chart-line-success" points="40,188 100,166 160,132 220,140 280,92 340,105"/></g>
+    <g class="ui-chart-label" aria-hidden="true"><text x="34" y="226">1月</text><text x="94" y="226">2月</text><text x="154" y="226">3月</text><text x="214" y="226">4月</text><text x="274" y="226">5月</text><text x="334" y="226">6月</text></g>
+  </svg>
+  <div class="ui-chart-empty" hidden>暂无趋势数据</div><div class="ui-chart-summary" aria-live="polite">当前显示：本期、上期</div>
+</section>

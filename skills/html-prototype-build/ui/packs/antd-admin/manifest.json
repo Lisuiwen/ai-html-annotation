@@ -482,6 +482,54 @@
       "source": "components/data/list/component.html",
       "adapter": "components/data/list/state-adapter.js",
       "requires": []
+    },
+    "data.chart-line": {
+      "category": "data",
+      "keywords": [
+        "折线图",
+        "趋势图",
+        "面积图",
+        "时间趋势"
+      ],
+      "contract": "components/data/chart-line/COMPONENT.md",
+      "source": "components/data/chart-line/component.html",
+      "adapter": "components/data/chart-line/state-adapter.js",
+      "requires": [],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-bar": {
+      "category": "data",
+      "keywords": [
+        "柱状图",
+        "对比图",
+        "分组柱图",
+        "堆叠柱图"
+      ],
+      "contract": "components/data/chart-bar/COMPONENT.md",
+      "source": "components/data/chart-bar/component.html",
+      "adapter": "components/data/chart-bar/state-adapter.js",
+      "requires": [],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-donut": {
+      "category": "data",
+      "keywords": [
+        "环图",
+        "占比图",
+        "构成图",
+        "饼图"
+      ],
+      "contract": "components/data/chart-donut/COMPONENT.md",
+      "source": "components/data/chart-donut/component.html",
+      "adapter": "components/data/chart-donut/state-adapter.js",
+      "requires": [],
+      "optional": [
+        "data.card"
+      ]
     }
   },
   "patterns": {

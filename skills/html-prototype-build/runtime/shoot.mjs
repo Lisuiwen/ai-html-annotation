@@ -16,13 +16,13 @@ const flag = (name, fallback) => {
 const isDirectExecution = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 const htmlPath = input ? resolve(input) : '';
 
-/* 正式产物将所有 HTML 配套资源收拢到 assets，截图在其中按类别归档。 */
-const outDir = resolve(flag('out', htmlPath ? join(dirname(htmlPath), 'prototype-assets', 'screenshots') : 'prototype-assets/screenshots'));
+/* 正式产物将截图与页面运行资源分开：截图位于根目录 screenshots。 */
+const outDir = resolve(flag('out', htmlPath ? join(dirname(htmlPath), 'screenshots') : 'screenshots'));
 const width = flag('width', '1440');
 const height = flag('height', '900');
 
-/* 解析唯一标注数据源：默认 <原型目录>/prototype-assets/notes.snapshot.js，可 --snapshot= 覆盖。 */
-const snapshotPath = resolve(flag('snapshot', htmlPath ? join(dirname(htmlPath), 'prototype-assets', 'notes.snapshot.js') : 'prototype-assets/notes.snapshot.js'));
+/* 解析唯一标注数据源：默认 <原型目录>/prototype/notes.snapshot.js，可 --snapshot= 覆盖。 */
+const snapshotPath = resolve(flag('snapshot', htmlPath ? join(dirname(htmlPath), 'prototype', 'notes.snapshot.js') : 'prototype/notes.snapshot.js'));
 
 /* 严格读取由作者服务生成的静态 snapshot，拒绝执行其中的任意 JavaScript。 */
 export function readNotes() {
