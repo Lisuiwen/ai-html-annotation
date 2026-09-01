@@ -151,7 +151,26 @@
     return 'note-' + index;
   }
 
-  /* 新增一张始终显示的空白卡片；需要按场景显示时再补充 when。 */
+  /* 从当前 PrototypeViewers 状态提取图层相关的 when，使新卡片仅在该图层/浮层栈下可见。 */
+  function whenForCurrentLayer() {
+    if (!window.PrototypeViewers || typeof window.PrototypeViewers.getState !== 'function') return undefined;
+    var product = window.PrototypeViewers.getState().product;
+    if (!product || Object.prototype.toString.call(product) !== '[object Object]') return undefined;
+    var when = {};
+    if (Object.prototype.hasOwnProperty.call(product, 'layer')) {
+      when['product.layer'] = product.layer;
+    }
+    if (Object.prototype.hasOwnProperty.call(product, 'layers')) {
+      when['product.layers'] = Array.isArray(product.layers) ? product.layers.slice() : product.layers;
+    }
+    /* 浮层栈场景常与 page 组合约束，列表态须同时锁定 page。 */
+    if (Object.prototype.hasOwnProperty.call(product, 'page') && Object.prototype.hasOwnProperty.call(product, 'layers')) {
+      when['product.page'] = product.page;
+    }
+    return Object.keys(when).length ? when : undefined;
+  }
+
+  /* 新增空白卡片，自动绑定当前图层；无 product 图层字段时仍始终显示。 */
   function addCard() {
     var id = createCardId();
     var card = {
@@ -160,6 +179,8 @@
       body: '双击编辑说明内容。',
       target: { selector: '', label: '' }
     };
+    var when = whenForCurrentLayer();
+    if (when) card.when = when;
     data.cards.push(card);
     renderData();
     enhance();
