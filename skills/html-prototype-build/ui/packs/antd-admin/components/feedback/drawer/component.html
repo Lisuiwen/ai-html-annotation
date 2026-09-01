@@ -7,7 +7,8 @@
 <!-- 将本结构放入左侧产品区 .ui-preview。 -->
 <button class="ui-button ui-button--primary" id="uiDemoDrawerOpen" type="button" aria-controls="uiDemoDrawer" aria-haspopup="dialog">打开 Drawer</button>
 <div class="ui-overlay ui-drawer-overlay" id="uiDemoDrawer" role="dialog" aria-modal="true" aria-labelledby="uiDrawerTitle" aria-hidden="true" hidden>
-  <aside class="ui-drawer">
+  <!-- 标注连线绑定内层面板 id（{overlayId}Panel），遮罩 id 仅用于 Adapter / ARIA。 -->
+  <aside class="ui-drawer" id="uiDemoDrawerPanel">
     <div class="ui-layer-head">
       <strong id="uiDrawerTitle">Drawer 标题</strong>
       <button class="ui-button ui-button--icon" id="uiDemoDrawerClose" type="button" aria-label="关闭">×</button>

@@ -562,11 +562,22 @@
     });
   }
 
+  /* Modal/Drawer 连线落点：内层面板才有语义边界，遮罩层 id 仅用于 Adapter。 */
+  function resolveNoteAnchor(el) {
+    if (!el || !el.classList) return el;
+    if (el.classList.contains('ui-overlay')) {
+      var panel = el.querySelector(':scope > .ui-modal, :scope > .ui-drawer');
+      if (panel) return panel;
+    }
+    return el;
+  }
+
   /* 解析稳定 ID 锚点或旧 selector；非法、失效或预览区外目标均视为未绑定。 */
   function resolveTarget(card) {
     var anchor = card && card.target && card.target.anchor;
     if (anchor) {
       var anchored = document.getElementById(anchor);
+      anchored = resolveNoteAnchor(anchored);
       return anchored && state.preview.contains(anchored) ? anchored : null;
     }
     var selector = card && card.target && card.target.selector;

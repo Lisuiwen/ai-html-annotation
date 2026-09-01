@@ -15,3 +15,9 @@ states:
 
 通过依赖 `feedback._overlay-core` 的 `state-adapter.js` 渲染 `{ open: boolean }`。最终原型负责将场景状态映射到该接口，并为打开、关闭、取消、确认按钮绑定业务事件。
 
+## 标注锚点
+
+- `.ui-overlay` 的 `id` 供浮层 Adapter、`aria-controls` 与 `role="dialog"` 使用。
+- `.ui-modal` 内层面板必须有独立稳定 `id`，推荐 `{overlayId}Panel`（如 `uiDemoModalPanel`）。
+- 说明卡片 `target.anchor` 绑定内层面板 id，不得绑定遮罩层 id（遮罩铺满产品区，连线会落在错误位置）。
+

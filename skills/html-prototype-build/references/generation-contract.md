@@ -71,6 +71,7 @@ Viewer 负责 `?scene=<id>` 与 `?collapsed=1` 的恢复；业务 Adapter 不解
 - 为满足该约束，Modal 的 `.ui-overlay` 必须作为 `.ui-preview` 内部的定位子元素，或使用等价的产品区边界定位；禁止使用覆盖整个浏览器视口的全局 `fixed inset: 0` 浮层。
 - Modal 打开时向 `PrototypeViewers` 提交浮层状态，只连接 `when` 匹配且目标可见的说明；关闭后恢复此前组合状态。
 - Drawer 若作为产品交互，也应限制在左侧产品区内，不遮挡右侧说明。
+- Modal / Drawer 必须在 `.ui-modal` / `.ui-drawer` 内层面板赋予稳定 `id`（推荐 `{overlayId}Panel`）；`target.anchor` 绑定内层面板 id。遮罩层 `.ui-overlay` 的 `id` 保留给浮层 Adapter、`aria-controls` 与 `role="dialog"`，不得作为标注连线锚点。
 
 ## 7. 交付文件
 

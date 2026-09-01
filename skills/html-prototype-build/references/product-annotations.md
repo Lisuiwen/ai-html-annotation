@@ -40,6 +40,7 @@ assets/                # 仅存在静态资源时创建
 - 场景对象可含 `label` 字段，供场景切换钮显示中文名称。
 - 一个说明绑定一个业务语义单元，不按 DOM 节点逐个拆分，也不为凑数连线。
 - `target.anchor` 优先引用元素已有的稳定 id（值不带 `#`）；无合适 id 时才用 `data-prototype-note-target` 和 `target.selector` 兜底。
+- Modal / Drawer 说明须绑定内层面板 id（`.ui-modal` / `.ui-drawer`，推荐 `{overlayId}Panel`），不得绑定遮罩层 `.ui-overlay` id。
 - `data-ui-interactive` 只标本次迭代需要用户操作的业务入口，不生成说明卡片或连线。
 - 原型必须支持 `?scene=<id>` 与 `?collapsed=1`。
 

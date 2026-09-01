@@ -210,6 +210,8 @@
         if (cur.matches('button, [role="button"], a[href], input, select, textarea')) return cur;
         if (cur.matches('h1, h2, h3, h4, h5, h6')) return cur;
         if (cur.matches('td, th')) return cur;
+        /* 浮层内点击优先绑定内层面板，避免落到遮罩或内部字段 id。 */
+        if (cur.matches('.ui-modal, .ui-drawer') && cur.closest('.ui-overlay')) return cur;
       }
       if (cur.id) return cur;
       if (cur.getAttribute && cur.getAttribute('aria-label')) return cur;
