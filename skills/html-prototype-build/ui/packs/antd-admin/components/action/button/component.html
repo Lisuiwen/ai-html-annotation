@@ -21,13 +21,21 @@
     box-shadow: var(--ui-button-shadow);
   }
   /* ponytail: hover 和 focus 视觉未采集；取得真实计算样式后替换当前近似。 */
-  .ui-button:hover:not(:disabled) { color: var(--ui-primary); border-color: var(--ui-primary); }
+  .ui-button:hover:not(:disabled):not(.ui-button--primary):not(.ui-button--text):not(.ui-button--danger-text) {
+    color: var(--ui-primary);
+    border-color: var(--ui-primary);
+  }
   .ui-button:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 1px; }
   .ui-button--primary {
     color: var(--ui-text-on-primary);
     border-color: var(--ui-primary);
     background: var(--ui-primary);
     box-shadow: var(--ui-button-primary-shadow);
+  }
+  .ui-button--primary:hover:not(:disabled) {
+    color: var(--ui-text-on-primary);
+    background: #4096ff;
+    border-color: #4096ff;
   }
   .ui-button--text {
     padding-inline: var(--ui-space-2);

@@ -37,8 +37,7 @@
   const STORE_KEY = 'html-mark:' + location.pathname;
 
   // ---------- Styles ----------
-  /* 视觉 Token 对齐 skills/html-prototype-build/ui/packs/antd-admin/foundation/tokens.css：
-     html-mark 是 drop-in 注入任意 HTML，不能依赖宿主页面的 --ui-* 变量，故写死色值。 */
+  /* html-mark 为 drop-in 评审层，刻意使用紫罗兰 #9333ea，与 antd-admin 主色 #1677ff 区分。 */
   const css = `
 .mm-ui, .mm-ui *, .mm-pin, .mm-pin *, .mm-note-pop, .mm-note-pop * {
   box-sizing: border-box;
@@ -52,53 +51,58 @@ body.mm-on.mm-armed .mm-note-pop, body.mm-on.mm-armed .mm-note-pop * { cursor: d
 body.mm-on.mm-armed .mm-note-pop textarea { cursor: text !important; }
 body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 
-/* 主色高亮：实线=已打点，虚线=悬停预览。 */
+/* 评审紫高亮：实线=已打点，虚线=悬停预览。 */
 .mm-target-hl, .mm-hover-hl {
-  outline: 2px solid #1677ff !important;
+  outline: 2px solid #9333ea !important;
   outline-offset: 2px !important;
-  box-shadow: 0 0 0 6px rgba(22,119,255,0.12) !important;
+  box-shadow: 0 0 0 6px rgba(147,51,234,0.12) !important;
   transition: outline 0.15s ease, box-shadow 0.15s ease !important;
 }
 .mm-hover-hl {
   outline-style: dashed !important;
-  box-shadow: 0 0 0 6px rgba(22,119,255,0.08) !important;
+  box-shadow: 0 0 0 6px rgba(147,51,234,0.08) !important;
 }
 
-/* ---------- Toggle: 嵌在面板头内的模式开关 ---------- */
+/* ---------- Toggle: 默认填充色块，开启后加深并加外环 ---------- */
 .mm-toggle {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 0 16px;
+  padding: 0 14px;
   height: 32px;
-  background: transparent;
-  color: rgba(0,0,0,0.65);
-  border: none;
+  background: #9333ea;
+  color: #ffffff;
+  border: 1px solid #9333ea;
   border-radius: 16px;
-  font-size: 12.5px; font-weight: 400; letter-spacing: 0.02em;
+  font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em;
   cursor: pointer; user-select: none;
-  box-shadow: none;
-  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  box-shadow: 0 2px 0 rgba(109,40,217,0.12), 0 4px 12px rgba(147,51,234,0.28);
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   font-family: inherit;
 }
-.mm-toggle:hover { color: #1677ff; }
+.mm-toggle:hover {
+  color: #ffffff;
+  background: #7e22ce;
+  border-color: #7e22ce;
+}
 .mm-toggle-dot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(0,0,0,0.25);
-  transition: background 0.2s ease;
+  background: rgba(255,255,255,0.92);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
   flex-shrink: 0;
 }
 .mm-toggle.on {
-  background: #1677ff;
-  border-color: #1677ff;
+  background: #7e22ce;
+  border-color: #7e22ce;
   color: #ffffff;
-  box-shadow: 0 2px 0 rgba(5,145,255,0.1);
-  height: 26px;
-  padding: 0 12px;
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 4px rgba(147,51,234,0.45),
+    0 4px 14px rgba(109,40,217,0.35);
 }
-.mm-toggle.on:hover { color: #ffffff; }
-.mm-toggle.on .mm-toggle-dot { background: #ffffff; }
+.mm-toggle.on:hover { color: #ffffff; background: #6b21a8; border-color: #6b21a8; }
+.mm-toggle.on .mm-toggle-dot { background: #ffffff; box-shadow: 0 0 0 2px rgba(255,255,255,0.35); }
 .mm-toggle.on .mm-toggle-txt { color: #ffffff; text-shadow: none; }
 
-/* ---------- Pin: 主蓝数字圆点 ---------- */
+/* ---------- Pin: 评审紫数字圆点 ---------- */
 @keyframes mm-pin-in {
   0%   { opacity: 0; transform: scale(0); }
   55%  { opacity: 1; transform: scale(1.22); }
@@ -107,14 +111,14 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 .mm-pin {
   position: absolute;
   width: 22px; height: 22px;
-  background: #1677ff;
+  background: #9333ea;
   color: #fff;
   border: 2px solid #ffffff;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-size: 11.5px; font-weight: 600; line-height: 1;
   z-index: 2147483500;
-  box-shadow: 0 2px 0 rgba(5,145,255,0.1), 0 4px 10px rgba(22,119,255,0.25);
+  box-shadow: 0 2px 0 rgba(109,40,217,0.1), 0 4px 10px rgba(147,51,234,0.25);
   transition: transform 0.18s cubic-bezier(0.22,1,0.36,1), box-shadow 0.18s ease, border-color 0.18s ease;
   user-select: none;
   text-shadow: none;
@@ -122,12 +126,12 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 }
 .mm-pin:hover, .mm-pin.mm-pin-hl {
   transform: scale(1.22);
-  box-shadow: 0 4px 12px rgba(22,119,255,0.35);
+  box-shadow: 0 4px 12px rgba(147,51,234,0.35);
 }
 .mm-pin.mm-pin-active {
   box-shadow:
-    0 0 0 4px rgba(22,119,255,0.25),
-    0 4px 12px rgba(22,119,255,0.35);
+    0 0 0 4px rgba(147,51,234,0.25),
+    0 4px 12px rgba(147,51,234,0.35);
 }
 .mm-pin-del {
   position: absolute; top: -7px; right: -7px;
@@ -140,7 +144,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   border: 1px solid #d9d9d9;
   box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
-.mm-pin-del:hover { color: #1677ff; border-color: #1677ff; }
+.mm-pin-del:hover { color: #9333ea; border-color: #9333ea; }
 .mm-pin:hover .mm-pin-del { display: flex; }
 
 /* ---------- Note popup: 白底卡片 ---------- */
@@ -189,8 +193,8 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   font-family: inherit;
 }
 .mm-note-pop textarea:focus {
-  border-color: #1677ff;
-  box-shadow: 0 0 0 2px rgba(22,119,255,0.14);
+  border-color: #9333ea;
+  box-shadow: 0 0 0 2px rgba(147,51,234,0.14);
 }
 .mm-note-pop textarea::placeholder { color: rgba(0,0,0,0.45); }
 .mm-note-pop-hint {
@@ -220,7 +224,12 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   color: rgba(0,0,0,0.88);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.mm-panel:not(.on):hover { border-color: #1677ff; }
+.mm-panel:not(.on) {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.mm-panel:not(.on):hover { border-color: transparent; }
 .mm-panel:not(.on) .mm-panel-body,
 .mm-panel:not(.on) .mm-panel-count,
 .mm-panel:not(.on) .mm-panel-iconbtn { display: none; }
@@ -252,7 +261,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 .mm-panel-count {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 18px; height: 18px; padding: 0 5px;
-  background: #1677ff;
+  background: #9333ea;
   color: #fff;
   border-radius: 9px;
   font-size: 10px; font-weight: 600;
@@ -270,7 +279,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   flex-shrink: 0;
 }
 .mm-panel-iconbtn:hover {
-  color: #1677ff;
+  color: #9333ea;
   background: #fafafa;
 }
 
@@ -302,28 +311,28 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 .mm-item:hover {
-  border-color: #1677ff;
+  border-color: #9333ea;
   box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 .mm-item.active {
-  border-color: #1677ff;
-  box-shadow: 0 0 0 2px rgba(22,119,255,0.14);
+  border-color: #9333ea;
+  box-shadow: 0 0 0 2px rgba(147,51,234,0.14);
 }
 .mm-item.has-note::before {
   content: ''; position: absolute; left: 0; top: 0; bottom: 0;
   width: 3px;
-  background: #1677ff;
+  background: #9333ea;
 }
 .mm-item-num {
   width: 22px; height: 22px;
-  background: #1677ff; color: #fff;
+  background: #9333ea; color: #fff;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font: 600 11px/1 inherit;
   flex-shrink: 0;
 }
 .mm-item.has-note .mm-item-num {
-  background: #1677ff;
+  background: #9333ea;
 }
 .mm-item-body { flex: 1; min-width: 0; }
 .mm-item-note {
@@ -358,7 +367,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 }
 .mm-item:hover .mm-item-del { display: block; }
 .mm-item-del:hover {
-  color: #1677ff;
+  color: #9333ea;
   background: #fafafa;
 }
 
@@ -397,7 +406,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   font-family: inherit;
   transition: border-color 0.15s ease;
 }
-.mm-fmt-select:focus, .mm-fmt-select:hover { border-color: #1677ff; }
+.mm-fmt-select:focus, .mm-fmt-select:hover { border-color: #9333ea; }
 .mm-btn {
   height: 32px; padding: 0 14px;
   border-radius: 6px;
@@ -410,21 +419,21 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   font-family: inherit;
 }
 .mm-btn:hover {
-  color: #1677ff;
-  border-color: #1677ff;
+  color: #9333ea;
+  border-color: #9333ea;
 }
 .mm-btn.primary {
-  background: #1677ff;
+  background: #9333ea;
   color: #fff;
-  border-color: #1677ff;
+  border-color: #9333ea;
   flex: 1;
-  box-shadow: 0 2px 0 rgba(5,145,255,0.1);
+  box-shadow: 0 2px 0 rgba(109,40,217,0.1);
   text-shadow: none;
 }
 .mm-btn.primary:hover {
-  background: #1677ff;
+  background: #9333ea;
   color: #fff;
-  border-color: #1677ff;
+  border-color: #9333ea;
 }
 
 /* ---------- Toast: 白底中性提示 ---------- */
@@ -446,11 +455,11 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 .mm-toast.mm-undoable { pointer-events: auto; }
 .mm-undo-btn {
   background: none; border: none; cursor: pointer;
-  color: #1677ff; font-weight: 600; font-size: 12.5px;
+  color: #9333ea; font-weight: 600; font-size: 12.5px;
   font-family: inherit; padding: 0; margin-left: 12px;
   text-decoration: underline; text-underline-offset: 2px;
 }
-.mm-undo-btn:hover { color: #1677ff; }
+.mm-undo-btn:hover { color: #9333ea; }
 
 @media (prefers-reduced-motion: reduce) {
   .mm-pin, .mm-toggle, .mm-item, .mm-btn, .mm-panel-iconbtn, .mm-toast,

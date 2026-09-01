@@ -6,7 +6,7 @@
 
 ## 最小路径
 
-1. 选择唯一 foundation，再按 action / navigation / form / data / feedback 各选择最多一个兼容 provider，并用 `node <skill-root>/scripts/resolve-pack.mjs --select=<id>` 解析最小依赖闭包。
+1. 选择唯一 foundation，再按 action / navigation / form / data / feedback 各选择最多一个兼容 provider，并用 `node <skill-root>/scripts/resolve-pack.mjs --select=<id[,id...]>` 解析最小依赖闭包。
 2. 生成 snapshot + Viewer；所有原型都通过 Viewer 管理场景和 state。
 3. 交付前核对场景、锚点、Token 和正式文件结构。
 

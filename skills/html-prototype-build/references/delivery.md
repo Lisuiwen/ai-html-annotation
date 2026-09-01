@@ -15,7 +15,7 @@
 ### 正式交付稿
 
 - 运行 `node <skill-root>/runtime/prepare-mark.mjs <prototype.html> --remove`。
-- HTML 中不得存在 Author Loader、Editor、html-mark、Inspector 或源码定位 token。
+- HTML 中不得存在 Author Loader、Editor、html-mark、Inspector、源码定位 token，以及任何内联标注编辑脚本（含把说明写入 localStorage 的 `file://` 变通方案）。
 - 根目录保留 `prototype.html`、`prototype/` 与 `screenshots/`；页面 CSS、业务 JS、snapshot 与 Viewer 均收进 `prototype/`。图片、字体等静态资源仅在需要时收进 `assets/`，不要在根目录散落 CSS、JS、snapshot 或 Viewer。
 
 ## 迭代分流

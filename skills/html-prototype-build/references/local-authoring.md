@@ -18,6 +18,8 @@ node <skill-root>/runtime/serve.mjs <prototype.html> --snapshot=prototype/notes.
 
 打开 `http://127.0.0.1:4178/<prototype.html>`。
 
+`file://` 双击只用于只读预览正式说明；若要改卡片文案、顺序、锚点或增删说明，必须启动本服务，未配置 `--snapshot` 时 Editor 保存会被拒绝。
+
 ## 工具边界
 
 - 编辑说明卡片 / 稳定 selector → 使用 Editor；未配置 `--snapshot` 时保存会被拒绝。

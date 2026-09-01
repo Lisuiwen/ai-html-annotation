@@ -35,7 +35,9 @@ assets/                # 仅存在静态资源时创建
 
 - snapshot 使用 `schemaVersion: 2` 和显式 `scenarios`；场景保存页面、浮层、Tab、数据态等可恢复的组合 state。
 - 标注显示条件读取 `PrototypeViewers` state；标注不得创建独立业务状态。
-- 卡片用 `when` 匹配组合状态；无 `when` 的卡片始终显示。
+- 卡片用 `when` 匹配组合状态；无 `when` 的卡片始终显示。列表态卡片须同时约束 `product.layers` 为空数组，避免弹窗打开时仍显示列表说明。
+- 可选 `section` 字段为右栏插入分组标题；同组卡片相邻排列，标题仅在组内首卡前渲染一次。
+- 场景对象可含 `label` 字段，供场景切换钮显示中文名称。
 - 一个说明绑定一个业务语义单元，不按 DOM 节点逐个拆分，也不为凑数连线。
 - `target.anchor` 优先引用元素已有的稳定 id（值不带 `#`）；无合适 id 时才用 `data-prototype-note-target` 和 `target.selector` 兜底。
 - `data-ui-interactive` 只标本次迭代需要用户操作的业务入口，不生成说明卡片或连线。

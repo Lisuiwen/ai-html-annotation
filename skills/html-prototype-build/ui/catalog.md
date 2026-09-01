@@ -11,7 +11,7 @@
 3. provider 必须在自身 `PACK.md` 中声明兼容当前 foundation。
 4. 用户材料能够确定 UI 类型时选择对应包；无法确定时先询问，禁止默认套用任一视觉体系。
 5. Addon 不属于 UI provider，可在不改变产品视觉 Token 的前提下按需叠加。
-6. 选定包后运行 `node <skill-root>/scripts/resolve-pack.mjs --pack=<pack-id> --select=<id>`，按输出读取最小依赖闭包；只有维护索引或排查解析器时才直接读取完整 `manifest.json`，禁止按类别加载全部组件。
+6. 选定包后运行 `node <skill-root>/scripts/resolve-pack.mjs --pack=<pack-id> --select=<id[,id...]>`，按输出读取最小依赖闭包；只有维护索引或排查解析器时才直接读取完整 `manifest.json`，禁止按类别加载全部组件。
 
 ## 当前组合
 

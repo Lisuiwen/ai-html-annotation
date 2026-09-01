@@ -34,8 +34,9 @@
   function installStyles() {
     var style = document.createElement('style');
     style.textContent = [
-      '.pn-notes{display:flex;flex-direction:column}',
-      '.pn-head,.pn-cards{flex:0 0 auto}',
+      '.pn-notes{display:flex;flex-direction:column;min-height:0;height:100%;overflow:hidden}',
+      '.pn-head{flex:0 0 auto}',
+      '.pn-cards{flex:1 1 auto;min-height:0;overflow-y:auto}',
       '.pn-author-toolbar{display:flex;align-items:center}',
       '.pn-tool-icon{display:grid;place-items:center;width:32px;height:32px;padding:0;border:0;border-radius:50%;background:var(--ui-primary,#1677ff);color:#fff;box-shadow:none;cursor:pointer;font:500 20px/1 system-ui,sans-serif}',
       '.pn-tool-icon:hover{filter:brightness(.94)}',
@@ -53,6 +54,7 @@
       '.pn-card-icon{display:grid;place-items:center;width:24px;height:24px;padding:0;background:var(--ui-bg,#fff);color:var(--ui-text-secondary,#595959);cursor:pointer}',
       '.pn-card-icon:hover{color:#ff8d6b}',
       '.pn-confirm-pop{position:absolute;top:36px;right:8px;z-index:10025;min-width:160px;padding:10px 12px;border:1px solid var(--ui-border,#d9d9d9);border-radius:8px;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.16);font-size:12px;color:var(--ui-text,#262626)}',
+      '.pn-confirm-pop.pn-confirm-pop--fixed{position:fixed;z-index:2147483000}',
       '.pn-confirm-pop p{margin:0 0 8px;word-break:break-all}',
       '.pn-confirm-pop-actions{display:flex;justify-content:flex-end;gap:6px}',
       '.pn-confirm-pop-actions button{padding:4px 10px;border:1px solid var(--ui-border,#d9d9d9);border-radius:6px;background:#fff;color:#262626;cursor:pointer}',
@@ -174,17 +176,27 @@
   function requestDelete(card, article, icon) {
     closeConfirm();
     var pop = document.createElement('div');
-    pop.className = 'pn-confirm-pop';
+    pop.className = 'pn-confirm-pop pn-confirm-pop--fixed';
     pop.innerHTML = '<p>删除「' + (card.title || '未命名说明') + '」？</p><div class="pn-confirm-pop-actions"><button type="button" class="pn-cancel">取消</button><button type="button" class="pn-danger">删除</button></div>';
     pop.querySelector('.pn-cancel').addEventListener('click', closeConfirm);
     pop.querySelector('.pn-danger').addEventListener('click', function () {
+      closeConfirm();
       data.cards = data.cards.filter(function (item) { return item.id !== card.id; });
-      article.remove();
       renderData();
       enhance();
       save();
     });
-    icon.parentElement.appendChild(pop);
+    document.body.appendChild(pop);
+    /* 挂到 body 并 fixed 定位，避免被说明栏底部工具钮盖住。 */
+    var rect = icon.getBoundingClientRect();
+    var gap = 6;
+    var top = rect.bottom + gap;
+    var left = rect.right - pop.offsetWidth;
+    if (left < 8) left = 8;
+    if (left + pop.offsetWidth > window.innerWidth - 8) left = window.innerWidth - pop.offsetWidth - 8;
+    if (top + pop.offsetHeight > window.innerHeight - 8) top = rect.top - pop.offsetHeight - gap;
+    pop.style.top = Math.max(8, top) + 'px';
+    pop.style.left = left + 'px';
   }
 
   /* 与 Mark 对齐：从点击点向上找最近可绑定语义单元。 */
