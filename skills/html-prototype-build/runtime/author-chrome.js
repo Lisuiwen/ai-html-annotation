@@ -35,16 +35,16 @@
     document.head.appendChild(style);
   }
 
-  /* 读取 ?collapsed=1，供 shoot.mjs 与深链纯页面预览共用。 */
+  /* 读取 ?product-only=1，供 shoot.mjs 截图时隐藏全部作者 overlay。 */
   function readFromUrl() {
     try {
-      return new URLSearchParams(window.location.search).get('collapsed') === '1';
+      return new URLSearchParams(window.location.search).get('product-only') === '1';
     } catch (_) {
       return false;
     }
   }
 
-  /* 进入纯页面态：折叠说明 chrome 并隐藏全部作者 overlay。 */
+  /* 进入纯页面态：隐藏全部作者 overlay 与交互闪电。 */
   function enable() {
     installStyles();
     document.body.classList.add(BODY_CLASS);
@@ -61,7 +61,7 @@
     return document.body.classList.contains(BODY_CLASS);
   }
 
-  /* URL 带 collapsed=1 时自动进入纯页面态。 */
+  /* URL 带 product-only=1 时自动进入纯页面态。 */
   function applyFromUrl() {
     if (readFromUrl()) enable();
   }

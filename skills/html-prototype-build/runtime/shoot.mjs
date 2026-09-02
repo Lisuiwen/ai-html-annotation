@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* 无头截图：按显式场景分别截图。
-   Viewer 在 collapsed=1 时进入纯页面态，自动隐藏 Mark、右下角折叠钮与交互闪电。 */
+   Viewer 在 collapsed=1&product-only=1 时进入纯页面态，自动隐藏 Mark、右下角折叠钮与交互闪电。 */
 import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs';
 import { spawn, spawnSync } from 'node:child_process';
 import { dirname, join, relative, resolve } from 'node:path';
@@ -77,7 +77,7 @@ function collectShots() {
 /* 逐场景执行截图；统一使用 scene 查询参数并折叠右栏与连线。 */
 function shoot(shot, exe) {
   return new Promise((resolveShot) => {
-    const url = pathToFileURL(htmlPath).href + '?' + shot.query + '=' + encodeURIComponent(shot.id) + '&collapsed=1';
+    const url = pathToFileURL(htmlPath).href + '?' + shot.query + '=' + encodeURIComponent(shot.id) + '&collapsed=1&product-only=1';
     const outFile = resolve(outDir, shot.id + '.png');
     /* 双重验证最终路径仍在输出目录中，防止未来放宽名称规则后引入穿越。 */
     if (relative(outDir, outFile).startsWith('..')) {

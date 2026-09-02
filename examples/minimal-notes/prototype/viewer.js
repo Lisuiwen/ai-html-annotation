@@ -35,16 +35,16 @@
     document.head.appendChild(style);
   }
 
-  /* 读取 ?collapsed=1，供 shoot.mjs 与深链纯页面预览共用。 */
+  /* 读取 ?product-only=1，供 shoot.mjs 截图时隐藏全部作者 overlay。 */
   function readFromUrl() {
     try {
-      return new URLSearchParams(window.location.search).get('collapsed') === '1';
+      return new URLSearchParams(window.location.search).get('product-only') === '1';
     } catch (_) {
       return false;
     }
   }
 
-  /* 进入纯页面态：折叠说明 chrome 并隐藏全部作者 overlay。 */
+  /* 进入纯页面态：隐藏全部作者 overlay 与交互闪电。 */
   function enable() {
     installStyles();
     document.body.classList.add(BODY_CLASS);
@@ -61,7 +61,7 @@
     return document.body.classList.contains(BODY_CLASS);
   }
 
-  /* URL 带 collapsed=1 时自动进入纯页面态。 */
+  /* URL 带 product-only=1 时自动进入纯页面态。 */
   function applyFromUrl() {
     if (readFromUrl()) enable();
   }
@@ -316,16 +316,20 @@
     style.id = 'prototype-notes-viewer-style';
     style.textContent = [
       'body{overflow:hidden}',
-      '.pn-page{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.22fr);height:100vh;overflow:hidden}',
+      '.pn-page{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.22fr);height:100vh;overflow:hidden;min-height:0}',
       '.pn-page.pn-collapsed{grid-template-columns:minmax(0,1fr) 0}',
       '.pn-preview{position:relative;min-width:0;overflow:auto;border-right:1px solid var(--ui-border,#d9d9d9)}',
-      '.pn-notes{position:relative;z-index:75;min-width:0;overflow:auto;padding:16px;background:var(--ui-bg-soft,#f5f5f5);color:var(--ui-text,#262626)}',
-      '.pn-collapsed .pn-notes{overflow:visible;padding:0;visibility:hidden}',
-      '.pn-head{padding-bottom:12px;margin-bottom:16px;border-bottom:1px solid var(--ui-border,#d9d9d9)}',
+      '.pn-notes{position:relative;z-index:75;min-width:0;min-height:0;height:100%;overflow:hidden;padding:16px;background:var(--ui-bg-soft,#f5f5f5);color:var(--ui-text,#262626);display:flex;flex-direction:column}',
+      '.pn-collapsed .pn-notes{overflow:visible;padding:0;min-width:0}',
+      '.pn-collapsed .pn-head,.pn-collapsed .pn-cards{display:none}',
+      '.pn-head{flex:0 0 auto;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid var(--ui-border,#d9d9d9)}',
       '.pn-head strong{display:block;font-size:16px}',
       '.pn-head span,.pn-card p{color:var(--ui-text-secondary,#595959);font-size:12px;line-height:18px}',
       '.pn-card p{margin:4px 0 0}',
-      '.pn-cards{display:grid;align-content:start;align-items:start;grid-auto-rows:max-content;gap:12px}',
+      '.pn-cards{flex:1 1 auto;min-height:0;overflow-y:auto;display:grid;align-content:start;align-items:start;grid-auto-rows:max-content;gap:12px;padding-bottom:4px}',
+      '.pn-section{margin:4px 0 0;padding-top:8px;color:var(--ui-text-secondary,#595959);font-size:12px;font-weight:600;line-height:18px}',
+      '.pn-section:first-child{margin-top:0;padding-top:0}',
+      '.pn-section:not(:first-child){border-top:1px solid var(--ui-border,#d9d9d9);padding-top:12px}',
       '.pn-card{padding:12px;border:1px solid var(--ui-border,#d9d9d9);border-radius:var(--ui-radius-container,8px);background:var(--ui-bg,#fff)}',
       '.pn-card.pn-highlighted{border-color:var(--ui-primary,#1677ff);box-shadow:0 0 0 2px var(--ui-border-subtle,#e6f4ff)}',
       '.pn-card-title{display:flex;gap:8px;align-items:center;font-weight:600}',
@@ -335,11 +339,12 @@
       '.pn-line{fill:none;stroke:var(--ui-primary,#1677ff);stroke-width:2;opacity:.55}.pn-line.pn-highlighted{opacity:1;stroke-width:3}',
       '.pn-line-badge{fill:var(--ui-primary,#1677ff)}',
       '.pn-line-text{fill:var(--ui-text-on-primary,#fff);font-size:11px;font-weight:600;text-anchor:middle;dominant-baseline:central}',
-      '.pn-panel-actions{position:fixed;right:16px;bottom:16px;z-index:90;display:flex;align-items:center;gap:8px}',
-      '.pn-toggle{display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid var(--ui-border,#d9d9d9);border-radius:50%;background:var(--ui-bg,#fff);color:var(--ui-text-secondary,#595959);box-shadow:0 4px 12px rgba(0,0,0,.12)}',
+      '.pn-panel-actions{flex:0 0 auto;position:relative;z-index:2;display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:10px 0 0;margin-top:8px;border-top:1px solid var(--ui-border,#d9d9d9);background:var(--ui-bg-soft,#f5f5f5)}',
+      '.pn-toggle{display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid var(--ui-border,#d9d9d9);border-radius:50%;background:var(--ui-bg,#fff);color:var(--ui-text-secondary,#595959);box-shadow:0 4px 12px rgba(0,0,0,.12);cursor:pointer}',
       '.pn-scene-switch{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 10px;border:1px solid var(--ui-border,#d9d9d9);border-radius:16px;background:var(--ui-bg,#fff);color:var(--ui-text-secondary,#595959);box-shadow:0 4px 12px rgba(0,0,0,.12);font-size:12px;line-height:1;cursor:pointer}',
       /* 折叠右栏时只保留展开钮；场景切换与作者加号一并隐藏。 */
-      '.pn-page.pn-collapsed~.pn-panel-actions .pn-scene-switch,.pn-page.pn-collapsed~.pn-panel-actions .pn-author-toolbar{display:none!important}',
+      '.pn-page.pn-collapsed .pn-panel-actions{position:fixed;right:16px;bottom:16px;z-index:90;margin-top:0;padding:0;border-top:0;background:transparent}',
+      '.pn-page.pn-collapsed .pn-panel-actions .pn-scene-switch,.pn-page.pn-collapsed .pn-panel-actions .pn-author-toolbar{display:none!important}',
       '.pn-page.pn-collapsed~.pn-connections{display:none}',
       '.pn-mobile-toggle{display:none}',
       '[data-ui-interactive]{position:relative}',
@@ -381,7 +386,7 @@
     state.page.appendChild(state.notes);
     document.body.insertBefore(state.page, viewerScript);
     document.body.insertBefore(state.svg, viewerScript);
-    document.body.insertBefore(state.actions, viewerScript);
+    state.notes.appendChild(state.actions);
     buildControls(viewerScript);
   }
 
@@ -407,6 +412,16 @@
     window.PrototypeViewers.activateScenario(next);
   }
 
+  /* 读取场景可选 label，用于场景切换钮展示。 */
+  function scenarioLabel(id) {
+    var definitions = state.data && state.data.scenarios;
+    if (!definitions || !id) return id || '';
+    var config = Array.isArray(definitions)
+      ? definitions.filter(function (scenario) { return scenario && scenario.id === id; })[0]
+      : definitions[id];
+    return (config && config.label) || id;
+  }
+
   /* 同步场景切换钮文案与位置（加号左侧；无加号时在折叠钮左侧）。 */
   function ensureSceneSwitch() {
     var ids = listScenarioIds();
@@ -424,8 +439,9 @@
       btn.addEventListener('click', cycleScenario);
     }
     var active = window.PrototypeViewers.getActiveScenario() || ids[0];
-    btn.textContent = active;
-    btn.title = '切换场景（当前：' + active + '）';
+    var label = scenarioLabel(active);
+    btn.textContent = label;
+    btn.title = '切换场景（当前：' + label + '）';
     var before = state.actions.querySelector('.pn-author-toolbar') || state.actions.querySelector('.pn-toggle');
     if (before) state.actions.insertBefore(btn, before);
     else state.actions.appendChild(btn);
@@ -476,7 +492,18 @@
 
     state.cards = document.createElement('div');
     state.cards.className = 'pn-cards';
+    var lastSection = '';
     visibleCards().forEach(function (card, index) {
+      var section = card.section ? String(card.section).trim() : '';
+      if (section && section !== lastSection) {
+        var heading = document.createElement('div');
+        heading.className = 'pn-section';
+        heading.textContent = section;
+        state.cards.appendChild(heading);
+        lastSection = section;
+      } else if (!section) {
+        lastSection = '';
+      }
       var article = document.createElement('article');
       article.className = 'pn-card';
       article.dataset.noteId = card.id;
@@ -489,7 +516,7 @@
     });
     state.notes.appendChild(state.cards);
     ensureSceneSwitch();
-    document.body.appendChild(state.actions);
+    state.notes.appendChild(state.actions);
     scheduleDraw();
   }
 
@@ -537,11 +564,22 @@
     });
   }
 
+  /* Modal/Drawer 连线落点：内层面板才有语义边界，遮罩层 id 仅用于 Adapter。 */
+  function resolveNoteAnchor(el) {
+    if (!el || !el.classList) return el;
+    if (el.classList.contains('ui-overlay')) {
+      var panel = el.querySelector(':scope > .ui-modal, :scope > .ui-drawer');
+      if (panel) return panel;
+    }
+    return el;
+  }
+
   /* 解析稳定 ID 锚点或旧 selector；非法、失效或预览区外目标均视为未绑定。 */
   function resolveTarget(card) {
     var anchor = card && card.target && card.target.anchor;
     if (anchor) {
       var anchored = document.getElementById(anchor);
+      anchored = resolveNoteAnchor(anchored);
       return anchored && state.preview.contains(anchored) ? anchored : null;
     }
     var selector = card && card.target && card.target.selector;
@@ -663,11 +701,10 @@
     }
   }
 
-  /* 按 URL 折叠参数同步右栏，并进入纯页面态（与 author-chrome.js / Inspector 共用 pa-product-only）。 */
+  /* 按 URL 折叠参数同步右栏；纯页面截图态改由 ?product-only=1 触发。 */
   function applyUrlCollapsed() {
     if (!readUrlCollapsed()) return;
     state.page.classList.add('pn-collapsed');
-    if (window.PrototypeAuthorChrome) window.PrototypeAuthorChrome.enable();
     var toggle = state.actions.querySelector('.pn-toggle');
     if (toggle) {
       toggle.title = '显示说明';
