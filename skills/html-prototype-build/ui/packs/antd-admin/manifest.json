@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "antd-admin",
-  "version": 2,
+  "version": 3,
   "classPrefix": "ui-",
   "tokenPrefix": "ui-",
   "foundation": {
@@ -126,7 +126,10 @@
       "requires": [],
       "optional": [
         "form.input",
-        "form.select"
+        "form.select",
+        "form.textarea",
+        "form.date-picker",
+        "form.switch"
       ]
     },
     "form.search": {
@@ -530,6 +533,111 @@
       "optional": [
         "data.card"
       ]
+    },
+    "form.textarea": {
+      "category": "form",
+      "keywords": [
+        "多行输入",
+        "备注",
+        "描述",
+        "文本域"
+      ],
+      "contract": "components/form/textarea/COMPONENT.md",
+      "source": "components/form/textarea/component.html",
+      "adapter": "components/form/textarea/state-adapter.js",
+      "requires": [],
+      "optional": [
+        "form.field"
+      ]
+    },
+    "form.switch": {
+      "category": "form",
+      "keywords": [
+        "开关",
+        "切换",
+        "启用禁用"
+      ],
+      "contract": "components/form/switch/COMPONENT.md",
+      "source": "components/form/switch/component.html",
+      "adapter": "components/form/switch/state-adapter.js",
+      "requires": [],
+      "optional": [
+        "form.field"
+      ]
+    },
+    "form.date-picker": {
+      "category": "form",
+      "keywords": [
+        "日期",
+        "截止日期",
+        "单日期",
+        "日期选择"
+      ],
+      "contract": "components/form/date-picker/COMPONENT.md",
+      "source": "components/form/date-picker/component.html",
+      "adapter": "components/form/date-picker/state-adapter.js",
+      "requires": [],
+      "optional": [
+        "form.field"
+      ]
+    },
+    "form.upload": {
+      "category": "form",
+      "keywords": [
+        "上传",
+        "附件",
+        "文件",
+        "拖拽上传"
+      ],
+      "contract": "components/form/upload/COMPONENT.md",
+      "source": "components/form/upload/component.html",
+      "adapter": "components/form/upload/state-adapter.js",
+      "requires": [],
+      "optional": [
+        "action.button",
+        "feedback.progress"
+      ]
+    },
+    "data.avatar": {
+      "category": "data",
+      "keywords": [
+        "头像",
+        "负责人",
+        "用户",
+        "参与人"
+      ],
+      "contract": "components/data/avatar/COMPONENT.md",
+      "source": "components/data/avatar/component.html",
+      "adapter": "components/data/avatar/state-adapter.js",
+      "requires": []
+    },
+    "feedback.tooltip": {
+      "category": "feedback",
+      "keywords": [
+        "提示",
+        "Tooltip",
+        "悬停说明"
+      ],
+      "contract": "components/feedback/tooltip/COMPONENT.md",
+      "source": "components/feedback/tooltip/component.html",
+      "adapter": "components/feedback/tooltip/state-adapter.js",
+      "requires": [
+        "action.button"
+      ]
+    },
+    "feedback.popover": {
+      "category": "feedback",
+      "keywords": [
+        "气泡卡片",
+        "Popover",
+        "浮层内容"
+      ],
+      "contract": "components/feedback/popover/COMPONENT.md",
+      "source": "components/feedback/popover/component.html",
+      "adapter": "components/feedback/popover/state-adapter.js",
+      "requires": [
+        "action.button"
+      ]
     }
   },
   "patterns": {
@@ -614,6 +722,10 @@
       ],
       "optional": [
         "form.select",
+        "form.textarea",
+        "form.date-picker",
+        "form.switch",
+        "form.upload",
         "feedback.alert"
       ]
     }

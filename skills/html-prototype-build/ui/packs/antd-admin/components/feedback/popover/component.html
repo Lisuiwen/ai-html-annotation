@@ -1,0 +1,8 @@
+<style>
+  .ui-popover { position: relative; display: inline-block; }
+  .ui-popover-panel { position: absolute; z-index: 45; top: calc(100% + var(--ui-space-1)); left: 0; width: max-content; max-width: 280px; border: 1px solid var(--ui-border); border-radius: var(--ui-radius-container); background: var(--ui-bg); }
+  .ui-popover-title { display: block; padding: var(--ui-space-2) var(--ui-space-3); border-bottom: 1px solid var(--ui-border); font-weight: 600; color: var(--ui-text); }
+  .ui-popover-content { display: block; padding: var(--ui-space-3); color: var(--ui-text-secondary); }
+  /* ponytail: 定位/点击外部/焦点由业务 Adapter 处理。 */
+</style>
+<span class="ui-popover" id="uiPopover"><button class="ui-button ui-popover-trigger" type="button" aria-controls="uiPopoverPanel" aria-expanded="false">打开</button><span class="ui-popover-panel" id="uiPopoverPanel" hidden><span class="ui-popover-title">标题</span><span class="ui-popover-content">内容区域由 DOM 保留，Adapter 只同步 title 与 open。</span></span></span>

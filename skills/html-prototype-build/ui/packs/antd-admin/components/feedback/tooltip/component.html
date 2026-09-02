@@ -1,0 +1,6 @@
+<style>
+  .ui-tooltip { position: relative; display: inline-block; --ui-tooltip-max-width: 250px; }
+  .ui-tooltip-panel { position: absolute; z-index: 45; top: calc(100% + var(--ui-space-1)); left: 0; max-width: var(--ui-tooltip-max-width); padding: var(--ui-space-1) var(--ui-space-2); border-radius: var(--ui-radius-container); background: rgba(0, 0, 0, 0.85); color: #fff; font-size: 12px; line-height: 1.5; white-space: normal; }
+  /* ponytail: 不做 hover 时序/portal；显隐时序与定位由最终原型 Adapter 处理。 */
+</style>
+<span class="ui-tooltip" id="uiTooltip"><button class="ui-button ui-tooltip-trigger" type="button" aria-describedby="uiTooltipPanel">悬停提示</button><span class="ui-tooltip-panel" id="uiTooltipPanel" role="tooltip" hidden>提示文本</span></span>

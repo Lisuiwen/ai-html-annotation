@@ -2,7 +2,7 @@
 id: form.field
 category: form
 requires: []
-optional: [form.input, form.select]
+optional: [form.input, form.select, form.textarea, form.date-picker, form.switch]
 states:
   confirmed: [default]
   provisional: [focus, error]

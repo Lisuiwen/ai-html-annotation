@@ -1,0 +1,45 @@
+<style>
+  :root { --ui-switch-width: 44px; --ui-switch-height: 22px; --ui-switch-handle-size: 18px; }
+  .ui-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: var(--ui-switch-width);
+    height: var(--ui-switch-height);
+    padding: 0;
+    border: 0;
+    border-radius: calc(var(--ui-switch-height) / 2);
+    background: var(--ui-border);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .ui-switch.is-checked { background: var(--ui-primary); }
+  .ui-switch:disabled { cursor: not-allowed; opacity: 0.55; }
+  .ui-switch-handle {
+    position: absolute;
+    left: 2px;
+    width: var(--ui-switch-handle-size);
+    height: var(--ui-switch-handle-size);
+    border-radius: 50%;
+    background: var(--ui-bg);
+    box-shadow: 0 1px 3px var(--ui-border-subtle);
+    transition: transform 0.2s;
+  }
+  .ui-switch.is-checked .ui-switch-handle { transform: translateX(calc(var(--ui-switch-width) - var(--ui-switch-handle-size) - 4px)); }
+  /* ponytail: loading 视觉未采集；取得真实加载态后替换当前近似。 */
+  .ui-switch.is-loading { opacity: 0.7; cursor: wait; }
+  .ui-switch.is-loading .ui-switch-handle::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 2px solid var(--ui-border);
+    border-top-color: var(--ui-primary);
+    border-radius: 50%;
+    animation: ui-switch-spin 0.8s linear infinite;
+  }
+  @keyframes ui-switch-spin { to { transform: rotate(360deg); } }
+</style>
+
+<button class="ui-switch" id="uiSwitch" type="button" role="switch" aria-checked="false">
+  <span class="ui-switch-handle" aria-hidden="true"></span>
+</button>

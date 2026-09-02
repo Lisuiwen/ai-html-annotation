@@ -1,0 +1,24 @@
+<style>
+  :root { --ui-textarea-min-rows: 3; }
+  .ui-textarea-field { display: grid; gap: var(--ui-space-2); }
+  .ui-textarea {
+    width: 100%;
+    min-height: calc(var(--ui-textarea-min-rows) * var(--ui-line-height-body) + var(--ui-control-padding-inline) * 2);
+    padding: var(--ui-control-padding-inline);
+    color: var(--ui-text);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg);
+    resize: vertical;
+  }
+  .ui-textarea::placeholder { color: var(--ui-text-tertiary); }
+  .ui-textarea:disabled { color: var(--ui-text-disabled); background: var(--ui-bg-soft); }
+  .ui-textarea-field.has-error .ui-textarea { border-color: var(--ui-error); }
+  /* ponytail: focus 视觉未采集；取得真实焦点态后替换当前可见焦点近似。 */
+  .ui-textarea:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 1px; }
+</style>
+
+<label class="ui-textarea-field" id="uiTextarea">
+  <span>字段名称</span>
+  <textarea class="ui-textarea" placeholder="请输入" rows="3"></textarea>
+</label>

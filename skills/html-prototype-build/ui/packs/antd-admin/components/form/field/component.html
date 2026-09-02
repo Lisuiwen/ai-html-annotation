@@ -12,7 +12,9 @@
   }
   .ui-field-label { color: var(--ui-text-secondary); white-space: nowrap; }
   .ui-field > .ui-input,
-  .ui-field .ui-select-trigger {
+  .ui-field > .ui-textarea,
+  .ui-field .ui-select-trigger,
+  .ui-field .ui-date-picker-trigger {
     width: 100%;
     min-width: 0;
     height: auto;
@@ -22,9 +24,18 @@
     background: transparent;
     box-shadow: none;
   }
-  .ui-field > .ui-select { width: 100%; min-width: 0; }
+  .ui-field > .ui-textarea {
+    min-height: calc(3 * var(--ui-line-height-body));
+    padding-block: var(--ui-space-1);
+    resize: vertical;
+  }
+  .ui-field > .ui-select,
+  .ui-field > .ui-date-picker { width: 100%; min-width: 0; }
+  .ui-field > .ui-switch { flex-shrink: 0; }
   .ui-field .ui-input:focus-visible,
-  .ui-field .ui-select-trigger:focus-visible { outline: none; }
+  .ui-field .ui-textarea:focus-visible,
+  .ui-field .ui-select-trigger:focus-visible,
+  .ui-field .ui-date-picker-trigger:focus-visible { outline: none; }
   /* ponytail: focus 视觉未采集；取得真实焦点态后替换当前近似。 */
   .ui-field:focus-within { outline: 2px solid var(--ui-primary); outline-offset: 1px; }
   .ui-required { color: var(--ui-error); }

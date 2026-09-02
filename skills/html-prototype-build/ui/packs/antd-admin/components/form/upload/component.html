@@ -1,0 +1,61 @@
+<style>
+  .ui-upload { display: grid; gap: var(--ui-space-2); }
+  .ui-upload-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--ui-control-height);
+    padding: 0 var(--ui-control-padding-inline);
+    color: var(--ui-text);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg);
+  }
+  .ui-upload-dragger {
+    display: none;
+    min-height: 120px;
+    padding: var(--ui-space-4);
+    color: var(--ui-text-secondary);
+    text-align: center;
+    border: 1px dashed var(--ui-border);
+    border-radius: var(--ui-radius-container);
+    background: var(--ui-bg-soft);
+  }
+  .ui-upload--dragger .ui-upload-button { display: none; }
+  .ui-upload--dragger .ui-upload-dragger { display: flex; align-items: center; justify-content: center; }
+  .ui-upload.is-disabled .ui-upload-button,
+  .ui-upload.is-disabled .ui-upload-dragger { color: var(--ui-text-disabled); cursor: not-allowed; opacity: 0.55; }
+  /* ponytail: 真实文件选择与拖拽未采集；取得真实交互证据后补充 input[type=file] 与拖放事件。 */
+  .ui-upload-list { display: grid; gap: var(--ui-space-2); margin: 0; padding: 0; list-style: none; }
+  .ui-upload-list-item {
+    display: grid;
+    gap: var(--ui-space-1);
+    padding: var(--ui-space-2);
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius-control);
+    background: var(--ui-bg);
+  }
+  .ui-upload-list-item-name { overflow: hidden; color: var(--ui-text); text-overflow: ellipsis; white-space: nowrap; }
+  .ui-upload-list-item.is-error { border-color: var(--ui-error); background: var(--ui-error-bg); }
+  .ui-upload-list-item-status { color: var(--ui-error); font-size: var(--ui-font-size-caption); }
+  /* ponytail: uploading 进度条视觉为近似；取得真实上传态后替换。 */
+  .ui-upload-list-item-progress {
+    overflow: hidden;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--ui-border-subtle);
+  }
+  .ui-upload-list-item-progress > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--ui-primary);
+    transition: width 0.2s;
+  }
+</style>
+
+<div class="ui-upload ui-upload--button" id="uiUpload">
+  <button class="ui-upload-button" type="button">点击上传</button>
+  <div class="ui-upload-dragger">拖拽文件到此处或点击上传</div>
+  <ul class="ui-upload-list" role="list"></ul>
+</div>

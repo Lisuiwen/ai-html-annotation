@@ -2,7 +2,7 @@
 id: preset.admin-form
 uses: [pattern.application-shell, pattern.page-header]
 requires: [form.form-grid, form.field, form.input, action.button]
-optional: [form.select, feedback.alert]
+optional: [form.select, form.textarea, form.date-picker, form.switch, form.upload, feedback.alert]
 ---
 
 # Admin Form
