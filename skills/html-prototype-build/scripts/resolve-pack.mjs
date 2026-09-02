@@ -57,6 +57,25 @@ function collectFiles(manifest, registry, ids) {
   return [...new Set(files)];
 }
 
+/** 沿闭包汇总 skill 级 vendor / runtime / assets 交付物（路径相对 skill 根）。 */
+function collectDeliverables(registry, ids) {
+  const vendor = new Set();
+  const runtime = new Set();
+  const assets = new Set();
+  for (const id of ids) {
+    const entry = registry[id];
+    if (!entry) continue;
+    for (const path of entry.vendor ?? []) vendor.add(path);
+    for (const path of entry.runtime ?? []) runtime.add(path);
+    for (const path of entry.assets ?? []) assets.add(path);
+  }
+  return {
+    vendor: [...vendor],
+    runtime: [...runtime],
+    assets: [...assets]
+  };
+}
+
 const packId = readOption('pack', 'antd-admin');
 const selectedIds = parseIds(readOption('select'));
 const optionalIds = parseIds(readOption('optional'));
@@ -70,11 +89,16 @@ const manifest = JSON.parse(await readFile(path.join(packDirectory, 'manifest.js
 const registry = { ...manifest.components, ...manifest.patterns, ...manifest.presets };
 const resolvedIds = resolveClosure(registry, [...selectedIds, ...optionalIds]);
 
+const deliverables = collectDeliverables(registry, resolvedIds);
+
 console.log(JSON.stringify({
   pack: manifest.id,
   foundation: manifest.foundation.id,
   selected: selectedIds,
   optional: optionalIds,
   resolved: resolvedIds,
-  files: collectFiles(manifest, registry, resolvedIds)
+  files: collectFiles(manifest, registry, resolvedIds),
+  vendor: deliverables.vendor,
+  runtime: deliverables.runtime,
+  assets: deliverables.assets
 }, null, 2));

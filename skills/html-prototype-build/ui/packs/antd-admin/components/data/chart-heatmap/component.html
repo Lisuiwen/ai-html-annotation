@@ -1,0 +1,16 @@
+<style>
+  :root { --ui-chart-height: 280px; }
+  .ui-chart { display: grid; gap: var(--ui-space-3); min-width: 0; }
+  .ui-chart-canvas { width: 100%; height: var(--ui-chart-height); min-height: 160px; }
+  .ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }
+  .ui-chart[data-status="empty"] .ui-chart-data { display: none; }
+  .ui-chart[data-status="data"] .ui-chart-empty { display: none; }
+</style>
+<section class="ui-chart ui-chart-heatmap" id="uiChartHeatmap" data-status="data" aria-labelledby="uiChartHeatmapTitle">
+  <h2 class="ui-visually-hidden" id="uiChartHeatmapTitle">活跃热力</h2>
+  <div class="ui-chart-data">
+    <div class="ui-chart-canvas" role="img" aria-label="按小时与星期的活跃分布"></div>
+  </div>
+  <div class="ui-chart-empty" hidden>暂无热力数据</div>
+  <div class="ui-chart-summary" aria-live="polite">7×24 活跃分布</div>
+</section>

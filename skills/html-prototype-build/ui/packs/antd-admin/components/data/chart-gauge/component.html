@@ -1,0 +1,17 @@
+<style>
+  :root { --ui-chart-height: 240px; }
+  .ui-chart { display: grid; gap: var(--ui-space-3); min-width: 0; }
+  .ui-chart-canvas { width: 100%; height: var(--ui-chart-height); min-height: 160px; }
+  .ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }
+  .ui-chart[data-status="empty"] .ui-chart-data { display: none; }
+  .ui-chart[data-status="data"] .ui-chart-empty { display: none; }
+  /* ponytail: 指针动画时长与分段阈值样式未采集正式规范。 */
+</style>
+<section class="ui-chart ui-chart-gauge" id="uiChartGauge" data-status="data" aria-labelledby="uiChartGaugeTitle">
+  <h2 class="ui-visually-hidden" id="uiChartGaugeTitle">完成率</h2>
+  <div class="ui-chart-data">
+    <div class="ui-chart-canvas" role="img" aria-label="当前完成率仪表盘"></div>
+  </div>
+  <div class="ui-chart-empty" hidden>暂无指标数据</div>
+  <div class="ui-chart-summary" aria-live="polite">当前完成率 72%</div>
+</section>

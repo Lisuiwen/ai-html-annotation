@@ -4,14 +4,15 @@ import { fileURLToPath } from 'node:url';
 
 const toolDirectory = path.dirname(fileURLToPath(import.meta.url));
 const packDirectory = path.resolve(toolDirectory, '..');
+const skillDirectory = path.resolve(packDirectory, '../../..');
 const manifestPath = path.join(packDirectory, 'manifest.json');
 const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
 const errors = [];
 
 /** 检查 manifest 中引用的相对文件是否存在。 */
-async function requireFile(relativePath, label) {
+async function requireFile(relativePath, label, rootDirectory = packDirectory) {
   try {
-    const entry = await stat(path.join(packDirectory, relativePath));
+    const entry = await stat(path.join(rootDirectory, relativePath));
     if (!entry.isFile()) errors.push(`${label} 不是文件: ${relativePath}`);
   } catch {
     errors.push(`${label} 不存在: ${relativePath}`);
@@ -69,6 +70,16 @@ for (const [id, entry] of Object.entries(registries)) {
 
   for (const dependency of [...(entry.requires ?? []), ...(entry.optional ?? []), ...(entry.uses ?? [])]) {
     if (!registries[dependency]) errors.push(`${id} 引用了未知依赖: ${dependency}`);
+  }
+
+  for (const vendorPath of entry.vendor ?? []) {
+    await requireFile(vendorPath, `${id} vendor`, skillDirectory);
+  }
+  for (const runtimePath of entry.runtime ?? []) {
+    await requireFile(runtimePath, `${id} runtime`, skillDirectory);
+  }
+  for (const assetPath of entry.assets ?? []) {
+    await requireFile(assetPath, `${id} asset`, skillDirectory);
   }
 }
 

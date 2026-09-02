@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "antd-admin",
-  "version": 3,
+  "version": 4,
   "classPrefix": "ui-",
   "tokenPrefix": "ui-",
   "foundation": {
@@ -486,6 +486,22 @@
       "adapter": "components/data/list/state-adapter.js",
       "requires": []
     },
+    "data._echarts-core": {
+      "category": "data",
+      "visibility": "internal",
+      "keywords": [],
+      "contract": "components/data/_echarts-core/COMPONENT.md",
+      "source": "components/data/_echarts-core/component.html",
+      "adapter": "components/data/_echarts-core/state-adapter.js",
+      "requires": [],
+      "vendor": [
+        "vendor/echarts/echarts.min.js"
+      ],
+      "runtime": [
+        "runtime/chart-bridge.js",
+        "runtime/chart-presets.js"
+      ]
+    },
     "data.chart-line": {
       "category": "data",
       "keywords": [
@@ -497,7 +513,9 @@
       "contract": "components/data/chart-line/COMPONENT.md",
       "source": "components/data/chart-line/component.html",
       "adapter": "components/data/chart-line/state-adapter.js",
-      "requires": [],
+      "requires": [
+        "data._echarts-core"
+      ],
       "optional": [
         "data.card"
       ]
@@ -513,7 +531,9 @@
       "contract": "components/data/chart-bar/COMPONENT.md",
       "source": "components/data/chart-bar/component.html",
       "adapter": "components/data/chart-bar/state-adapter.js",
-      "requires": [],
+      "requires": [
+        "data._echarts-core"
+      ],
       "optional": [
         "data.card"
       ]
@@ -529,7 +549,98 @@
       "contract": "components/data/chart-donut/COMPONENT.md",
       "source": "components/data/chart-donut/component.html",
       "adapter": "components/data/chart-donut/state-adapter.js",
-      "requires": [],
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-mixed": {
+      "category": "data",
+      "keywords": [
+        "混合图",
+        "柱线混合",
+        "双轴图"
+      ],
+      "contract": "components/data/chart-mixed/COMPONENT.md",
+      "source": "components/data/chart-mixed/component.html",
+      "adapter": "components/data/chart-mixed/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-funnel": {
+      "category": "data",
+      "keywords": [
+        "漏斗图",
+        "转化",
+        "流失"
+      ],
+      "contract": "components/data/chart-funnel/COMPONENT.md",
+      "source": "components/data/chart-funnel/component.html",
+      "adapter": "components/data/chart-funnel/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-gauge": {
+      "category": "data",
+      "keywords": [
+        "仪表盘",
+        "完成率",
+        "SLA"
+      ],
+      "contract": "components/data/chart-gauge/COMPONENT.md",
+      "source": "components/data/chart-gauge/component.html",
+      "adapter": "components/data/chart-gauge/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-heatmap": {
+      "category": "data",
+      "keywords": [
+        "热力图",
+        "活跃分布",
+        "矩阵"
+      ],
+      "contract": "components/data/chart-heatmap/COMPONENT.md",
+      "source": "components/data/chart-heatmap/component.html",
+      "adapter": "components/data/chart-heatmap/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-map": {
+      "category": "data",
+      "keywords": [
+        "地图",
+        "区域统计",
+        "省级分布"
+      ],
+      "contract": "components/data/chart-map/COMPONENT.md",
+      "source": "components/data/chart-map/component.html",
+      "adapter": "components/data/chart-map/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "assets": [
+        "vendor/echarts/maps/china.json",
+        "vendor/echarts/maps/china.js"
+      ],
       "optional": [
         "data.card"
       ]

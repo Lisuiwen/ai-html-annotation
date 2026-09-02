@@ -1,12 +1,17 @@
 <style>
-  :root { --ui-chart-height: 240px; --ui-chart-grid: var(--ui-border-soft); }
-  .ui-chart { display: grid; gap: var(--ui-space-3); min-width: 0; }.ui-chart-legend { display: flex; flex-wrap: wrap; gap: var(--ui-space-3); }
-  .ui-chart-legend-button { display: inline-flex; align-items: center; gap: var(--ui-space-1); padding: 0; color: var(--ui-text-secondary); border: 0; background: transparent; }.ui-chart-legend-button::before { width: var(--ui-space-2); height: var(--ui-space-2); border-radius: 50%; background: var(--ui-chart-color); content: ""; }.ui-chart-legend-button[aria-pressed="false"] { color: var(--ui-text-disabled); text-decoration: line-through; }.ui-chart-legend-button:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 2px; }
-  .ui-chart-graphic { display: block; width: 100%; height: var(--ui-chart-height); }.ui-chart-grid-line { stroke: var(--ui-chart-grid); stroke-width: 1; }.ui-chart-label { fill: var(--ui-text-tertiary); font: var(--ui-font-size-caption) var(--ui-font); }.ui-chart-bar-primary { fill: var(--ui-primary); }.ui-chart-bar-warning { fill: var(--ui-warning); }.ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }.ui-chart[data-status="empty"] .ui-chart-data { display: none; }.ui-chart[data-status="data"] .ui-chart-empty { display: none; }
-  /* ponytail: 当前仅模拟分组与堆叠的静态几何；真实数据标签避让、动画和 tooltip 需要 ECharts 或等价渲染器后升级。 */
+  :root { --ui-chart-height: 240px; }
+  .ui-chart { display: grid; gap: var(--ui-space-3); min-width: 0; }
+  .ui-chart-canvas { width: 100%; height: var(--ui-chart-height); min-height: 160px; }
+  .ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }
+  .ui-chart[data-status="empty"] .ui-chart-data { display: none; }
+  .ui-chart[data-status="data"] .ui-chart-empty, .ui-chart[data-status="loading"] .ui-chart-empty { display: none; }
+  /* ponytail: 堆叠与横向排名条的几何细节未逐像素对齐 Ant Design Charts。 */
 </style>
 <section class="ui-chart ui-chart-bar" id="uiChartBar" data-status="data" aria-labelledby="uiChartBarTitle">
-  <div class="ui-chart-legend" aria-label="对比系列"><button class="ui-chart-legend-button" type="button" data-series-key="primary" aria-pressed="true" style="--ui-chart-color:var(--ui-primary)">计划</button><button class="ui-chart-legend-button" type="button" data-series-key="warning" aria-pressed="true" style="--ui-chart-color:var(--ui-warning)">完成</button></div>
-  <svg class="ui-chart-graphic ui-chart-data" viewBox="0 0 360 240" role="img" aria-labelledby="uiChartBarTitle uiChartBarDescription"><title id="uiChartBarTitle">季度计划与完成对比</title><desc id="uiChartBarDescription">四个季度的计划和完成数值对比。</desc><g aria-hidden="true"><line class="ui-chart-grid-line" x1="40" y1="30" x2="340" y2="30"/><line class="ui-chart-grid-line" x1="40" y1="90" x2="340" y2="90"/><line class="ui-chart-grid-line" x1="40" y1="150" x2="340" y2="150"/><line class="ui-chart-grid-line" x1="40" y1="210" x2="340" y2="210"/></g><g class="ui-chart-series" data-series-key="primary"><rect class="ui-chart-bar-primary" x="58" y="92" width="22" height="118" rx="2"/><rect class="ui-chart-bar-primary" x="128" y="65" width="22" height="145" rx="2"/><rect class="ui-chart-bar-primary" x="198" y="105" width="22" height="105" rx="2"/><rect class="ui-chart-bar-primary" x="268" y="48" width="22" height="162" rx="2"/></g><g class="ui-chart-series" data-series-key="warning"><rect class="ui-chart-bar-warning" x="84" y="118" width="22" height="92" rx="2"/><rect class="ui-chart-bar-warning" x="154" y="82" width="22" height="128" rx="2"/><rect class="ui-chart-bar-warning" x="224" y="126" width="22" height="84" rx="2"/><rect class="ui-chart-bar-warning" x="294" y="72" width="22" height="138" rx="2"/></g><g class="ui-chart-label" aria-hidden="true"><text x="66" y="226">Q1</text><text x="136" y="226">Q2</text><text x="206" y="226">Q3</text><text x="276" y="226">Q4</text></g></svg>
-  <div class="ui-chart-empty" hidden>暂无对比数据</div><div class="ui-chart-summary" aria-live="polite">分组对比：计划、完成</div>
+  <h2 class="ui-visually-hidden" id="uiChartBarTitle">季度计划与完成对比</h2>
+  <div class="ui-chart-data">
+    <div class="ui-chart-canvas" role="img" aria-label="四个季度的计划和完成数值对比"></div>
+  </div>
+  <div class="ui-chart-empty" hidden>暂无对比数据</div>
+  <div class="ui-chart-summary" aria-live="polite">分组对比：计划、完成</div>
 </section>

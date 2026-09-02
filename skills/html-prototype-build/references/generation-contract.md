@@ -92,6 +92,8 @@ assets/                # 仅出现图片、字体、音视频等静态资源时�
 - HTML 在 `<head>` 中加载 `./prototype/prototype.css`，在 `</body>` 前依次加载 `./prototype/notes.snapshot.js`、`./prototype/viewer.js` 与 `./prototype/prototype.js`。路径必须相对 HTML，可在 `file://` 下直接双击使用。
 - `prototype.html` 保留可读的页面 DOM、稳定锚点和少量资源引用；禁止内联大段 CSS 或业务脚本。超过少量启动配置的 JS 必须放入 `prototype/prototype.js`。
 - `prototype/viewer.js` 从本 Skill 的 `runtime/viewer.js` 原样复制；不要把共享 Viewer 实现内联回 HTML。
+- 选中任一依赖 `data._echarts-core` 的 chart 组件时，必须 copy skill `vendor/echarts/echarts.min.js` 到根目录 `assets/echarts.min.js`，并将 `runtime/chart-bridge.js`、`runtime/chart-presets.js` 复制到 `prototype/`；在 `prototype.html` 中于 `notes.snapshot.js` 之前加载 `./assets/echarts.min.js`、`./prototype/chart-bridge.js`、`./prototype/chart-presets.js`。
+- 选中 `data.chart-map` 时，还必须 copy 对应 geo json 到 `assets/maps/`（如 `assets/maps/china.json`），并 copy 同名 `china.js` 到 `assets/maps/`；在 `notes.snapshot.js` 之前于 `chart-bridge.js` 之前加载 `./assets/maps/china.js`（`file://` 下 fetch json 会被拦截，geo 须由 script 预注册到 `window.PrototypeMapRegistry`）。map geo 不得引用 CDN 或写入 `component.html`。
 - 截图只存入根目录 `screenshots/`，不作为页面运行依赖；`assets/` 不得为空目录。
 - 标注编辑器、Inspector、Author Loader、本地服务、源码定位信息和 html-mark 都不属于正式交付物；Mark 仅用于单独生成的评审稿，可随时剥离。
 - 禁止在 `prototype.html` 内联任何标注编辑逻辑（含 `file://` 专用脚本、`prompt()` 改说明、把卡片覆盖或自定义备注写入 localStorage）；`file://` 只读展示 snapshot，编辑必须走 [local-authoring.md](local-authoring.md) 的 `serve.mjs`。

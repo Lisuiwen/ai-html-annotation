@@ -1,0 +1,17 @@
+<style>
+  :root { --ui-chart-height: 360px; }
+  .ui-chart { display: grid; gap: var(--ui-space-3); min-width: 0; }
+  .ui-chart-canvas { width: 100%; height: var(--ui-chart-height); min-height: 200px; }
+  .ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }
+  .ui-chart[data-status="empty"] .ui-chart-data { display: none; }
+  .ui-chart[data-status="data"] .ui-chart-empty, .ui-chart[data-status="loading"] .ui-chart-empty { display: none; }
+  /* ponytail: 仅省级 china mock；市级 geo 与边界 hover 未实现。 */
+</style>
+<section class="ui-chart ui-chart-map" id="uiChartMap" data-status="data" aria-labelledby="uiChartMapTitle">
+  <h2 class="ui-visually-hidden" id="uiChartMapTitle">区域任务量</h2>
+  <div class="ui-chart-data">
+    <div class="ui-chart-canvas" role="img" aria-label="各省份任务量分布"></div>
+  </div>
+  <div class="ui-chart-empty" hidden>暂无地图数据</div>
+  <div class="ui-chart-summary" aria-live="polite">省级区域统计</div>
+</section>

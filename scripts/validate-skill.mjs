@@ -31,7 +31,7 @@ async function validateMetadata() {
 
 /** 使用 VM 编译不含 ESM import 的浏览器脚本，避免依赖派生进程。 */
 async function validateBrowserScripts(files) {
-  for (const file of files.filter((target) => target.endsWith('.js'))) {
+  for (const file of files.filter((target) => target.endsWith('.js') && !target.includes(`${path.sep}vendor${path.sep}`))) {
     const source = await readFile(file, 'utf8');
     new vm.Script(source, { filename: file });
   }

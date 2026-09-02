@@ -1,0 +1,16 @@
+<style>
+  :root { --ui-chart-height: 280px; }
+  .ui-chart { display: grid; gap: var(--ui-space-3); min-width: 0; }
+  .ui-chart-canvas { width: 100%; height: var(--ui-chart-height); min-height: 160px; }
+  .ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }
+  .ui-chart[data-status="empty"] .ui-chart-data { display: none; }
+  .ui-chart[data-status="data"] .ui-chart-empty { display: none; }
+</style>
+<section class="ui-chart ui-chart-funnel" id="uiChartFunnel" data-status="data" aria-labelledby="uiChartFunnelTitle">
+  <h2 class="ui-visually-hidden" id="uiChartFunnelTitle">审批流转漏斗</h2>
+  <div class="ui-chart-data">
+    <div class="ui-chart-canvas" role="img" aria-label="从访问到完成的阶段流失"></div>
+  </div>
+  <div class="ui-chart-empty" hidden>暂无漏斗数据</div>
+  <div class="ui-chart-summary" aria-live="polite">5 个阶段流转</div>
+</section>
