@@ -1,10 +1,10 @@
 # Changelog
 
-All notable changes to HTML Prototype will be documented in this file.
+All notable changes to AI HTML Annotation will be documented in this file.
 
 ## v0.1.0 — Initial public release
 
-HTML Prototype introduces a native-HTML workflow for building, reviewing, annotating, and iterating UI prototypes with coding agents.
+AI HTML Annotation introduces a native-HTML workflow for building, reviewing, annotating, and iterating UI prototypes with coding agents.
 
 ### Highlights
 
@@ -21,7 +21,7 @@ HTML Prototype introduces a native-HTML workflow for building, reviewing, annota
 ### Install the Agent Skill
 
 ```bash
-npx skills add https://github.com/Lisuiwen/html-prototype --skill html-prototype-build
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
 ```
 
 ### Status
