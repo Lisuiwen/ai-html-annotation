@@ -1,6 +1,6 @@
 ---
 name: html-prototype-build
-description: 使用可组合 UI 包生成、评审和交付纯 HTML 产品原型，提供正式产品说明、浏览器评审打点、本地作者服务、Inspector 与场景截图。用户提到 /html-prototype-build，或需要在 HTML 原型中重建 UI、做产品说明标注、评审打点、截图或交付时使用；不用于一般源码定位、普通功能文档或正式前端应用开发。
+description: Build, annotate, review, screenshot, and deliver native HTML UI prototypes with AI agents using reusable UI packs, DOM-bound product annotations, browser review pins, a local authoring server, an element-to-source Inspector, and multi-state screenshots. Use when the user mentions /html-prototype-build or asks to reconstruct UI in HTML, create product annotations, review or mark DOM elements, capture prototype states, or package prototype deliverables. Works with Claude Code, Codex, Cursor, and other Agent Skills clients; do not use for generic source-code navigation, ordinary documentation, or production frontend development.
 ---
 
 # HTML Prototype Build
