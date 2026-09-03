@@ -26,14 +26,16 @@ function resolveClosure(registry, roots) {
   const resolved = [];
   const visited = new Set();
 
-  function visit(id, stack = []) {
+  function visit(id, stack = new Set()) {
     if (visited.has(id)) return;
     const entry = registry[id];
     if (!entry) throw new Error(`未知 UI 资源：${id}`);
-    if (stack.includes(id)) throw new Error(`检测到循环依赖：${[...stack, id].join(' -> ')}`);
+    if (stack.has(id)) throw new Error(`检测到循环依赖：${[...stack, id].join(' -> ')}`);
+    stack.add(id);
     for (const dependency of [...(entry.uses ?? []), ...(entry.requires ?? [])]) {
-      visit(dependency, [...stack, id]);
+      visit(dependency, stack);
     }
+    stack.delete(id);
     visited.add(id);
     resolved.push(id);
   }
@@ -64,7 +66,6 @@ function collectDeliverables(registry, ids) {
   const assets = new Set();
   for (const id of ids) {
     const entry = registry[id];
-    if (!entry) continue;
     for (const path of entry.vendor ?? []) vendor.add(path);
     for (const path of entry.runtime ?? []) runtime.add(path);
     for (const path of entry.assets ?? []) assets.add(path);

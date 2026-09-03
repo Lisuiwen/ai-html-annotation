@@ -14,8 +14,12 @@ async function requireFile(relativePath, label, rootDirectory = packDirectory) {
   try {
     const entry = await stat(path.join(rootDirectory, relativePath));
     if (!entry.isFile()) errors.push(`${label} 不是文件: ${relativePath}`);
-  } catch {
-    errors.push(`${label} 不存在: ${relativePath}`);
+  } catch (err) {
+    if (err && err.code === 'ENOENT') {
+      errors.push(`${label} 不存在: ${relativePath}`);
+    } else {
+      errors.push(`${label} 无法访问: ${relativePath} (${err.message})`);
+    }
   }
 }
 
@@ -101,8 +105,9 @@ function visit(id, visiting = new Set(), visited = new Set()) {
   visiting.add(id);
   const entry = registries[id];
   for (const dependency of [...(entry.requires ?? []), ...(entry.uses ?? [])]) {
-    visit(dependency, new Set(visiting), visited);
+    visit(dependency, visiting, visited);
   }
+  visiting.delete(id);
   visited.add(id);
 }
 

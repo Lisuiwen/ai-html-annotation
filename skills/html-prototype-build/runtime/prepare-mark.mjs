@@ -148,5 +148,6 @@ function backup(filePath, content) {
 }
 
 function rel(p) {
-  return p.replace(process.env.HOME || '', '~');
+  const home = process.env.USERPROFILE || process.env.HOME || '';
+  return home ? p.replace(home, '~') : p;
 }

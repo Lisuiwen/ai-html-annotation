@@ -58,5 +58,9 @@ await validateMetadata();
 await validateMarkdownLinks(skillFiles);
 await validateBrowserScripts(skillFiles);
 await import('../skills/html-prototype-build/ui/packs/antd-admin/tools/validate-pack.mjs');
+if (process.exitCode) {
+  throw new Error('UI Pack 校验失败，详见上方错误输出。');
+}
+process.exitCode = 0;
 await import('../tests/runtime-contract.test.mjs');
 console.log('Skill 统一验证通过。');

@@ -69,11 +69,6 @@ export function collectScenarios(notes) {
   return ids.map((id) => ({ id: assertSafeFileName(id), query: 'scene' }));
 }
 
-/* 读取 snapshot 后调用纯场景提取函数，CLI 层统一处理错误与退出码。 */
-function collectShots() {
-  return collectScenarios(readNotes());
-}
-
 /* 逐场景执行截图；统一使用 scene 查询参数并折叠右栏与连线。 */
 function shoot(shot, exe) {
   return new Promise((resolveShot) => {
@@ -176,7 +171,7 @@ async function main() {
   mkdirSync(outDir, { recursive: true });
   let shots;
   try {
-    shots = collectShots();
+    shots = collectScenarios(readNotes());
   } catch (error) {
     console.error('✗ ' + error.message);
     process.exit(1);
