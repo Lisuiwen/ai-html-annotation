@@ -2,17 +2,34 @@
 
 [中文](README.zh-CN.md)
 
+[![skills.sh](https://skills.sh/b/Lisuiwen/ai-html-annotation)](https://skills.sh/Lisuiwen/ai-html-annotation)
+
 > AI-assisted HTML annotation and prototyping toolkit for Claude Code, Codex, Cursor, and other coding agents.
 
 Annotate, review, screenshot, and iterate native HTML prototypes on the real DOM. AI HTML Annotation combines reusable UI packs, DOM-bound annotations, AI-ready review context, element-to-source inspection, and reproducible multi-state screenshots in a zero-dependency workflow.
 
-## Install the Agent Skill
+## Install
+
+### Agent Skills / skills.sh
+
+Use the open Agent Skills CLI for Claude Code, Cursor, Codex-compatible workflows, and other supported agents:
 
 ```bash
 npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
 ```
 
-The skills CLI records anonymous aggregate installs for its leaderboard, so real installs also help the project become discoverable in the Agent Skills ecosystem.
+The skills.sh leaderboard discovers public skills automatically from real CLI installs; no separate submission manifest is required.
+
+### Claude Code Plugin Marketplace
+
+Add this repository as a Claude Code marketplace, then install the plugin:
+
+```text
+/plugin marketplace add Lisuiwen/ai-html-annotation
+/plugin install ai-html-annotation@lisuiwen-agent-skills
+```
+
+The Claude plugin points directly at the canonical `skills/html-prototype-build/` directory, so the project keeps a single Skill source instead of maintaining a duplicate copy.
 
 Most prototype workflows fail after the mock looks “good enough”:
 
@@ -111,14 +128,15 @@ Install `skills/html-prototype-build/` into your agent skill path (keep the fold
 
 The walkthrough sample is [`examples/minimal-notes`](examples/minimal-notes) (demo UI copy is Chinese). Human operator steps live in the [Skill handbook](skills/html-prototype-build/README.md); agent routing and hard constraints live in [`SKILL.md`](skills/html-prototype-build/SKILL.md). Those Skill docs are currently Chinese—use the commands above or ask an agent that can read them.
 
-## Layout
+## Distribution layout
 
 ```text
-skills/html-prototype-build/   Self-contained Skill (copy this folder)
-examples/                      Runnable minimal prototype
-media/                         README demo assets
-scripts/                       Validation entry
-tests/                         Runtime contract tests
+.claude-plugin/marketplace.json  Claude Code marketplace catalog
+skills/html-prototype-build/     Canonical Agent Skill source
+examples/                        Runnable minimal prototype
+media/                           README demo assets
+scripts/                         Validation entry
+tests/                           Runtime contract tests
 ```
 
 ## Scope
