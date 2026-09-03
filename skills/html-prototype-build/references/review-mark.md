@@ -6,35 +6,14 @@
 
 html-mark 是可剥离的临时评审层，不是右侧产品说明，也不写入正式 snapshot。
 
-## 注入与移除
+**注入/移除命令与浏览器打点步骤见 [README.md](../README.md#评审打点html-mark)。**
 
-```bash
-# 推荐：运行时内联，保持评审稿双击即开。
-node <skill-root>/runtime/prepare-mark.mjs <html-file> --inline
+## Agent 边界
 
-# 批量注入目录。
-node <skill-root>/runtime/prepare-mark.mjs <dir> --inline
-
-# 移除评审层。
-node <skill-root>/runtime/prepare-mark.mjs <html-file> --remove
-```
-
-默认不注入 html-mark。仅当用户要求评审、打点、review pin 或导出 For AI 时运行 `--inline`。
-
-## 浏览器操作
-
-1. 按 `M` 或点击右上角 `Mark` 开启模式。
-2. 按住 `Ctrl` 点击产品元素，落下 pin 并打开便签。
-3. 输入反馈，`Enter` 保存；`Esc` 关闭。
-4. 在右下角面板查看、定位、删除或清空标注。
-5. 点击 `Copy all` 并选择 For AI。
-
-## 回改约束
-
-- For AI 的 selector 和 HTML snapshot 用于定位源 HTML。
-- Inspector 临时 token 不得成为导出 selector。
-- Agent 修改源 HTML 后可直接再次运行 `--inline`；脚本会替换旧注入块。
-- DOM 大改导致旧 pin 目标失效时，在新页面清空 localStorage 标注并重新打点。
+- 默认不注入 html-mark；仅当用户要求评审、打点、review pin 或导出 For AI 时运行 `--inline`。
+- For AI 的 selector 和 HTML snapshot 用于定位源 HTML；Inspector 临时 token 不得成为导出 selector。
+- 修改源 HTML 后可再次 `--inline`；脚本会替换旧注入块。
+- DOM 大改导致旧 pin 失效时，清空该页 localStorage 标注并重新打点。
 
 ## 与其他工具的边界
 

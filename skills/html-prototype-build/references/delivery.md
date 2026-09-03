@@ -4,19 +4,19 @@
 
 需要整理最终文件、区分评审稿与正式交付稿，或根据反馈继续迭代时使用本入口。
 
-## 两种交付状态
+**评审稿 / 正式交付稿操作说明见 [README.md](../README.md#评审稿与正式交付稿)。**
+
+## Agent 交付约束
 
 ### 评审稿
 
-- 保留 `runtime/prepare-mark.mjs --inline` 生成的 html-mark 注入块。
-- 可双击打开并继续打 pin。
+- 保留 `prepare-mark.mjs --inline` 生成的 html-mark 注入块。
 - 正式产品说明仍来自 snapshot + Viewer，评审 pin 只存在于浏览器 localStorage。
 
 ### 正式交付稿
 
-- 运行 `node <skill-root>/runtime/prepare-mark.mjs <prototype.html> --remove`。
-- HTML 中不得存在 Author Loader、Editor、html-mark、Inspector、源码定位 token，以及任何内联标注编辑脚本（含把说明写入 localStorage 的 `file://` 变通方案）。
-- 根目录保留 `prototype.html`、`prototype/` 与 `screenshots/`；页面 CSS、业务 JS、snapshot 与 Viewer 均收进 `prototype/`。图片、字体等静态资源仅在需要时收进 `assets/`，不要在根目录散落 CSS、JS、snapshot 或 Viewer。
+- 须移除 html-mark；HTML 中不得存在 Author Loader、Editor、html-mark、Inspector、源码定位 token，以及任何内联标注编辑脚本（含把说明写入 localStorage 的 `file://` 变通方案）。
+- 根目录保留 `prototype.html`、`prototype/` 与 `screenshots/`；页面 CSS、业务 JS、snapshot 与 Viewer 均收进 `prototype/`。图片、字体等静态资源仅在需要时收进 `assets/`。
 
 ## 迭代分流
 

@@ -6,36 +6,11 @@
 
 作者服务只绑定本机并动态加载工具，不修改原型源 HTML。
 
-## 启动命令
+**启动命令、IDE 配置与浏览器操作见 [README.md](../README.md#本地作者服务)。**
 
-```bash
-# 只读运行作者工具，不启用 snapshot 写回。
-node <skill-root>/runtime/serve.mjs <prototype.html> [--port=4178]
+## Agent 边界
 
-# 启用正式说明数据写回。
-node <skill-root>/runtime/serve.mjs <prototype.html> --snapshot=prototype/notes.snapshot.js
-```
-
-打开 `http://127.0.0.1:4178/<prototype.html>`。
-
-`file://` 双击只用于只读预览正式说明；若要改卡片文案、顺序、锚点或增删说明，必须启动本服务，未配置 `--snapshot` 时 Editor 保存会被拒绝。
-
-## 工具边界
-
-- 编辑说明卡片 / 稳定 selector → 使用 Editor；未配置 `--snapshot` 时保存会被拒绝。
-- 临时评审 pin → 使用 html-mark，保存到 localStorage，不写入 snapshot。
-- 跳转源码 → 使用 Inspector（`Alt+Shift` 悬停并点击）。
-
-## Inspector
-
-`serve.mjs` 仅在响应 HTML 时动态注入短 token `data-insp-target="iXX"`。token 只用于当前作者会话的源码行号映射，禁止保存为正式 selector 或 For-AI selector。
-
-复制 `../runtime/.env.example` 为同目录 `.env` 可指定 IDE：
-
-```bash
-CODE_EDITOR=cursor
-# CODE_EDITOR=D:\Apps\CodeBuddy\CodeBuddy.exe
-```
-
-未配置时依次回退 `cursor` → `code`；`.env` 仅本机使用，不提交或分发。
-
+- `file://` 双击只用于只读预览正式说明；改卡片须启动 `serve.mjs` 且配置 `--snapshot`，否则 Editor 保存会被拒绝。
+- 编辑说明卡片 / 稳定 selector → Editor；临时评审 pin → html-mark（localStorage，不写 snapshot）；跳转源码 → Inspector。
+- Inspector 动态注入的 `data-insp-target` 仅用于当前作者会话行号映射，禁止保存为正式 selector 或 For-AI selector。
+- `runtime/.env` 仅本机使用，不提交或分发。
