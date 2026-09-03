@@ -1,0 +1,20 @@
+{
+  "name": "lisuiwen-agent-skills",
+  "owner": {
+    "name": "Lisuiwen"
+  },
+  "metadata": {
+    "description": "Agent Skills for AI-assisted HTML annotation, prototyping, and review"
+  },
+  "plugins": [
+    {
+      "name": "ai-html-annotation",
+      "description": "Annotate and review real HTML DOM, export AI-ready feedback context, inspect elements, and capture reproducible prototype states.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/html-prototype-build"
+      ]
+    }
+  ]
+}
