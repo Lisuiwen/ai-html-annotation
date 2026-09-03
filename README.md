@@ -20,7 +20,7 @@ HTML Prototype Build 用原生 HTML 把这条链路接起来：用 UI 包稳定�
 
 Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除和查看标注，并按分组管理页面说明；标注通过 SVG 连线指向对应模块，阅读和定位都在同一页面完成。标注根据页面隔离，多状态页面标注智能分组
 
-![Viewer：右侧工具栏中的标注增删改查与分组管理](media/viewer.jpg)
+![Viewer：右侧工具栏中的标注增删改查与分组管理](media/viewer.gif)
 
 ### 2. 页面评审：打点并复制给 AI
 
@@ -30,9 +30,9 @@ Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除�
 
 ### 3. Inspector：锁定元素并跳转源码
 
-锁定页面元素后，Inspector 会显示对应选择器；点击即可打开该元素的源码位置，减少在文件中反复搜索和猜测的时间。
+按住 `Alt + Shift` 悬停页面元素，Inspector 会显示对应选择器；单击即可在本机 IDE 打开该元素的源码位置，减少在文件中反复搜索和猜测的时间。
 
-![Inspector：锁定元素并跳转到对应源码](media/inspector.gif)
+![Inspector：按住 Alt + Shift 锁定元素并跳转到对应源码](media/inspector.gif)
 
 ## 核心价值
 

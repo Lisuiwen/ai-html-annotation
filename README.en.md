@@ -20,7 +20,7 @@ Experimental 0.x · zero npm dependencies · MIT
 
 Viewer keeps formal notes in a right-hand panel. You can add, edit, delete, and browse annotations, group them by page state, and follow SVG connectors to the matching modules—all on the same page. Annotations are isolated per page state and grouped across multi-state flows.
 
-![Viewer: annotation CRUD and grouping in the right-hand panel](media/viewer.jpg)
+![Viewer: annotation CRUD and grouping in the right-hand panel](media/viewer.gif)
 
 ### 2. Page review: pin feedback and copy it for AI
 
@@ -30,9 +30,9 @@ Drop removable review pins on real HTML elements. Collect notes, then use `Copy 
 
 ### 3. Inspector: lock an element and open its source
 
-Hover to see the selector for a locked element, then click to open that location in your IDE—less searching and guessing in the file tree.
+Hold `Alt + Shift` and hover a page element to see its selector; click to open that location in your local IDE—less searching and guessing in the file tree.
 
-![Inspector: lock an element and jump to its source](media/inspector.gif)
+![Inspector: hold Alt + Shift to lock an element and jump to its source](media/inspector.gif)
 
 ## Why it matters
 
