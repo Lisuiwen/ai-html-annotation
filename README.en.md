@@ -128,7 +128,7 @@ This is an AI-assisted HTML prototyping toolkit—not a production component lib
 
 ## Contributing
 
-This project is experimental 0.x; APIs and layout may change. See [`CONTRIBUTING.md`](CONTRIBUTING.md). Report vulnerabilities privately per [`SECURITY.md`](SECURITY.md).
+This project is experimental 0.x; APIs and layout may change. See [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md). Report vulnerabilities privately per [`SECURITY.md`](SECURITY.md).
 
 The UI pack is an original native-HTML visual simulation. It does not bundle third-party design-system code or official assets.
 

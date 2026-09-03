@@ -116,7 +116,7 @@ tests/                         运行时契约测试
 
 ## 开源协作
 
-项目当前处于实验性 0.x 阶段，接口和目录仍可能变化。贡献方式见 [`CONTRIBUTING.md`](CONTRIBUTING.md)，漏洞请按 [`SECURITY.md`](SECURITY.md) 私下报告。
+项目当前处于实验性 0.x 阶段，接口和目录仍可能变化。贡献方式见 [`CONTRIBUTING.md`](CONTRIBUTING.md)，行为规范见 [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)，漏洞请按 [`SECURITY.md`](SECURITY.md) 私下报告。
 
 本项目 UI 包为自研原生 HTML 视觉模拟，不捆绑第三方设计系统代码或官方资源。
 
