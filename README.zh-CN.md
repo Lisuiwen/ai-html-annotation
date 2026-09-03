@@ -1,8 +1,10 @@
-# HTML Prototype
+# AI HTML Annotation
 
 [English](README.md)
 
-> 面向 AI Agent 的 HTML UI 原型生成、标注、评审与迭代工具。
+[![skills.sh](https://skills.sh/b/Lisuiwen/ai-html-annotation)](https://skills.sh/Lisuiwen/ai-html-annotation)
+
+> 面向 AI Agent 的 HTML UI 原型生成、DOM 标注、评审与迭代工具。
 
 很多原型的问题，不是“画得不够像”，而是**画完之后无法继续工作**：
 
@@ -10,7 +12,30 @@
 - 评审意见写在文档或聊天里，“这里改一下”无法准确对应页面元素；
 - 设计说明、评审批注和源码彼此分离，改完之后也很难快速验证。
 
-HTML Prototype Build 用原生 HTML 把这条链路接起来：用 UI 包稳定搭建页面，在真实 DOM 上完成标注和评审，把意见复制给 AI，并从锁定的元素直接跳到源码。**页面本身就是可操作的交付物，不只是一张效果图。**
+AI HTML Annotation 用原生 HTML 把这条链路接起来：用 UI 包稳定搭建页面，在真实 DOM 上完成标注和评审，把意见复制给 AI，并从锁定的元素直接跳到源码。**页面本身就是可操作的交付物，不只是一张效果图。**
+
+## 安装
+
+### Agent Skills / skills.sh
+
+适用于 Claude Code、Cursor、Codex 兼容工作流和其他支持 Agent Skills 的客户端：
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+```
+
+skills.sh 会根据真实 CLI 安装自动发现并统计公开 Skill，不需要额外维护平台专用 manifest。
+
+### Claude Code Plugin Marketplace
+
+先把本仓库加入 Claude Code Marketplace，再安装插件：
+
+```text
+/plugin marketplace add Lisuiwen/ai-html-annotation
+/plugin install ai-html-annotation@lisuiwen-agent-skills
+```
+
+Claude 插件直接引用仓库中的 `skills/html-prototype-build/`，所以仍然只有一份 Skill 源，不需要同步维护第二份 `SKILL.md`。
 
 实验性 0.x · 零 npm 依赖 · MIT
 
@@ -18,7 +43,7 @@ HTML Prototype Build 用原生 HTML 把这条链路接起来：用 UI 包稳定�
 
 ### 1. 右侧工具栏：标注的增删改查与分组
 
-Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除和查看标注，并按分组管理页面说明；标注通过 SVG 连线指向对应模块，阅读和定位都在同一页面完成。标注根据页面隔离，多状态页面标注智能分组
+Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除和查看标注，并按分组管理页面说明；标注通过 SVG 连线指向对应模块，阅读和定位都在同一页面完成。标注根据页面隔离，多状态页面标注智能分组。
 
 ![Viewer：右侧工具栏中的标注增删改查与分组管理](media/viewer.gif)
 
@@ -89,19 +114,20 @@ Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除�
 
 需要亲自启动作者服务、发起评审或输出截图时，请阅读 [Skill 使用手册](skills/html-prototype-build/README.md)。Agent 的任务分流和约束见 [`SKILL.md`](skills/html-prototype-build/SKILL.md)。
 
-## 项目结构
+## 分发结构
 
 ```text
-skills/html-prototype-build/   可独立复制的完整 Skill
-examples/                      可直接运行的最小原型
-media/                         README 演示素材
-scripts/                       校验脚本
-tests/                         运行时契约测试
+.claude-plugin/marketplace.json  Claude Code Marketplace 清单
+skills/html-prototype-build/     唯一的 Agent Skill 源
+examples/                        可直接运行的最小原型
+media/                           README 演示素材
+scripts/                         校验脚本
+tests/                           运行时契约测试
 ```
 
 ## 适用范围
 
-这是一个面向 AI 协作的 HTML 原型工具，不是生产组件库、Figma 替代品，也不是第三方设计系统实现。它更适合：
+这是一个面向 AI 协作的 HTML 标注和原型工具，不是生产组件库、Figma 替代品，也不是第三方设计系统实现。它更适合：
 
 - 需要快速把 UI 材料落成可打开 HTML 的原型；
 - 需要在页面上评审，并把意见准确交给 AI；
