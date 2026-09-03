@@ -1,125 +1,139 @@
-# HTML Prototype Build
+# HTML Prototype
 
-[English](README.en.md)
+[中文](README.zh-CN.md)
 
-> 让 HTML 原型成为可标注、可评审、可直接修改的 AI 协作界面。
+> AI-assisted HTML UI prototyping toolkit and Agent Skill for Claude Code, Codex, Cursor, and other coding agents.
 
-很多原型的问题，不是“画得不够像”，而是**画完之后无法继续工作**：
+Build, annotate, review, screenshot, and iterate native HTML prototypes on the real DOM. HTML Prototype combines reusable UI packs, DOM-bound annotations, AI-ready review context, element-to-source inspection, and reproducible multi-state screenshots in a zero-dependency workflow.
 
-- 截图没有 DOM，AI 只能猜页面结构，修改结果容易漂移；
-- 评审意见写在文档或聊天里，“这里改一下”无法准确对应页面元素；
-- 设计说明、评审批注和源码彼此分离，改完之后也很难快速验证。
+Most prototype workflows fail after the mock looks “good enough”:
 
-HTML Prototype Build 用原生 HTML 把这条链路接起来：用 UI 包稳定搭建页面，在真实 DOM 上完成标注和评审，把意见复制给 AI，并从锁定的元素直接跳到源码。**页面本身就是可操作的交付物，不只是一张效果图。**
+- Screenshots have no DOM, so an AI has to guess structure and drifts on every change.
+- Review comments live in docs or chat—“move this left”—and never map cleanly to an element.
+- Specs, review notes, and source stay disconnected, so verifying a fix is slow.
 
-实验性 0.x · 零 npm 依赖 · MIT
+HTML Prototype reconnects that loop with native HTML: build pages from a UI pack, annotate and review on the real DOM, copy instructions to an AI, and jump from a locked element back to source. **The page is the deliverable, not just a picture of one.**
 
-## 你可以先看演示
+Experimental 0.x · zero npm dependencies · MIT
 
-### 1. 右侧工具栏：标注的增删改查与分组
+## See it first
 
-Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除和查看标注，并按分组管理页面说明；标注通过 SVG 连线指向对应模块，阅读和定位都在同一页面完成。标注根据页面隔离，多状态页面标注智能分组
+### 1. Sidebar: create, edit, delete, and group annotations
 
-![Viewer：右侧工具栏中的标注增删改查与分组管理](media/viewer.gif)
+Viewer keeps formal notes in a right-hand panel. You can add, edit, delete, and browse annotations, group them by page state, and follow SVG connectors to the matching modules—all on the same page. Annotations are isolated per page state and grouped across multi-state flows.
 
-### 2. 页面评审：打点并复制给 AI
+![Viewer: annotation CRUD and grouping in the right-hand panel](media/viewer.gif)
 
-在真实 HTML 元素上添加可移除的评审标记，集中查看意见后使用 `Copy all → For AI`，即可复制包含 selector 与元素 HTML 快照的修改上下文，直接交给 AI。
+### 2. Page review: pin feedback and copy it for AI
 
-![Mark：在页面上打评审点并复制给 AI](media/mark.gif)
+Drop removable review pins on real HTML elements. Collect notes, then use `Copy all → For AI` to export selectors plus element HTML snapshots as editable context for an agent.
 
-### 3. Inspector：锁定元素并跳转源码
+![Mark: pin review notes on the page and copy them for AI](media/mark.gif)
 
-按住 `Alt + Shift` 悬停页面元素，Inspector 会显示对应选择器；单击即可在本机 IDE 打开该元素的源码位置，减少在文件中反复搜索和猜测的时间。
+### 3. Inspector: lock an element and open its source
 
-![Inspector：按住 Alt + Shift 锁定元素并跳转到对应源码](media/inspector.gif)
+Hold `Alt + Shift` and hover a page element to see its selector; click to open that location in your local IDE—less searching and guessing in the file tree.
 
-## 核心价值
+![Inspector: hold Alt + Shift to lock an element and jump to its source](media/inspector.gif)
 
-### HTML 标注，意见和元素绑定
+## Why it matters
 
-正式说明不是贴在截图上的便利贴，而是由 `notes.snapshot.js` 驱动的结构化数据。Viewer 将说明、锚点、SVG 连线和交互状态渲染到页面上，让每条说明都能回到具体 DOM。
+### Annotations bound to real elements
 
-### UI 包复用，页面稳定输出
+Formal notes are not sticky labels on a screenshot. They are structured data in `notes.snapshot.js`. Viewer renders copy, anchors, SVG connectors, and interaction state onto the live page so every note maps back to a concrete DOM target.
 
-从本地 UI 包按统一 Token、组件和 Pattern 组合页面，减少 AI 从零拼装时的猜测和视觉漂移。相同的 UI 资产可以持续产出风格一致、结构稳定的原生 HTML 原型。
+### Stable pages from a reusable UI pack
 
-### 便捷修改，评审上下文可执行
+Compose pages from a local UI pack with shared tokens, components, and patterns. That reduces invent-from-scratch drift when an agent builds admin-style screens, and keeps later prototypes visually consistent.
 
-评审标记可以临时注入、批量复制和随时移除，不污染正式页面。导出的指令带有稳定 selector、元素 HTML 快照和评审意见，AI 拿到的是可执行的修改上下文。
+### Executable review context
 
-### 从页面直接回源码
+Review pins can be injected, copied in bulk, and removed without polluting the formal page. Exports carry stable selectors, element HTML snapshots, and reviewer notes—context an agent can act on.
 
-本地作者服务运行在 `127.0.0.1`，负责编辑说明、重绑锚点和定位源码。作者层与正式交付物分离，原型文件仍保持轻量、可移植。
+### Jump from the page to source
 
-### 一份状态，多种输出
+A localhost authoring server on `127.0.0.1` edits notes, rebinds anchors, and opens source. Authoring chrome stays separate from the formal deliverable, so prototypes stay light and portable.
 
-通过 `PrototypeViewers` 统一管理业务状态；同一份原型既可以用于页面评审，也可以按 `scenarios` 批量输出不带批注层的纯页面 PNG。新建、编辑、空态、关联等多种页面状态都能被显式声明、稳定复现并批量截图。
+### One state model, many outputs
 
-### 标注和原型分离，交付物保持干净
+`PrototypeViewers` owns product state. The same prototype supports in-page review and scenario screenshots (`scenarios`) that emit clean PNGs without annotation chrome. Create, edit, empty, linked, and other states stay explicit, reproducible, and batchable.
 
-正式原型只保留语义 DOM、稳定锚点和渲染逻辑。Viewer 说明、Mark 评审点和 Inspector 作者能力都属于独立的作者层，可以随时加载、修改和移除，不会污染最终交付的 HTML。
+### Clean deliverables
 
-## 最终产出
+Formal prototypes keep semantic DOM, stable anchors, and render logic only. Viewer notes, Mark pins, and Inspector tooling are an authoring layer you can load or strip—they do not belong in the final HTML handoff.
 
-一次原型任务最终可以得到三类相互配合的产物：
+## What you get
 
-- **可运行的原型文件**：原生 HTML，可直接打开或通过本地服务访问；
-- **可复用的状态定义**：由 snapshot 声明页面说明和 `scenarios`，保证后续修改仍有稳定基准；
-- **多状态页面截图**：按场景批量生成新建、编辑、空态、关联等纯页面 PNG，截图不包含右侧说明、SVG 连线和作者工具。
+A typical prototype task yields three coordinated outputs:
 
-评审标注留在作者层，最终截图和原型文件保持干净；需要继续修改时，再加载标注层或将评审上下文复制给 AI。
+- **Runnable prototype files** — native HTML you can open locally or via the authoring server
+- **Reusable state definitions** — snapshot notes and `scenarios` as a stable baseline for later edits
+- **Multi-state screenshots** — batch PNGs for create / edit / empty / linked views without the notes rail, connectors, or author tools
 
-## 工作方式
+Review pins stay in the authoring layer. Screenshots and formal files stay clean. When you need another pass, reload the mark layer or paste For-AI context into an agent.
+
+## How it fits together
 
 ```text
-原生 HTML
+Native HTML
    │
-   ├── Viewer：正式说明、标注分组、SVG 连线
-   ├── Mark：页面评审、selector、元素快照、Copy for AI
-   ├── Inspector：锁定元素、查看选择器、跳转源码
-   └── Screenshot：按场景输出纯页面截图
+   ├── Viewer: formal notes, groups, SVG connectors
+   ├── Mark: page review, selectors, element snapshots, Copy for AI
+   ├── Inspector: lock elements, show selectors, open source
+   └── Screenshot: scenario-based clean page captures
 ```
 
-这套方式适合需要频繁调整的后台页面、配置页和交互原型：产品在页面上指出问题，AI 获得明确上下文，开发或作者可以快速回到源码验证修改。
+This fits admin consoles, config pages, and interaction prototypes that change often: product marks issues on the page, AI gets precise context, and authors can return to source quickly to verify.
 
-## 开始使用
+## Getting started
 
-完整样例见 [`examples/minimal-notes`](examples/minimal-notes)。将 `skills/html-prototype-build/` 安装到 Agent Skill 路径后，即可让 Agent 创建或修改原型。
+Requirements: Node.js 18+. Scenario screenshots also need a local Microsoft Edge or Google Chrome install.
 
-需要亲自启动作者服务、发起评审或输出截图时，请阅读 [Skill 使用手册](skills/html-prototype-build/README.md)。Agent 的任务分流和约束见 [`SKILL.md`](skills/html-prototype-build/SKILL.md)。
+```powershell
+# Open the sample with formal notes (use the printed 127.0.0.1 URL)
+node skills/html-prototype-build/runtime/serve.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype/notes.snapshot.js
+```
 
-## 项目结构
+```powershell
+# Batch clean screenshots from snapshot scenarios
+node skills/html-prototype-build/runtime/shoot.mjs examples/minimal-notes/prototype.html
+```
+
+Install `skills/html-prototype-build/` into your agent skill path (keep the folder name `html-prototype-build`), then ask the agent to build or revise a prototype from your materials.
+
+The walkthrough sample is [`examples/minimal-notes`](examples/minimal-notes) (demo UI copy is Chinese). Human operator steps live in the [Skill handbook](skills/html-prototype-build/README.md); agent routing and hard constraints live in [`SKILL.md`](skills/html-prototype-build/SKILL.md). Those Skill docs are currently Chinese—use the commands above or ask an agent that can read them.
+
+## Layout
 
 ```text
-skills/html-prototype-build/   可独立复制的完整 Skill
-examples/                      可直接运行的最小原型
-media/                         README 演示素材
-scripts/                       校验脚本
-tests/                         运行时契约测试
+skills/html-prototype-build/   Self-contained Skill (copy this folder)
+examples/                      Runnable minimal prototype
+media/                         README demo assets
+scripts/                       Validation entry
+tests/                         Runtime contract tests
 ```
 
-## 适用范围
+## Scope
 
-这是一个面向 AI 协作的 HTML 原型工具，不是生产组件库、Figma 替代品，也不是第三方设计系统实现。它更适合：
+This is an AI-assisted HTML prototyping toolkit—not a production component library, not a Figma replacement, and not a third-party design-system implementation. It fits best when you need to:
 
-- 需要快速把 UI 材料落成可打开 HTML 的原型；
-- 需要在页面上评审，并把意见准确交给 AI；
-- 需要频繁修改页面结构、文案和状态，并保留可复现截图的场景。
+- turn UI materials into openable HTML quickly;
+- review on the real page and hand precise feedback to an AI;
+- iterate structure, copy, and state while keeping reproducible screenshots.
 
-## 安全边界
+## Security boundaries
 
-- `serve.mjs` 只监听 `127.0.0.1`。不要对不可信 HTML 或 snapshot 运行作者服务和截图。
-- 说明写回仅允许原型目录内的 snapshot；`.env` 只用于本机指定 IDE，不要提交。
-- html-mark 是临时评审层，可能把页面片段写入 localStorage 或剪贴板，不属于正式交付物。
-- 原型中不要放真实凭据、生产数据、个人信息或未授权品牌。
+- `serve.mjs` binds to `127.0.0.1` only. Do not run authoring or screenshots against untrusted HTML or snapshot files.
+- Note writes are limited to snapshot files under the prototype directory. Keep `.env` local for IDE selection; never commit it.
+- html-mark is a temporary review layer. It may store page fragments in `localStorage` or copy them to the clipboard. It is not part of the formal deliverable.
+- Do not put real credentials, production data, personal information, or unauthorized brand assets in prototypes.
 
-## 开源协作
+## Contributing
 
-项目当前处于实验性 0.x 阶段，接口和目录仍可能变化。贡献方式见 [`CONTRIBUTING.md`](CONTRIBUTING.md)，行为规范见 [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)，漏洞请按 [`SECURITY.md`](SECURITY.md) 私下报告。
+This project is experimental 0.x; APIs and layout may change. See [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md). Report vulnerabilities privately per [`SECURITY.md`](SECURITY.md).
 
-本项目 UI 包为自研原生 HTML 视觉模拟，不捆绑第三方设计系统代码或官方资源。
+The UI pack is an original native-HTML visual simulation. It does not bundle third-party design-system code or official assets.
 
-## 许可证
+## License
 
-[MIT](LICENSE)。第三方溯源见 [NOTICE](NOTICE)（含 html-mark 致谢与 Apache ECharts）。
+[MIT](LICENSE). Third-party attribution is in [NOTICE](NOTICE) (html-mark credit and Apache ECharts).
