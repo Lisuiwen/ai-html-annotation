@@ -1,119 +1,125 @@
 # HTML Prototype Build
 
-> 实验性项目（0.x）：面向中文 AI 协作工作流的零依赖原生 HTML 原型 Skill。
+[English](README.en.md)
 
-## English summary
+> 让 HTML 原型成为可标注、可评审、可直接修改的 AI 协作界面。
 
-HTML Prototype Build is an experimental, zero-runtime-dependency toolkit for creating,
-reviewing, documenting, and screenshotting native HTML product prototypes in
-AI-assisted workflows. It provides composable local UI packs, formal product
-annotations, temporary review pins, a localhost authoring service, and
-scenario-based screenshots driven by a shared JavaScript state coordinator.
+很多原型的问题，不是“画得不够像”，而是**画完之后无法继续工作**：
 
-It is not a production UI component library, a complete accessibility
-implementation, or an official Ant Design project. APIs and directory layouts
-may change before the first stable release.
+- 截图没有 DOM，AI 只能猜页面结构，修改结果容易漂移；
+- 评审意见写在文档或聊天里，“这里改一下”无法准确对应页面元素；
+- 设计说明、评审批注和源码彼此分离，改完之后也很难快速验证。
 
-### English quick start
+HTML Prototype Build 用原生 HTML 把这条链路接起来：用 UI 包稳定搭建页面，在真实 DOM 上完成标注和评审，把意见复制给 AI，并从锁定的元素直接跳到源码。**页面本身就是可操作的交付物，不只是一张效果图。**
 
-Requirements: Node.js 18 or later. State screenshots additionally require a
-local Microsoft Edge or Google Chrome installation.
+实验性 0.x · 零 npm 依赖 · MIT
 
-```powershell
-# Start the local authoring service for the included example.
-node skills/html-prototype-build/runtime/serve.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype/notes.snapshot.js
+## 你可以先看演示
 
-# Generate state screenshots for the included example.
-node skills/html-prototype-build/runtime/shoot.mjs examples/minimal-notes/prototype.html
-```
+### 1. 右侧工具栏：标注的增删改查与分组
 
-Open the printed `http://127.0.0.1:<port>/...` address in a browser. The
-authoring service is for trusted local files only; do not run it against
-untrusted HTML or snapshot files.
+Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除和查看标注，并按分组管理页面说明；标注通过 SVG 连线指向对应模块，阅读和定位都在同一页面完成。标注根据页面隔离，多状态页面标注智能分组
 
-用于生成、评审和交付原生 HTML 产品原型的 Agent Skill。它将可组合 UI 包、正式功能说明、临时评审打点、本地作者工具和按状态截图组合为一个可渐进读取的工作流。
+![Viewer：右侧工具栏中的标注增删改查与分组管理](media/viewer.jpg)
 
-## 当前状态
+### 2. 页面评审：打点并复制给 AI
 
-本仓库当前为实验性 0.x 阶段，接口和目录仍可能变化。运行时只依赖 Node.js 内建模块；截图功能还需要本机 Edge 或 Chrome。
+在真实 HTML 元素上添加可移除的评审标记，集中查看意见后使用 `Copy all → For AI`，即可复制包含 selector 与元素 HTML 快照的修改上下文，直接交给 AI。
 
-## 能力
+![Mark：在页面上打评审点并复制给 AI](media/mark.gif)
 
-- 按 UI Token 重建单文件 HTML 原型。
-- 通过 `snapshot.js + viewer.js` 生成正式右侧说明与 SVG 连线。
-- 向现有 HTML 注入可移除的 html-mark 评审层。
-- 在 `127.0.0.1` 本地作者服务中编辑说明并使用 Inspector 定位源码。
-- 由 `PrototypeViewers` 在 JavaScript 中统一管理组合业务状态，DOM 仅保留语义、稳定锚点和渲染输出。
-- 根据 snapshot 的显式 `scenarios` 与 `?scene=<id>&collapsed=1` 按场景批量截图。
+### 3. Inspector：锁定元素并跳转源码
 
-## 快速开始
+锁定页面元素后，Inspector 会显示对应选择器；点击即可打开该元素的源码位置，减少在文件中反复搜索和猜测的时间。
 
-将 `skills/html-prototype-build/` 目录安装到你的 Agent Skill 路径（安装为 `<skills-root>/html-prototype-build/`），或在 Agent 会话中读取 `skills/html-prototype-build/SKILL.md`。脚本均可从任意位置调用：
+![Inspector：锁定元素并跳转到对应源码](media/inspector.gif)
 
-```powershell
-# 为 HTML 注入可双击打开的评审层。
-node <skill-root>/runtime/prepare-mark.mjs <prototype.html> --inline
+## 核心价值
 
-# 启动本地作者服务。
-node <skill-root>/runtime/serve.mjs <prototype.html> --snapshot=prototype/notes.snapshot.js
+### HTML 标注，意见和元素绑定
 
-# 按 snapshot 显式场景生成纯页面截图。
-node <skill-root>/runtime/shoot.mjs <prototype.html>
-```
+正式说明不是贴在截图上的便利贴，而是由 `notes.snapshot.js` 驱动的结构化数据。Viewer 将说明、锚点、SVG 连线和交互状态渲染到页面上，让每条说明都能回到具体 DOM。
 
-完整约束与按任务分流见 [skills/html-prototype-build/SKILL.md](skills/html-prototype-build/SKILL.md)。可运行的正式标注样例位于 [examples/minimal-notes](examples/minimal-notes)。
+### UI 包复用，页面稳定输出
 
-## 案例截图
+从本地 UI 包按统一 Token、组件和 Pattern 组合页面，减少 AI 从零拼装时的猜测和视觉漂移。相同的 UI 资产可以持续产出风格一致、结构稳定的原生 HTML 原型。
 
-最小案例使用 `skills/html-prototype-build/runtime/shoot.mjs` 从 `notes.snapshot.js` 的 `scenarios` 枚举场景并生成纯页面截图，截图不包含右侧说明、SVG 连线或作者工具：
+### 便捷修改，评审上下文可执行
 
-![基础列表状态](examples/minimal-notes/screenshots/base.png)
+评审标记可以临时注入、批量复制和随时移除，不污染正式页面。导出的指令带有稳定 selector、元素 HTML 快照和评审意见，AI 拿到的是可执行的修改上下文。
 
-| 状态 | 截图 |
-|---|---|
-| 基础列表 | [base.png](examples/minimal-notes/screenshots/base.png) |
-| 新建配置项 | [create.png](examples/minimal-notes/screenshots/create.png) |
-| 编辑配置项 | [edit.png](examples/minimal-notes/screenshots/edit.png) |
-| 任务关联配置项 | [strategy.png](examples/minimal-notes/screenshots/strategy.png) |
+### 从页面直接回源码
 
-重新生成案例截图：
+本地作者服务运行在 `127.0.0.1`，负责编辑说明、重绑锚点和定位源码。作者层与正式交付物分离，原型文件仍保持轻量、可移植。
 
-```powershell
-node skills/html-prototype-build/runtime/shoot.mjs examples/minimal-notes/prototype.html
-```
+### 一份状态，多种输出
 
-## 目录
+通过 `PrototypeViewers` 统一管理业务状态；同一份原型既可以用于页面评审，也可以按 `scenarios` 批量输出不带批注层的纯页面 PNG。新建、编辑、空态、关联等多种页面状态都能被显式声明、稳定复现并批量截图。
+
+### 标注和原型分离，交付物保持干净
+
+正式原型只保留语义 DOM、稳定锚点和渲染逻辑。Viewer 说明、Mark 评审点和 Inspector 作者能力都属于独立的作者层，可以随时加载、修改和移除，不会污染最终交付的 HTML。
+
+## 最终产出
+
+一次原型任务最终可以得到三类相互配合的产物：
+
+- **可运行的原型文件**：原生 HTML，可直接打开或通过本地服务访问；
+- **可复用的状态定义**：由 snapshot 声明页面说明和 `scenarios`，保证后续修改仍有稳定基准；
+- **多状态页面截图**：按场景批量生成新建、编辑、空态、关联等纯页面 PNG，截图不包含右侧说明、SVG 连线和作者工具。
+
+评审标注留在作者层，最终截图和原型文件保持干净；需要继续修改时，再加载标注层或将评审上下文复制给 AI。
+
+## 工作方式
 
 ```text
-skills/
-└─ html-prototype-build/   可独立复制的完整 Skill（含 SKILL.md 与全部依赖资源）
-examples/                  可直接打开的最小原型
+原生 HTML
+   │
+   ├── Viewer：正式说明、标注分组、SVG 连线
+   ├── Mark：页面评审、selector、元素快照、Copy for AI
+   ├── Inspector：锁定元素、查看选择器、跳转源码
+   └── Screenshot：按场景输出纯页面截图
 ```
+
+这套方式适合需要频繁调整的后台页面、配置页和交互原型：产品在页面上指出问题，AI 获得明确上下文，开发或作者可以快速回到源码验证修改。
+
+## 开始使用
+
+完整样例见 [`examples/minimal-notes`](examples/minimal-notes)。将 `skills/html-prototype-build/` 安装到 Agent Skill 路径后，即可让 Agent 创建或修改原型。
+
+需要亲自启动作者服务、发起评审或输出截图时，请阅读 [Skill 使用手册](skills/html-prototype-build/README.md)。Agent 的任务分流和约束见 [`SKILL.md`](skills/html-prototype-build/SKILL.md)。
+
+## 项目结构
+
+```text
+skills/html-prototype-build/   可独立复制的完整 Skill
+examples/                      可直接运行的最小原型
+media/                         README 演示素材
+scripts/                       校验脚本
+tests/                         运行时契约测试
+```
+
+## 适用范围
+
+这是一个面向 AI 协作的 HTML 原型工具，不是生产组件库、Figma 替代品，也不是第三方设计系统实现。它更适合：
+
+- 需要快速把 UI 材料落成可打开 HTML 的原型；
+- 需要在页面上评审，并把意见准确交给 AI；
+- 需要频繁修改页面结构、文案和状态，并保留可复现截图的场景。
 
 ## 安全边界
 
-- `serve.mjs` 仅监听 `127.0.0.1`，不会暴露到局域网。
-- 说明写回仅允许目标 HTML 所在目录内的 snapshot 文件。
-- `.env` 仅供本机 Inspector 指定 IDE 使用，不应提交。
-- 原型中不应包含真实凭据、生产数据、个人信息或未授权品牌资源。
-- `shoot.mjs` 只应对自己信任的 HTML 和 snapshot 运行。
-- 本地作者服务会按 `CODE_EDITOR` 配置启动 IDE；不要使用来源不明的 `.env`。
-- `html-mark` 是临时评审层，不属于正式交付物；它可能把页面片段保存到浏览器本地存储或复制到剪贴板。
+- `serve.mjs` 只监听 `127.0.0.1`。不要对不可信 HTML 或 snapshot 运行作者服务和截图。
+- 说明写回仅允许原型目录内的 snapshot；`.env` 只用于本机指定 IDE，不要提交。
+- html-mark 是临时评审层，可能把页面片段写入 localStorage 或剪贴板，不属于正式交付物。
+- 原型中不要放真实凭据、生产数据、个人信息或未授权品牌。
 
 ## 开源协作
 
-- 贡献规范见 [CONTRIBUTING.md](CONTRIBUTING.md)。
-- 安全漏洞请按 [SECURITY.md](SECURITY.md) 私下报告，不要在公开 Issue 中提交可利用细节。
-- 行为规范见 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)。
-- 当前项目为实验性 0.x 版本，尚未承诺稳定 API；问题反馈和功能建议请使用仓库的 Issue 或 Discussion。
+项目当前处于实验性 0.x 阶段，接口和目录仍可能变化。贡献方式见 [`CONTRIBUTING.md`](CONTRIBUTING.md)，漏洞请按 [`SECURITY.md`](SECURITY.md) 私下报告。
 
-## 第三方名称与归属
-
-`Ant Design` 是其权利人的商标。本项目中的 `antd-admin` 仅表示对已确认
-Ant Design 风格特征的原生 HTML 视觉模拟；本项目未获 Ant Design 官方背书，
-不代表官方实现，不捆绑 Ant Design 代码或设计资源，也不承诺与任何特定
-Ant Design 版本兼容。详见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。
+本项目 UI 包为自研原生 HTML 视觉模拟，不捆绑第三方设计系统代码或官方资源。
 
 ## 许可证
 
-[MIT](LICENSE)
+[MIT](LICENSE)。第三方溯源见 [NOTICE](NOTICE)（含 html-mark 致谢与 Apache ECharts）。

@@ -2,7 +2,7 @@
 
 ## 可用包
 
-- `antd-admin`：Ant Design 风格的桌面中后台 UI，提供 foundation、action、navigation、form、data、feedback，以及可选 Pattern 与 Preset。
+- `admin-desktop`：中后台桌面风格 UI，提供 foundation、action、navigation、form、data、feedback，以及可选 Pattern 与 Preset。
 
 ## 选择规则
 
@@ -18,12 +18,12 @@
 当前仅有一个完整包：
 
 ```text
-foundation: antd-admin.default
-action: antd-admin
-navigation: antd-admin
-form: antd-admin
-data: antd-admin
-feedback: antd-admin
+foundation: admin-desktop.default
+action: admin-desktop
+navigation: admin-desktop
+form: admin-desktop
+data: admin-desktop
+feedback: admin-desktop
 addons: 按需求选择
 ```
 

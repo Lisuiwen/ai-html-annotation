@@ -1,9 +1,9 @@
 ---
-id: antd-admin
-name: Ant Design 中后台 UI
+id: admin-desktop
+name: 中后台桌面 UI
 ---
 
-# Ant Design 中后台 UI 包
+# 中后台桌面 UI 包
 
 ## 读取入口
 
@@ -17,9 +17,9 @@ name: Ant Design 中后台 UI
 
 ## 组合限制
 
-- 本包所有组件默认依赖 `antd-admin.default` foundation。
+- 本包所有组件默认依赖 `admin-desktop.default` foundation。
 - 同一类别不得与其他 provider 同时加载。
-- 其他包只有显式声明兼容 `antd-admin.default` foundation 后，才可替换本包某个组件类别。
+- 其他包只有显式声明兼容 `admin-desktop.default` foundation 后，才可替换本包某个组件类别。
 - `feedback._overlay-core` 是私有组件，只能由 Modal 或 Drawer 间接加载。
-- 本包只模拟已确认的 Ant Design 中后台视觉特征，不代表正式项目依赖特定 Ant Design 版本。
+- 本包提供中后台桌面原型视觉，不捆绑第三方设计系统代码，也不承诺兼容任何商业 UI 库版本。
 

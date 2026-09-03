@@ -1,10 +1,14 @@
 /*!
  * HTML Mark — drop-in click-to-annotate overlay for HTML prototypes.
  *
+ * Derived from https://github.com/xuxinmaxen/html-mark (MIT-0,
+ * Copyright 2026 Maxen Xu / @xuxinmaxen), with local integration changes
+ * for this skill (theme, author-tool mutual exclusion, Ctrl+Click pins).
+ *
  * Click any element to drop a numbered pin, then write what you'd change.
  * Copy out as Markdown / Plain / JSON for review handoff — or "For AI",
  * a format with unique CSS selectors + HTML snapshots built to paste
- * straight into a coding agent (Claude Code etc.) for one-pass fixes.
+ * straight into a coding agent for one-pass fixes.
  *
  * Pins anchor to their target element (they survive resizes and responsive
  * reflows) and persist in localStorage per page, restoring on reload.
@@ -37,7 +41,7 @@
   const STORE_KEY = 'html-mark:' + location.pathname;
 
   // ---------- Styles ----------
-  /* html-mark 为 drop-in 评审层，刻意使用紫罗兰 #9333ea，与 antd-admin 主色 #1677ff 区分。 */
+  /* html-mark 为 drop-in 评审层，刻意使用紫罗兰 #9333ea，与 admin-desktop 主色 #1677ff 区分。 */
   const css = `
 .mm-ui, .mm-ui *, .mm-pin, .mm-pin *, .mm-note-pop, .mm-note-pop * {
   box-sizing: border-box;

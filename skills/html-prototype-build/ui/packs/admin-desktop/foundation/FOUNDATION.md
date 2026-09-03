@@ -1,9 +1,9 @@
 ---
-id: antd-admin.default
+id: admin-desktop.default
 sources: [tokens.css, base.css]
 ---
 
-# Ant Design 中后台基础层
+# 中后台桌面基础层
 
 基础层是所有使用本包的原型必须加载的无 DOM 依赖，只提供全局设计 Token 与 CSS 基线。
 

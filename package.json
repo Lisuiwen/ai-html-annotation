@@ -3,7 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/runtime-contract.test.mjs",
-    "validate": "node scripts/validate-skill.mjs"
+    "test": "node scripts/validate-skill.mjs"
   }
 }

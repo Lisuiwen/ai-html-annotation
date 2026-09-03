@@ -1,0 +1,25 @@
+# Third-party notices
+
+本仓库 MIT 许可覆盖自有代码。下列第三方成果按各自许可证保留权利说明。
+
+## html-mark
+
+本项目评审层 `skills/html-prototype-build/runtime/html-mark.js` 基于
+[xuxinmaxen/html-mark](https://github.com/xuxinmaxen/html-mark)
+（MIT No Attribution / MIT-0，Copyright 2026 Maxen Xu / @xuxinmaxen），并做了本地集成改动
+（主题色、与作者工具互斥、`Ctrl+Click` 打点等）。MIT-0 不强制署名；此处为溯源与致谢。
+
+## Apache ECharts
+
+`skills/html-prototype-build/vendor/echarts/` 分发 Apache ECharts 5.5.1
+（Apache License 2.0）。保留上游 NOTICE：
+
+```text
+Apache ECharts
+Copyright 2017-2024 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (https://www.apache.org/).
+```
+
+完整 Apache-2.0 许可文本见：https://www.apache.org/licenses/LICENSE-2.0

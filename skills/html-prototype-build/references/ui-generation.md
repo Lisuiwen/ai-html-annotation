@@ -10,7 +10,7 @@
 2. 生成 snapshot + Viewer；所有原型都通过 Viewer 管理场景和 state。
 3. 交付前核对场景、锚点、Token 和正式文件结构。
 
-当前已有完整 UI 包为 `../ui/packs/antd-admin/`，提供 foundation 与 action / navigation / form / data / feedback 全部类别的 provider，用于 Ant Design 风格的桌面中后台原型。
+当前已有完整 UI 包为 `../ui/packs/admin-desktop/`，提供 foundation 与 action / navigation / form / data / feedback 全部类别的 provider，用于中后台桌面风格原型。
 
 ## 生成流程
 

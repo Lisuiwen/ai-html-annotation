@@ -57,7 +57,7 @@ const skillFiles = await listFiles(skillDirectory);
 await validateMetadata();
 await validateMarkdownLinks(skillFiles);
 await validateBrowserScripts(skillFiles);
-await import('../skills/html-prototype-build/ui/packs/antd-admin/tools/validate-pack.mjs');
+await import('../skills/html-prototype-build/ui/packs/admin-desktop/tools/validate-pack.mjs');
 if (process.exitCode) {
   throw new Error('UI Pack 校验失败，详见上方错误输出。');
 }

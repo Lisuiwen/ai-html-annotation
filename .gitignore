@@ -1,12 +1,13 @@
 # 本机 Inspector 配置。
 skills/html-prototype-build/runtime/.env
 
-# 评审注入和截图的临时产物。
+# Agent / 本机临时产物。
+.agents/
+.agent/
 *.bak.*
+
+# 按场景截图目录可提交；忽略其它 bak。
 !screenshots/
-!examples/minimal-notes/prototype-assets/
-!examples/minimal-notes/prototype-assets/screenshots/
-!examples/minimal-notes/prototype-assets/screenshots/*.png
 
 # Node.js 依赖目录。
 node_modules/

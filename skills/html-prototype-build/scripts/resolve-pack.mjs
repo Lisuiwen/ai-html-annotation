@@ -77,11 +77,11 @@ function collectDeliverables(registry, ids) {
   };
 }
 
-const packId = readOption('pack', 'antd-admin');
+const packId = readOption('pack', 'admin-desktop');
 const selectedIds = parseIds(readOption('select'));
 const optionalIds = parseIds(readOption('optional'));
 if (!selectedIds.length) {
-  console.error('用法：node resolve-pack.mjs --select=<id[,id...]> [--optional=<id[,id...]>] [--pack=antd-admin]');
+  console.error('用法：node resolve-pack.mjs --select=<id[,id...]> [--optional=<id[,id...]>] [--pack=admin-desktop]');
   process.exit(1);
 }
 

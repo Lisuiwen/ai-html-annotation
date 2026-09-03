@@ -15,7 +15,7 @@ const runtimeViewerUrl = new URL('../skills/html-prototype-build/runtime/viewer.
 const exampleViewerUrl = new URL('../examples/minimal-notes/prototype/viewer.js', import.meta.url);
 const prototypeUrl = new URL('../examples/minimal-notes/prototype.html', import.meta.url);
 const snapshotUrl = new URL('../examples/minimal-notes/prototype/notes.snapshot.js', import.meta.url);
-const packManifestUrl = new URL('../skills/html-prototype-build/ui/packs/antd-admin/manifest.json', import.meta.url);
+const packManifestUrl = new URL('../skills/html-prototype-build/ui/packs/admin-desktop/manifest.json', import.meta.url);
 
 /** 读取 UI pack manifest，验证最终原型可发现有状态组件的投影接口。 */
 async function readPackManifest() {
@@ -230,8 +230,8 @@ test('UI pack 有状态组件提供局部状态 Adapter 且静态片段不再绑
     const entry = manifest.components[id];
     assert.ok(entry?.adapter, `${id} 应声明可选状态 Adapter`);
     const [source, adapter] = await Promise.all([
-      readFile(new URL(`../skills/html-prototype-build/ui/packs/antd-admin/${entry.source}`, import.meta.url), 'utf8'),
-      readFile(new URL(`../skills/html-prototype-build/ui/packs/antd-admin/${entry.adapter}`, import.meta.url), 'utf8')
+      readFile(new URL(`../skills/html-prototype-build/ui/packs/admin-desktop/${entry.source}`, import.meta.url), 'utf8'),
+      readFile(new URL(`../skills/html-prototype-build/ui/packs/admin-desktop/${entry.adapter}`, import.meta.url), 'utf8')
     ]);
     assert.doesNotMatch(source, /<script\b/i, `${id} 静态组件片段不应注册全局事件`);
     assert.deepEqual([...source.matchAll(deprecatedAttribute)].map((match) => match[0]), [], `${id} 不应依赖旧 data-ui 状态协议`);

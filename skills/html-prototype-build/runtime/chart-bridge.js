@@ -17,7 +17,7 @@
     });
   }
 
-  /** 汇总 antd-admin token → ECharts 色板与轴样式。 */
+  /** 汇总 admin-desktop token → ECharts 色板与轴样式。 */
   function getThemeFromTokens() {
     if (themeCache) return themeCache;
     var values = readTokens(
