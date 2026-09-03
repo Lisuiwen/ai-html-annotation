@@ -6,6 +6,14 @@
 
 Build, annotate, review, screenshot, and iterate native HTML prototypes on the real DOM. HTML Prototype combines reusable UI packs, DOM-bound annotations, AI-ready review context, element-to-source inspection, and reproducible multi-state screenshots in a zero-dependency workflow.
 
+## Install the Agent Skill
+
+```bash
+npx skills add https://github.com/Lisuiwen/html-prototype --skill html-prototype-build
+```
+
+The skills CLI records anonymous aggregate installs for its leaderboard, so real installs also help the project become discoverable in the Agent Skills ecosystem.
+
 Most prototype workflows fail after the mock looks “good enough”:
 
 - Screenshots have no DOM, so an AI has to guess structure and drifts on every change.
@@ -14,7 +22,7 @@ Most prototype workflows fail after the mock looks “good enough”:
 
 HTML Prototype reconnects that loop with native HTML: build pages from a UI pack, annotate and review on the real DOM, copy instructions to an AI, and jump from a locked element back to source. **The page is the deliverable, not just a picture of one.**
 
-Experimental 0.x · zero npm dependencies · MIT
+Experimental 0.x · zero npm dependencies · MIT · [Changelog](CHANGELOG.md)
 
 ## See it first
 
