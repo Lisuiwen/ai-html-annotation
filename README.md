@@ -1,15 +1,15 @@
-# HTML Prototype
+# AI HTML Annotation
 
 [中文](README.zh-CN.md)
 
-> AI-assisted HTML UI prototyping toolkit and Agent Skill for Claude Code, Codex, Cursor, and other coding agents.
+> AI-assisted HTML annotation and prototyping toolkit for Claude Code, Codex, Cursor, and other coding agents.
 
-Build, annotate, review, screenshot, and iterate native HTML prototypes on the real DOM. HTML Prototype combines reusable UI packs, DOM-bound annotations, AI-ready review context, element-to-source inspection, and reproducible multi-state screenshots in a zero-dependency workflow.
+Annotate, review, screenshot, and iterate native HTML prototypes on the real DOM. AI HTML Annotation combines reusable UI packs, DOM-bound annotations, AI-ready review context, element-to-source inspection, and reproducible multi-state screenshots in a zero-dependency workflow.
 
 ## Install the Agent Skill
 
 ```bash
-npx skills add https://github.com/Lisuiwen/html-prototype --skill html-prototype-build
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
 ```
 
 The skills CLI records anonymous aggregate installs for its leaderboard, so real installs also help the project become discoverable in the Agent Skills ecosystem.
@@ -20,7 +20,7 @@ Most prototype workflows fail after the mock looks “good enough”:
 - Review comments live in docs or chat—“move this left”—and never map cleanly to an element.
 - Specs, review notes, and source stay disconnected, so verifying a fix is slow.
 
-HTML Prototype reconnects that loop with native HTML: build pages from a UI pack, annotate and review on the real DOM, copy instructions to an AI, and jump from a locked element back to source. **The page is the deliverable, not just a picture of one.**
+AI HTML Annotation reconnects that loop with native HTML: build pages from a UI pack, annotate and review on the real DOM, copy instructions to an AI, and jump from a locked element back to source. **The page is the deliverable, not just a picture of one.**
 
 Experimental 0.x · zero npm dependencies · MIT · [Changelog](CHANGELOG.md)
 
@@ -123,7 +123,7 @@ tests/                         Runtime contract tests
 
 ## Scope
 
-This is an AI-assisted HTML prototyping toolkit—not a production component library, not a Figma replacement, and not a third-party design-system implementation. It fits best when you need to:
+This is an AI-assisted HTML annotation and prototyping toolkit—not a production component library, not a Figma replacement, and not a third-party design-system implementation. It fits best when you need to:
 
 - turn UI materials into openable HTML quickly;
 - review on the real page and hand precise feedback to an AI;
