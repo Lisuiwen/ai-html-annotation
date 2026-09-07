@@ -24,7 +24,7 @@ description: Build, annotate, review, screenshot, and deliver native HTML UI pro
 | 给页面添加评审 pin、导出 For AI | [评审打点](references/review-mark.md) | `runtime/author/tools/mark/` |
 | 按页面状态批量截图 | [分组截图](references/screenshots.md) | `runtime/cli/screenshot.mjs` |
 | 整理最终文件 | [交付与迭代](references/delivery.md) | 正式交付稿 |
-| 交付前最终核对 | [交付复检清单](references/delivery-checklist.md) | 场景、锚点、交互闪电、文件结构 |
+| 交付前最终核对 | [交付复检清单](references/delivery-checklist.md) | 逐项勾选 |
 
 生成或大改 UI 时，先读 [共享生成契约](references/generation-contract.md)；其余任务按上表入口读取，不必全量读契约。
 

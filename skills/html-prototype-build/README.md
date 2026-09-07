@@ -66,34 +66,11 @@ node <skill-root>/runtime/cli/screenshot.mjs <prototype.html> --snapshot=prototy
 
 ## 原型与交付物
 
-```text
-prototype.html
-prototype/
-├─ prototype.css
-├─ prototype.js
-├─ notes.snapshot.js
-├─ display-mode.js
-├─ state.js
-├─ model.js
-└─ viewer.js
-screenshots/
-assets/                 # 按需
-```
-
-- `notes.snapshot.js` 是正式说明唯一数据源，`scenarios` 是多状态截图唯一依据。
-- `prototype/display-mode.js`、`prototype/state.js`、`prototype/model.js`、`prototype/viewer.js` 分别从 `runtime/client/core/display-mode.js`、`runtime/client/core/state.js`、`runtime/client/notes/model.js`、`runtime/client/notes/viewer.js` 原样复制，并按该顺序加载。
-- Chart 运行时从 `runtime/client/charts/` 按需复制。
+正式文件结构、runtime 复制与加载顺序见 [generation-contract.md §7](references/generation-contract.md#7-交付文件)。`notes.snapshot.js` 是正式说明唯一数据源，`scenarios` 是多状态截图唯一依据。
 
 ## 交付检查
 
-完整清单见 [交付复检清单](references/delivery-checklist.md)。摘要：
-
-- 正式说明只通过作者服务写入 snapshot。
-- Mark pin 只在浏览器 localStorage，不写入 snapshot 或源 HTML。
-- Author Bootstrap、Direct Edit、Notes Editor、Inspector 和源码定位 token 不得进入正式原型文件。
-- `data-ui-interactive` 只标记本次迭代业务操作入口，并在纯页面截图中隐藏。
-- 最终截图不应包含右侧说明、SVG 连线、Mark、作者工具或交互闪电。
-- 作者服务仅监听 `127.0.0.1`；原型中不要放真实凭据或生产数据。
+交付前按 [交付复检清单](references/delivery-checklist.md) 逐项核对。
 
 ## 按任务查看详情
 

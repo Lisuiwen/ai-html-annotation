@@ -25,8 +25,7 @@
 
 - 带右侧说明的原型使用左右分栏：左侧产品区 `minmax(720px, 82%)`，右侧说明区 `minmax(240px, 18%)`，两侧独立滚动。
 - 标注点数量由实际需要说明的语义单元决定，不设固定上限；说明序号由 Viewer 按卡片顺序生成。
-- `data-ui-interactive` 只用于本次迭代需要用户操作的业务入口，不用于壳层、关闭、取消、分页或每行重复操作。
-- 交互标记使用珊瑚色 `#ff8d6b` 和白色 SVG 符号；该颜色只属于标注层，不得进入任何 UI 包的产品 Token。
+- `data-ui-interactive` 规则见 [generation-contract.md §5](../../references/generation-contract.md#5-标注)；珊瑚色 `#ff8d6b` 只属于标注层，不得进入 UI 包产品 Token。
 
 ## 资源
 
