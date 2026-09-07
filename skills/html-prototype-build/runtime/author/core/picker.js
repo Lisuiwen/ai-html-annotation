@@ -67,38 +67,13 @@
     return el && el.nodeType === 1 && !isBlocked(el) ? el : null;
   }
 
-  /* 优先稳定 selector，避免 nth-child 路径。 */
+  /* Selector 规则统一由 author/core/selector.js 维护；保留 Picker API 兼容既有调用方。 */
   function stableSelector(el) {
-    if (!el || el.nodeType !== 1) return '';
-    if (el.id) return '#' + (window.CSS && CSS.escape ? CSS.escape(el.id) : el.id);
-    var note = el.getAttribute && el.getAttribute('data-prototype-note-target');
-    if (note) return '[data-prototype-note-target="' + note.replace(/"/g, '\\"') + '"]';
-    var mm = el.getAttribute && el.getAttribute('data-mm-label');
-    if (mm) return '[data-mm-label="' + mm.replace(/"/g, '\\"') + '"]';
-    return cssPath(el);
+    return window.AuthorToolsSelector ? window.AuthorToolsSelector.stableSelector(el) : '';
   }
 
   function cssPath(el) {
-    if (!el || el.nodeType !== 1) return '';
-    var parts = [];
-    var cur = el;
-    while (cur && cur.nodeType === 1 && cur !== document.body && cur !== document.documentElement) {
-      if (cur.id) {
-        parts.unshift('#' + (window.CSS && CSS.escape ? CSS.escape(cur.id) : cur.id));
-        return parts.join(' > ');
-      }
-      var sel = cur.tagName.toLowerCase();
-      var parent = cur.parentElement;
-      if (parent) {
-        var sameTag = Array.prototype.filter.call(parent.children, function (child) {
-          return child.tagName === cur.tagName;
-        });
-        if (sameTag.length > 1) sel += ':nth-of-type(' + (sameTag.indexOf(cur) + 1) + ')';
-      }
-      parts.unshift(sel);
-      cur = parent;
-    }
-    return parts.length ? 'body > ' + parts.join(' > ') : '';
+    return window.AuthorToolsSelector ? window.AuthorToolsSelector.cssPath(el) : '';
   }
 
   function clearHover() {
