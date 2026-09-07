@@ -4,6 +4,7 @@ import test from 'node:test';
 import vm from 'node:vm';
 
 const sourceUrl = new URL('../../../../../skills/html-prototype-build/runtime/author/tools/notes-editor/index.js', import.meta.url);
+const styleUrl = new URL('../../../../../skills/html-prototype-build/runtime/author/tools/notes-editor/index.css', import.meta.url);
 
 function run(source, window, errors) {
   window.window = window;
@@ -50,4 +51,12 @@ test('NotesEditor 将数据与 selector 规则委托给共享模型，并保留�
   assert.match(source, /function startPick/);
   assert.match(source, /beforeunload/);
   assert.match(source, /window\.PrototypeAuthor\.register\('notes-target'/);
+});
+
+test('NotesEditor 作者样式独立于 controller JS', async () => {
+  const [source, css] = await Promise.all([readFile(sourceUrl, 'utf8'), readFile(styleUrl, 'utf8')]);
+  assert.doesNotMatch(source, /function installStyles\(/);
+  assert.doesNotMatch(source, /createElement\('style'\)/);
+  assert.match(css, /\.pn-author-toolbar\s*\{/);
+  assert.match(css, /\.pn-pick-tooltip\s*\{/);
 });

@@ -31,6 +31,7 @@
       if (!window.PrototypeAuthor) await load('/__prototype-author/author/core/modes.js');
       if (!window.PrototypeAuthorChrome) await load('/__prototype-author/client/core/display-mode.js');
       if (!window.AuthorToolsSelector) await load('/__prototype-author/author/core/selector.js');
+      await loadStyle('/__prototype-author/author/tools/notes-editor/index.css');
       await load('/__prototype-author/author/tools/notes-editor/model.js');
       await load('/__prototype-author/author/tools/notes-editor/index.js');
       await load('/__prototype-author/author/core/picker.js');
@@ -39,6 +40,7 @@
       await load('/__prototype-author/author/tools/direct-edit/style-model.js');
       await load('/__prototype-author/author/tools/direct-edit/panel.js');
       await load('/__prototype-author/author/tools/direct-edit/index.js');
+      await loadStyle('/__prototype-author/author/tools/mark/index.css');
       await load('/__prototype-author/author/tools/mark/storage.js');
       await load('/__prototype-author/author/tools/mark/pins.js');
       await load('/__prototype-author/author/tools/mark/index.js');

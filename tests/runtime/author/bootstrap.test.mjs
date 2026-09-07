@@ -29,7 +29,9 @@ test('bootstrap 只负责加载新 client/author 资源路径', async () => {
     '/__prototype-author/author/shell/index.css',
     '/__prototype-author/author/shell/index.js',
     '/__prototype-author/author/tools/direct-edit/index.js',
+    '/__prototype-author/author/tools/mark/index.css',
     '/__prototype-author/author/tools/mark/index.js',
+    '/__prototype-author/author/tools/notes-editor/index.css',
     '/__prototype-author/author/tools/notes-editor/model.js',
     '/__prototype-author/author/tools/notes-editor/index.js',
     '/__prototype-author/author/tools/inspector/index.js'
@@ -40,11 +42,15 @@ test('bootstrap 只负责加载新 client/author 资源路径', async () => {
   assert.doesNotMatch(source, /author-loader\.js/);
 });
 
-test('bootstrap 先加载共享 selector，再加载 NotesEditor 与 Picker', async () => {
+test('bootstrap 在工具脚本之前加载各自 CSS 依赖', async () => {
   const { source } = await boot();
   const selector = source.indexOf('/__prototype-author/author/core/selector.js');
+  const notesCss = source.indexOf('/__prototype-author/author/tools/notes-editor/index.css');
   const model = source.indexOf('/__prototype-author/author/tools/notes-editor/model.js');
-  const controller = source.indexOf('/__prototype-author/author/tools/notes-editor/index.js');
+  const notesController = source.indexOf('/__prototype-author/author/tools/notes-editor/index.js');
   const picker = source.indexOf('/__prototype-author/author/core/picker.js');
-  assert.ok(selector >= 0 && model > selector && controller > model && picker > selector);
+  const markCss = source.indexOf('/__prototype-author/author/tools/mark/index.css');
+  const markController = source.indexOf('/__prototype-author/author/tools/mark/index.js');
+  assert.ok(selector >= 0 && notesCss > selector && model > notesCss && notesController > model && picker > selector);
+  assert.ok(markCss >= 0 && markController > markCss);
 });

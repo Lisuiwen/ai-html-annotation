@@ -81,6 +81,9 @@ test('Server HTTP 集成守住资源边界并可写回 HTML / snapshot', async (
 
   const authorAsset = await fetch(`${origin}/__prototype-author/author/bootstrap.js`);
   assert.equal(authorAsset.status, 200);
+  const authorStyle = await fetch(`${origin}/__prototype-author/author/tools/mark/index.css`);
+  assert.equal(authorStyle.status, 200);
+  assert.match(authorStyle.headers.get('content-type') || '', /^text\/css/);
   const forbiddenAsset = await fetch(`${origin}/__prototype-author/server/index.mjs`);
   assert.equal(forbiddenAsset.status, 403);
 
