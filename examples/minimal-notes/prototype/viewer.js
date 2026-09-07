@@ -96,14 +96,7 @@
 
   /* 读取 snapshot 中 scenarios 的声明顺序 id 列表。 */
   function listScenarioIds() {
-    var definitions = state.data && state.data.scenarios;
-    if (Array.isArray(definitions)) {
-      return definitions.map(function (scenario) { return scenario && scenario.id; }).filter(Boolean);
-    }
-    if (definitions && Object.prototype.toString.call(definitions) === '[object Object]') {
-      return Object.keys(definitions);
-    }
-    return [];
+    return window.PrototypeNotesModel.listScenarioIds(state.data && state.data.scenarios);
   }
 
   /* 按声明顺序循环激活下一场景。 */
@@ -118,12 +111,7 @@
 
   /* 读取场景可选 label，用于场景切换钮展示。 */
   function scenarioLabel(id) {
-    var definitions = state.data && state.data.scenarios;
-    if (!definitions || !id) return id || '';
-    var config = Array.isArray(definitions)
-      ? definitions.filter(function (scenario) { return scenario && scenario.id === id; })[0]
-      : definitions[id];
-    return (config && config.label) || id;
+    return window.PrototypeNotesModel.scenarioLabel(state.data && state.data.scenarios, id);
   }
 
   /* 同步场景切换钮文案与位置（加号左侧；无加号时在折叠钮左侧）。 */
@@ -213,48 +201,12 @@
     scheduleDraw();
   }
 
-  /* 按点路径读取组合状态；路径不存在时返回 undefined。 */
-  function readStatePath(source, path) {
-    return String(path).split('.').reduce(function (value, key) {
-      return value == null ? undefined : value[key];
-    }, source);
-  }
-
-  /* 深比较 when 中的对象和数组值，避免引用地址影响声明式匹配。 */
-  function equalStateValue(actual, expected) {
-    if (Array.isArray(expected)) {
-      if (!Array.isArray(actual) || actual.length !== expected.length) return false;
-      return expected.every(function (item, index) { return equalStateValue(actual[index], item); });
-    }
-    if (expected && Object.prototype.toString.call(expected) === '[object Object]') {
-      if (!actual || Object.prototype.toString.call(actual) !== '[object Object]') return false;
-      return Object.keys(expected).every(function (key) {
-        return equalStateValue(actual[key], expected[key]);
-      });
-    }
-    return actual === expected;
-  }
-
-  /* 匹配卡片 when：各条件为 AND；`.includes` 后缀表达数组包含。 */
-  function matchesWhen(when, appState) {
-    if (!when || Object.prototype.toString.call(when) !== '[object Object]') return true;
-    return Object.keys(when).every(function (path) {
-      var includesSuffix = '.includes';
-      if (path.slice(-includesSuffix.length) === includesSuffix) {
-        var collection = readStatePath(appState, path.slice(0, -includesSuffix.length));
-        return Array.isArray(collection) && collection.indexOf(when[path]) !== -1;
-      }
-      return equalStateValue(readStatePath(appState, path), when[path]);
-    });
-  }
-
   /* 返回当前应显示的卡片：无 when 的卡片始终显示，有 when 的按组合状态匹配。 */
   function visibleCards() {
-    var cards = Array.isArray(state.data.cards) ? state.data.cards : [];
-    var appState = window.PrototypeViewers.getState();
-    return cards.filter(function (card) {
-      return !card.when || matchesWhen(card.when, appState);
-    });
+    return window.PrototypeNotesModel.visibleCards(
+      state.data && state.data.cards,
+      window.PrototypeViewers.getState()
+    );
   }
 
   /* Modal/Drawer 连线落点：内层面板才有语义边界，遮罩层 id 仅用于 Adapter。 */
@@ -453,6 +405,10 @@
     if (state.page) return;
     if (!window.PrototypeViewers) {
       console.error('[prototype-notes] 缺少 PrototypeViewers 状态内核，请先加载 client/core/state.js。');
+      return;
+    }
+    if (!window.PrototypeNotesModel) {
+      console.error('[prototype-notes] 缺少 PrototypeNotesModel，请先加载 client/notes/model.js。');
       return;
     }
     var data = window.__PROTOTYPE_NOTES__;

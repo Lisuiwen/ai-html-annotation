@@ -5,9 +5,11 @@ import { validateSnapshot } from '../../skills/html-prototype-build/runtime/serv
 
 const runtimeDisplayModeUrl = new URL('../../skills/html-prototype-build/runtime/client/core/display-mode.js', import.meta.url);
 const runtimeStateUrl = new URL('../../skills/html-prototype-build/runtime/client/core/state.js', import.meta.url);
+const runtimeModelUrl = new URL('../../skills/html-prototype-build/runtime/client/notes/model.js', import.meta.url);
 const runtimeViewerUrl = new URL('../../skills/html-prototype-build/runtime/client/notes/viewer.js', import.meta.url);
 const exampleDisplayModeUrl = new URL('../../examples/minimal-notes/prototype/display-mode.js', import.meta.url);
 const exampleStateUrl = new URL('../../examples/minimal-notes/prototype/state.js', import.meta.url);
+const exampleModelUrl = new URL('../../examples/minimal-notes/prototype/model.js', import.meta.url);
 const exampleViewerUrl = new URL('../../examples/minimal-notes/prototype/viewer.js', import.meta.url);
 const prototypeUrl = new URL('../../examples/minimal-notes/prototype.html', import.meta.url);
 const snapshotUrl = new URL('../../examples/minimal-notes/prototype/notes.snapshot.js', import.meta.url);
@@ -28,6 +30,7 @@ test('Client Runtime 与示例分发副本逐文件一致', async () => {
   const pairs = [
     [runtimeDisplayModeUrl, exampleDisplayModeUrl],
     [runtimeStateUrl, exampleStateUrl],
+    [runtimeModelUrl, exampleModelUrl],
     [runtimeViewerUrl, exampleViewerUrl]
   ];
   for (const [runtimeUrl, exampleUrl] of pairs) {
@@ -36,14 +39,15 @@ test('Client Runtime 与示例分发副本逐文件一致', async () => {
   }
 });
 
-test('示例按 display-mode → state → viewer 顺序加载 Client Runtime', async () => {
+test('示例按 display-mode → state → model → viewer 顺序加载 Client Runtime', async () => {
   const html = await readFile(prototypeUrl, 'utf8');
   const snapshot = html.indexOf('./prototype/notes.snapshot.js');
   const displayMode = html.indexOf('./prototype/display-mode.js');
   const state = html.indexOf('./prototype/state.js');
+  const model = html.indexOf('./prototype/model.js');
   const viewer = html.indexOf('./prototype/viewer.js');
   const product = html.indexOf('./prototype/prototype.js');
-  assert.ok(snapshot >= 0 && displayMode > snapshot && state > displayMode && viewer > state && product > viewer);
+  assert.ok(snapshot >= 0 && displayMode > snapshot && state > displayMode && model > state && viewer > model && product > viewer);
 });
 
 test('示例不再使用废弃状态型 data-ui 属性', async () => {

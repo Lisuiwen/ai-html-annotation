@@ -9,7 +9,7 @@ description: Build, annotate, review, screenshot, and deliver native HTML UI pro
 
 1. 根据用户材料确认原型类型与业务事实；信息不足时先询问，不猜测。
 2. 生成或大改 UI 时运行 `node <skill-root>/scripts/resolve-pack.mjs --select=<preset、pattern 或 component id>`，只读取输出的最小文件闭包。
-3. 生成根目录 `prototype.html`，将页面 CSS、业务 JS、`notes.snapshot.js` 与正式 Client Runtime（`runtime/client/core/display-mode.js`、`runtime/client/core/state.js`、`runtime/client/notes/viewer.js`）的分发副本收进 `prototype/`；业务状态统一交给 `PrototypeViewers`。
+3. 生成根目录 `prototype.html`，将页面 CSS、业务 JS、`notes.snapshot.js` 与正式 Client Runtime（`runtime/client/core/display-mode.js`、`runtime/client/core/state.js`、`runtime/client/notes/model.js`、`runtime/client/notes/viewer.js`）的分发副本收进 `prototype/`；业务状态统一交给 `PrototypeViewers`。
 4. 完成后运行仓库根目录的 `npm test`；仅按任务需要启动作者服务或场景截图。
 
 ## 先判断任务
@@ -33,7 +33,7 @@ description: Build, annotate, review, screenshot, and deliver native HTML UI pro
 
 ## 核心边界
 
-- 所有原型必须按顺序使用 `runtime/client/core/display-mode.js`、`runtime/client/core/state.js`、`runtime/client/notes/viewer.js` 的分发副本；`state.js` 提供唯一 `PrototypeViewers` 状态源，Notes Viewer 只消费它，禁止自行建立第二套状态源或把 Core 重新塞回 Viewer。
+- 所有原型必须按顺序使用 `runtime/client/core/display-mode.js`、`runtime/client/core/state.js`、`runtime/client/notes/model.js`、`runtime/client/notes/viewer.js` 的分发副本；`state.js` 提供唯一 `PrototypeViewers` 状态源，`model.js` 只负责说明场景元数据与 `when` 纯匹配，Notes Viewer 只负责 DOM/连线渲染，禁止把这些职责重新塞回 Viewer。
 - 正式说明只经 `runtime/server/index.mjs` + Notes Editor 写回 `prototype/notes.snapshot.js`；禁止在 `prototype.html` 内联标注编辑器，也禁止把正式说明写入 localStorage。
 - Mark 是 Author Tools 中的临时评审工具，数据按页面 pathname 进入 localStorage，不写入 snapshot，也不注入源 HTML。
 - Direct Edit 只在作者服务环境中预览并通过服务端安全写回源 HTML。

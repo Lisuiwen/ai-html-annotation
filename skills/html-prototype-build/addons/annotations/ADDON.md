@@ -9,7 +9,8 @@
 - 稳定目标锚点，优先使用元素现有的 `id`。
 - `window.__PROTOTYPE_NOTES__` snapshot。
 - `runtime/client/core/state.js` 提供 `PrototypeViewers`。
-- `runtime/client/notes/viewer.js` 提供只读说明渲染；正式交付同时加载 `runtime/client/core/display-mode.js` 处理 `product-only`。
+- `runtime/client/notes/model.js` 提供场景元数据与 `when` 纯匹配。
+- `runtime/client/notes/viewer.js` 提供只读说明 DOM/连线渲染；正式交付同时加载 `runtime/client/core/display-mode.js` 处理 `product-only`。
 - snapshot 使用显式 `scenarios`，深链使用 `?scene=<id>`。
 
 ## 边界

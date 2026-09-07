@@ -17,7 +17,7 @@
 
 - HTML 中不得存在 Author Bootstrap、Direct Edit、Notes Editor、Inspector、源码定位 token 或任何内联标注编辑脚本。
 - 不需要额外移除 Mark 注入，因为新版 Mark 从不注入源 HTML。
-- 根目录保留 `prototype.html`、`prototype/` 与 `screenshots/`；页面 CSS、业务 JS、snapshot 与 `display-mode.js` / `state.js` / `viewer.js` 均收进 `prototype/`。静态资源按需收进 `assets/`。
+- 根目录保留 `prototype.html`、`prototype/` 与 `screenshots/`；页面 CSS、业务 JS、snapshot 与 `display-mode.js` / `state.js` / `model.js` / `viewer.js` 均收进 `prototype/`。静态资源按需收进 `assets/`。
 
 ## 迭代分流
 

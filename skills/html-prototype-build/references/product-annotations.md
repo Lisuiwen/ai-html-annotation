@@ -22,20 +22,21 @@ prototype/
 ├─ notes.snapshot.js
 ├─ display-mode.js
 ├─ state.js
+├─ model.js
 └─ viewer.js
 screenshots/
 assets/                # 仅存在静态资源时创建
 ```
 
 - `prototype/notes.snapshot.js` 是唯一标注数据源，赋给 `window.__PROTOTYPE_NOTES__`。
-- `prototype/display-mode.js`、`prototype/state.js`、`prototype/viewer.js` 分别从 `runtime/client/core/display-mode.js`、`runtime/client/core/state.js`、`runtime/client/notes/viewer.js` 原样复制，并按该顺序加载。
+- `prototype/display-mode.js`、`prototype/state.js`、`prototype/model.js`、`prototype/viewer.js` 分别从 `runtime/client/core/display-mode.js`、`runtime/client/core/state.js`、`runtime/client/notes/model.js`、`runtime/client/notes/viewer.js` 原样复制，并按该顺序加载。
 - HTML 保留可读页面 DOM、稳定锚点和配套资源相对路径；已有 id 时不得重复添加 note-target。
 - 禁止生成重复 `notes.json`，也禁止把同一份卡片数据内嵌进 HTML。
 
 ## 标注边界
 
 - snapshot 使用 `schemaVersion: 2` 和显式 `scenarios`；场景保存页面、浮层、Tab、数据态等可恢复组合 state。
-- 标注显示条件读取 `PrototypeViewers` state；标注不得创建独立业务状态。
+- 标注显示条件读取 `PrototypeViewers` state；`PrototypeNotesModel` 只负责场景元数据和 `when` 匹配，不创建独立业务状态。
 - 卡片用 `when` 匹配组合状态；无 `when` 的卡片始终显示。
 - `target.anchor` 优先引用元素已有稳定 id；无合适 id 时才使用 `data-prototype-note-target` + `target.selector`。
 - Modal / Drawer 说明绑定内层面板 id，不绑定遮罩层。
