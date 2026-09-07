@@ -16,4 +16,5 @@ import './author/core/picker.test.mjs';
 import './author/tools/direct-edit.test.mjs';
 import './author/tools/mark.test.mjs';
 import './author/tools/inspector.test.mjs';
+import './author/tools/notes-editor-model.test.mjs';
 import './author/tools/notes-editor.test.mjs';
