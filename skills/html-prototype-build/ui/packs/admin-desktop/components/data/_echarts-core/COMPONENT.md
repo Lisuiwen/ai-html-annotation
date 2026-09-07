@@ -17,7 +17,7 @@ states:
 生成原型时需 copy：
 
 - `assets/echarts.min.js`（来自 skill vendor）
-- `prototype/chart-bridge.js`、`prototype/chart-presets.js`（来自 skill runtime）
+- `prototype/bridge.js`、`prototype/presets.js`（来自 `runtime/client/charts/`）
 
 ## 状态 Adapter
 

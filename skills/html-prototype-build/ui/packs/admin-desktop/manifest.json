@@ -498,8 +498,8 @@
         "vendor/echarts/echarts.min.js"
       ],
       "runtime": [
-        "runtime/chart-bridge.js",
-        "runtime/chart-presets.js"
+        "runtime/client/charts/bridge.js",
+        "runtime/client/charts/presets.js"
       ]
     },
     "data.chart-line": {

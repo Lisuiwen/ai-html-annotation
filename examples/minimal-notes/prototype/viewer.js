@@ -36,7 +36,7 @@
     document.head.appendChild(style);
   }
 
-  /* 读取 ?product-only=1，供 shoot.mjs 截图时隐藏全部作者 overlay。 */
+  /* 读取 ?product-only=1，供 runtime/cli/screenshot.mjs 截图时隐藏全部作者 overlay。 */
   function readFromUrl() {
     try {
       return new URLSearchParams(window.location.search).get('product-only') === '1';
