@@ -24,6 +24,7 @@ test('bootstrap 只负责加载新 client/author 资源路径', async () => {
   for (const path of [
     '/__prototype-author/author/core/modes.js',
     '/__prototype-author/client/core/display-mode.js',
+    '/__prototype-author/author/core/selector.js',
     '/__prototype-author/author/core/picker.js',
     '/__prototype-author/author/shell/index.css',
     '/__prototype-author/author/shell/index.js',
@@ -39,9 +40,11 @@ test('bootstrap 只负责加载新 client/author 资源路径', async () => {
   assert.doesNotMatch(source, /author-loader\.js/);
 });
 
-test('bootstrap 先加载 NotesEditor model 再加载 controller', async () => {
+test('bootstrap 先加载共享 selector，再加载 NotesEditor 与 Picker', async () => {
   const { source } = await boot();
+  const selector = source.indexOf('/__prototype-author/author/core/selector.js');
   const model = source.indexOf('/__prototype-author/author/tools/notes-editor/model.js');
   const controller = source.indexOf('/__prototype-author/author/tools/notes-editor/index.js');
-  assert.ok(model >= 0 && controller > model);
+  const picker = source.indexOf('/__prototype-author/author/core/picker.js');
+  assert.ok(selector >= 0 && model > selector && controller > model && picker > selector);
 });
