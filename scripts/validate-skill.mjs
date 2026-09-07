@@ -62,6 +62,7 @@ if (process.exitCode) {
   throw new Error('UI Pack 校验失败，详见上方错误输出。');
 }
 process.exitCode = 0;
+await import('../tests/runtime/index.test.mjs');
 await import('../tests/runtime-contract.test.mjs');
 await import('../tests/preview-edit-regressions.test.mjs');
 console.log('Skill 统一验证通过。');
