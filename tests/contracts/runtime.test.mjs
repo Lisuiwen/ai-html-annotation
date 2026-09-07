@@ -67,7 +67,7 @@ test('示例 DOM id 唯一且 snapshot v2 锚点均唯一命中', async () => {
   }
 });
 
-test('UI pack 有状态组件提供局部 Adapter 且静态片段不绑定旧协议', async () => {
+test('UI pack 有状态组件提供局部 Adapter 且静态片段不绑定状态型 data-ui 协议', async () => {
   const manifest = JSON.parse(await readFile(packManifestUrl, 'utf8'));
   const statefulIds = Object.entries(manifest.components).filter(([, entry]) => entry.adapter).map(([id]) => id);
   const deprecated = /\bdata-ui-(?:open|layer|close|confirm|select(?:-value)?|tree-toggle|tabs|toast|table-state)\b/gi;

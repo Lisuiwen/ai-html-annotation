@@ -4,7 +4,7 @@
 
 需要整理最终文件、区分作者会话与正式交付稿，或根据反馈继续迭代时使用本入口。
 
-操作说明见 [README.md](../README.md#交付检查)。
+操作说明见 [交付复检清单](delivery-checklist.md) 与 [README.md](../README.md#交付检查)。
 
 ## Agent 交付约束
 
@@ -25,3 +25,4 @@
 - 正式说明内容、顺序或目标变化：[local-authoring.md](local-authoring.md)。
 - 评审文字反馈：[review-mark.md](review-mark.md) 导出 For AI 后修改源 HTML。
 - 视觉状态变化后重新验收：[screenshots.md](screenshots.md)。
+- 交付前最终核对：[delivery-checklist.md](delivery-checklist.md)。

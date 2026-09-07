@@ -86,10 +86,13 @@ assets/                 # 按需
 
 ## 交付检查
 
+完整清单见 [交付复检清单](references/delivery-checklist.md)。摘要：
+
 - 正式说明只通过作者服务写入 snapshot。
 - Mark pin 只在浏览器 localStorage，不写入 snapshot 或源 HTML。
 - Author Bootstrap、Direct Edit、Notes Editor、Inspector 和源码定位 token 不得进入正式原型文件。
-- 最终截图不应包含右侧说明、SVG 连线、Mark 或作者工具。
+- `data-ui-interactive` 只标记本次迭代业务操作入口，并在纯页面截图中隐藏。
+- 最终截图不应包含右侧说明、SVG 连线、Mark、作者工具或交互闪电。
 - 作者服务仅监听 `127.0.0.1`；原型中不要放真实凭据或生产数据。
 
 ## 按任务查看详情

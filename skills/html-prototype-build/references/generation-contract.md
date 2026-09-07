@@ -6,7 +6,7 @@
 
 1. 从 manifest 选择最小 UI pack 依赖闭包。
 2. 所有业务状态只经 `PrototypeViewers` 提交；UI pack Adapter 仅渲染局部 state。
-3. 交付前核对场景、锚点、Token 和正式文件结构。
+3. 交付前按 [交付复检清单](delivery-checklist.md) 核对场景、锚点、交互闪电、Token 和正式文件结构。
 
 ## 1. 适用范围与优先级
 
