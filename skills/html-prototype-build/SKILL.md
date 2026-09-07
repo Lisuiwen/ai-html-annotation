@@ -9,7 +9,7 @@ description: Build, annotate, review, screenshot, and deliver native HTML UI pro
 
 1. 根据用户材料确认原型类型与业务事实；信息不足时先询问，不猜测。
 2. 生成或大改 UI 时运行 `node <skill-root>/scripts/resolve-pack.mjs --select=<preset、pattern 或 component id>`，只读取输出的最小文件闭包。
-3. 生成根目录 `prototype.html`，将页面 CSS、业务 JS、`notes.snapshot.js` 与正式 Client Runtime（`runtime/client/core/display-mode.js`、`runtime/client/core/state.js`、`runtime/client/notes/model.js`、`runtime/client/notes/viewer.js`）的分发副本收进 `prototype/`；业务状态统一交给 `PrototypeViewers`。
+3. 按 [共享生成契约 §7](references/generation-contract.md#7-交付文件) 生成 `prototype.html + prototype/`；业务状态统一交给 `PrototypeViewers`，正式 Client Runtime 使用 Runtime 原样副本。
 4. 完成后运行仓库根目录的 `npm test`；仅按任务需要启动作者服务或场景截图。
 
 ## 先判断任务

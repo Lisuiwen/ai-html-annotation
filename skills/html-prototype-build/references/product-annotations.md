@@ -12,15 +12,13 @@
 2. `../addons/annotations/ADDON.md` 与 `../addons/annotations/ui-annotations.html`。
 3. 若标注 Modal 或 Drawer，从当前包的 manifest 选择 `feedback.modal` 或 `feedback.drawer` 并完整展开依赖。
 
-## 标注要点
+## 标注流程
 
-本入口只补充标注层工作流；与契约重复的细节不再展开。
+本入口只说明怎么做；具体格式与禁止项不在此重复：
 
-- `prototype/notes.snapshot.js` 是唯一标注数据源，赋给 `window.__PROTOTYPE_NOTES__`。
-- 标注显示条件读取 `PrototypeViewers` state；`PrototypeNotesModel` 只负责场景元数据与 `when` 匹配，不创建独立业务状态。
-- 卡片用 `when` 匹配组合状态；无 `when` 的卡片始终显示。
-- `target.anchor` 优先引用元素已有稳定 id；无合适 id 时才使用 `data-prototype-note-target` + `target.selector`。
-- 原型必须支持 `?scene=<id>` 与 `?collapsed=1`。
+1. 在 `prototype/notes.snapshot.js` 维护 `header / cards / scenarios`，并让卡片 `when` 对应当前组合状态。
+2. 每张卡片按语义单元选择一个稳定目标：优先复用已有 `id`，确实不适合加 id 时再使用 selector 兜底。
+3. 用 `?scene=<id>` 检查状态恢复、卡片显示和连线；只读渲染行为统一由 Client Runtime 提供，不在业务页面重复实现。
 
 ## 后续路径
 

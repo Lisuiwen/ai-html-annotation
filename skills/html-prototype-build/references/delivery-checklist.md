@@ -42,11 +42,12 @@
 ### 5. Client Runtime
 
 - [ ] `display-mode.js`、`state.js`、`model.js`、`viewer.js` 分别从 skill runtime 原样复制，职责分离（详见 [generation-contract.md §7](generation-contract.md#7-交付文件)）
-- [ ] 业务状态只经 `PrototypeViewers` 提交；UI pack Adapter 不直接订阅 Viewer
+- [ ] 业务状态只经 `PrototypeViewers` 提交；UI pack Adapter 不直接订阅 Viewer，也不从 DOM 反推业务状态
 
-### 6. 视觉与浮层
+### 6. 视觉、依赖与浮层
 
 - [ ] 颜色使用命名 token，与当前 foundation `tokens.css` 一致；证据不足处已用 `ponytail:` 标明上限
+- [ ] 未擅自引入外部 CDN、Tailwind 视觉类、Font Awesome、React 等额外依赖
 - [ ] Modal 遮罩只覆盖左侧产品区；`.ui-overlay` 位于 `.ui-preview` 内；内层 `.ui-modal` / `.ui-drawer` 具备稳定 `id`
 
 ### 7. 截图（需要交付截图时）
@@ -56,21 +57,10 @@
 
 ### 8. 作者工具与数据边界
 
-- [ ] 正式 HTML 不含 Author Bootstrap、Direct Edit、Notes Editor、Inspector、源码定位 token
-- [ ] 正式说明只存在于 `notes.snapshot.js`；Mark pin 只在浏览器 localStorage
+- [ ] 正式 HTML 不含 Author Bootstrap、Direct Edit、Notes Editor、Inspector、源码定位 token 或内联标注编辑逻辑
+- [ ] 正式说明只存在于 `notes.snapshot.js`；不存在 `notes.json`、HTML 内联副本或正式说明 localStorage 副本；Mark pin 才允许写 localStorage
 - [ ] 系统名、菜单、字段、状态和业务数据来自当前任务材料，无臆造内容；无真实凭据、token、接口地址、生产数据或未授权品牌资源
 
 ### 9. 自动化验证
 
 - [ ] 仓库根目录 `npm test` 通过
-
-## 禁止项（易漏）
-
-完整禁止项见 [generation-contract.md](generation-contract.md) §2–§10。交付前额外核对：
-
-- 内联大段 CSS、业务脚本或标注编辑逻辑
-- 生成 `notes.json`、把卡片数据内联进 HTML，或把正式说明写入 localStorage
-- 自建第二套业务状态源；UI pack Adapter 直接访问 `PrototypeViewers` 或从 DOM 反推状态
-- 新增状态型 `data-*` 协议；把 Client Runtime 四文件合并回单个 Viewer
-- 未经要求引入外部 CDN、Tailwind 视觉类、Font Awesome、React 等；chart-map 的 geo 引用 CDN 或写在 `component.html` 内
-- 自造截图场景或让截图流程生成业务状态

@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import vm from 'node:vm';
 
-const sourceUrl = new URL('../../../../skills/html-prototype-build/runtime/author/tools/notes-editor/model.js', import.meta.url);
+const sourceUrl = new URL('../../../../../skills/html-prototype-build/runtime/author/tools/notes-editor/model.js', import.meta.url);
 
 async function loadModel() {
   const source = await readFile(sourceUrl, 'utf8');

@@ -34,7 +34,7 @@
       : [];
     return {
       ...source,
-      page: source.page === 'list' ? 'list' : 'list',
+      page: 'list',
       layers,
       selects: Object.fromEntries(Object.keys(selectById).map((id) => {
         const select = sourceSelects[id] && typeof sourceSelects[id] === 'object' ? sourceSelects[id] : {};
@@ -47,7 +47,7 @@
   }
 
   function layersSignature(layers) {
-    return layers.slice().sort().join('|');
+    return layers.join('|');
   }
 
   function isLayerOpen(product, layerName) {

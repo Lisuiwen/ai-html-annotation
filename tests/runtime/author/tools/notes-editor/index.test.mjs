@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import vm from 'node:vm';
 
-const sourceUrl = new URL('../../../../skills/html-prototype-build/runtime/author/tools/notes-editor/index.js', import.meta.url);
+const sourceUrl = new URL('../../../../../skills/html-prototype-build/runtime/author/tools/notes-editor/index.js', import.meta.url);
 
 function run(source, window, errors) {
   window.window = window;
