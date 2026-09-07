@@ -3,6 +3,7 @@ import './server/source-editor.test.mjs';
 import './server/index.test.mjs';
 import './cli/screenshot.test.mjs';
 import './client/core/display-mode.test.mjs';
+import './client/core/state.test.mjs';
 import './client/notes/viewer.test.mjs';
 import './client/charts.test.mjs';
 import './author/bootstrap.test.mjs';

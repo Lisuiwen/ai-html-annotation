@@ -168,8 +168,10 @@
 
   <div class="ui-toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- 先加载状态内核，业务脚本随后注册 Adapter；URL 与场景恢复只由 Viewer 处理。 -->
+  <!-- Client Runtime 显式按 display-mode → state → notes viewer 加载；业务脚本随后注册 Adapter。 -->
   <script src="./prototype/notes.snapshot.js"></script>
+  <script src="./prototype/display-mode.js"></script>
+  <script src="./prototype/state.js"></script>
   <script src="./prototype/viewer.js" data-prototype-notes-viewer></script>
   <script src="./prototype/prototype.js"></script>
 

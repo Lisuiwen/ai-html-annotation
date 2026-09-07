@@ -11,13 +11,13 @@
 ### 作者 / 评审会话
 
 - Author Tools 由 `runtime/server/index.mjs` 动态注入；Direct Edit、Mark、Notes Editor、Inspector 均不写入正式 HTML 的加载结构。
-- 正式产品说明来自 snapshot + Viewer；Mark pin 只存在于浏览器 localStorage。
+- 正式产品说明来自 snapshot + Client Runtime；Mark pin 只存在于浏览器 localStorage。
 
 ### 正式交付稿
 
 - HTML 中不得存在 Author Bootstrap、Direct Edit、Notes Editor、Inspector、源码定位 token 或任何内联标注编辑脚本。
 - 不需要额外移除 Mark 注入，因为新版 Mark 从不注入源 HTML。
-- 根目录保留 `prototype.html`、`prototype/` 与 `screenshots/`；页面 CSS、业务 JS、snapshot 与 Viewer 均收进 `prototype/`。静态资源按需收进 `assets/`。
+- 根目录保留 `prototype.html`、`prototype/` 与 `screenshots/`；页面 CSS、业务 JS、snapshot 与 `display-mode.js` / `state.js` / `viewer.js` 均收进 `prototype/`。静态资源按需收进 `assets/`。
 
 ## 迭代分流
 

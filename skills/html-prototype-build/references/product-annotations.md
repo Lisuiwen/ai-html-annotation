@@ -20,13 +20,15 @@ prototype/
 ├─ prototype.css
 ├─ prototype.js
 ├─ notes.snapshot.js
+├─ display-mode.js
+├─ state.js
 └─ viewer.js
 screenshots/
 assets/                # 仅存在静态资源时创建
 ```
 
 - `prototype/notes.snapshot.js` 是唯一标注数据源，赋给 `window.__PROTOTYPE_NOTES__`。
-- `prototype/viewer.js` 从本 Skill 的 `runtime/client/notes/viewer.js` 原样复制。
+- `prototype/display-mode.js`、`prototype/state.js`、`prototype/viewer.js` 分别从 `runtime/client/core/display-mode.js`、`runtime/client/core/state.js`、`runtime/client/notes/viewer.js` 原样复制，并按该顺序加载。
 - HTML 保留可读页面 DOM、稳定锚点和配套资源相对路径；已有 id 时不得重复添加 note-target。
 - 禁止生成重复 `notes.json`，也禁止把同一份卡片数据内嵌进 HTML。
 

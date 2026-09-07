@@ -20,7 +20,7 @@ runtime/
 └─ cli/       独立命令行工具
 ```
 
-正式原型只复制需要的 `client/` 运行时；`author/` 与 `server/` 只在本地作者服务会话中动态加载，不写入源 HTML。
+正式原型只复制需要的 `client/` 运行时；`author/` 与 `server/` 只在本地作者服务会话中动态加载，不写入源 HTML。Client Runtime 内部继续分工：`core/display-mode.js` 负责纯页面展示策略，`core/state.js` 负责统一状态与场景，`notes/viewer.js` 只负责正式说明渲染。
 
 ## 本地作者服务
 
@@ -72,13 +72,15 @@ prototype/
 ├─ prototype.css
 ├─ prototype.js
 ├─ notes.snapshot.js
+├─ display-mode.js
+├─ state.js
 └─ viewer.js
 screenshots/
 assets/                 # 按需
 ```
 
 - `notes.snapshot.js` 是正式说明唯一数据源，`scenarios` 是多状态截图唯一依据。
-- `prototype/viewer.js` 从 `runtime/client/notes/viewer.js` 原样复制。
+- `prototype/display-mode.js`、`prototype/state.js`、`prototype/viewer.js` 分别从 `runtime/client/core/display-mode.js`、`runtime/client/core/state.js`、`runtime/client/notes/viewer.js` 原样复制，并按该顺序加载。
 - Chart 运行时从 `runtime/client/charts/` 按需复制。
 
 ## 交付检查

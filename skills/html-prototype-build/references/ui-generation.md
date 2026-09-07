@@ -7,7 +7,7 @@
 ## 最小路径
 
 1. 选择唯一 foundation，再按 action / navigation / form / data / feedback 各选择最多一个兼容 provider，并用 `node <skill-root>/scripts/resolve-pack.mjs --select=<id[,id...]>` 解析最小依赖闭包。
-2. 生成 snapshot + Viewer；所有原型都通过 Viewer 管理场景和 state。
+2. 生成 snapshot + Client Runtime；所有原型都通过 `runtime/client/core/state.js` 的 `PrototypeViewers` 管理场景和 state，Notes Viewer 只消费状态。
 3. 交付前核对场景、锚点、Token 和正式文件结构。
 
 当前已有完整 UI 包为 `../ui/packs/admin-desktop/`，提供 foundation 与 action / navigation / form / data / feedback 全部类别的 provider，用于中后台桌面风格原型。

@@ -16,7 +16,7 @@
 2. 当前所选 UI foundation 的 `design-system.md`、foundation 契约与基础源文件。
 3. 当前所选 UI provider 的 manifest、组件契约与组件实现。
 4. `ui/contract.md` 和对应 `PACK.md` 中的组合约束。
-5. `addons/annotations/` 中的标注契约，以及 `runtime/client/notes/viewer.js` 的只读渲染行为。
+5. `addons/annotations/` 中的标注契约，以及 `runtime/client/core/` 与 `runtime/client/notes/viewer.js` 的正式 Client Runtime 行为。
 
 本文件只保存所有生成路径共享的硬约束。UI 生成、产品说明标注、本地作者服务、评审打点、截图和交付的操作步骤分别以同目录对应入口文档为准。
 
@@ -32,7 +32,7 @@
 - 所有原型都生成 `prototype/notes.snapshot.js`，它既是唯一标注数据源，也是 `PrototypeViewers` 的场景状态来源；禁止重复生成 `notes.json` 或把同一份卡片数据写进 HTML。
 - 数据文件必须把对象赋给 `window.__PROTOTYPE_NOTES__`，并包含 `schemaVersion: 2`、基础完整 `state`、`activeScenario`、`scenarios`、`header`、`cards`。
 - `scenarios` 使用以稳定场景 id 为键的对象；每个场景标准结构为 `{ extends?, state }`。`state` 表达页面、浮层、Tab、数据态等可组合业务状态；通过 `extends` 复用基础场景时只保存差异。
-- `PrototypeViewers` 是状态单一来源；提交状态只使用 `registerState` / `setState` / `patchState` / `activateScenario`。
+- `PrototypeViewers` 由 `runtime/client/core/state.js` 提供，是状态单一来源；提交状态只使用 `registerState` / `setState` / `patchState` / `activateScenario`。
 - UI pack 的 `state-adapter.js` 只提供组件局部 state 的 `normalize` / `render` 投影；原型业务 Adapter 负责调用它，UI pack 不得直接持有业务 state 或订阅 `PrototypeViewers`。
 - 不得读取 DOM class、ARIA 或状态专用 `data-*` 反推业务状态，也不得为页面、浮层、Tab 或数据态新增标签属性协议。
 - 卡片使用 `when` 对规范化后的完整 state 做 AND 匹配。主格式为平铺点路径，例如 `{ "product.page": "list", "product.layers.includes": "create", "product.tabs.modal": "rules" }`；简单等值也兼容嵌套对象。禁止生成 legacy `group` 规则。列表态卡片须同时约束 `product.layers` 为空数组，避免弹窗打开时仍显示列表说明。
@@ -41,7 +41,7 @@
 
 ## 4. URL 场景
 
-Viewer 负责 `?scene=<id>` 与 `?collapsed=1` 的恢复；业务 Adapter 不解析 URL，只消费统一 state。新产物只生成 `scene` 链接。
+Notes Viewer 负责 `?scene=<id>` 与 `?collapsed=1` 的恢复；`runtime/client/core/state.js` 只负责状态、场景注册与激活，不主动解析 URL。业务 Adapter 不解析 URL，只消费统一 state。新产物只生成 `scene` 链接。
 
 截图操作和验收见 [screenshots.md](screenshots.md)。
 
@@ -82,15 +82,18 @@ prototype/
 ├─ prototype.css
 ├─ prototype.js
 ├─ notes.snapshot.js
+├─ display-mode.js
+├─ state.js
 └─ viewer.js
 screenshots/
 assets/
 ```
 
 - 根目录只允许 `prototype.html`、`prototype/`、`screenshots/`，以及按需创建的 `assets/`；不要散落 CSS、JS、snapshot 或运行时文件。
-- HTML 在 `<head>` 中加载 `./prototype/prototype.css`，在 `</body>` 前依次加载 `./prototype/notes.snapshot.js`、`./prototype/viewer.js` 与 `./prototype/prototype.js`。路径必须相对 HTML，可在 `file://` 下直接双击使用。
+- HTML 在 `<head>` 中加载 `./prototype/prototype.css`，在 `</body>` 前依次加载 `./prototype/notes.snapshot.js`、`./prototype/display-mode.js`、`./prototype/state.js`、`./prototype/viewer.js` 与 `./prototype/prototype.js`。路径必须相对 HTML，可在 `file://` 下直接双击使用。
 - `prototype.html` 保留可读页面 DOM、稳定锚点和少量资源引用；禁止内联大段 CSS 或业务脚本。
-- `prototype/viewer.js` 从本 Skill 的 `runtime/client/notes/viewer.js` 原样复制；不要把共享 Viewer 实现内联回 HTML。
+- 正式 Client Runtime 使用三个原样副本：`prototype/display-mode.js` 从 `runtime/client/core/display-mode.js` 复制，`prototype/state.js` 从 `runtime/client/core/state.js` 复制，`prototype/viewer.js` 从 `runtime/client/notes/viewer.js` 复制；不得把三者重新合并进单个 Viewer 文件。
+- `display-mode.js` 负责 `product-only` 与 overlay 判定，`state.js` 只负责 `PrototypeViewers` 状态协调，`viewer.js` 只负责 Notes Viewer；三者职责不得相互回填。
 - 选中任一依赖 `data._echarts-core` 的 chart 组件时，copy `vendor/echarts/echarts.min.js` 到 `assets/echarts.min.js`，并将 `runtime/client/charts/bridge.js`、`runtime/client/charts/presets.js` 复制到 `prototype/`；在 `notes.snapshot.js` 之前加载 ECharts 与图表运行时。
 - 选中 `data.chart-map` 时，还必须 copy 对应 geo json/js 到 `assets/maps/`；`file://` 下 fetch json 会被拦截，geo 须由 script 预注册到 `window.PrototypeMapRegistry`。map geo 不得引用 CDN 或写入 `component.html`。
 - 截图只存入根目录 `screenshots/`，不作为页面运行依赖；`assets/` 不得为空目录。
