@@ -4,7 +4,7 @@
 
 ## html-mark
 
-本项目评审层 `skills/html-prototype-build/runtime/html-mark.js` 基于
+本项目 Mark 评审工具 `skills/html-prototype-build/runtime/author/tools/mark/` 基于
 [xuxinmaxen/html-mark](https://github.com/xuxinmaxen/html-mark)
 （MIT No Attribution / MIT-0，Copyright 2026 Maxen Xu / @xuxinmaxen），并做了本地集成改动
 （主题色、与作者工具互斥、`Ctrl+Click` 打点等）。MIT-0 不强制署名；此处为溯源与致谢。
