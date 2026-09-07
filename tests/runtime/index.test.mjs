@@ -11,6 +11,7 @@ import './client/notes/viewer.test.mjs';
 import './client/charts.test.mjs';
 import './author/bootstrap.test.mjs';
 import './author/core/modes.test.mjs';
+import './author/core/selector.test.mjs';
 import './author/shell.test.mjs';
 import './author/core/picker.test.mjs';
 import './author/tools/direct-edit.test.mjs';
