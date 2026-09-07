@@ -16,6 +16,7 @@
  * Keyboard:
  *   M           toggle mark mode (when not typing)
  *   Ctrl+Click  drop a pin (mark mode must be on; plain click keeps page usable)
+ *   macOS: use ⌘+Click (Control+Click is treated as right-click; also supported via contextmenu)
  *   Esc         exit mark mode / close note popup
  *   Backspace   delete last pin (when not typing)
  *   Enter       save note  ·  Shift+Enter = newline
@@ -24,6 +25,7 @@
  */
 (function () {
   'use strict';
+  if (window.__AUTHOR_TOOLS_LOADED__) return;
   if (window.__markModeLoaded) return;
   window.__markModeLoaded = true;
 
@@ -40,6 +42,34 @@
 
   const STORE_KEY = 'html-mark:' + location.pathname;
 
+  var IS_MAC = /Mac|iPhone|iPad|iPod/.test(navigator.platform || '') ||
+    (navigator.userAgentData && navigator.userAgentData.platform === 'macOS');
+
+  /* Windows/Linux: Ctrl；macOS 主修饰键为 ⌘，Control+点击等同右键走 contextmenu。 */
+  function markModifierActive(e) {
+    if (!e) return false;
+    if (IS_MAC) return !!(e.metaKey || e.ctrlKey);
+    return !!e.ctrlKey;
+  }
+
+  function markClickModifier(e) {
+    if (!e) return false;
+    if (IS_MAC) return !!e.metaKey;
+    return !!e.ctrlKey;
+  }
+
+  function markModifierHintHtml() {
+    if (IS_MAC) {
+      return '按住 <kbd>⌘</kbd> 并点击页面元素落下 pin。<br/>' +
+        '<kbd>Control</kbd>+点击在 Mac 上等同右键，也会自动打点。<br/>';
+    }
+    return '按住 <kbd>Ctrl</kbd> 并点击页面元素，即可落下 pin。<br/>';
+  }
+
+  function markModifierToast() {
+    return IS_MAC ? '⌘' : 'Ctrl';
+  }
+
   // ---------- Styles ----------
   /* html-mark 为 drop-in 评审层，刻意使用紫罗兰 #9333ea，与 admin-desktop 主色 #1677ff 区分。 */
   const css = `
@@ -48,7 +78,7 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
     Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
-/* 仅按住 Ctrl 时切换十字光标，避免开启标注后普通点击被抢。 */
+/* 仅按住修饰键时切换十字光标，避免开启标注后普通点击被抢。 */
 body.mm-on.mm-armed, body.mm-on.mm-armed * { cursor: crosshair !important; }
 body.mm-on.mm-armed .mm-ui, body.mm-on.mm-armed .mm-ui *,
 body.mm-on.mm-armed .mm-note-pop, body.mm-on.mm-armed .mm-note-pop * { cursor: default !important; }
@@ -520,6 +550,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 
     setupPanelDrag();
     document.addEventListener('click', handleClick, true);
+    document.addEventListener('contextmenu', handleContextMenu, true);
     document.addEventListener('keydown', handleKey);
     document.addEventListener('keyup', handleKeyUp);
     document.addEventListener('mousemove', handleHover, true);
@@ -555,14 +586,14 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
     clampShellPosition();
   }
 
-  /* Mark 开启后仅 Ctrl 按下时进入「可打点」态（光标 + 悬停预览）。 */
+  /* Mark 开启后仅修饰键按下时进入「可打点」态（光标 + 悬停预览）。 */
   function setArmed(on) {
     document.body.classList.toggle('mm-armed', !!on);
     if (!on) clearHoverHl();
   }
 
   function syncArmedFromEvent(e) {
-    setArmed(markMode && !!(e && e.ctrlKey));
+    setArmed(markMode && markModifierActive(e));
   }
 
   function togglePanelCollapse() {
@@ -767,21 +798,23 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
     return title ? title + ' (' + url + ')' : url;
   }
 
-  function handleClick(e) {
-    if (!markMode) return;
-    if (!e.ctrlKey) return;
-    if (isNotesPanel(e.target)) return;
-    if (window.PrototypeAuthorChrome && window.PrototypeAuthorChrome.isOverlay(e.target)) return;
-    if (e.target.closest('.mm-ui')) return;
-    if (e.target.closest('.mm-pin')) return;
-    if (e.target.closest('.mm-note-pop')) return;
+  function isPinEventBlocked(target) {
+    if (!target) return true;
+    if (isNotesPanel(target)) return true;
+    if (window.PrototypeAuthorChrome && window.PrototypeAuthorChrome.isOverlay(target)) return true;
+    if (target.closest && target.closest('.mm-ui, .mm-pin, .mm-note-pop')) return true;
+    return false;
+  }
+
+  function placePinFromEvent(e) {
+    if (!markMode || isPinEventBlocked(e.target)) return false;
 
     e.preventDefault();
     e.stopPropagation();
     clearHoverHl();
 
     const desc = describeElement(e.target);
-    if (!desc.target) return;
+    if (!desc.target) return false;
     const id = nextId++;
 
     const ann = {
@@ -803,6 +836,19 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
     render();
     save();
     openNotePop(ann);
+    return true;
+  }
+
+  function handleClick(e) {
+    if (!markMode) return;
+    if (!markClickModifier(e)) return;
+    placePinFromEvent(e);
+  }
+
+  /* macOS：Control+左键触发 contextmenu 而非 click，在此拦截并打点。 */
+  function handleContextMenu(e) {
+    if (!markMode || !IS_MAC || !e.ctrlKey) return;
+    placePinFromEvent(e);
   }
 
   // ---------- Note popup ----------
@@ -903,12 +949,12 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   }
 
   // ---------- Hover preview ----------
-  // Only while Ctrl is held in mark mode: dashed outline on the element a
-  // Ctrl+Click would annotate, so "what will I pin?" is clear before click.
+  // Only while the mark modifier is held: dashed outline on the element a
+  // modified click would annotate, so "what will I pin?" is clear before click.
   let hoverRaf = 0;
   function handleHover(e) {
     syncArmedFromEvent(e);
-    if (!markMode || !e.ctrlKey || notePop) { if (hoverHlEl) clearHoverHl(); return; }
+    if (!markMode || !markModifierActive(e) || notePop) { if (hoverHlEl) clearHoverHl(); return; }
     const raw = e.target;
     if (isNotesPanel(raw)) { clearHoverHl(); return; }
     if (hoverRaf) return;
@@ -949,7 +995,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
 
   // ---------- Keyboard ----------
   function handleKey(e) {
-    if (e.key === 'Control') syncArmedFromEvent(e);
+    if (e.key === 'Control' || e.key === 'Meta') syncArmedFromEvent(e);
     const inField = e.target.matches && e.target.matches('input, textarea, [contenteditable="true"]');
     if (!inField && (e.key === 'm' || e.key === 'M') && !e.metaKey && !e.ctrlKey && !e.altKey) {
       e.preventDefault();
@@ -969,7 +1015,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
     }
   }
 
-  /* keyup 也要同步，否则松开 Ctrl 后仍停在十字光标态。 */
+  /* keyup 也要同步，否则松开修饰键后仍停在十字光标态。 */
   function handleKeyUp(e) {
     if (e.key === 'Control' || e.key === 'Meta' || e.key === 'Alt') syncArmedFromEvent(e);
   }
@@ -1023,7 +1069,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
     if (annotations.length === 0) {
       list.innerHTML =
         '<div class="mm-empty">' +
-        '按住 <kbd>Ctrl</kbd> 并点击页面元素，即可落下 pin。<br/>' +
+        markModifierHintHtml() +
         '<kbd>M</kbd> 切换模式 · <kbd>Esc</kbd> 退出 · <kbd>⌫</kbd> 删除上一条' +
         '</div>';
       return;
@@ -1088,7 +1134,7 @@ body.mm-on.mm-armed .mm-pin { cursor: pointer !important; }
   // ---------- Copy ----------
   function copyAll() {
     if (annotations.length === 0) {
-      showToast('还没有标注 — 先按住 Ctrl 点击打一个 pin。');
+      showToast('还没有标注 — 先按住 ' + markModifierToast() + ' 点击打一个 pin。');
       return;
     }
     const fmt = document.getElementById('mm-fmt').value;

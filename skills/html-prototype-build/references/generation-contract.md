@@ -37,7 +37,7 @@
 - 不得读取 DOM class、ARIA 或状态专用 `data-*` 反推业务状态，也不得为页面、浮层、Tab 或数据态新增标签属性协议。
 - 卡片使用 `when` 对规范化后的完整 state 做 AND 匹配。主格式为平铺点路径，例如 `{ "product.page": "list", "product.layers.includes": "create", "product.tabs.modal": "rules" }`；简单等值也兼容嵌套对象。禁止生成 legacy `group` 规则。列表态卡片须同时约束 `product.layers` 为空数组，避免弹窗打开时仍显示列表说明。
 - 无 `when` 的卡片始终显示。
-- `header` 不参与分组，始终显示；右栏只展示带连线的说明卡片，不再使用统一说明框（`overview`）。
+- `header` 始终显示；右栏只展示带连线的说明卡片，不再使用统一说明框（`overview`）。
 
 ## 4. URL 场景
 

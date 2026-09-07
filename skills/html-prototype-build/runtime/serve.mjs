@@ -7,7 +7,6 @@ import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const markPath = join(here, 'html-mark.js');
 const input = process.argv.slice(2).find((arg) => !arg.startsWith('--'));
 const isDirectExecution = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 const portArg = process.argv.find((arg) => arg.startsWith('--port='));
@@ -107,12 +106,210 @@ export function validateSnapshot(data) {
   });
 }
 
-/* 使用临时文件替换目标文件，避免保存中断留下半个 snapshot。 */
-function writeSnapshot(data) {
-  const temp = `${snapshotPath}.tmp`;
-  const content = `/* 原型正式标注唯一数据源；由 prototype-author 编辑器维护。 */\nwindow.__PROTOTYPE_NOTES__ = ${JSON.stringify(data, null, 2)};\n`;
+/* 使用临时文件替换目标文件，避免保存中断留下半个文件。 */
+function writeFileAtomic(filePath, content) {
+  const temp = `${filePath}.tmp`;
   writeFileSync(temp, content, 'utf8');
-  renameSync(temp, snapshotPath);
+  renameSync(temp, filePath);
+}
+
+function writeSnapshot(data) {
+  const content = `/* 原型正式标注唯一数据源；由 prototype-author 编辑器维护。 */\nwindow.__PROTOTYPE_NOTES__ = ${JSON.stringify(data, null, 2)};\n`;
+  writeFileAtomic(snapshotPath, content);
+}
+
+const VOID_TAGS = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']);
+
+function escapeAttr(value) {
+  return String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+}
+
+function escapeText(value) {
+  return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function parseStyle(styleValue) {
+  const map = {};
+  const order = [];
+  String(styleValue || '').split(';').forEach((part) => {
+    const index = part.indexOf(':');
+    if (index < 0) return;
+    const key = part.slice(0, index).trim().toLowerCase();
+    const value = part.slice(index + 1).trim();
+    if (!key) return;
+    if (!Object.prototype.hasOwnProperty.call(map, key)) order.push(key);
+    map[key] = value;
+  });
+  return { map, order };
+}
+
+function mergeStyleAttribute(openTag, styles, removeStyles) {
+  const styleRe = /\sstyle\s*=\s*(["'])([\s\S]*?)\1/i;
+  const match = openTag.match(styleRe);
+  const parsed = parseStyle(match ? match[2] : '');
+  (removeStyles || []).forEach((prop) => {
+    const key = String(prop).trim().toLowerCase();
+    delete parsed.map[key];
+    parsed.order = parsed.order.filter((item) => item !== key);
+  });
+  Object.entries(styles || {}).forEach(([prop, value]) => {
+    const key = String(prop).trim().toLowerCase();
+    if (!key) return;
+    if (!parsed.order.includes(key)) parsed.order.push(key);
+    parsed.map[key] = String(value);
+  });
+  const next = parsed.order.filter((key) => parsed.map[key]).map((key) => `${key}: ${parsed.map[key]}`).join('; ');
+  if (match) {
+    if (!next) return openTag.replace(styleRe, '');
+    return openTag.replace(styleRe, ` style="${escapeAttr(next)}"`);
+  }
+  if (!next) return openTag;
+  return openTag.replace(/\s*\/?>$/, (end) => ` style="${escapeAttr(next)}"${end}`);
+}
+
+function findCloseTag(html, tagName, from) {
+  const re = new RegExp(`<(/?)${tagName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b[^>]*>`, 'gi');
+  re.lastIndex = from;
+  let depth = 1;
+  let match;
+  while ((match = re.exec(html))) {
+    if (match[1]) {
+      depth -= 1;
+      if (depth === 0) return match.index;
+    } else {
+      depth += 1;
+    }
+  }
+  return -1;
+}
+
+function locateByAttr(html, name, value) {
+  const re = new RegExp(
+    `\\s${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*=\\s*(["'])${value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\1`,
+    'i'
+  );
+  const attr = re.exec(html);
+  if (!attr) return null;
+  const tagStart = html.lastIndexOf('<', attr.index);
+  if (tagStart < 0) return null;
+  const gt = html.indexOf('>', attr.index);
+  if (gt < 0) return null;
+  const open = html.slice(tagStart, gt + 1);
+  const tagName = (open.match(/^<\/?([a-zA-Z0-9:-]+)/) || [])[1];
+  if (!tagName) return null;
+  const selfClosing = VOID_TAGS.has(tagName.toLowerCase()) || /\/\s*>$/.test(open);
+  let closeStart = -1;
+  if (!selfClosing) {
+    closeStart = findCloseTag(html, tagName, gt + 1);
+    if (closeStart < 0) return null;
+  }
+  return { tagStart, tagEnd: gt + 1, closeStart, tagName, selfClosing };
+}
+
+function parseSelectorStep(part) {
+  const idMatch = part.match(/^#([^\s#.[:>]+)$/);
+  if (idMatch) return { kind: 'id', id: idMatch[1] };
+  const attrMatch = part.match(/^\[([^=\]]+)="([^"]*)"\]$/);
+  if (attrMatch) return { kind: 'attr', name: attrMatch[1], value: attrMatch[2] };
+  const tagMatch = part.match(/^([a-zA-Z][\w-]*)(?::nth-of-type\((\d+)\))?$/);
+  if (tagMatch) return { kind: 'tag', tag: tagMatch[1], nth: tagMatch[2] ? Number(tagMatch[2]) : 1 };
+  return null;
+}
+
+function locateNthChild(html, parent, tagName, nth) {
+  if (!parent || parent.selfClosing || parent.closeStart < 0) return null;
+  const want = tagName.toLowerCase();
+  const innerEnd = parent.closeStart;
+  let i = parent.tagEnd;
+  let count = 0;
+  while (i < innerEnd) {
+    const lt = html.indexOf('<', i);
+    if (lt < 0 || lt >= innerEnd) break;
+    if (html.startsWith('<!--', lt)) {
+      const close = html.indexOf('-->', lt + 4);
+      i = close < 0 ? innerEnd : close + 3;
+      continue;
+    }
+    if (html.startsWith('</', lt)) break;
+    const gt = html.indexOf('>', lt);
+    if (gt < 0 || gt > innerEnd) break;
+    const open = html.slice(lt, gt + 1);
+    const name = (open.match(/^<([a-zA-Z0-9:-]+)/) || [])[1];
+    if (!name) {
+      i = gt + 1;
+      continue;
+    }
+    const selfClosing = VOID_TAGS.has(name.toLowerCase()) || /\/\s*>$/.test(open);
+    let closeStart = -1;
+    let childEnd = gt + 1;
+    if (!selfClosing) {
+      closeStart = findCloseTag(html, name, gt + 1);
+      if (closeStart < 0) return null;
+      const closeGt = html.indexOf('>', closeStart);
+      childEnd = closeGt < 0 ? innerEnd : closeGt + 1;
+    }
+    if (name.toLowerCase() === want) {
+      count += 1;
+      if (count === nth) {
+        return { tagStart: lt, tagEnd: gt + 1, closeStart, tagName: name, selfClosing };
+      }
+    }
+    i = childEnd;
+  }
+  return null;
+}
+
+function locateElement(html, selector) {
+  const parts = String(selector || '').split(/\s*>\s*/).filter(Boolean);
+  if (!parts.length) return null;
+  let found = null;
+  for (let i = 0; i < parts.length; i++) {
+    const step = parseSelectorStep(parts[i]);
+    if (!step) return null;
+    if (i === 0) {
+      if (step.kind === 'id') found = locateByAttr(html, 'id', step.id);
+      else if (step.kind === 'attr') found = locateByAttr(html, step.name, step.value);
+      else return null;
+    } else {
+      if (step.kind !== 'tag') return null;
+      found = locateNthChild(html, found, step.tag, step.nth);
+    }
+    if (!found) return null;
+  }
+  return found;
+}
+
+/* 只改源 HTML 对应节点的 style/文本，绝不回写 runtime outerHTML。 */
+export function applyPrototypeEdit(html, payload) {
+  const selector = payload && payload.selector;
+  const changes = payload && payload.changes;
+  if (typeof selector !== 'string' || !selector || !changes || typeof changes !== 'object') {
+    throw new Error('缺少 selector 或 changes。');
+  }
+  const found = locateElement(html, selector);
+  if (!found) throw new Error('源 HTML 中找不到元素：' + selector);
+  let openTag = html.slice(found.tagStart, found.tagEnd);
+  const styles = isObject(changes.styles) ? changes.styles : {};
+  const removeStyles = Array.isArray(changes.removeStyles) ? changes.removeStyles : [];
+  const hasStylePatch = Object.keys(styles).length > 0 || removeStyles.length > 0;
+  if (hasStylePatch) {
+    Object.values(styles).forEach((value) => {
+      if (typeof value !== 'string') throw new Error('styles 的值必须是字符串。');
+    });
+    openTag = mergeStyleAttribute(openTag, styles, removeStyles);
+  }
+  let result = html.slice(0, found.tagStart) + openTag + html.slice(found.tagEnd);
+  const delta = openTag.length - (found.tagEnd - found.tagStart);
+  found.tagEnd += delta;
+  if (found.closeStart >= 0) found.closeStart += delta;
+  if (Object.prototype.hasOwnProperty.call(changes, 'text')) {
+    if (typeof changes.text !== 'string') throw new Error('text 必须是字符串。');
+    if (found.selfClosing || found.closeStart < 0) throw new Error('该元素不能改文本。');
+    const inner = result.slice(found.tagEnd, found.closeStart);
+    if (/<[a-zA-Z]/.test(inner)) throw new Error('该元素含子节点，不能用文本补丁覆盖。');
+    result = result.slice(0, found.tagEnd) + escapeText(changes.text) + result.slice(found.closeStart);
+  }
+  return result;
 }
 
 /* 返回静态文件，并限制所有普通路径都落在原型目录内。 */
@@ -145,6 +342,18 @@ const server = createServer(async (request, response) => {
       return;
     }
 
+    if (request.method === 'POST' && url.pathname === '/__prototype-author/edit') {
+      if (!htmlPath) {
+        response.writeHead(503).end('本服务未配置原型 HTML。');
+        return;
+      }
+      const payload = await readJson(request);
+      const next = applyPrototypeEdit(readFileSync(htmlPath, 'utf8'), payload);
+      writeFileAtomic(htmlPath, next);
+      response.writeHead(204).end();
+      return;
+    }
+
     /* 点击时实时重读文件并用同一纯函数重算 token→行号，保证行号不因编辑漂移。 */
     if (request.method === 'GET' && url.pathname === '/__prototype-author/inspector/open') {
       var filePath = url.searchParams.get('file') || htmlPath.split(/[\\/]/).pop();
@@ -173,11 +382,24 @@ const server = createServer(async (request, response) => {
       '/__prototype-author/author-loader.js': join(here, 'author-loader.js'),
       '/__prototype-author/author-chrome.js': join(here, 'author-chrome.js'),
       '/__prototype-author/editor.js': join(here, 'editor.js'),
-      '/__prototype-author/html-mark.js': markPath,
       '/__prototype-author/inspector.js': join(here, 'inspector.js')
     };
     if (authorFiles[url.pathname]) {
       sendFile(response, authorFiles[url.pathname]);
+      return;
+    }
+    if (url.pathname.startsWith('/__prototype-author/author-tools/')) {
+      const rel = decodeURIComponent(url.pathname.slice('/__prototype-author/'.length));
+      if (rel.includes('..')) {
+        response.writeHead(403).end('Forbidden');
+        return;
+      }
+      const toolPath = join(here, rel);
+      if (relative(here, toolPath).startsWith('..')) {
+        response.writeHead(403).end('Forbidden');
+        return;
+      }
+      sendFile(response, toolPath);
       return;
     }
 

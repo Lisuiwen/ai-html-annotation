@@ -9,7 +9,7 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import vm from 'node:vm';
 import { collectScenarios } from '../skills/html-prototype-build/runtime/shoot.mjs';
-import { validateSnapshot } from '../skills/html-prototype-build/runtime/serve.mjs';
+import { applyPrototypeEdit, validateSnapshot } from '../skills/html-prototype-build/runtime/serve.mjs';
 
 const runtimeViewerUrl = new URL('../skills/html-prototype-build/runtime/viewer.js', import.meta.url);
 const exampleViewerUrl = new URL('../examples/minimal-notes/prototype/viewer.js', import.meta.url);
@@ -238,4 +238,44 @@ test('UI pack 有状态组件提供局部状态 Adapter 且静态片段不再绑
     assert.match(adapter, /PrototypeUiAdapters/, `${id} Adapter 应注册局部状态投影接口`);
     assert.match(adapter, /render/, `${id} Adapter 应暴露 DOM 渲染能力`);
   }
+});
+
+/** Direct Edit 写回源 HTML 时必须能顺着 #id > tag:nth-of-type 找到表格单元格。 */
+test('applyPrototypeEdit 支持 id 后的 nth-of-type 子选择器', () => {
+  const html = [
+    '<tbody id="preconditionRows">',
+    '<tr><td>a1</td><td>b1</td><td>c1</td></tr>',
+    '<tr><td>a2</td><td>b2</td><td>c2</td></tr>',
+    '<tr><td>a3</td><td>b3</td><td>c3</td></tr>',
+    '<tr><td>a4</td><td>b4</td><td>c4</td></tr>',
+    '<tr><td>a5</td><td>b5</td><td>c5</td></tr>',
+    '</tbody>'
+  ].join('');
+  const next = applyPrototypeEdit(html, {
+    selector: '#preconditionRows > tr:nth-of-type(5) > td:nth-of-type(3)',
+    changes: { styles: { 'font-weight': '700' }, text: 'changed' }
+  });
+  assert.match(next, /<td style="font-weight: 700">changed<\/td>/);
+  assert.equal(applyPrototypeEdit(html, {
+    selector: '#preconditionRows',
+    changes: { styles: { width: '200px' } }
+  }).includes('id="preconditionRows" style="width: 200px"'), true);
+  const withPadding = applyPrototypeEdit('<div id="box" style="padding: 8px"></div>', {
+    selector: '#box',
+    changes: { styles: { 'padding-top': '16px' } }
+  });
+  assert.match(withPadding, /padding: 8px/);
+  assert.match(withPadding, /padding-top: 16px/);
+  const resetPadding = applyPrototypeEdit('<div id="box" style="padding: 8px; padding-top: 16px"></div>', {
+    selector: '#box',
+    changes: { styles: {}, removeStyles: ['padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left'] }
+  });
+  assert.doesNotMatch(resetPadding, /style=/);
+  assert.throws(
+    () => applyPrototypeEdit(html, {
+      selector: '#preconditionRows > tr:nth-of-type(9) > td:nth-of-type(1)',
+      changes: { styles: { color: 'red' } }
+    }),
+    /找不到元素/
+  );
 });

@@ -7,7 +7,8 @@
   var BODY_CLASS = 'pa-product-only';
   /* 与 Inspector isOverlay 共用；新增作者 UI 时只改这一处。 */
   var OVERLAY_SELECTOR = [
-    '.mm-ui', '.mm-toggle', '.mm-panel', '.mm-pin', '.mm-note-pop', '.mm-toast', '.mm-target-hl',
+    '.at-ui',
+    '.mm-ui', '.mm-toggle', '.mm-panel', '.mm-pin', '.mm-note-pop', '.mm-toast',
     '.pn-panel-actions', '.pn-toggle', '.pn-mobile-toggle', '.pn-author-toolbar', '.pn-card-actions', '.pn-card-drag-handle',
     '.pn-notes', '.pn-connections', '.pn-pick-layer',
     '.pi-tooltip'
@@ -291,7 +292,7 @@
   };
 })();
 
-/* 原型正式标注只读 Viewer：从唯一 snapshot 数据源创建右栏、分组卡片和 SVG 连线。 */
+/* 原型正式标注只读 Viewer：从唯一 snapshot 数据源创建右栏、卡片和 SVG 连线。 */
 (function () {
   'use strict';
 
@@ -327,9 +328,6 @@
       '.pn-head span,.pn-card p{color:var(--ui-text-secondary,#595959);font-size:14px;line-height:22px}',
       '.pn-card p{margin:4px 0 0}',
       '.pn-cards{flex:1 1 auto;min-height:0;overflow-y:auto;display:grid;align-content:start;align-items:start;grid-auto-rows:max-content;gap:12px;padding-bottom:4px}',
-      '.pn-section{margin:4px 0 0;padding-top:8px;color:var(--ui-text-secondary,#595959);font-size:14px;font-weight:600;line-height:22px}',
-      '.pn-section:first-child{margin-top:0;padding-top:0}',
-      '.pn-section:not(:first-child){border-top:1px solid var(--ui-border,#d9d9d9);padding-top:12px}',
       '.pn-card{padding:12px;border:1px solid var(--ui-border,#d9d9d9);border-radius:var(--ui-radius-container,8px);background:var(--ui-bg,#fff)}',
       '.pn-card.pn-highlighted{border-color:var(--ui-primary,#1677ff);box-shadow:0 0 0 2px var(--ui-border-subtle,#e6f4ff)}',
       '.pn-card-title{display:flex;gap:8px;align-items:center;font-weight:600}',
@@ -492,18 +490,7 @@
 
     state.cards = document.createElement('div');
     state.cards.className = 'pn-cards';
-    var lastSection = '';
     visibleCards().forEach(function (card, index) {
-      var section = card.section ? String(card.section).trim() : '';
-      if (section && section !== lastSection) {
-        var heading = document.createElement('div');
-        heading.className = 'pn-section';
-        heading.textContent = section;
-        state.cards.appendChild(heading);
-        lastSection = section;
-      } else if (!section) {
-        lastSection = '';
-      }
       var article = document.createElement('article');
       article.className = 'pn-card';
       article.dataset.noteId = card.id;

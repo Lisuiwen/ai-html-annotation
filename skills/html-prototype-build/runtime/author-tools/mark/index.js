@@ -1,0 +1,509 @@
+/* Mark 业务：Pin、Note、localStorage、For AI。UI 挂在 Author Tools Drawer 内。 */
+(function () {
+  'use strict';
+
+  if (window.AuthorToolsMarkTool) return;
+
+  var css = `
+.mm-ui, .mm-ui *, .mm-pin, .mm-pin *, .mm-note-pop, .mm-note-pop * {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+.mm-target-hl, .mm-hover-hl {
+  outline: 2px solid #9333ea !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 6px rgba(147,51,234,0.12) !important;
+}
+.mm-hover-hl { outline-style: dashed !important; box-shadow: 0 0 0 6px rgba(147,51,234,0.08) !important; }
+@keyframes mm-pin-in {
+  0% { opacity: 0; transform: scale(0); }
+  55% { opacity: 1; transform: scale(1.22); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.mm-pin {
+  position: absolute; width: 22px; height: 22px; background: #9333ea; color: #fff;
+  border: 2px solid #ffffff; border-radius: 50%; display: none; align-items: center; justify-content: center;
+  font-size: 11.5px; font-weight: 600; z-index: 2147483500;
+  box-shadow: 0 2px 0 rgba(109,40,217,0.1), 0 4px 10px rgba(147,51,234,0.25);
+  user-select: none; animation: mm-pin-in 0.42s cubic-bezier(0.22,1,0.36,1);
+}
+body.mm-on .mm-pin { display: flex; }
+.mm-pin:hover, .mm-pin.mm-pin-hl { transform: scale(1.22); }
+.mm-pin.mm-pin-active { box-shadow: 0 0 0 4px rgba(147,51,234,0.25), 0 4px 12px rgba(147,51,234,0.35); }
+.mm-pin-del {
+  position: absolute; top: -7px; right: -7px; width: 16px; height: 16px; background: #fff; color: rgba(0,0,0,0.65);
+  border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 10px;
+  border: 1px solid #d9d9d9;
+}
+.mm-pin:hover .mm-pin-del { display: flex; }
+.mm-note-pop {
+  position: absolute; width: 300px; background: #fff; border: 1px solid #d9d9d9; border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 12px; z-index: 2147483520;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.mm-note-pop-head { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(0,0,0,0.45); }
+.mm-note-pop-head b { color: rgba(0,0,0,0.88); }
+.mm-note-pop-head .mm-np-text { flex: 1; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mm-note-pop textarea {
+  width: 100%; min-height: 68px; resize: vertical; border: 1px solid #d9d9d9; border-radius: 6px;
+  padding: 9px 11px; font-size: 13px; font-family: inherit;
+}
+.mm-note-pop textarea:focus { outline: none; border-color: #9333ea; }
+.mm-note-pop-hint { font-size: 10.5px; color: rgba(0,0,0,0.45); display: flex; justify-content: space-between; }
+.mm-note-pop-hint kbd {
+  font-family: ui-monospace, monospace; background: #fafafa; padding: 1px 5px; border-radius: 3px;
+  border: 1px solid #f0f0f0; font-size: 10px;
+}
+.mm-list { padding: 10px; overflow-y: auto; flex: 1; min-height: 0; }
+.mm-item {
+  display: flex; gap: 10px; padding: 10px 12px; border: 1px solid #f0f0f0; border-radius: 6px;
+  margin-bottom: 7px; font-size: 12.5px; cursor: pointer; position: relative;
+}
+.mm-item:hover, .mm-item.active { border-color: #9333ea; }
+.mm-item.has-note::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: #9333ea; }
+.mm-item-num {
+  width: 22px; height: 22px; background: #9333ea; color: #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font: 600 11px/1 inherit; flex-shrink: 0;
+}
+.mm-item-body { flex: 1; min-width: 0; }
+.mm-item-note { font-size: 13px; font-weight: 500; margin-bottom: 3px; white-space: pre-wrap; word-break: break-word; }
+.mm-item-note-empty { font-size: 12px; color: rgba(0,0,0,0.45); font-style: italic; margin-bottom: 3px; }
+.mm-item-meta { font-size: 11px; color: rgba(0,0,0,0.45); word-break: break-word; }
+.mm-item-del {
+  width: 22px; height: 22px; border: 0; background: transparent; color: rgba(0,0,0,0.45);
+  cursor: pointer; display: none; flex-shrink: 0;
+}
+.mm-item:hover .mm-item-del { display: block; }
+.mm-empty { padding: 24px 14px; text-align: center; color: rgba(0,0,0,0.45); font-size: 12.5px; line-height: 1.7; }
+.mm-empty kbd {
+  font-family: ui-monospace, monospace; background: #fafafa; padding: 1px 6px; border-radius: 3px;
+  border: 1px solid #f0f0f0; font-size: 10.5px;
+}
+.mm-panel-foot {
+  display: flex; gap: 7px; padding: 10px 12px; border-top: 1px solid #f0f0f0; background: #fafafa; flex-shrink: 0;
+}
+.mm-fmt-select {
+  background: #fff; border: 1px solid #d9d9d9; border-radius: 6px; padding: 0 8px; height: 32px; font-size: 12px;
+}
+.mm-btn {
+  height: 32px; padding: 0 14px; border-radius: 6px; font-size: 12px; cursor: pointer;
+  border: 1px solid #d9d9d9; background: #fff;
+}
+.mm-btn.primary { background: #9333ea; color: #fff; border-color: #9333ea; flex: 1; }
+`;
+
+  var annotations = [];
+  var nextId = 1;
+  var activePinId = null;
+  var lastHlEl = null;
+  var notePop = null;
+  var noteOutsideHandler = null;
+  var noteOutsideTimer = 0;
+  var container = null;
+  var context = null;
+  var active = false;
+  var restored = false;
+
+  function installCss() {
+    if (document.getElementById('author-tools-mark-style')) return;
+    var style = document.createElement('style');
+    style.id = 'author-tools-mark-style';
+    style.textContent = css;
+    document.head.appendChild(style);
+  }
+
+  function esc(value) {
+    return String(value).replace(/[&<>"']/g, function (ch) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+    });
+  }
+
+  function textOf(el) {
+    return (el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80);
+  }
+
+  function describeElement(el) {
+    var picker = window.AuthorToolsPicker;
+    var target = picker ? picker.resolveTarget(el) : el;
+    if (!target) return { label: 'unknown', selector: '', text: '', target: null };
+    var selector = picker.stableSelector(target);
+    var path = picker.cssPath(target);
+    if (target.getAttribute && target.getAttribute('data-mm-label')) {
+      return { label: target.getAttribute('data-mm-label'), selector: selector, path: path, text: textOf(target), target: target };
+    }
+    if (target.id) return { label: '#' + target.id, selector: selector, path: path, text: textOf(target), target: target };
+    if (target.getAttribute && target.getAttribute('aria-label')) {
+      return { label: target.getAttribute('aria-label'), selector: selector, path: path, text: textOf(target), target: target };
+    }
+    var tag = target.tagName.toLowerCase();
+    return { label: tag, selector: selector, path: path, text: textOf(target), target: target };
+  }
+
+  function getContext() {
+    var url = location.pathname + (location.hash || '');
+    var title = document.title || '';
+    return title ? title + ' (' + url + ')' : url;
+  }
+
+  function persist() {
+    window.AuthorToolsMarkStorage.save(annotations);
+  }
+
+  function toast(msg) {
+    if (context && context.toast) context.toast(msg);
+  }
+
+  function closeNotePop() {
+    if (noteOutsideTimer) {
+      clearTimeout(noteOutsideTimer);
+      noteOutsideTimer = 0;
+    }
+    if (noteOutsideHandler) {
+      document.removeEventListener('mousedown', noteOutsideHandler, true);
+      noteOutsideHandler = null;
+    }
+    if (notePop) {
+      notePop.remove();
+      notePop = null;
+    }
+    if (activePinId !== null) {
+      var current = annotations.find(function (item) { return item.id === activePinId; });
+      if (current && current.pinEl) current.pinEl.classList.remove('mm-pin-active');
+      if (container) container.querySelectorAll('.mm-item.active').forEach(function (item) { item.classList.remove('active'); });
+      activePinId = null;
+    }
+  }
+
+  function openNotePop(ann) {
+    closeNotePop();
+    activePinId = ann.id;
+    if (ann.pinEl) ann.pinEl.classList.add('mm-pin-active');
+    if (container) {
+      container.querySelectorAll('.mm-item').forEach(function (item) {
+        item.classList.toggle('active', parseInt(item.dataset.id, 10) === ann.id);
+      });
+    }
+    notePop = document.createElement('div');
+    notePop.className = 'mm-note-pop mm-ui';
+    notePop.innerHTML =
+      '<div class="mm-note-pop-head"><span><b>#' + ann.id + '</b> · ' + esc(ann.label) + '</span>' +
+      '<span class="mm-np-text">' + (ann.text ? esc(ann.text) : '') + '</span></div>' +
+      '<textarea placeholder="这里需要改什么？（可选）"></textarea>' +
+      '<div class="mm-note-pop-hint"><span><kbd>↵</kbd> 保存 · <kbd>⇧↵</kbd> 换行 · <kbd>Esc</kbd> 关闭</span>' +
+      '<span>' + (ann.note ? '编辑中' : '新建') + '</span></div>';
+    document.body.appendChild(notePop);
+
+    var pinRect = ann.pinEl.getBoundingClientRect();
+    var popW = notePop.offsetWidth;
+    var popH = notePop.offsetHeight;
+    var popX = pinRect.right + 10 + window.scrollX;
+    var popY = pinRect.top + window.scrollY;
+    if (popX + popW > window.scrollX + window.innerWidth - 8) popX = pinRect.left - popW - 10 + window.scrollX;
+    if (popX < window.scrollX + 8) popX = window.scrollX + 8;
+    if (popY + popH > window.scrollY + window.innerHeight - 8) popY = window.scrollY + window.innerHeight - popH - 8;
+    if (popY < window.scrollY + 8) popY = window.scrollY + 8;
+    notePop.style.left = popX + 'px';
+    notePop.style.top = popY + 'px';
+
+    var ta = notePop.querySelector('textarea');
+    ta.value = ann.note || '';
+    ta.focus();
+    ta.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        ann.note = ta.value.trim();
+        closeNotePop();
+        render();
+        persist();
+      } else if (event.key === 'Escape') {
+        event.preventDefault();
+        closeNotePop();
+      }
+    });
+
+    function outsideHandler(event) {
+      if (!notePop) {
+        document.removeEventListener('mousedown', outsideHandler, true);
+        return;
+      }
+      if (notePop.contains(event.target)) return;
+      if (event.target.closest && event.target.closest('.mm-pin')) return;
+      var val = ta.value.trim();
+      if (val !== (ann.note || '')) {
+        ann.note = val;
+        render();
+        persist();
+      }
+      closeNotePop();
+    }
+    noteOutsideTimer = setTimeout(function () {
+      noteOutsideTimer = 0;
+      noteOutsideHandler = outsideHandler;
+      document.addEventListener('mousedown', noteOutsideHandler, true);
+    }, 0);
+  }
+
+  function pinHandlers() {
+    return {
+      onRemove: removeAnn,
+      onOpen: openNotePop
+    };
+  }
+
+  function createFromSelect(el, event) {
+    var desc = describeElement(el);
+    if (!desc.target) return;
+    var ann = {
+      id: nextId++,
+      ctx: getContext(),
+      label: desc.label,
+      selector: desc.selector,
+      path: desc.path,
+      text: desc.text,
+      html: desc.target.outerHTML ? desc.target.outerHTML.replace(/\s+/g, ' ').slice(0, 200) : '',
+      note: '',
+      pinEl: null,
+      targetEl: desc.target,
+      pageX: event ? event.pageX : 0,
+      pageY: event ? event.pageY : 0
+    };
+    if (desc.target.getBoundingClientRect && event) {
+      var rect = desc.target.getBoundingClientRect();
+      ann.relX = rect.width ? (event.clientX - rect.left) / rect.width : 0.5;
+      ann.relY = rect.height ? (event.clientY - rect.top) / rect.height : 0.5;
+    }
+    window.AuthorToolsMarkPins.build(ann, pinHandlers());
+    if (window.AuthorToolsPicker && window.AuthorToolsPicker.clearSelected) window.AuthorToolsPicker.clearSelected();
+    annotations.push(ann);
+    render();
+    persist();
+    openNotePop(ann);
+  }
+
+  function removeAnn(id) {
+    if (activePinId === id) closeNotePop();
+    var found = annotations.find(function (item) { return item.id === id; });
+    if (found && found.pinEl) found.pinEl.remove();
+    annotations = annotations.filter(function (item) { return item.id !== id; });
+    annotations.forEach(function (item, index) {
+      var n = index + 1;
+      if (item.pinEl && item.pinEl.firstChild) item.pinEl.firstChild.nodeValue = String(n);
+      if (item.pinEl) item.pinEl.dataset.id = n;
+      item.id = n;
+    });
+    nextId = annotations.length + 1;
+    render();
+    persist();
+  }
+
+  function clearAll() {
+    if (!annotations.length) return;
+    closeNotePop();
+    var clearedCount = annotations.length;
+    annotations.forEach(function (item) { if (item.pinEl) item.pinEl.remove(); });
+    annotations = [];
+    nextId = 1;
+    render();
+    persist();
+    toast('已清空 ' + clearedCount + ' 条标注');
+  }
+
+  function render() {
+    if (!container) return;
+    var list = container.querySelector('#mm-list');
+    if (!list) return;
+    if (!annotations.length) {
+      list.innerHTML = '<div class="mm-empty">按住 <kbd>Ctrl</kbd> 点击页面元素即可落下 pin。<br><kbd>M</kbd> 打开本 Tab · <kbd>⌫</kbd> 删除上一条</div>';
+      return;
+    }
+    list.innerHTML = annotations.map(function (ann, index) {
+      var hasNote = !!ann.note;
+      return '<div class="mm-item ' + (hasNote ? 'has-note' : '') + '" data-id="' + ann.id + '">' +
+        '<div class="mm-item-num">' + (index + 1) + '</div>' +
+        '<div class="mm-item-body">' +
+        (hasNote ? '<div class="mm-item-note">' + esc(ann.note) + '</div>' : '<div class="mm-item-note-empty">暂无反馈 · 点击补充</div>') +
+        '<div class="mm-item-meta"><b>' + esc(ann.label) + '</b>' + (ann.text ? ' · ' + esc(ann.text).slice(0, 50) : '') + '</div>' +
+        '</div>' +
+        '<button class="mm-item-del" data-del="' + ann.id + '" title="删除">×</button>' +
+        '</div>';
+    }).join('');
+    list.querySelectorAll('.mm-item').forEach(function (item) {
+      var id = parseInt(item.dataset.id, 10);
+      var ann = annotations.find(function (entry) { return entry.id === id; });
+      if (!ann) return;
+      item.addEventListener('click', function (event) {
+        if (event.target.matches('[data-del]')) return;
+        if (ann.pinEl) ann.pinEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(function () { openNotePop(ann); }, 80);
+      });
+      item.addEventListener('mouseenter', function () {
+        if (ann.pinEl) ann.pinEl.classList.add('mm-pin-hl');
+        if (ann.targetEl && document.body.contains(ann.targetEl)) {
+          lastHlEl = ann.targetEl;
+          ann.targetEl.classList.add('mm-target-hl');
+        }
+      });
+      item.addEventListener('mouseleave', function () {
+        if (ann.pinEl) ann.pinEl.classList.remove('mm-pin-hl');
+        if (lastHlEl) {
+          lastHlEl.classList.remove('mm-target-hl');
+          lastHlEl = null;
+        }
+      });
+    });
+    list.querySelectorAll('[data-del]').forEach(function (btn) {
+      btn.addEventListener('click', function (event) {
+        event.stopPropagation();
+        removeAnn(parseInt(btn.dataset.del, 10));
+      });
+    });
+  }
+
+  function copyAll() {
+    if (!annotations.length) {
+      toast('还没有标注 — 先按住 Ctrl 点击打一个 pin。');
+      return;
+    }
+    var fmt = container.querySelector('#mm-fmt').value;
+    var ctx = getContext();
+    var txt = '';
+    if (fmt === 'md') {
+      txt = '# Annotations — ' + ctx + '\n\n' + annotations.map(function (ann, i) {
+        return '**' + (i + 1) + '.** ' + (ann.note || '_(no note)_') + '\n   <sub>' + ann.label +
+          (ann.text ? ' · "' + ann.text + '"' : '') + ' · `' + ann.selector + '`</sub>';
+      }).join('\n\n');
+    } else if (fmt === 'json') {
+      txt = JSON.stringify({
+        context: ctx,
+        annotations: annotations.map(function (ann, i) {
+          return { id: i + 1, note: ann.note, label: ann.label, text: ann.text, selector: ann.selector, path: ann.path || '', html: ann.html || '' };
+        })
+      }, null, 2);
+    } else if (fmt === 'ai') {
+      txt = 'Apply the following ' + annotations.length + ' review annotation' +
+        (annotations.length > 1 ? 's' : '') + ' to this page: ' + ctx + '\n' +
+        'Each item has the reviewer\'s note, the exact CSS selector of the annotated element, ' +
+        'and an HTML snapshot of that element at review time (for disambiguation if the DOM has changed). ' +
+        'Make the requested changes.\n\n' +
+        annotations.map(function (ann, i) {
+          return (i + 1) + '. ' + (ann.note || '(no written note — the reviewer flagged this element for attention)') + '\n' +
+            '   selector: ' + (ann.path || ann.selector) + '\n' +
+            (ann.html ? '   element: ' + ann.html + '\n' : '') +
+            '   label: ' + ann.label + (ann.text ? ' · "' + ann.text + '"' : '');
+        }).join('\n\n');
+    } else {
+      txt = annotations.map(function (ann, i) {
+        return (i + 1) + '. [' + ann.label + (ann.text ? ' "' + ann.text + '"' : '') + ']' + (ann.note ? ': ' + ann.note : '');
+      }).join('\n') + '\n\n@ ' + ctx;
+    }
+    navigator.clipboard.writeText(txt).then(function () {
+      toast('✓ 已复制 ' + annotations.length + ' 条标注（' + fmt.toUpperCase() + '）');
+    }).catch(function () {
+      toast('复制失败 — 请检查剪贴板权限。');
+    });
+  }
+
+  function restore() {
+    if (restored) return;
+    restored = true;
+    var stored = window.AuthorToolsMarkStorage.load();
+    stored.forEach(function (item) {
+      var target = null;
+      if (item.path) {
+        try { target = document.querySelector(item.path); } catch (_) { /* 过期路径。 */ }
+      }
+      var ann = {
+        id: item.id,
+        ctx: getContext(),
+        label: item.label,
+        selector: item.selector,
+        path: item.path,
+        text: item.text,
+        html: item.html,
+        note: item.note || '',
+        relX: item.relX,
+        relY: item.relY,
+        pageX: item.pageX,
+        pageY: item.pageY,
+        targetEl: target,
+        pinEl: null
+      };
+      annotations.push(ann);
+      window.AuthorToolsMarkPins.build(ann, pinHandlers());
+    });
+    nextId = annotations.reduce(function (max, item) { return Math.max(max, item.id); }, 0) + 1;
+    render();
+    if (annotations.length) toast('已从上次会话恢复 ' + annotations.length + ' 条标注');
+  }
+
+  function handleKey(event) {
+    if (!active) return;
+    var inField = event.target.matches && event.target.matches('input, textarea, [contenteditable="true"]');
+    if (event.key === 'Escape' && notePop) {
+      event.preventDefault();
+      event.stopPropagation();
+      closeNotePop();
+      return;
+    }
+    if (event.key === 'Backspace' && !inField && annotations.length) {
+      event.preventDefault();
+      removeAnn(annotations[annotations.length - 1].id);
+    }
+  }
+
+  function activate() {
+    active = true;
+    document.body.classList.add('mm-on');
+    if (window.AuthorToolsPicker) {
+      window.AuthorToolsPicker.activate({
+        owner: 'mark',
+        hoverClass: 'mm-hover-hl',
+        selectedClass: 'mm-target-hl',
+        onSelect: createFromSelect
+      });
+    }
+  }
+
+  function deactivate() {
+    active = false;
+    document.body.classList.remove('mm-on');
+    closeNotePop();
+    if (window.AuthorToolsPicker) window.AuthorToolsPicker.release('mark');
+  }
+
+  window.AuthorToolsMarkTool = {
+    mount: function (el, ctx) {
+      container = el;
+      context = ctx;
+      installCss();
+      container.innerHTML =
+        '<div class="mm-list mm-ui" id="mm-list"></div>' +
+        '<div class="mm-panel-foot mm-ui">' +
+        '  <select class="mm-fmt-select" id="mm-fmt">' +
+        '    <option value="md">Markdown</option>' +
+        '    <option value="txt">纯文本</option>' +
+        '    <option value="json">JSON</option>' +
+        '    <option value="ai">AI 定位</option>' +
+        '  </select>' +
+        '  <button type="button" class="mm-btn" id="mm-clear">清空</button>' +
+        '  <button type="button" class="mm-btn primary" id="mm-copy">复制全部</button>' +
+        '</div>';
+      container.querySelector('#mm-clear').addEventListener('click', clearAll);
+      container.querySelector('#mm-copy').addEventListener('click', copyAll);
+      document.addEventListener('keydown', handleKey);
+      window.addEventListener('resize', function () {
+        window.AuthorToolsMarkPins.scheduleReposition(annotations);
+      });
+      if (window.ResizeObserver) {
+        new ResizeObserver(function () {
+          window.AuthorToolsMarkPins.scheduleReposition(annotations);
+        }).observe(document.documentElement);
+      }
+      restore();
+    },
+    activate: activate,
+    deactivate: deactivate,
+    destroy: deactivate,
+    isDirty: function () { return false; }
+  };
+})();

@@ -1,4 +1,4 @@
-/* 作者工具统一入口：只在本地作者服务中加载标注编辑器、Mark 和后续 Inspector 插件。 */
+/* 作者工具统一入口：只在本地作者服务中加载 Shell、Direct Edit、Mark、说明编辑器和 Inspector。 */
 (function () {
   'use strict';
 
@@ -26,7 +26,6 @@
 
   window.PrototypeAuthor = { register: register, activate: activate, getMode: function () { return modes.active; } };
 
-  /* 顺序加载作者插件，避免各插件重复创建入口或抢占选择状态。 */
   function load(src) {
     return new Promise(function (resolve, reject) {
       var script = document.createElement('script');
@@ -37,24 +36,32 @@
     });
   }
 
-  /* 初始化当前已实现的插件；chrome 已由 viewer 内联时可跳过网络加载。 */
+  function loadStyle(href) {
+    return new Promise(function (resolve, reject) {
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = href;
+      link.onload = resolve;
+      link.onerror = reject;
+      document.head.appendChild(link);
+    });
+  }
+
   async function init() {
     try {
       if (!window.PrototypeAuthorChrome) await load('/__prototype-author/author-chrome.js');
       await load('/__prototype-author/editor.js');
-      await load('/__prototype-author/html-mark.js');
+      await load('/__prototype-author/author-tools/picker.js');
+      await loadStyle('/__prototype-author/author-tools/shell.css');
+      await load('/__prototype-author/author-tools/shell.js');
+      await load('/__prototype-author/author-tools/edit/style-model.js');
+      await load('/__prototype-author/author-tools/edit/panel.js');
+      await load('/__prototype-author/author-tools/edit/index.js');
+      await load('/__prototype-author/author-tools/mark/storage.js');
+      await load('/__prototype-author/author-tools/mark/pins.js');
+      await load('/__prototype-author/author-tools/mark/index.js');
       await load('/__prototype-author/inspector.js');
-      /* Mark shell 自带拖拽；此处只同步 PrototypeAuthor 互斥模式。 */
-      var markToggle = document.querySelector('.mm-toggle');
-      if (markToggle) {
-        markToggle.addEventListener('click', function () {
-          if (document.body.classList.contains('mm-on')) window.PrototypeAuthor.activate('mark');
-          else if (modes.active === 'mark') window.PrototypeAuthor.activate('');
-        });
-      }
-      window.addEventListener('prototype-author:mode-change', function (event) {
-        if (event.detail.mode !== 'mark' && document.body.classList.contains('mm-on') && markToggle) markToggle.click();
-      });
+      if (window.AuthorTools && typeof window.AuthorTools.init === 'function') window.AuthorTools.init();
       window.dispatchEvent(new CustomEvent('prototype-author:ready'));
     } catch (error) {
       console.error('[prototype-author] 作者工具加载失败。', error);
