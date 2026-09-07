@@ -204,29 +204,6 @@
     return false;
   }
 
-  function cssPathForPick(el) {
-    if (!el || el.nodeType !== 1) return '';
-    var parts = [];
-    var cur = el;
-    while (cur && cur.nodeType === 1 && cur !== document.body && cur !== document.documentElement) {
-      if (cur.id) {
-        parts.unshift('#' + (window.CSS && CSS.escape ? CSS.escape(cur.id) : cur.id));
-        return parts.join(' > ');
-      }
-      var sel = cur.tagName.toLowerCase();
-      var parent = cur.parentElement;
-      if (parent) {
-        var sameTag = Array.prototype.filter.call(parent.children, function (child) {
-          return child.tagName === cur.tagName;
-        });
-        if (sameTag.length > 1) sel += ':nth-of-type(' + (sameTag.indexOf(cur) + 1) + ')';
-      }
-      parts.unshift(sel);
-      cur = parent;
-    }
-    return parts.length ? 'body > ' + parts.join(' > ') : '';
-  }
-
   function getPickTooltip() {
     if (pickTooltip) return pickTooltip;
     pickTooltip = document.createElement('div');
@@ -248,7 +225,7 @@
     tip.innerHTML = [
       '<span class="pn-pick-tag">&lt;' + tag + '&gt;</span>',
       cls ? '<span class="pn-pick-tag">' + cls + '</span>' : '',
-      '<div class="pn-pick-path">' + cssPathForPick(el) + '</div>',
+      '<div class="pn-pick-path">' + window.AuthorToolsSelector.cssPath(el) + '</div>',
       token ? '<div class="pn-pick-token">' + token + '</div>' : '',
       '<div class="pn-pick-hint">Click to bind</div>'
     ].join('');
@@ -339,28 +316,9 @@
     if (layer) layer.remove();
   }
 
-  function selectorFor(element) {
-    if (element.id) return '#' + (window.CSS && CSS.escape ? CSS.escape(element.id) : element.id);
-    var existing = element.getAttribute('data-prototype-note-target');
-    if (existing) return '[data-prototype-note-target="' + existing.replace(/"/g, '\\"') + '"]';
-    var parts = [];
-    var current = element;
-    while (current && current !== document.body && current !== document.documentElement && !current.classList.contains('pn-preview')) {
-      var part = current.tagName.toLowerCase();
-      var siblings = current.parentElement ? Array.from(current.parentElement.children).filter(function (child) {
-        return child.tagName === current.tagName;
-      }) : [];
-      if (siblings.length > 1) part += ':nth-of-type(' + (siblings.indexOf(current) + 1) + ')';
-      parts.unshift(part);
-      current = current.parentElement;
-    }
-    return parts.join(' > ');
-  }
-
+  /* Notes 绑定目标描述统一复用 author/core/selector.js。 */
   function targetFor(element) {
-    var label = (element.getAttribute('aria-label') || element.textContent || element.tagName).trim().slice(0, 60);
-    if (element.id) return { anchor: element.id, label: label };
-    return { selector: selectorFor(element), label: label };
+    return window.AuthorToolsSelector.noteTarget(element);
   }
 
   function handlePick(event) {
@@ -589,6 +547,10 @@
   function init() {
     if (!data) {
       console.error('[prototype-author] Viewer 尚未初始化，无法启动标注编辑器。');
+      return;
+    }
+    if (!window.AuthorToolsSelector) {
+      console.error('[prototype-author] 缺少 AuthorToolsSelector，无法启动标注编辑器。');
       return;
     }
     if (!window.PrototypeNotesEditorModel) {
