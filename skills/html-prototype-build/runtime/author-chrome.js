@@ -8,7 +8,7 @@
   /* 与 Inspector isOverlay 共用；新增作者 UI 时只改这一处。 */
   var OVERLAY_SELECTOR = [
     '.at-ui',
-    '.mm-ui', '.mm-toggle', '.mm-panel', '.mm-pin', '.mm-note-pop', '.mm-toast',
+    '.mm-ui', '.mm-pin', '.mm-note-pop',
     '.pn-panel-actions', '.pn-toggle', '.pn-mobile-toggle', '.pn-author-toolbar', '.pn-card-actions', '.pn-card-drag-handle',
     '.pn-notes', '.pn-connections', '.pn-pick-layer',
     '.pi-tooltip'

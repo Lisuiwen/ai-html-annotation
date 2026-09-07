@@ -165,6 +165,11 @@
     return false;
   }
 
+  function ruleHasImportant(style, props) {
+    if (!style || typeof style.getPropertyPriority !== 'function') return false;
+    return props.some(function (prop) { return style.getPropertyPriority(prop) === 'important'; });
+  }
+
   function specificity(selector) {
     var id = (selector.match(/#[\w-]+/g) || []).length;
     var cls = (selector.match(/(\.[\w-]+)|(\[[^\]]+\])|(::?[\w-]+)/g) || []).length;
@@ -219,20 +224,22 @@
     var p;
     var sel;
     var spec;
+    var important;
     for (s = 0; s < sheets.length; s++) {
       rules = [];
       try { collectRules(sheets[s].cssRules, rules); } catch (_) { continue; }
       for (r = 0; r < rules.length; r++) {
         order += 1;
         if (!ruleHasProp(rules[r].style, props)) continue;
+        important = ruleHasImportant(rules[r].style, props);
         parts = rules[r].selectorText.split(',');
         for (p = 0; p < parts.length; p++) {
           sel = parts[p].trim();
           if (!sel) continue;
           try { if (!el.matches(sel)) continue; } catch (_) { continue; }
           spec = specificity(sel);
-          if (!best || spec > best.spec || (spec === best.spec && order >= best.order)) {
-            best = { spec: spec, order: order, selector: sel, label: labelFromSelector(el, sel) };
+          if (!best || (important && !best.important) || (important === best.important && (spec > best.spec || (spec === best.spec && order >= best.order)))) {
+            best = { spec: spec, order: order, selector: sel, label: labelFromSelector(el, sel), important: important };
           }
         }
       }
@@ -241,11 +248,14 @@
   }
 
   function findStyleSource(el, prop) {
-    var found;
+    var found = findOnElement(el, prop);
     var cur;
-    if (readInline(el, prop)) return { kind: 'inline', label: 'Inline', title: '元素 style 属性' };
-    found = findOnElement(el, prop);
-    if (found) return { kind: 'class', label: found.label, title: found.selector };
+    var inlineValue = readInline(el, prop);
+    var inlineImportant = !!(el.style && typeof el.style.getPropertyPriority === 'function' && el.style.getPropertyPriority(prop) === 'important');
+    if (inlineValue && !(found && found.important && !inlineImportant)) {
+      return { kind: 'inline', label: 'Inline', title: '元素 style 属性' };
+    }
+    if (found) return { kind: 'class', label: found.label, title: found.selector + (found.important ? ' !important' : '') };
     if (INHERITED[prop]) {
       cur = el.parentElement;
       while (cur && cur !== document.documentElement) {
@@ -310,7 +320,8 @@
       var inlineValue = readInline(el, prop);
       var computedValue = readComputed(el, prop);
       var source = findStyleSource(el, prop);
-      var shown = displayFromCss(prop, inlineValue || computedValue);
+      /* 输入框始终回显浏览器真实生效值；inline 只作为来源与保存基线。 */
+      var shown = displayFromCss(prop, computedValue);
       originalByProp[prop] = inlineValue;
       rows[prop] = {
         property: prop,
@@ -347,7 +358,7 @@
       row.computedValue = computedValue;
       row.overridden = !!inlineValue;
       if (!row.dirty) {
-        var shown = displayFromCss(prop, inlineValue || computedValue);
+        var shown = displayFromCss(prop, computedValue);
         row.displayValue = shown.displayValue;
         row.unit = shown.unit || row.unit;
         var source = findStyleSource(el, prop);

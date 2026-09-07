@@ -31,6 +31,7 @@
     selectedClass: 'at-hl',
     selectedEl: null,
     hoverEl: null,
+    persistSelection: true,
     armed: false,
     hoverRaf: 0
   };
@@ -175,11 +176,18 @@
     event.preventDefault();
     event.stopPropagation();
     clearHover();
+
+    /* 先询问 owner 是否接受本次切换；拒绝时 Picker 内部状态与高亮都保持原样。 */
+    if (typeof state.onSelect === 'function' && state.onSelect(target, event) === false) return;
+
+    if (!state.persistSelection) {
+      clearSelected();
+      return;
+    }
     if (state.selectedEl && state.selectedEl !== target) {
       state.selectedEl.classList.remove(state.selectedClass);
     }
     state.selectedEl = target;
-    if (typeof state.onSelect === 'function') state.onSelect(target, event);
     if (state.selectedClass) target.classList.add(state.selectedClass);
   }
 
@@ -228,6 +236,7 @@
     state.onSelect = options.onSelect || null;
     state.hoverClass = options.hoverClass || 'at-hover-hl';
     state.selectedClass = options.selectedClass || 'at-hl';
+    state.persistSelection = options.persistSelection !== false;
     bind();
   }
 
@@ -238,6 +247,7 @@
     setArmed(false);
     state.owner = '';
     state.onSelect = null;
+    state.persistSelection = true;
     unbind();
   }
 

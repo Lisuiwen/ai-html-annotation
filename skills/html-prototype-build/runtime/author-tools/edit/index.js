@@ -24,22 +24,58 @@
     bindPanel();
   }
 
+  function syncPanelAfterInput(input, prop) {
+    if (!container || !session) return;
+    var dirty = session.isDirty();
+    container.querySelectorAll('[data-act="cancel"], [data-act="save"]').forEach(function (btn) {
+      btn.disabled = !dirty;
+    });
+
+    if (prop && session.rows && session.rows[prop]) {
+      var row = session.rows[prop];
+      var editRow = input.closest && input.closest('.at-edit-row');
+      var source = editRow && editRow.querySelector('.at-src');
+      if (source && row.dirty) {
+        source.textContent = '未保存';
+        source.classList.add('is-dirty');
+        source.classList.remove('is-inline', 'is-class');
+        source.title = '仅预览，尚未写入源文件';
+      }
+      var wrap = input.closest && input.closest('.at-length-wrap');
+      var unit = wrap && wrap.querySelector('.at-unit');
+      if (unit) unit.textContent = row.unit || '';
+    }
+
+    if (input.type === 'color') {
+      var colorText = container.querySelector('[data-prop="' + prop + '"]:not([type="color"])');
+      if (colorText && colorText !== input) colorText.value = input.value;
+    } else if (prop && /^#[0-9a-f]{6}$/i.test(input.value || '')) {
+      var colorInput = container.querySelector('[data-prop="' + prop + '"][type="color"]');
+      if (colorInput && colorInput !== input) colorInput.value = input.value;
+    }
+  }
+
+  function applyPanelInput(input) {
+    if (!session) return;
+    var prop = input.getAttribute('data-prop');
+    if (prop === 'text') session.setText(input.value);
+    else session.previewStyle(prop, input.value);
+    syncPanelAfterInput(input, prop);
+  }
+
   function bindPanel() {
     if (!container) return;
     container.querySelectorAll('input, select').forEach(function (input) {
       input.addEventListener('input', function () {
-        if (!session) return;
-        var prop = input.getAttribute('data-prop');
-        if (prop === 'text') session.setText(input.value);
-        else session.previewStyle(prop, input.value);
-        render();
-        var focus = container.querySelector('[data-prop="' + prop + '"]' + (input.type === 'color' ? '[type="color"]' : ':not([type="color"])'));
-        if (focus) {
-          focus.focus();
-          if (input.type !== 'color' && focus.setSelectionRange && typeof input.selectionStart === 'number') {
-            focus.setSelectionRange(input.selectionStart, input.selectionEnd);
-          }
-        }
+        if (input.__atComposing) return;
+        applyPanelInput(input);
+      });
+      input.addEventListener('compositionstart', function () {
+        input.__atComposing = true;
+      });
+      input.addEventListener('compositionend', function () {
+        input.__atComposing = false;
+        applyPanelInput(input);
       });
     });
     container.querySelectorAll('[data-reset]').forEach(function (btn) {
@@ -63,16 +99,13 @@
 
   function selectElement(el) {
     if (session && session.isDirty() && el !== selected) {
-      if (selected) {
-        el.classList.remove('at-hl');
-        selected.classList.add('at-hl');
-      }
       if (context && context.toast) context.toast('请先保存或取消当前修改');
-      return;
+      return false;
     }
     selected = el;
     session = window.AuthorToolsStyleModel.createSession(el);
     render();
+    return true;
   }
 
   function discard() {

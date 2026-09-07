@@ -252,7 +252,7 @@ body.mm-on .mm-pin { display: flex; }
 
   function createFromSelect(el, event) {
     var desc = describeElement(el);
-    if (!desc.target) return;
+    if (!desc.target) return false;
     var ann = {
       id: nextId++,
       ctx: getContext(),
@@ -273,11 +273,11 @@ body.mm-on .mm-pin { display: flex; }
       ann.relY = rect.height ? (event.clientY - rect.top) / rect.height : 0.5;
     }
     window.AuthorToolsMarkPins.build(ann, pinHandlers());
-    if (window.AuthorToolsPicker && window.AuthorToolsPicker.clearSelected) window.AuthorToolsPicker.clearSelected();
     annotations.push(ann);
     render();
     persist();
     openNotePop(ann);
+    return true;
   }
 
   function removeAnn(id) {
@@ -409,8 +409,11 @@ body.mm-on .mm-pin { display: flex; }
     var stored = window.AuthorToolsMarkStorage.load();
     stored.forEach(function (item) {
       var target = null;
-      if (item.path) {
-        try { target = document.querySelector(item.path); } catch (_) { /* 过期路径。 */ }
+      var candidates = [];
+      if (item.selector) candidates.push(item.selector);
+      if (item.path && item.path !== item.selector) candidates.push(item.path);
+      for (var i = 0; i < candidates.length && !target; i++) {
+        try { target = document.querySelector(candidates[i]); } catch (_) { /* 过期 selector/path。 */ }
       }
       var ann = {
         id: item.id,
@@ -459,6 +462,7 @@ body.mm-on .mm-pin { display: flex; }
         owner: 'mark',
         hoverClass: 'mm-hover-hl',
         selectedClass: 'mm-target-hl',
+        persistSelection: false,
         onSelect: createFromSelect
       });
     }

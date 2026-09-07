@@ -59,6 +59,27 @@ test('Direct Edit 服务端能解析 CSS.escape 产生的转义 id', () => {
   assert.match(next, /id="foo:bar" style="color: red"/);
 });
 
+test('Direct Edit 源码定位忽略 raw-text 中伪标签，并允许属性值包含 >', () => {
+  const html = '<script>const tpl = `<div id="target">fake</div>`;</script>' +
+    '<div id="target" title="a > b">real</div>';
+  const next = serveModule.applyPrototypeEdit(html, {
+    selector: '#target',
+    changes: { styles: { height: '20px' }, text: 'changed' }
+  });
+  assert.match(next, /<script>const tpl = `<div id="target">fake<\/div>`;<\/script>/);
+  assert.match(next, /<div id="target" title="a > b" style="height: 20px">changed<\/div>/);
+});
+
+test('Direct Edit nth-of-type 只统计目标父节点的直接子元素', () => {
+  const html = '<div id="root"><p>a</p><section><p>nested</p></section><p>b</p><p>c</p></div>';
+  const next = serveModule.applyPrototypeEdit(html, {
+    selector: '#root > p:nth-of-type(3)',
+    changes: { styles: { color: 'red' } }
+  });
+  assert.match(next, /<p style="color: red">c<\/p>/);
+  assert.doesNotMatch(next, /<p style="color: red">nested<\/p>/);
+});
+
 test('作者写接口只接受可信 localhost JSON 请求', () => {
   assert.equal(typeof serveModule.isTrustedAuthorRequest, 'function');
   const good = {
