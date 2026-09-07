@@ -43,9 +43,9 @@ Experimental 0.x · zero npm dependencies · MIT · [Changelog](CHANGELOG.md)
 
 ## See it first
 
-### 1. Sidebar: create, edit, delete, and group annotations
+### 1. Sidebar: create, edit, delete, and switch scenarios
 
-Viewer keeps formal notes in a right-hand panel. You can add, edit, delete, and browse annotations, group them by page state, and follow SVG connectors to the matching modules—all on the same page. Annotations are isolated per page state and grouped across multi-state flows.
+Viewer keeps formal notes in a right-hand panel. You can add, edit, delete, and browse annotations, switch them by page scenario, and follow SVG connectors to the matching modules—all on the same page.
 
 ![Viewer: annotation CRUD and grouping in the right-hand panel](media/viewer.gif)
 
@@ -102,7 +102,7 @@ Review pins stay in the authoring layer. Screenshots and formal files stay clean
 ```text
 Native HTML
    │
-   ├── Viewer: formal notes, groups, SVG connectors
+   ├── Viewer: formal notes, scenario switching, SVG connectors
    ├── Mark: page review, selectors, element snapshots, Copy for AI
    ├── Inspector: lock elements, show selectors, open source
    └── Screenshot: scenario-based clean page captures

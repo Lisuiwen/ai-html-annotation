@@ -170,7 +170,7 @@
     document.body.insertBefore(mobile, beforeNode);
   }
 
-  /* 根据当前组渲染公共卡片和状态卡片；目标数据仅用于连线，不在卡片内重复展示。 */
+  /* 渲染当前可见说明卡片；目标数据仅用于连线，不在卡片内重复展示。 */
   function render() {
     var data = state.data;
     if (state.actions.parentElement) state.actions.remove();
@@ -219,7 +219,7 @@
     return el;
   }
 
-  /* 解析稳定 ID 锚点或旧 selector；非法、失效或预览区外目标均视为未绑定。 */
+  /* 解析稳定 ID 锚点或 selector 兜底；非法、失效或预览区外目标均视为未绑定。 */
   function resolveTarget(card) {
     var anchor = card && card.target && card.target.anchor;
     if (anchor) {

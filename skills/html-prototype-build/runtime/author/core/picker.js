@@ -21,7 +21,7 @@
 
   var NOTES_PANEL_SELECTOR = [
     '.pn-notes', '.pn-panel-actions', '.pn-toggle', '.pn-mobile-toggle',
-    '.pn-card', '.pn-head', '.pn-overview', '.pn-connections'
+    '.pn-card', '.pn-head', '.pn-connections'
   ].join(',');
 
   var state = {

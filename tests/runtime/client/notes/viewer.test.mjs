@@ -17,7 +17,7 @@ test('Notes Viewer 只保留 DOM/连线职责，状态与 when 逻辑由依赖�
   assert.match(source, /缺少 PrototypeNotesModel/);
 });
 
-test('Viewer 深链恢复只读取 scene，不恢复 legacy state', async () => {
+test('Viewer 深链恢复只读取 scene', async () => {
   const source = await readFile(viewerUrl, 'utf8');
   const start = source.indexOf('function activateInitialState');
   const end = source.indexOf('\n  }', start);

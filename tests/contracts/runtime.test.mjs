@@ -50,7 +50,7 @@ test('示例按 display-mode → state → model → viewer 顺序加载 Client 
   assert.ok(snapshot >= 0 && displayMode > snapshot && state > displayMode && model > state && viewer > model && product > viewer);
 });
 
-test('示例不再使用废弃状态型 data-ui 属性', async () => {
+test('示例不使用状态型 data-ui 属性', async () => {
   const html = await readFile(prototypeUrl, 'utf8');
   const deprecated = /\bdata-ui-(?:open|layer|confirm|edit|delete|select(?:-value)?)\b/gi;
   assert.deepEqual([...html.matchAll(deprecated)].map((match) => match[0]), []);

@@ -4,7 +4,7 @@
 
 需要给已有 HTML 写修改意见、通过 pin 交接反馈，或导出 For AI 定位信息时使用本入口。
 
-Mark 是 `runtime/author/tools/mark/` 中的临时评审工具，不是右侧正式产品说明，也不写入 snapshot 或源 HTML。它通过本地作者服务动态加载，不再使用 standalone `html-mark.js` / `prepare-mark.mjs` 注入。
+Mark 是 `runtime/author/tools/mark/` 中的临时评审工具，不是右侧正式产品说明，也不写入 snapshot 或源 HTML。它通过本地作者服务动态加载。
 
 操作步骤见 [README.md](../README.md#评审打点)。
 

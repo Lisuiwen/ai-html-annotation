@@ -47,7 +47,7 @@ IDE 跳转配置放在 `<skill-root>/runtime/server/.env`，模板为 `runtime/s
 
 ## 评审打点
 
-Mark 已集成进 Author Tools，不再存在 standalone `html-mark.js` 或 `prepare-mark.mjs` 注入流程。
+Mark 已集成进 Author Tools，通过本地作者服务动态加载。
 
 1. 启动作者服务并打开页面。
 2. 切到 Mark Tab（或按 `M`）。
