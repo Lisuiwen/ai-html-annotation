@@ -30,6 +30,7 @@
     try {
       if (!window.PrototypeAuthor) await load('/__prototype-author/author/core/modes.js');
       if (!window.PrototypeAuthorChrome) await load('/__prototype-author/client/core/display-mode.js');
+      await load('/__prototype-author/author/tools/notes-editor/model.js');
       await load('/__prototype-author/author/tools/notes-editor/index.js');
       await load('/__prototype-author/author/core/picker.js');
       await loadStyle('/__prototype-author/author/shell/index.css');
