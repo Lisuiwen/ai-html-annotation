@@ -29,6 +29,7 @@ test('bootstrap 只负责加载新 client/author 资源路径', async () => {
     '/__prototype-author/author/shell/index.js',
     '/__prototype-author/author/tools/direct-edit/index.js',
     '/__prototype-author/author/tools/mark/index.js',
+    '/__prototype-author/author/tools/notes-editor/model.js',
     '/__prototype-author/author/tools/notes-editor/index.js',
     '/__prototype-author/author/tools/inspector/index.js'
   ]) assert.match(source, new RegExp(path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
@@ -36,4 +37,11 @@ test('bootstrap 只负责加载新 client/author 资源路径', async () => {
   assert.doesNotMatch(source, /function register\(/);
   assert.doesNotMatch(source, /author-tools\//);
   assert.doesNotMatch(source, /author-loader\.js/);
+});
+
+test('bootstrap 先加载 NotesEditor model 再加载 controller', async () => {
+  const { source } = await boot();
+  const model = source.indexOf('/__prototype-author/author/tools/notes-editor/model.js');
+  const controller = source.indexOf('/__prototype-author/author/tools/notes-editor/index.js');
+  assert.ok(model >= 0 && controller > model);
 });
