@@ -17,9 +17,10 @@ suiwenli4@gmail.com
 
 ## 当前已知边界
 
-- `serve.mjs` 是本地作者服务，不是生产 Web 服务。
-- `shoot.mjs` 只应运行可信的本地原型和标注数据。
-- Inspector 可能根据 `CODE_EDITOR` 配置启动本机 IDE。
-- html-mark 可能将评审内容保存在浏览器本地存储或复制到剪贴板。
+- `runtime/server/index.mjs` 是本地作者服务，不是生产 Web 服务，只应监听 `127.0.0.1`。
+- `runtime/cli/screenshot.mjs` 只应运行可信的本地原型和标注数据。
+- 作者写接口只接受同源 localhost JSON；源码和 snapshot 写回仍应限制在当前原型工作流内。
+- Inspector 可能根据 `runtime/server/.env` 中的 `CODE_EDITOR` 配置启动本机 IDE。
+- Author Tools Mark 可能将评审内容保存在浏览器 localStorage 或复制到剪贴板，但不会注入源 HTML。
 
 收到有效报告后，维护者会确认问题、评估影响，并在适当时发布修复说明。

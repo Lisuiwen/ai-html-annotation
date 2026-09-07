@@ -73,11 +73,11 @@ Compose pages from a local UI pack with shared tokens, components, and patterns.
 
 ### Executable review context
 
-Review pins can be injected, copied in bulk, and removed without polluting the formal page. Exports carry stable selectors, element HTML snapshots, and reviewer notes—context an agent can act on.
+Review pins are loaded only in the localhost authoring session and can be copied or cleared without polluting the formal page. Exports carry stable selectors, element HTML snapshots, and reviewer notes—context an agent can act on.
 
 ### Jump from the page to source
 
-A localhost authoring server on `127.0.0.1` edits notes, rebinds anchors, and opens source. Authoring chrome stays separate from the formal deliverable, so prototypes stay light and portable.
+A localhost authoring server on `127.0.0.1` edits notes, rebinds anchors, supports direct page edits, and opens source. Authoring chrome stays separate from the formal deliverable, so prototypes stay light and portable.
 
 ### One state model, many outputs
 
@@ -85,7 +85,7 @@ A localhost authoring server on `127.0.0.1` edits notes, rebinds anchors, and op
 
 ### Clean deliverables
 
-Formal prototypes keep semantic DOM, stable anchors, and render logic only. Viewer notes, Mark pins, and Inspector tooling are an authoring layer you can load or strip—they do not belong in the final HTML handoff.
+Formal prototypes keep semantic DOM, stable anchors, the read-only Viewer, and render logic only. Mark, Direct Edit, Notes Editor, Inspector, and the local authoring server are authoring tools loaded outside the source HTML.
 
 ## What you get
 
@@ -95,7 +95,7 @@ A typical prototype task yields three coordinated outputs:
 - **Reusable state definitions** — snapshot notes and `scenarios` as a stable baseline for later edits
 - **Multi-state screenshots** — batch PNGs for create / edit / empty / linked views without the notes rail, connectors, or author tools
 
-Review pins stay in the authoring layer. Screenshots and formal files stay clean. When you need another pass, reload the mark layer or paste For-AI context into an agent.
+Review pins stay in the authoring layer. Screenshots and formal files stay clean. When you need another pass, reopen the page through the authoring server or paste For-AI context into an agent.
 
 ## How it fits together
 
@@ -115,13 +115,13 @@ This fits admin consoles, config pages, and interaction prototypes that change o
 Requirements: Node.js 18+. Scenario screenshots also need a local Microsoft Edge or Google Chrome install.
 
 ```powershell
-# Open the sample with formal notes (use the printed 127.0.0.1 URL)
-node skills/html-prototype-build/runtime/serve.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype/notes.snapshot.js
+# Open the sample with formal notes and Author Tools (use the printed 127.0.0.1 URL)
+node skills/html-prototype-build/runtime/server/index.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype/notes.snapshot.js
 ```
 
 ```powershell
 # Batch clean screenshots from snapshot scenarios
-node skills/html-prototype-build/runtime/shoot.mjs examples/minimal-notes/prototype.html
+node skills/html-prototype-build/runtime/cli/screenshot.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype/notes.snapshot.js
 ```
 
 Install `skills/html-prototype-build/` into your agent skill path (keep the folder name `html-prototype-build`), then ask the agent to build or revise a prototype from your materials.
@@ -136,8 +136,10 @@ skills/html-prototype-build/     Canonical Agent Skill source
 examples/                        Runnable minimal prototype
 media/                           README demo assets
 scripts/                         Validation entry
-tests/                           Runtime contract tests
+tests/                           Runtime unit and contract tests
 ```
+
+Inside the Skill, Runtime is organized by execution boundary: `client/` for final browser runtime, `author/` for browser authoring tools, `server/` for the localhost Node service, and `cli/` for standalone commands.
 
 ## Scope
 
@@ -149,9 +151,9 @@ This is an AI-assisted HTML annotation and prototyping toolkit—not a productio
 
 ## Security boundaries
 
-- `serve.mjs` binds to `127.0.0.1` only. Do not run authoring or screenshots against untrusted HTML or snapshot files.
-- Note writes are limited to snapshot files under the prototype directory. Keep `.env` local for IDE selection; never commit it.
-- html-mark is a temporary review layer. It may store page fragments in `localStorage` or copy them to the clipboard. It is not part of the formal deliverable.
+- `runtime/server/index.mjs` binds to `127.0.0.1` only. Do not run authoring or screenshots against untrusted HTML or snapshot files.
+- Author write requests require same-origin localhost JSON; snapshot and source writes stay within the configured prototype workflow. Keep `runtime/server/.env` local for IDE selection; never commit it.
+- Mark is a temporary Author Tool. It stores review context in page-scoped `localStorage` and may copy it to the clipboard; it is never injected into the source HTML and is not part of the formal deliverable.
 - Do not put real credentials, production data, personal information, or unauthorized brand assets in prototypes.
 
 ## Contributing

@@ -49,18 +49,18 @@
 
   async function init() {
     try {
-      if (!window.PrototypeAuthorChrome) await load('/__prototype-author/author-chrome.js');
-      await load('/__prototype-author/editor.js');
-      await load('/__prototype-author/author-tools/picker.js');
-      await loadStyle('/__prototype-author/author-tools/shell.css');
-      await load('/__prototype-author/author-tools/shell.js');
-      await load('/__prototype-author/author-tools/edit/style-model.js');
-      await load('/__prototype-author/author-tools/edit/panel.js');
-      await load('/__prototype-author/author-tools/edit/index.js');
-      await load('/__prototype-author/author-tools/mark/storage.js');
-      await load('/__prototype-author/author-tools/mark/pins.js');
-      await load('/__prototype-author/author-tools/mark/index.js');
-      await load('/__prototype-author/inspector.js');
+      if (!window.PrototypeAuthorChrome) await load('/__prototype-author/client/core/display-mode.js');
+      await load('/__prototype-author/author/tools/notes-editor/index.js');
+      await load('/__prototype-author/author/core/picker.js');
+      await loadStyle('/__prototype-author/author/shell/index.css');
+      await load('/__prototype-author/author/shell/index.js');
+      await load('/__prototype-author/author/tools/direct-edit/style-model.js');
+      await load('/__prototype-author/author/tools/direct-edit/panel.js');
+      await load('/__prototype-author/author/tools/direct-edit/index.js');
+      await load('/__prototype-author/author/tools/mark/storage.js');
+      await load('/__prototype-author/author/tools/mark/pins.js');
+      await load('/__prototype-author/author/tools/mark/index.js');
+      await load('/__prototype-author/author/tools/inspector/index.js');
       if (window.AuthorTools && typeof window.AuthorTools.init === 'function') window.AuthorTools.init();
       window.dispatchEvent(new CustomEvent('prototype-author:ready'));
     } catch (error) {

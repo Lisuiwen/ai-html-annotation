@@ -157,7 +157,7 @@ function commandExists(cmd) {
 /* 串行截图，避免多个无头实例同时抢占同一输出文件。 */
 async function main() {
   if (!input) {
-    console.error('用法：node shoot.mjs <prototype.html> [--out=目录] [--browser=exe路径] [--width=1440] [--height=900] [--snapshot=标注数据路径]');
+    console.error('用法：node runtime/cli/screenshot.mjs <prototype.html> [--out=目录] [--browser=exe路径] [--width=1440] [--height=900] [--snapshot=标注数据路径]');
     process.exit(1);
   }
   if (!existsSync(htmlPath) || !statSync(htmlPath).isFile()) {

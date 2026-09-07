@@ -16,7 +16,7 @@
 2. 当前所选 UI foundation 的 `design-system.md`、foundation 契约与基础源文件。
 3. 当前所选 UI provider 的 manifest、组件契约与组件实现。
 4. `ui/contract.md` 和对应 `PACK.md` 中的组合约束。
-5. `addons/annotations/` 中的标注契约，以及 `runtime/viewer.js` 的只读渲染行为。
+5. `addons/annotations/` 中的标注契约，以及 `runtime/client/notes/viewer.js` 的只读渲染行为。
 
 本文件只保存所有生成路径共享的硬约束。UI 生成、产品说明标注、本地作者服务、评审打点、截图和交付的操作步骤分别以同目录对应入口文档为准。
 
@@ -52,26 +52,25 @@ Viewer 负责 `?scene=<id>` 与 `?collapsed=1` 的恢复；业务 Adapter 不解
 - 凡是需要交互描述或逻辑说明的点，都应建立标注并连线；不需要说明的控件不标注。
 - 一个说明对应一个语义单元：共同完成一件事的控件合并为区域标注，例如「重置 + 查询」合为查询区，表格与其分页合为一个单元，不按 DOM 节点逐个拆分。
 - 不得为凑数或求全把所有控件都连线，也不得因担心数量而漏掉真正需要说明的点。
-
 - 原型目标元素优先复用稳定、唯一的 `id`；卡片用 `target.anchor` 保存不带 `#` 的 id，并可附带 `target.label` 供人和 AI 阅读。只有元素不适合拥有 id 时才添加 `data-prototype-note-target`，并以 `target.selector` 兼容绑定。
 - 已有 `id` 的节点不得重复添加 `data-prototype-note-target`；标注锚点只表达身份，不保存业务状态。
 - Viewer 创建右栏、连线、编号和移动端展示；主 HTML 不得硬编码这些内容。
 
-交互标记与标注点彼此正交，独立使用：
+交互标记与标注点彼此正交：
 
-- 用 `data-ui-interactive` 只标记**本次迭代业务中需要用户操作的入口**，在元素内侧右上角显示珊瑚色闪电符号。
-- 判定来源是当前需求里新增或变更的操作，例如新菜单、新主按钮、新下拉、新的行内操作；不是页面上所有可点击控件。
-- 同类重复操作只标一次：表格每行的编辑/删除只在首行（或该列的代表单元格）标记，禁止给每一行打闪电。
-- 不标记：壳层品牌与顶导、侧栏收起、关闭、取消、分页跳转，以及与本次需求无关的既有菜单和控件。
-- 交互标记不写说明文字、不占用说明卡片、不参与连线绘制；同一元素可同时作为 `target.anchor` 目标并带 `data-ui-interactive`。
+- `data-ui-interactive` 只标记本次迭代业务中需要用户操作的入口，在元素内侧右上角显示珊瑚色闪电符号。
+- 判定来源是当前需求里新增或变更的操作；不是页面上所有可点击控件。
+- 同类重复操作只标一次；表格每行的编辑/删除只在代表行标记。
+- 不标记壳层品牌与顶导、侧栏收起、关闭、取消、分页跳转，以及与本次需求无关的既有控件。
+- 交互标记不写说明文字、不占用说明卡片、不参与连线绘制；同一元素可同时作为 `target.anchor` 并带 `data-ui-interactive`。
 
 ## 6. 浮层
 
 - Modal 遮罩只覆盖左侧产品区，不能覆盖右侧说明区。
-- 为满足该约束，Modal 的 `.ui-overlay` 必须作为 `.ui-preview` 内部的定位子元素，或使用等价的产品区边界定位；禁止使用覆盖整个浏览器视口的全局 `fixed inset: 0` 浮层。
+- `.ui-overlay` 必须作为 `.ui-preview` 内部定位子元素或使用等价产品区边界定位；禁止覆盖整个浏览器视口的全局 `fixed inset: 0`。
 - Modal 打开时向 `PrototypeViewers` 提交浮层状态，只连接 `when` 匹配且目标可见的说明；关闭后恢复此前组合状态。
 - Drawer 若作为产品交互，也应限制在左侧产品区内，不遮挡右侧说明。
-- Modal / Drawer 必须在 `.ui-modal` / `.ui-drawer` 内层面板赋予稳定 `id`（推荐 `{overlayId}Panel`）；`target.anchor` 绑定内层面板 id。遮罩层 `.ui-overlay` 的 `id` 保留给浮层 Adapter、`aria-controls` 与 `role="dialog"`，不得作为标注连线锚点。
+- Modal / Drawer 必须在 `.ui-modal` / `.ui-drawer` 内层面板赋予稳定 `id`；`target.anchor` 绑定内层面板 id。遮罩层 `.ui-overlay` 的 `id` 不得作为标注连线锚点。
 
 ## 7. 交付文件
 
@@ -80,35 +79,36 @@ Viewer 负责 `?scene=<id>` 与 `?collapsed=1` 的恢复；业务 Adapter 不解
 ```text
 prototype.html
 prototype/
-├─ prototype.css       # 页面与组件样式
-├─ prototype.js        # 页面业务交互与状态 Adapter
-├─ notes.snapshot.js   # 正式说明、场景与基础 state
-└─ viewer.js           # 只读说明与状态协调运行时
-screenshots/           # 需要交付验收截图时保留
-assets/                # 仅出现图片、字体、音视频等静态资源时生成
+├─ prototype.css
+├─ prototype.js
+├─ notes.snapshot.js
+└─ viewer.js
+screenshots/
+assets/
 ```
 
-- 根目录只允许 `prototype.html`、`prototype/`、`screenshots/`，以及按需创建的 `assets/`；不要在根目录散落 CSS、JS、snapshot 或运行时文件。
+- 根目录只允许 `prototype.html`、`prototype/`、`screenshots/`，以及按需创建的 `assets/`；不要散落 CSS、JS、snapshot 或运行时文件。
 - HTML 在 `<head>` 中加载 `./prototype/prototype.css`，在 `</body>` 前依次加载 `./prototype/notes.snapshot.js`、`./prototype/viewer.js` 与 `./prototype/prototype.js`。路径必须相对 HTML，可在 `file://` 下直接双击使用。
-- `prototype.html` 保留可读的页面 DOM、稳定锚点和少量资源引用；禁止内联大段 CSS 或业务脚本。超过少量启动配置的 JS 必须放入 `prototype/prototype.js`。
-- `prototype/viewer.js` 从本 Skill 的 `runtime/viewer.js` 原样复制；不要把共享 Viewer 实现内联回 HTML。
-- 选中任一依赖 `data._echarts-core` 的 chart 组件时，必须 copy skill `vendor/echarts/echarts.min.js` 到根目录 `assets/echarts.min.js`，并将 `runtime/chart-bridge.js`、`runtime/chart-presets.js` 复制到 `prototype/`；在 `prototype.html` 中于 `notes.snapshot.js` 之前加载 `./assets/echarts.min.js`、`./prototype/chart-bridge.js`、`./prototype/chart-presets.js`。
-- 选中 `data.chart-map` 时，还必须 copy 对应 geo json 到 `assets/maps/`（如 `assets/maps/china.json`），并 copy 同名 `china.js` 到 `assets/maps/`；在 `notes.snapshot.js` 之前于 `chart-bridge.js` 之前加载 `./assets/maps/china.js`（`file://` 下 fetch json 会被拦截，geo 须由 script 预注册到 `window.PrototypeMapRegistry`）。map geo 不得引用 CDN 或写入 `component.html`。
+- `prototype.html` 保留可读页面 DOM、稳定锚点和少量资源引用；禁止内联大段 CSS 或业务脚本。
+- `prototype/viewer.js` 从本 Skill 的 `runtime/client/notes/viewer.js` 原样复制；不要把共享 Viewer 实现内联回 HTML。
+- 选中任一依赖 `data._echarts-core` 的 chart 组件时，copy `vendor/echarts/echarts.min.js` 到 `assets/echarts.min.js`，并将 `runtime/client/charts/bridge.js`、`runtime/client/charts/presets.js` 复制到 `prototype/`；在 `notes.snapshot.js` 之前加载 ECharts 与图表运行时。
+- 选中 `data.chart-map` 时，还必须 copy 对应 geo json/js 到 `assets/maps/`；`file://` 下 fetch json 会被拦截，geo 须由 script 预注册到 `window.PrototypeMapRegistry`。map geo 不得引用 CDN 或写入 `component.html`。
 - 截图只存入根目录 `screenshots/`，不作为页面运行依赖；`assets/` 不得为空目录。
-- 标注编辑器、Inspector、Author Loader、本地服务、源码定位信息和 html-mark 都不属于正式交付物；Mark 仅用于单独生成的评审稿，可随时剥离。
-- 禁止在 `prototype.html` 内联任何标注编辑逻辑（含 `file://` 专用脚本、`prompt()` 改说明、把卡片覆盖或自定义备注写入 localStorage）；`file://` 只读展示 snapshot，编辑必须走 [local-authoring.md](local-authoring.md) 的 `serve.mjs`。
+- `runtime/author/`、`runtime/server/` 与 `runtime/cli/` 都不属于正式页面运行依赖；Author Bootstrap、Direct Edit、Notes Editor、Inspector、本地服务和源码定位信息不得进入正式交付物。
+- Mark 只在作者服务会话中动态加载，pin 只写 localStorage，不向源 HTML 注入任何 runtime，因此正式交付无需“剥离 Mark 注入”。
+- 禁止在 `prototype.html` 内联任何标注编辑逻辑（含 `file://` 专用脚本、`prompt()` 改说明、把卡片覆盖或自定义备注写入 localStorage）；`file://` 只读展示 snapshot，编辑必须走 [local-authoring.md](local-authoring.md) 的 `runtime/server/index.mjs`。
 
 ## 8. 依赖
 
 - 默认使用原生 HTML、CSS、JavaScript，不依赖外部 CDN。
 - 只有用户明确要求，或原型目标无法用已有本地资源和平台原生能力合理实现时，才可引入外部 CDN。
-- 引入前必须确认其必要性；不得为了图标、布局、基础组件或少量交互引入 Tailwind、Font Awesome、React、外部组件库资源。
+- 引入前必须确认必要性；不得为了图标、布局、基础组件或少量交互引入 Tailwind、Font Awesome、React、外部组件库资源。
 - 图标优先使用文本符号、内联 SVG 或已有合法本地资源，并提供可访问名称。
 
 ## 9. 内容与数据
 
 - 禁止从历史原型或其他任务带入任何示例业务名、系统名、菜单名、字段名、编码、人员、部门、渠道、日期或数据。
-- 禁止把组件、Pattern 或 Preset 中的“系统名称”“示例条目”等结构示例误当成用户业务内容；复制后必须替换为当前需求或中性占位。
+- 禁止把组件、Pattern 或 Preset 中的结构示例误当成用户业务内容；复制后必须替换为当前需求或中性占位。
 - 不得使用真实登录凭据、token、接口地址、个人信息、生产数据或未经授权的品牌资源。
 - 本地 mock 只表达当前交互所需的最小数据关系，不扩写用户未要求的业务规则。
 - 用户给出的信息不足以确定业务含义时，保持中性并明确待确认，不得“补全得更像真实系统”。
@@ -116,10 +116,10 @@ assets/                # 仅出现图片、字体、音视频等静态资源时�
 ## 10. 可访问性
 
 - 使用 `header`、`nav`、`main`、`aside`、`section`、`article` 等适当语义元素。
-- 所有仅图标按钮必须提供明确的 `aria-label`。
+- 所有仅图标按钮必须提供明确 `aria-label`。
 - Tabs 必须维护 `role="tablist"`、`role="tab"`、`role="tabpanel"`、`aria-selected`、`aria-controls` 和 `aria-labelledby`。
 - Dialog 必须维护 `role="dialog"`、`aria-modal="true"` 和可关联标题。
 - 自定义 Select 必须维护 `aria-haspopup="listbox"`、`aria-expanded`、`role="listbox"`、`role="option"` 和 `aria-selected`。
-- 树若使用 `role="tree"` / `treeitem`，必须至少维护 `aria-expanded`；若不实现必要键盘行为，应通过 `ponytail:` 明确其仅为静态或有限交互演示，不得宣称完整可访问树。
+- 树若使用 `role="tree"` / `treeitem`，必须至少维护 `aria-expanded`；若不实现必要键盘行为，应通过 `ponytail:` 明确其仅为静态或有限交互演示。
 - 键盘焦点不能只依赖低对比度边框。未采集正式焦点视觉时保留浏览器可见焦点，并用 `ponytail:` 标注。
 - 不得把设计系统已指出对比度不足的组合声明为通过无障碍验收。

@@ -71,11 +71,11 @@ Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除�
 
 ### 便捷修改，评审上下文可执行
 
-评审标记可以临时注入、批量复制和随时移除，不污染正式页面。导出的指令带有稳定 selector、元素 HTML 快照和评审意见，AI 拿到的是可执行的修改上下文。
+Mark 只在本地作者服务会话中加载，评审标记可以批量复制和随时清空，不污染正式页面。导出的指令带有稳定 selector、元素 HTML 快照和评审意见，AI 拿到的是可执行的修改上下文。
 
 ### 从页面直接回源码
 
-本地作者服务运行在 `127.0.0.1`，负责编辑说明、重绑锚点和定位源码。作者层与正式交付物分离，原型文件仍保持轻量、可移植。
+本地作者服务运行在 `127.0.0.1`，负责直接编辑页面、编辑正式说明、重绑锚点和定位源码。作者层与正式交付物分离，原型文件仍保持轻量、可移植。
 
 ### 一份状态，多种输出
 
@@ -83,7 +83,7 @@ Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除�
 
 ### 标注和原型分离，交付物保持干净
 
-正式原型只保留语义 DOM、稳定锚点和渲染逻辑。Viewer 说明、Mark 评审点和 Inspector 作者能力都属于独立的作者层，可以随时加载、修改和移除，不会污染最终交付的 HTML。
+正式原型只保留语义 DOM、稳定锚点、只读 Viewer 和渲染逻辑。Mark、Direct Edit、Notes Editor、Inspector、本地作者服务都属于独立作者工具，不写入正式 HTML 的加载结构。
 
 ## 最终产出
 
@@ -93,7 +93,7 @@ Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除�
 - **可复用的状态定义**：由 snapshot 声明页面说明和 `scenarios`，保证后续修改仍有稳定基准；
 - **多状态页面截图**：按场景批量生成新建、编辑、空态、关联等纯页面 PNG，截图不包含右侧说明、SVG 连线和作者工具。
 
-评审标注留在作者层，最终截图和原型文件保持干净；需要继续修改时，再加载标注层或将评审上下文复制给 AI。
+评审标注留在作者层，最终截图和原型文件保持干净；需要继续修改时，再通过作者服务打开页面或将评审上下文复制给 AI。
 
 ## 工作方式
 
@@ -110,6 +110,18 @@ Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除�
 
 ## 开始使用
 
+要求 Node.js 18+；场景截图还需要本机 Microsoft Edge 或 Google Chrome。
+
+```powershell
+# 用作者服务打开示例
+node skills/html-prototype-build/runtime/server/index.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype/notes.snapshot.js
+```
+
+```powershell
+# 按 snapshot scenarios 批量生成纯页面截图
+node skills/html-prototype-build/runtime/cli/screenshot.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype/notes.snapshot.js
+```
+
 完整样例见 [`examples/minimal-notes`](examples/minimal-notes)。将 `skills/html-prototype-build/` 安装到 Agent Skill 路径后，即可让 Agent 创建或修改原型。
 
 需要亲自启动作者服务、发起评审或输出截图时，请阅读 [Skill 使用手册](skills/html-prototype-build/README.md)。Agent 的任务分流和约束见 [`SKILL.md`](skills/html-prototype-build/SKILL.md)。
@@ -122,8 +134,10 @@ skills/html-prototype-build/     唯一的 Agent Skill 源
 examples/                        可直接运行的最小原型
 media/                           README 演示素材
 scripts/                         校验脚本
-tests/                           运行时契约测试
+tests/                           Runtime 单元测试与契约测试
 ```
+
+Skill 内部 Runtime 按执行边界拆分：`client/` 是正式浏览器运行时，`author/` 是浏览器作者工具，`server/` 是本地 Node 作者服务，`cli/` 是独立命令行工具。
 
 ## 适用范围
 
@@ -135,9 +149,9 @@ tests/                           运行时契约测试
 
 ## 安全边界
 
-- `serve.mjs` 只监听 `127.0.0.1`。不要对不可信 HTML 或 snapshot 运行作者服务和截图。
-- 说明写回仅允许原型目录内的 snapshot；`.env` 只用于本机指定 IDE，不要提交。
-- html-mark 是临时评审层，可能把页面片段写入 localStorage 或剪贴板，不属于正式交付物。
+- `runtime/server/index.mjs` 只监听 `127.0.0.1`。不要对不可信 HTML 或 snapshot 运行作者服务和截图。
+- 作者写接口要求 localhost 同源 JSON；`.env` 位于 `runtime/server/`，只用于本机 IDE 选择，不要提交。
+- Mark 是临时作者工具，按页面把评审上下文存入 localStorage，也可能复制到剪贴板；它不会注入源 HTML，也不属于正式交付物。
 - 原型中不要放真实凭据、生产数据、个人信息或未授权品牌。
 
 ## 开源协作

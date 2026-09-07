@@ -63,6 +63,5 @@ if (process.exitCode) {
 }
 process.exitCode = 0;
 await import('../tests/runtime/index.test.mjs');
-await import('../tests/runtime-contract.test.mjs');
-await import('../tests/preview-edit-regressions.test.mjs');
+await import('../tests/contracts/runtime.test.mjs');
 console.log('Skill 统一验证通过。');
