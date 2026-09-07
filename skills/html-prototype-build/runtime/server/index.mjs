@@ -1,13 +1,16 @@
 #!/usr/bin/env node
-/* 原型作者本地服务：提供工作目录、作者插件，并把标注对象原子写回唯一 snapshot 文件。 */
+/* 原型作者本地服务：只负责 HTTP、静态资源与作者工具装配。 */
 import { createServer } from 'node:http';
 import { existsSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, extname, join, normalize, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { spawn } from 'node:child_process';
 import { applyPrototypeEdit, isTrustedAuthorRequest } from './source-editor.mjs';
+import { validateSnapshot, writeSnapshot } from './snapshot.mjs';
+import { injectTargets, openIDE, resolveInspectorTarget } from './inspector.mjs';
 
-export { applyPrototypeEdit, isTrustedAuthorRequest };
+export { applyPrototypeEdit, isTrustedAuthorRequest } from './source-editor.mjs';
+export { validateSnapshot } from './snapshot.mjs';
+export { injectTargets, resolveInspectorTarget } from './inspector.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const runtimeRoot = resolve(here, '..');
@@ -69,52 +72,10 @@ function readJson(request) {
   });
 }
 
-function isObject(value) {
-  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
-}
-
-function validateWhenValue(value, depth = 0) {
-  if (depth > 8) return false;
-  if (value === null || ['string', 'number', 'boolean'].includes(typeof value)) return true;
-  if (Array.isArray(value)) return value.every((item) => validateWhenValue(item, depth + 1));
-  return isObject(value) && Object.keys(value).every((key) => key && validateWhenValue(value[key], depth + 1));
-}
-
-function validateScenarios(scenarios) {
-  if (Array.isArray(scenarios)) {
-    return scenarios.length > 0 && scenarios.every((scenario) => (
-      isObject(scenario) && typeof scenario.id === 'string' && scenario.id.length > 0
-      && (scenario.state === undefined || isObject(scenario.state))
-    ));
-  }
-  return isObject(scenarios) && Object.keys(scenarios).length > 0
-    && Object.entries(scenarios).every(([id, scenario]) => (
-      id.length > 0 && isObject(scenario) && (scenario.state === undefined || isObject(scenario.state))
-    ));
-}
-
-export function validateSnapshot(data) {
-  if (!isObject(data) || data.schemaVersion !== 2) return false;
-  if (!isObject(data.header) || typeof data.header.title !== 'string' || !Array.isArray(data.cards)) return false;
-  if (data.scenarios === undefined || !validateScenarios(data.scenarios)) return false;
-  return data.cards.every((card) => {
-    if (!isObject(card) || typeof card.id !== 'string' || !isObject(card.target)) return false;
-    const hasSelector = typeof card.target.selector === 'string';
-    const hasAnchor = typeof card.target.anchor === 'string' && card.target.anchor.length > 0;
-    if (!hasAnchor && !hasSelector) return false;
-    return card.when === undefined || (isObject(card.when) && validateWhenValue(card.when));
-  });
-}
-
 function writeFileAtomic(filePath, content) {
   const temp = `${filePath}.tmp`;
   writeFileSync(temp, content, 'utf8');
   renameSync(temp, filePath);
-}
-
-function writeSnapshot(data) {
-  const content = `/* 原型正式标注唯一数据源；由 prototype-author 编辑器维护。 */\nwindow.__PROTOTYPE_NOTES__ = ${JSON.stringify(data, null, 2)};\n`;
-  writeFileAtomic(snapshotPath, content);
 }
 
 function sendFile(response, path) {
@@ -135,7 +96,7 @@ const server = createServer(async (request, response) => {
       if (!snapshotPath) return response.writeHead(503).end('本服务未配置 snapshot 文件。');
       const data = await readJson(request);
       if (!validateSnapshot(data)) return response.writeHead(400).end('标注数据不符合 schema v2 最小契约。');
-      writeSnapshot(data);
+      writeSnapshot(snapshotPath, data);
       response.writeHead(204).end();
       return;
     }
@@ -151,16 +112,15 @@ const server = createServer(async (request, response) => {
     }
 
     if (request.method === 'GET' && url.pathname === '/__prototype-author/inspector/open') {
-      var filePath = url.searchParams.get('file') || htmlPath.split(/[\\/]/).pop();
-      var targetId = url.searchParams.get('target') || '';
-      var resolvedPath = resolve(root, filePath);
-      if (relative(root, resolvedPath).startsWith('..')) return response.writeHead(403).end('Forbidden');
-      if (!existsSync(resolvedPath) || !statSync(resolvedPath).isFile()) return response.writeHead(404).end('找不到文件：' + filePath);
-      var content = readFileSync(resolvedPath, 'utf8');
-      var line = injectTargets(content).tokens[targetId];
-      if (!line) return response.writeHead(404).end('找不到目标元素：' + targetId);
-      openIDE(resolvedPath, line);
-      response.writeHead(200, { 'content-type': 'text/plain; charset=utf-8' }).end('已跳转到 ' + filePath + ':' + line);
+      const target = resolveInspectorTarget({
+        root,
+        htmlPath,
+        filePath: url.searchParams.get('file') || '',
+        targetId: url.searchParams.get('target') || ''
+      });
+      if (!target.ok) return response.writeHead(target.status).end(target.message);
+      openIDE(target.resolvedPath, target.line);
+      response.writeHead(200, { 'content-type': 'text/plain; charset=utf-8' }).end('已跳转到 ' + target.filePath + ':' + target.line);
       return;
     }
 
@@ -190,71 +150,10 @@ const server = createServer(async (request, response) => {
   }
 });
 
-function injectTargets(content) {
-  var cleaned = content
-    .replace(/\s+data-insp-path\s*=\s*"[^"]*"/gi, '')
-    .replace(/\s+data-insp-path\s*=\s*'[^']*'/gi, '')
-    .replace(/\s+data-insp-target\s*=\s*"[^"]*"/gi, '')
-    .replace(/\s+data-insp-target\s*=\s*'[^']*'/gi, '');
-  var tokens = {};
-  var seq = 0;
-  var lastOffset = 0;
-  var line = 1;
-  var semanticRe = /<(section|article|nav|aside|main|header|footer|form|fieldset|table|thead|tbody|tfoot|tr|th|td|ul|ol|li|dl|dt|dd|h1|h2|h3|h4|h5|h6|p|figure|figcaption|details|summary|dialog|button|a|label|select|textarea|div)(\s[^<>]*?)?\s*(\/?)>/gi;
-  var html = cleaned.replace(semanticRe, function (match, tagName, attrs, selfClose, offset) {
-    if (selfClose) return match;
-    var token = 'i' + String(++seq).padStart(2, '0');
-    var segment = cleaned.slice(lastOffset, offset);
-    line += (segment.match(/\n/g) || []).length;
-    lastOffset = offset;
-    tokens[token] = line;
-    return '<' + tagName + (attrs || '') + ' data-insp-target="' + token + '">';
-  });
-  return { html: html, tokens: tokens };
-}
-
 function injectAuthorLoader(content) {
   var script = '<script src="/__prototype-author/author/bootstrap.js" data-prototype-author-loader></script>';
   if (/<\/body>/i.test(content)) return content.replace(/<\/body>/i, script + '\n</body>');
   return content + '\n' + script + '\n';
-}
-
-function quoteWinArg(arg) {
-  var s = String(arg);
-  if (!/[\s"]/g.test(s)) return s;
-  return '"' + s.replace(/"/g, '\\"') + '"';
-}
-
-function spawnIDE(cmd, args, onFail) {
-  function fail() { if (typeof onFail === 'function') onFail(); }
-  try {
-    var opts = { stdio: 'ignore', detached: true, shell: false, windowsHide: true };
-    var child;
-    if (process.platform === 'win32' && !/\.exe$/i.test(cmd)) {
-      var line = [cmd].concat(args).map(quoteWinArg).join(' ');
-      child = spawn(process.env.ComSpec || 'cmd.exe', ['/d', '/s', '/c', line], opts);
-    } else child = spawn(cmd, args, opts);
-    child.on('error', fail);
-    child.unref();
-  } catch (error) { fail(); }
-}
-
-function openIDE(filePath, line) {
-  var args = ['-g', filePath + ':' + line + ':1'];
-  var target = filePath + ':' + line + ':1';
-  var configured = (process.env.CODE_EDITOR || '').trim();
-  var fallbacks = ['cursor', 'code'];
-  var candidates = configured ? [configured].concat(fallbacks.filter(function (item) { return item !== configured; })) : fallbacks;
-  function tryNext(index) {
-    if (index >= candidates.length) {
-      console.error('[inspector] 无法启动 IDE，请在 runtime/server/.env 配置 CODE_EDITOR，或手动打开：' + target);
-      return;
-    }
-    var cmd = candidates[index];
-    console.log('[inspector] ' + cmd + ' -g ' + target);
-    spawnIDE(cmd, args, function () { tryNext(index + 1); });
-  }
-  tryNext(0);
 }
 
 export function startServer() {

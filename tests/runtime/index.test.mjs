@@ -1,5 +1,7 @@
 import './structure.test.mjs';
 import './server/source-editor.test.mjs';
+import './server/snapshot.test.mjs';
+import './server/inspector.test.mjs';
 import './server/index.test.mjs';
 import './cli/screenshot.test.mjs';
 import './client/core/display-mode.test.mjs';
