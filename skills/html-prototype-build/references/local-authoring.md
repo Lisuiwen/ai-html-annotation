@@ -18,10 +18,12 @@ IDE 跳转配置放在 `<skill-root>/.env`，模板为 [.env.example](../.env.ex
 
 ## 页面内作者工具
 
+Author Tools 浮层中，`Edit` 与 `Mark` 为同一面板的两个 Tab；右侧正式说明与 Inspector 分别独立。
+
 | 目标 | 页面操作 |
 |---|---|
-| Direct Edit | 打开原型工具 → Edit，按住 `Ctrl`（macOS 为 `⌘`）点击页面元素；修改后保存写回源 HTML。 |
-| Mark 评审 | 打开原型工具 → Mark，或按 `M`；按住 `Ctrl`（macOS 为 `⌘`）点击元素添加 pin。 |
+| Direct Edit | 打开 Author Tools → `Edit`，按住 `Ctrl`（macOS 为 `⌘`）点击页面元素；修改后保存写回源 HTML。 |
+| Mark 评审 | 打开 Author Tools → `Mark`，或按 `M`；按住 `Ctrl`（macOS 为 `⌘`）点击元素添加 pin。 |
 | 编辑正式说明 | 双击说明标题、正文或页头文案；标题/页头 `Enter` 保存，正文 `Ctrl + Enter` 保存，`Esc` 取消。 |
 | 管理正式说明 | 使用 `+`、编辑、目标绑定、删除和拖拽排序。 |
 | Inspector | 按住 `Alt + Shift` 悬停并点击目标，跳转 IDE 源码位置。 |

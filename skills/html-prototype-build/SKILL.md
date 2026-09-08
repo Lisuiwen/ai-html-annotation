@@ -1,6 +1,6 @@
 ---
 name: html-prototype-build
-description: Build, annotate, review, screenshot, and deliver native HTML UI prototypes with AI agents using reusable UI packs, DOM-bound product annotations, browser review pins, a local authoring server, an element-to-source Inspector, and multi-state screenshots. Use when the user mentions /html-prototype-build or asks to reconstruct UI in HTML, create product annotations, review or mark DOM elements, capture prototype states, or package prototype deliverables. Works with Claude Code, Codex, Cursor, and other Agent Skills clients; do not use for generic source-code navigation, ordinary documentation, or production frontend development.
+description: Build, annotate, review, screenshot, and deliver native HTML UI prototypes with AI agents using reusable UI packs, DOM-bound product annotations, in-browser Direct Edit, browser review pins, a local authoring server, an element-to-source Inspector, and multi-state screenshots. Use when the user mentions /html-prototype-build or asks to reconstruct UI in HTML, create product annotations, edit prototype styles, review or mark DOM elements, capture prototype states, or package prototype deliverables. Works with Claude Code, Codex, Cursor, and other Agent Skills clients; do not use for generic source-code navigation, ordinary documentation, or production frontend development.
 ---
 
 # HTML Prototype Build
@@ -36,7 +36,7 @@ description: Build, annotate, review, screenshot, and deliver native HTML UI pro
 
 - 所有原型必须按顺序使用 `runtime/client/core/display-mode.js`、`runtime/client/core/state.js`、`runtime/client/notes/model.js`、`runtime/client/notes/viewer.js` 的分发副本；`state.js` 提供唯一 `PrototypeViewers` 状态源，`model.js` 只负责说明场景元数据与 `when` 纯匹配，Notes Viewer 只负责 DOM/连线渲染，禁止把这些职责重新塞回 Viewer。
 - 正式说明只经 `runtime/server/index.mjs` + Notes Editor 写回 `prototype/notes.snapshot.js`；禁止在 `prototype.html` 内联标注编辑器，也禁止把正式说明写入 localStorage。
-- Mark 是 Author Tools 中的临时评审工具，数据按页面 pathname 进入 localStorage，不写入 snapshot，也不注入源 HTML。
+- Mark 是 Author Tools 面板中与 Direct Edit 并列的临时评审工具，数据按页面 pathname 进入 localStorage，不写入 snapshot，也不注入源 HTML。
 - Direct Edit 只在作者服务环境中预览并通过服务端安全写回源 HTML。
 - 作者服务只做本地编辑与原型内源码定位，不进入源 HTML 或正式交付物。
 - 截图只消费 URL scene 与正式标注数据，不生成业务状态。

@@ -14,6 +14,8 @@
 
 AI HTML Annotation 用原生 HTML 把这条链路接起来：用 UI 包稳定搭建页面，在真实 DOM 上完成标注和评审，把意见复制给 AI，并从锁定的元素直接跳到源码。**页面本身就是可操作的交付物，不只是一张效果图。**
 
+实验性 0.x · 零 npm 依赖 · MIT · [Changelog](CHANGELOG.md)
+
 ## 安装
 
 ### Agent Skills / skills.sh
@@ -37,11 +39,7 @@ skills.sh 会根据真实 CLI 安装自动发现并统计公开 Skill，不需�
 
 Claude 插件直接引用仓库中的 `skills/html-prototype-build/`，所以仍然只有一份 Skill 源，不需要同步维护第二份 `SKILL.md`。
 
-实验性 0.x · 零 npm 依赖 · MIT
-
 ## 你可以先看演示
-
-
 
 ### 1. 右侧工具栏：标注的增删改查与场景切换
 
@@ -49,11 +47,11 @@ Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除�
 
 ![Viewer：右侧工具栏中的标注增删改查与分组管理](media/viewer.gif)
 
-### 2. 页面评审：打点并复制给 AI
+### 2. 作者工具：直接改页面或打点交给 AI
 
-在真实 HTML 元素上添加可移除的评审标记，集中查看意见后使用 `Copy all → For AI`，即可复制包含 selector 与元素 HTML 快照的修改上下文，直接交给 AI。
+Author Tools 在同一面板中提供 Direct Edit 与 Mark。按住 `Ctrl` 点击元素即可调整样式或文案并写回源 HTML；切换到 Mark 可在真实元素上添加可移除的评审标记，集中查看意见后使用 `Copy all → For AI`，复制包含 selector 与元素 HTML 快照的修改上下文，直接交给 AI。
 
-![Mark：在页面上打评审点并复制给 AI](media/mark.gif)
+![Author Tools：Direct Edit 与 Mark 的页面修改与评审打点](media/mark.gif)
 
 ### 3. Inspector：锁定元素并跳转源码
 
@@ -62,8 +60,6 @@ Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除�
 ![Inspector：按住 Alt + Shift 锁定元素并跳转到对应源码](media/inspector.gif)
 
 ## 核心价值
-
-
 
 ### HTML 标注，意见和元素绑定
 
@@ -75,11 +71,11 @@ Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除�
 
 ### 便捷修改，评审上下文可执行
 
-Mark 只在本地作者服务会话中加载，评审标记可以批量复制和随时清空，不污染正式页面。导出的指令带有稳定 selector、元素 HTML 快照和评审意见，AI 拿到的是可执行的修改上下文。
+Direct Edit 与 Mark 都只在本地作者服务会话中加载，不污染正式页面。Direct Edit 在浏览器里预览样式或文案修改，并通过服务端安全写回 `prototype.html`；Mark 的评审标记可以批量复制和随时清空。导出的指令带有稳定 selector、元素 HTML 快照和评审意见，AI 拿到的是可执行的修改上下文。
 
 ### 从页面直接回源码
 
-本地作者服务运行在 `127.0.0.1`，负责直接编辑页面、编辑正式说明、重绑锚点和定位源码。作者层与正式交付物分离，原型文件仍保持轻量、可移植。
+本地作者服务运行在 `127.0.0.1`，负责 Direct Edit、Mark、编辑正式说明、重绑锚点和定位源码。作者层与正式交付物分离，原型文件仍保持轻量、可移植。
 
 ### 一份状态，多种输出
 
@@ -97,7 +93,7 @@ Mark 只在本地作者服务会话中加载，评审标记可以批量复制和
 - **可复用的状态定义**：由 snapshot 声明页面说明和 `scenarios`，保证后续修改仍有稳定基准；
 - **多状态页面截图**：按场景批量生成新建、编辑、空态、关联等纯页面 PNG，截图不包含右侧说明、SVG 连线和作者工具。
 
-评审标注留在作者层，最终截图和原型文件保持干净；需要继续修改时，再通过作者服务打开页面或将评审上下文复制给 AI。
+Direct Edit 与评审标注都留在作者层，最终截图和原型文件保持干净。
 
 ## 工作方式
 
@@ -105,30 +101,29 @@ Mark 只在本地作者服务会话中加载，评审标记可以批量复制和
 原生 HTML
    │
    ├── Viewer：正式说明、场景切换、SVG 连线
-   ├── Mark：页面评审、selector、元素快照、Copy for AI
+   ├── Direct Edit / Mark：直接改页面样式或打评审 pin，selector、元素快照、Copy for AI
    ├── Inspector：锁定元素、查看选择器、跳转源码
    └── Screenshot：按场景输出纯页面截图
 ```
 
-这套方式适合需要频繁调整的后台页面、配置页和交互原型：产品在页面上指出问题，AI 获得明确上下文，开发或作者可以快速回到源码验证修改。
+这套方式适合需要频繁调整的后台页面、配置页和交互原型：作者可在页面上直接改样式，产品打点把问题交给 AI，开发或作者也可以快速回到源码验证修改。
 
-## 开始使用
+## 适用范围
 
-要求 Node.js 18+；场景截图还需要本机 Microsoft Edge 或 Google Chrome。
+这是一个面向 AI 协作的 HTML 标注和原型工具，不是生产组件库、Figma 替代品，也不是第三方设计系统实现。它更适合：
 
-```powershell
-# 用作者服务打开示例
-node skills/html-prototype-build/runtime/server/index.mjs examples/minimal-notes/prototype.html --snapshot=prototype/notes.snapshot.js
-```
+- 需要快速把 UI 材料落成可打开 HTML 的原型；
+- 需要在页面上评审，并把意见准确交给 AI；
+- 需要频繁修改页面结构、文案和状态，并保留可复现截图的场景。
 
-```powershell
-# 按 snapshot scenarios 批量生成纯页面截图
-node skills/html-prototype-build/runtime/cli/screenshot.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype/notes.snapshot.js
-```
+## 接下来看哪里
 
-完整样例见 `[examples/minimal-notes](examples/minimal-notes)`。将 `skills/html-prototype-build/` 安装到 Agent Skill 路径后，即可让 Agent 创建或修改原型。
+根 README 只负责安装与功能介绍。日常怎么用，请看 Skill 文档：
 
-需要亲自启动作者服务、发起评审或输出截图时，请阅读 [references/local-authoring.md](skills/html-prototype-build/references/local-authoring.md) 等任务入口。Agent 的任务分流和约束见 `[SKILL.md](skills/html-prototype-build/SKILL.md)`。
+- Skill 用途与协作方式 → [`skills/html-prototype-build/README.md`](skills/html-prototype-build/README.md)
+- Agent 任务分流与硬约束 → [`skills/html-prototype-build/SKILL.md`](skills/html-prototype-build/SKILL.md)
+- 含命令的任务说明（作者服务、评审、截图） → [`skills/html-prototype-build/references/`](skills/html-prototype-build/references/)
+- 可对照样例 → [`examples/minimal-notes`](examples/minimal-notes)
 
 ## 分发结构
 
@@ -143,28 +138,16 @@ tests/                           Runtime 单元测试与契约测试
 
 Skill 内部 Runtime 按执行边界拆分：`client/` 是正式浏览器运行时，`author/` 是浏览器作者工具，`server/` 是本地 Node 作者服务，`cli/` 是独立命令行工具。
 
-## 适用范围
-
-这是一个面向 AI 协作的 HTML 标注和原型工具，不是生产组件库、Figma 替代品，也不是第三方设计系统实现。它更适合：
-
-- 需要快速把 UI 材料落成可打开 HTML 的原型；
-- 需要在页面上评审，并把意见准确交给 AI；
-- 需要频繁修改页面结构、文案和状态，并保留可复现截图的场景。
-
-
-
 ## 安全边界
 
 - `runtime/server/index.mjs` 只监听 `127.0.0.1`。不要对不可信 HTML 或 snapshot 运行作者服务和截图。
 - 作者写接口要求 localhost 同源 JSON；`.env` 位于 `skills/html-prototype-build/`，只用于本机 IDE 选择，不要提交。
-- Mark 是临时作者工具，按页面把评审上下文存入 localStorage，也可能复制到剪贴板；它不会注入源 HTML，也不属于正式交付物。
+- Direct Edit 与 Mark 都是临时作者工具，只在作者服务会话中加载。Direct Edit 通过本地服务把样式或文案修改写回源 HTML；Mark 按页面把评审上下文存入 localStorage，也可能复制到剪贴板。它们都不会注入源 HTML，也不属于正式交付物。
 - 原型中不要放真实凭据、生产数据、个人信息或未授权品牌。
-
-
 
 ## 开源协作
 
-项目当前处于实验性 0.x 阶段，接口和目录仍可能变化。贡献方式见 `[CONTRIBUTING.md](CONTRIBUTING.md)`，行为规范见 `[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)`，漏洞请按 `[SECURITY.md](SECURITY.md)` 私下报告。
+项目当前处于实验性 0.x 阶段，接口和目录仍可能变化。贡献方式见 [`CONTRIBUTING.md`](CONTRIBUTING.md)，行为规范见 [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)，漏洞请按 [`SECURITY.md`](SECURITY.md) 私下报告。
 
 本项目 UI 包为自研原生 HTML 视觉模拟，不捆绑第三方设计系统代码或官方资源。
 

@@ -99,6 +99,7 @@ assets/
 - 选中 `data.chart-map` 时，还必须 copy 对应 geo json/js 到 `assets/maps/`；`file://` 下 fetch json 会被拦截，geo 须由 script 预注册到 `window.PrototypeMapRegistry`。map geo 不得引用 CDN 或写入 `component.html`。
 - 截图只存入根目录 `screenshots/`，不作为页面运行依赖；`assets/` 不得为空目录。
 - `runtime/author/`、`runtime/server/` 与 `runtime/cli/` 都不属于正式页面运行依赖；Author Bootstrap、Direct Edit、Notes Editor、Inspector、本地服务和源码定位信息不得进入正式交付物。
+- Direct Edit 只在作者服务会话中动态加载，样式与文案修改经 `/__prototype-author/edit` 写回源 HTML，不进入正式 HTML 加载结构。
 - Mark 只在作者服务会话中动态加载，pin 只写 localStorage，不向源 HTML 注入任何 runtime，因此正式交付无需“剥离 Mark 注入”。
 - 禁止在 `prototype.html` 内联任何标注编辑逻辑（含 `file://` 专用脚本、`prompt()` 改说明、把卡片覆盖或自定义备注写入 localStorage）；`file://` 只读展示 snapshot，编辑必须走 [local-authoring.md](local-authoring.md) 的 `runtime/server/index.mjs`。
 

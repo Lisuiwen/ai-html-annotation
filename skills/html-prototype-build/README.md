@@ -2,7 +2,7 @@
 
 面向 AI Agent 的 HTML 产品原型 Skill：用 UI 包生成页面，在真实 DOM 上维护正式说明、发起评审、跳转源码，并按场景输出交付截图。
 
-项目演示、安装方式与仓库级说明见[仓库 README](../../README.md)。
+安装方式、产品演示与仓库级功能介绍见[仓库 README](../../README.md)。本文件负责 Skill 怎么用；具体命令与逐步操作仍在 `references/`。
 
 ## 适合谁用
 
@@ -33,7 +33,7 @@
 1. **新建或大改页面**
   在 Cursor、Claude Code、Codex 等客户端启用本 Skill，用自然语言描述需求或附上材料，让 Agent 生成 `prototype.html` 与 `prototype/`。约束与任务分流见 [SKILL.md](SKILL.md)。
 2. **在页面上继续工作**
-  需要改样式、改说明、打评审 pin、从元素跳回源码时，通过本地作者服务在浏览器里操作。能力说明见 [本地作者服务](references/local-authoring.md)、[评审打点](references/review-mark.md)。
+  需要改样式、改说明、打评审 pin、从元素跳回源码时，通过本地作者服务在浏览器里操作。Direct Edit 与 Mark 同在 Author Tools 面板；能力说明见 [本地作者服务](references/local-authoring.md)、[评审打点](references/review-mark.md)。
 3. **按场景出图或交付**
   需要批量纯页面截图或整理最终文件时，见 [场景截图](references/screenshots.md) 与 [交付与迭代](references/delivery.md)。
 
@@ -45,8 +45,8 @@
 原生 HTML 原型
    │
    ├── Viewer：右侧正式说明、场景切换、SVG 连线
-   ├── Mark：页面评审、导出给 AI 的 selector 与元素快照
-   ├── Direct Edit / Notes Editor：改页面样式与正式说明卡片
+   ├── Direct Edit / Mark：直接改页面样式或打评审 pin，导出给 AI 的 selector 与元素快照
+   ├── Notes Editor：编辑正式说明卡片
    ├── Inspector：从页面元素跳转到本机 IDE 源码
    └── Screenshot：按 snapshot 场景输出纯页面 PNG
 ```
@@ -69,7 +69,7 @@
 | 让 Agent 做什么、有哪些硬约束 | [SKILL.md](SKILL.md)             |
 | 某类任务的操作说明（含命令）     | [references/](references/) 下对应入口 |
 | UI 包怎么选            | [ui/catalog.md](ui/catalog.md)   |
-| 仓库安装与演示            | [仓库 README](../../README.md)     |
+| 仓库安装与功能介绍         | [仓库 README](../../README.md)     |
 
 
 本文件只说明 Skill 的用途与协作方式；具体命令、逐步操作和 Agent 契约都在上述文档中按任务拆分维护。

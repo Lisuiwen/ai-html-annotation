@@ -8,6 +8,16 @@
 
 Annotate, review, screenshot, and iterate native HTML prototypes on the real DOM. AI HTML Annotation combines reusable UI packs, DOM-bound annotations, AI-ready review context, element-to-source inspection, and reproducible multi-state screenshots in a zero-dependency workflow.
 
+Most prototype workflows fail after the mock looks “good enough”:
+
+- Screenshots have no DOM, so an AI has to guess structure and drifts on every change.
+- Review comments live in docs or chat—“move this left”—and never map cleanly to an element.
+- Specs, review notes, and source stay disconnected, so verifying a fix is slow.
+
+AI HTML Annotation reconnects that loop with native HTML: build pages from a UI pack, annotate and review on the real DOM, copy instructions to an AI, and jump from a locked element back to source. **The page is the deliverable, not just a picture of one.**
+
+Experimental 0.x · zero npm dependencies · MIT · [Changelog](CHANGELOG.md)
+
 ## Install
 
 ### Agent Skills / skills.sh
@@ -31,16 +41,6 @@ Add this repository as a Claude Code marketplace, then install the plugin:
 
 The Claude plugin points directly at the canonical `skills/html-prototype-build/` directory, so the project keeps a single Skill source instead of maintaining a duplicate copy.
 
-Most prototype workflows fail after the mock looks “good enough”:
-
-- Screenshots have no DOM, so an AI has to guess structure and drifts on every change.
-- Review comments live in docs or chat—“move this left”—and never map cleanly to an element.
-- Specs, review notes, and source stay disconnected, so verifying a fix is slow.
-
-AI HTML Annotation reconnects that loop with native HTML: build pages from a UI pack, annotate and review on the real DOM, copy instructions to an AI, and jump from a locked element back to source. **The page is the deliverable, not just a picture of one.**
-
-Experimental 0.x · zero npm dependencies · MIT · [Changelog](CHANGELOG.md)
-
 ## See it first
 
 ### 1. Sidebar: create, edit, delete, and switch scenarios
@@ -49,11 +49,11 @@ Viewer keeps formal notes in a right-hand panel. You can add, edit, delete, and 
 
 ![Viewer: annotation CRUD and grouping in the right-hand panel](media/viewer.gif)
 
-### 2. Page review: pin feedback and copy it for AI
+### 2. Author tools: edit the page or pin feedback for AI
 
-Drop removable review pins on real HTML elements. Collect notes, then use `Copy all → For AI` to export selectors plus element HTML snapshots as editable context for an agent.
+Author Tools bundles Direct Edit and Mark in one panel. Hold `Ctrl` and click an element to tweak styles or copy and save changes back to source HTML, or switch to Mark to drop removable review pins. Collect notes, then use `Copy all → For AI` to export selectors plus element HTML snapshots as editable context for an agent.
 
-![Mark: pin review notes on the page and copy them for AI](media/mark.gif)
+![Author Tools: Direct Edit and Mark for on-page edits and review pins](media/mark.gif)
 
 ### 3. Inspector: lock an element and open its source
 
@@ -71,13 +71,17 @@ Formal notes are not sticky labels on a screenshot. They are structured data in 
 
 Compose pages from a local UI pack with shared tokens, components, and patterns. That reduces invent-from-scratch drift when an agent builds admin-style screens, and keeps later prototypes visually consistent.
 
+### Direct edits on the real DOM
+
+Direct Edit loads only in the localhost authoring session. Hold `Ctrl` and select an element to preview style or copy changes in the browser, then save them back to `prototype.html` through the authoring server—without hand-editing selectors or hunting through the file tree for every tweak.
+
 ### Executable review context
 
-Review pins are loaded only in the localhost authoring session and can be copied or cleared without polluting the formal page. Exports carry stable selectors, element HTML snapshots, and reviewer notes—context an agent can act on.
+Mark shares the same Author Tools panel. Review pins can be copied or cleared without polluting the formal page. Exports carry stable selectors, element HTML snapshots, and reviewer notes—context an agent can act on.
 
 ### Jump from the page to source
 
-A localhost authoring server on `127.0.0.1` edits notes, rebinds anchors, supports direct page edits, and opens source. Authoring chrome stays separate from the formal deliverable, so prototypes stay light and portable.
+A localhost authoring server on `127.0.0.1` edits notes, rebinds anchors, supports Direct Edit and Mark, and opens source. Authoring chrome stays separate from the formal deliverable, so prototypes stay light and portable.
 
 ### One state model, many outputs
 
@@ -95,7 +99,7 @@ A typical prototype task yields three coordinated outputs:
 - **Reusable state definitions** — snapshot notes and `scenarios` as a stable baseline for later edits
 - **Multi-state screenshots** — batch PNGs for create / edit / empty / linked views without the notes rail, connectors, or author tools
 
-Review pins stay in the authoring layer. Screenshots and formal files stay clean. When you need another pass, reopen the page through the authoring server or paste For-AI context into an agent.
+Direct Edit and review pins stay in the authoring layer. Screenshots and formal files stay clean.
 
 ## How it fits together
 
@@ -103,32 +107,31 @@ Review pins stay in the authoring layer. Screenshots and formal files stay clean
 Native HTML
    │
    ├── Viewer: formal notes, scenario switching, SVG connectors
-   ├── Mark: page review, selectors, element snapshots, Copy for AI
+   ├── Direct Edit / Mark: in-page style edits, review pins, selectors, element snapshots, Copy for AI
    ├── Inspector: lock elements, show selectors, open source
    └── Screenshot: scenario-based clean page captures
 ```
 
-This fits admin consoles, config pages, and interaction prototypes that change often: product marks issues on the page, AI gets precise context, and authors can return to source quickly to verify.
+This fits admin consoles, config pages, and interaction prototypes that change often: authors can edit styles on the page, product marks issues for AI, and return to source quickly to verify.
 
-## Getting started
+## Scope
 
-Requirements: Node.js 18+. Scenario screenshots also need a local Microsoft Edge or Google Chrome install.
+This is an AI-assisted HTML annotation and prototyping toolkit—not a production component library, not a Figma replacement, and not a third-party design-system implementation. It fits best when you need to:
 
-```powershell
-# Open the sample with formal notes and Author Tools
-node skills/html-prototype-build/runtime/server/index.mjs examples/minimal-notes/prototype.html --snapshot=prototype/notes.snapshot.js
-# Open in browser: http://127.0.0.1:4178/prototype.html
-# Stop the server: Ctrl+C in the terminal running the command
-```
+- turn UI materials into openable HTML quickly;
+- review on the real page and hand precise feedback to an AI;
+- iterate structure, copy, and state while keeping reproducible screenshots.
 
-```powershell
-# Batch clean screenshots from snapshot scenarios
-node skills/html-prototype-build/runtime/cli/screenshot.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype/notes.snapshot.js
-```
+## Where to go next
 
-Install `skills/html-prototype-build/` into your agent skill path (keep the folder name `html-prototype-build`), then ask the agent to build or revise a prototype from your materials.
+This root README covers install and product overview only. Day-to-day usage lives with the Skill:
 
-The walkthrough sample is [`examples/minimal-notes`](examples/minimal-notes) (demo UI copy is Chinese). Human operator steps live in the Skill [references](skills/html-prototype-build/references/local-authoring.md); agent routing and hard constraints live in [`SKILL.md`](skills/html-prototype-build/SKILL.md). Those Skill docs are currently Chinese—use the commands above or ask an agent that can read them.
+- Skill overview and collaboration model → [`skills/html-prototype-build/README.md`](skills/html-prototype-build/README.md)
+- Agent routing and hard constraints → [`skills/html-prototype-build/SKILL.md`](skills/html-prototype-build/SKILL.md)
+- Task guides with commands (authoring, review, screenshots) → [`skills/html-prototype-build/references/`](skills/html-prototype-build/references/)
+- Walkthrough sample → [`examples/minimal-notes`](examples/minimal-notes) (demo UI copy is Chinese)
+
+Those Skill docs are currently Chinese—ask an agent that can read them, or follow the Skill README entry points.
 
 ## Distribution layout
 
@@ -143,19 +146,11 @@ tests/                           Runtime unit and contract tests
 
 Inside the Skill, Runtime is organized by execution boundary: `client/` for final browser runtime, `author/` for browser authoring tools, `server/` for the localhost Node service, and `cli/` for standalone commands.
 
-## Scope
-
-This is an AI-assisted HTML annotation and prototyping toolkit—not a production component library, not a Figma replacement, and not a third-party design-system implementation. It fits best when you need to:
-
-- turn UI materials into openable HTML quickly;
-- review on the real page and hand precise feedback to an AI;
-- iterate structure, copy, and state while keeping reproducible screenshots.
-
 ## Security boundaries
 
 - `runtime/server/index.mjs` binds to `127.0.0.1` only. Do not run authoring or screenshots against untrusted HTML or snapshot files.
 - Author write requests require same-origin localhost JSON; snapshot and source writes stay within the configured prototype workflow. Keep `skills/html-prototype-build/.env` local for IDE selection; never commit it.
-- Mark is a temporary Author Tool. It stores review context in page-scoped `localStorage` and may copy it to the clipboard; it is never injected into the source HTML and is not part of the formal deliverable.
+- Direct Edit and Mark are temporary Author Tools loaded only in the authoring session. Direct Edit writes style and copy changes back to source HTML through the localhost server; Mark stores review context in page-scoped `localStorage` and may copy it to the clipboard. Neither is injected into the source HTML or part of the formal deliverable.
 - Do not put real credentials, production data, personal information, or unauthorized brand assets in prototypes.
 
 ## Contributing

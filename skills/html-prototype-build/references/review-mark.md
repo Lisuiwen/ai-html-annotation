@@ -4,12 +4,12 @@
 
 需要给已有 HTML 写修改意见、通过 pin 交接反馈，或导出 For AI 定位信息时使用本入口。
 
-Mark 是 `runtime/author/tools/mark/` 中的临时评审工具，不是右侧正式产品说明，也不写入 snapshot 或源 HTML。它通过本地作者服务动态加载。
+Mark 是 `runtime/author/tools/mark/` 中的临时评审工具，与 Direct Edit 同在 Author Tools 面板的 `Mark` Tab 中；它不是右侧正式产品说明，也不写入 snapshot 或源 HTML。它通过本地作者服务动态加载。
 
 ## 操作步骤
 
 1. 按 [本地作者服务](local-authoring.md#启动) 启动作者服务并打开页面。
-2. 切到 Mark Tab（或按 `M`）。
+2. 打开 Author Tools，切到 `Mark` Tab（或按 `M`）。
 3. 按住 `Ctrl` / `⌘` 点击目标元素添加 pin。
 4. 在 Mark 面板中定位、删除、清空，或使用 `Copy all → For AI` 导出意见、selector 和 HTML 快照。
 

@@ -4,7 +4,7 @@
 
 所有原型都通过本入口维护 Viewer；功能说明、右侧标注、SVG 连线、交互意图、待确认项和业务操作闪电均在此定义。
 
-产品说明标注属于正式原型文档，不等同于 Author Tools Mark 的临时评审 pin。
+产品说明标注属于正式原型文档，不等同于 Author Tools 中 Direct Edit 或 Mark 的临时作者操作。
 
 ## 必读资源
 
@@ -22,7 +22,7 @@
 
 ## 后续路径
 
-- 浏览器直接编辑、编辑卡片或重新绑定目标：[local-authoring.md](local-authoring.md)。
-- 页面评审意见：[review-mark.md](review-mark.md)。
+- 浏览器直接编辑样式/文案、编辑卡片或重新绑定目标：[local-authoring.md](local-authoring.md)。
+- 页面评审意见或导出 For AI：[review-mark.md](review-mark.md)。
 - 按场景截图：[screenshots.md](screenshots.md)。
 - 交付前核对：[delivery-checklist.md](delivery-checklist.md)。

@@ -59,6 +59,19 @@ window.__PROTOTYPE_NOTES__ = {
   },
   "cards": [
     {
+      "id": "note-7",
+      "title": "新说明",
+      "body": "查询过滤\n",
+      "target": {
+        "anchor": "filterCode",
+        "label": "配置项编码"
+      },
+      "when": {
+        "product.layers": [],
+        "product.page": "list"
+      }
+    },
+    {
       "id": "filter-area",
       "when": {
         "product.page": "list",
@@ -67,21 +80,8 @@ window.__PROTOTYPE_NOTES__ = {
       "title": "配置项查询",
       "body": "可按配置项名称、编码筛选；重置清空当前筛选值，查询刷新列表结果。",
       "target": {
-        "anchor": "queryButton",
-        "label": "查询"
-      }
-    },
-    {
-      "id": "create-action",
-      "when": {
-        "product.page": "list",
-        "product.layers": []
-      },
-      "title": "新建配置项",
-      "body": "点击“新建配置项”打开维护弹窗，名称和编码为必填项，描述可选。",
-      "target": {
-        "anchor": "createButton",
-        "label": "新建按钮"
+        "anchor": "filterArea",
+        "label": "配置项查询"
       }
     },
     {
@@ -95,19 +95,6 @@ window.__PROTOTYPE_NOTES__ = {
       "target": {
         "anchor": "tableArea",
         "label": "配置项列表"
-      }
-    },
-    {
-      "id": "menu-config",
-      "when": {
-        "product.page": "list",
-        "product.layers": []
-      },
-      "title": "新增菜单入口",
-      "body": "在系统设置下增加“配置项”菜单，进入统一维护列表。",
-      "target": {
-        "anchor": "menuConfig",
-        "label": "配置项"
       }
     },
     {
@@ -153,6 +140,19 @@ window.__PROTOTYPE_NOTES__ = {
       "target": {
         "anchor": "strategyNameField",
         "label": "任务配置项名称选择"
+      }
+    },
+    {
+      "id": "menu-config",
+      "when": {
+        "product.page": "list",
+        "product.layers": []
+      },
+      "title": "新增菜单入口",
+      "body": "在系统设置下增加“配置项”菜单，进入统一维护列表。",
+      "target": {
+        "anchor": "menuConfig",
+        "label": "配置项"
       }
     }
   ]
