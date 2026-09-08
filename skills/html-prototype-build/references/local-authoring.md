@@ -24,10 +24,22 @@ Author Tools 浮层中，`Edit` 与 `Mark` 为同一面板的两个 Tab；右侧
 |---|---|
 | Direct Edit | 打开 Author Tools → `Edit`，按住 `Ctrl`（macOS 为 `⌘`）点击页面元素；修改后保存写回源 HTML。 |
 | Mark 评审 | 打开 Author Tools → `Mark`，或按 `M`；按住 `Ctrl`（macOS 为 `⌘`）点击元素添加 pin。 |
-| 编辑正式说明 | 双击说明标题、正文或页头文案；标题/页头 `Enter` 保存，正文 `Ctrl + Enter` 保存，`Esc` 取消。 |
+| 编辑正式说明 | 双击说明标题、正文或页头文案；标题/页头 `Enter` 保存，正文 `Ctrl + Enter`（macOS：`⌘ + Enter`）保存，`Esc` 取消。 |
 | 管理正式说明 | 使用 `+`、编辑、目标绑定、删除和拖拽排序。 |
 | Inspector | 按住 `Alt + Shift` 悬停并点击目标，跳转 IDE 源码位置。 |
 | 切换页面场景 | 使用右侧场景按钮，或 `?scene=<场景-id>`。 |
+
+## 平台差异
+
+Direct Edit 与 Mark 共用 `author/core/picker.js` 的元素选择逻辑：
+
+- **Windows / Linux**：按住 `Ctrl` + 左键点击选中元素；普通点击不拦截页面。
+- **macOS**：优先 `⌘` + 左键；`Control` + 左键触发 contextmenu 时也会选中（Edit 与 Mark 均适用）。
+
+正式说明正文保存快捷键：
+
+- **Windows / Linux**：`Ctrl + Enter`
+- **macOS**：`⌘ + Enter` 或 `Control + Enter`
 
 ## Agent 边界
 

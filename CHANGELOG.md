@@ -2,6 +2,24 @@
 
 All notable changes to AI HTML Annotation will be documented in this file.
 
+## v0.2.1 — 2026-09-08
+
+### Fixed
+
+- macOS shortcut compatibility across Author Tools: shared `author/core/platform.js` for `⌘` vs `Ctrl` labels and modifier detection.
+- Notes Editor multiline save now accepts `⌘ + Enter` (and `Control + Enter`) on macOS, not only `Ctrl + Enter`.
+
+### Changed
+
+- Direct Edit and Mark empty-state hints show `⌘` on macOS instead of always `Ctrl`.
+- Root README and Skill references document macOS shortcuts for Edit, Mark, and Notes Editor.
+
+### Install / update
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+```
+
 ## v0.2.0 — 2026-09-08
 
 ### Added

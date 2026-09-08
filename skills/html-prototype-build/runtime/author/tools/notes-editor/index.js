@@ -64,6 +64,11 @@
     }
   }
 
+  function saveModifierActive(event) {
+    if (window.AuthorToolsPlatform) return window.AuthorToolsPlatform.saveModifierActive(event);
+    return !!(event && event.ctrlKey);
+  }
+
   function startEdit(element, getter, setter, multiline) {
     if (element.querySelector('input,textarea')) return;
     var control = document.createElement(multiline ? 'textarea' : 'input');
@@ -88,7 +93,7 @@
         event.preventDefault();
         renderData();
         enhance();
-      } else if (event.key === 'Enter' && (!multiline || event.ctrlKey)) {
+      } else if (event.key === 'Enter' && (!multiline || saveModifierActive(event))) {
         event.preventDefault();
         control.blur();
       }

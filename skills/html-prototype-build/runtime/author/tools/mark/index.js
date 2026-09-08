@@ -22,6 +22,10 @@
     });
   }
 
+  function clickModifierLabel() {
+    return window.AuthorToolsPlatform ? window.AuthorToolsPlatform.clickModifierLabel() : 'Ctrl';
+  }
+
   function textOf(el) {
     return (el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80);
   }
@@ -217,7 +221,7 @@
     var list = container.querySelector('#mm-list');
     if (!list) return;
     if (!annotations.length) {
-      list.innerHTML = '<div class="mm-empty">按住 <kbd>Ctrl</kbd> 点击页面元素即可落下 pin。<br><kbd>M</kbd> 打开本 Tab · <kbd>⌫</kbd> 删除上一条</div>';
+      list.innerHTML = '<div class="mm-empty">按住 <kbd>' + esc(clickModifierLabel()) + '</kbd> 点击页面元素即可落下 pin。<br><kbd>M</kbd> 打开本 Tab · <kbd>⌫</kbd> 删除上一条</div>';
       return;
     }
     list.innerHTML = annotations.map(function (ann, index) {
@@ -265,7 +269,7 @@
 
   function copyAll() {
     if (!annotations.length) {
-      toast('还没有标注 — 先按住 Ctrl 点击打一个 pin。');
+      toast('还没有标注 — 先按住 ' + clickModifierLabel() + ' 点击打一个 pin。');
       return;
     }
     var fmt = container.querySelector('#mm-fmt').value;

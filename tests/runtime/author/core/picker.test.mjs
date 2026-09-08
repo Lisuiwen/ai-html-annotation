@@ -12,6 +12,7 @@ async function boot(platform = 'Win32') {
   const document = { body, documentElement: html, addEventListener: (name, fn) => listeners.set(name, fn), removeEventListener: (name) => listeners.delete(name) };
   const window = { CSS: { escape: (value) => String(value).replace(/:/g, '\\:') }, addEventListener: (name, fn) => windowListeners.set(name, fn), removeEventListener: (name) => windowListeners.delete(name) }; window.window = window;
   const context = { window, document, navigator: { platform }, requestAnimationFrame: (fn) => { fn(); return 1; }, CSS: window.CSS, console, String, Array, Object };
+  vm.runInNewContext(await readFile(new URL('../../../../skills/html-prototype-build/runtime/author/core/platform.js', import.meta.url), 'utf8'), context, { filename: 'platform.js' });
   vm.runInNewContext(selectorSource, context, { filename: 'selector.js' });
   vm.runInNewContext(source, context, { filename: 'picker.js' });
   return { window, listeners, body, source };
@@ -47,4 +48,28 @@ test('stableSelector 通过共享 selector 保持 id、note target、cssPath 行
 test('切换 owner 会释放旧 owner 的监听与高亮', async () => {
   const { window, listeners, body } = await boot(); const target = element('div', body); target.id = 'x'; window.AuthorToolsPicker.activate({ owner: 'edit' }); listeners.get('click')(clickEvent(target));
   assert.equal(target.classList.contains('at-hl'), true); window.AuthorToolsPicker.activate({ owner: 'mark', persistSelection: false }); assert.equal(target.classList.contains('at-hl'), false); window.AuthorToolsPicker.release('mark'); assert.equal(listeners.has('click'), false);
+});
+
+test('macOS 上 metaKey+Click 选择元素', async () => {
+  const { window, listeners, body } = await boot('MacIntel'); const target = element('button', body);
+  target.matches = (selector) => selector.includes('button'); let selected = null;
+  window.AuthorToolsPicker.activate({ owner: 'edit', onSelect: (el) => { selected = el; } });
+  listeners.get('click')({ ...clickEvent(target), ctrlKey: false, metaKey: false });
+  assert.equal(selected, null);
+  listeners.get('click')({ ...clickEvent(target), ctrlKey: false, metaKey: true });
+  assert.equal(selected, target);
+});
+
+test('macOS 上 Control+左键走 contextmenu 也能选择', async () => {
+  const { window, listeners, body } = await boot('MacIntel'); const target = element('div', body);
+  target.id = 'box'; let selected = null;
+  window.AuthorToolsPicker.activate({ owner: 'mark', onSelect: (el) => { selected = el; } });
+  listeners.get('contextmenu')({
+    target,
+    ctrlKey: true,
+    metaKey: false,
+    preventDefault() {},
+    stopPropagation() {}
+  });
+  assert.equal(selected, target);
 });

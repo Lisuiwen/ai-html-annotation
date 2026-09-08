@@ -50,7 +50,8 @@ test('NotesEditor 将数据与 selector 规则委托给共享模型，并保留�
   assert.doesNotMatch(source, /function selectorFor\(/);
   assert.match(source, /function startPick/);
   assert.match(source, /beforeunload/);
-  assert.match(source, /window\.PrototypeAuthor\.register\('notes-target'/);
+  assert.match(source, /saveModifierActive/);
+  assert.match(source, /AuthorToolsPlatform\.saveModifierActive/);
 });
 
 test('NotesEditor 作者样式独立于 controller JS', async () => {

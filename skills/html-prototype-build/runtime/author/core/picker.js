@@ -4,18 +4,21 @@
 
   if (window.AuthorToolsPicker) return;
 
-  var IS_MAC = /Mac|iPhone|iPad|iPod/.test(navigator.platform || '') ||
-    (navigator.userAgentData && navigator.userAgentData.platform === 'macOS');
+  function isMac() {
+    return window.AuthorToolsPlatform ? window.AuthorToolsPlatform.isMac() :
+      /Mac|iPhone|iPad|iPod/.test(navigator.platform || '') ||
+      (navigator.userAgentData && navigator.userAgentData.platform === 'macOS');
+  }
 
   function pickerModifierActive(event) {
+    if (window.AuthorToolsPlatform) return window.AuthorToolsPlatform.pickerModifierActive(event);
     if (!event) return false;
-    if (IS_MAC) return !!(event.metaKey || event.ctrlKey);
     return !!event.ctrlKey;
   }
 
   function pickerClickModifier(event) {
+    if (window.AuthorToolsPlatform) return window.AuthorToolsPlatform.pickerClickModifier(event);
     if (!event) return false;
-    if (IS_MAC) return !!event.metaKey;
     return !!event.ctrlKey;
   }
 
@@ -175,7 +178,7 @@
 
   /* macOS：Control+左键触发 contextmenu 而非 click。 */
   function handleContextMenu(event) {
-    if (!state.owner || !IS_MAC || !event.ctrlKey) return;
+    if (!state.owner || !isMac() || !event.ctrlKey) return;
     selectFromEvent(event);
   }
 
