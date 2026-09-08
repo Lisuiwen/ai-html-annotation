@@ -102,11 +102,15 @@
       '</div>';
   }
 
+  function clickModifierLabel() {
+    return window.AuthorToolsPlatform ? window.AuthorToolsPlatform.clickModifierLabel() : 'Ctrl';
+  }
+
   function render(container, session, meta) {
     if (!session) {
       container.innerHTML =
         '<div class="at-edit-body">' +
-        '  <div class="at-edit-empty">按住 <kbd>Ctrl</kbd> 点击页面元素以选中。<br>普通点击保持页面交互。</div>' +
+        '  <div class="at-edit-empty">按住 <kbd>' + esc(clickModifierLabel()) + '</kbd> 点击页面元素以选中。<br>普通点击保持页面交互。</div>' +
         '</div>' +
         '<div class="at-edit-foot">' +
         '  <button type="button" class="at-btn" data-act="cancel" disabled>取消</button>' +

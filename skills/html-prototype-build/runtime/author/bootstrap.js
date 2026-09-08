@@ -28,6 +28,7 @@
 
   async function init() {
     try {
+      if (!window.AuthorToolsPlatform) await load('/__prototype-author/author/core/platform.js');
       if (!window.PrototypeAuthor) await load('/__prototype-author/author/core/modes.js');
       if (!window.PrototypeAuthorChrome) await load('/__prototype-author/client/core/display-mode.js');
       if (!window.AuthorToolsSelector) await load('/__prototype-author/author/core/selector.js');

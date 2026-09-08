@@ -24,8 +24,10 @@ Mark 数据只保存在当前页面 pathname 对应的浏览器 localStorage；�
 
 ## 平台差异
 
-- **Windows / Linux**：按住 `Ctrl` + 左键点击打点；普通点击不拦截页面。
-- **macOS**：优先 `⌘` + 左键；`Control`+左键触发 contextmenu 时 Mark 也会处理该手势。
+Direct Edit 与 Mark 共用 `author/core/picker.js` 的元素选择逻辑：
+
+- **Windows / Linux**：按住 `Ctrl` + 左键点击打点或选中；普通点击不拦截页面。
+- **macOS**：优先 `⌘` + 左键；`Control`+左键触发 contextmenu 时也会处理该手势。
 
 ## 与其他工具的边界
 

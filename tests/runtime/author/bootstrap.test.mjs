@@ -22,6 +22,7 @@ test('bootstrap 在 DOM loading 时延迟初始化', async () => {
 test('bootstrap 只负责加载新 client/author 资源路径', async () => {
   const { source } = await boot();
   for (const path of [
+    '/__prototype-author/author/core/platform.js',
     '/__prototype-author/author/core/modes.js',
     '/__prototype-author/client/core/display-mode.js',
     '/__prototype-author/author/core/selector.js',
@@ -44,6 +45,7 @@ test('bootstrap 只负责加载新 client/author 资源路径', async () => {
 
 test('bootstrap 在工具脚本之前加载各自 CSS 依赖', async () => {
   const { source } = await boot();
+  const platform = source.indexOf('/__prototype-author/author/core/platform.js');
   const selector = source.indexOf('/__prototype-author/author/core/selector.js');
   const notesCss = source.indexOf('/__prototype-author/author/tools/notes-editor/index.css');
   const model = source.indexOf('/__prototype-author/author/tools/notes-editor/model.js');
@@ -51,6 +53,6 @@ test('bootstrap 在工具脚本之前加载各自 CSS 依赖', async () => {
   const picker = source.indexOf('/__prototype-author/author/core/picker.js');
   const markCss = source.indexOf('/__prototype-author/author/tools/mark/index.css');
   const markController = source.indexOf('/__prototype-author/author/tools/mark/index.js');
-  assert.ok(selector >= 0 && notesCss > selector && model > notesCss && notesController > model && picker > selector);
+  assert.ok(platform >= 0 && selector > platform && notesCss > selector && model > notesCss && notesController > model && picker > selector);
   assert.ok(markCss >= 0 && markController > markCss);
 });

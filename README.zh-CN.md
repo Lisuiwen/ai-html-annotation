@@ -49,7 +49,7 @@ Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除�
 
 ### 2. 作者工具：直接改页面或打点交给 AI
 
-Author Tools 在同一面板中提供 Direct Edit 与 Mark。按住 `Ctrl` 点击元素即可调整样式或文案并写回源 HTML；切换到 Mark 可在真实元素上添加可移除的评审标记，集中查看意见后使用 `Copy all → For AI`，复制包含 selector 与元素 HTML 快照的修改上下文，直接交给 AI。
+Author Tools 在同一面板中提供 Direct Edit 与 Mark。按住 `Ctrl`（macOS：`⌘`）点击元素即可调整样式或文案并写回源 HTML；切换到 Mark 可在真实元素上添加可移除的评审标记，集中查看意见后使用 `Copy all → For AI`，复制包含 selector 与元素 HTML 快照的修改上下文，直接交给 AI。
 
 ![Author Tools：Direct Edit 与 Mark 的页面修改与评审打点](media/mark.gif)
 
