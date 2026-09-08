@@ -155,7 +155,7 @@ Inside the Skill, Runtime is organized by execution boundary: `client/` for fina
 
 ## Contributing
 
-This project is experimental 0.x; APIs and layout may change. See [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md). Report vulnerabilities privately per [`SECURITY.md`](SECURITY.md).
+This project is experimental 0.x; APIs and layout may change. See [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md) and [`.github/CODE_OF_CONDUCT.md`](.github/CODE_OF_CONDUCT.md). Report vulnerabilities privately per [`.github/SECURITY.md`](.github/SECURITY.md).
 
 The UI pack is an original native-HTML visual simulation. It does not bundle third-party design-system code or official assets.
 
