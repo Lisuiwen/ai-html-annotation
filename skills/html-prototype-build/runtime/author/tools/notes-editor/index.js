@@ -497,8 +497,7 @@
       event.preventDefault();
       addCard();
     });
-    var before = actions.querySelector('.pn-toggle') || null;
-    actions.insertBefore(toolbar, before);
+    actions.insertBefore(toolbar, actions.firstChild);
     return toolbar;
   }
 

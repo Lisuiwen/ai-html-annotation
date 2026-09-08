@@ -1,7 +1,7 @@
 .pn-notes{display:flex;flex-direction:column;min-height:0;height:100%;overflow:hidden}
 .pn-head{flex:0 0 auto}
 .pn-cards{flex:1 1 auto;min-height:0;overflow-y:auto}
-.pn-author-toolbar{display:flex;align-items:center}
+.pn-author-toolbar{display:flex;align-items:center;margin-right:auto}
 .pn-tool-icon{display:grid;place-items:center;width:32px;height:32px;padding:0;border:0;border-radius:50%;background:var(--ui-primary,#1677ff);color:#fff;box-shadow:none;cursor:pointer;font:500 20px/1 system-ui,sans-serif}
 .pn-tool-icon:hover{filter:brightness(.94)}
 .pn-editable{cursor:text}.pn-editable:hover{outline:1px dashed #ff8d6b;outline-offset:2px}
