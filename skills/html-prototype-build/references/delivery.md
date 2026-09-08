@@ -2,25 +2,21 @@
 
 ## 适用范围
 
-需要整理最终文件、区分评审稿与正式交付稿，或根据反馈继续迭代时使用本入口。
+需要整理最终文件、区分作者会话与正式交付稿，或根据反馈继续迭代时使用本入口。
 
-**评审稿 / 正式交付稿操作说明见 [README.md](../README.md#评审稿与正式交付稿)。**
+## 作者 / 评审 vs 正式交付稿
 
-## Agent 交付约束
+| 范围 | 规则 |
+|------|------|
+| 作者 / 评审会话 | Author Tools 由 `runtime/server/index.mjs` 动态注入；Direct Edit、Mark、Notes Editor、Inspector 均不写入正式 HTML。Direct Edit 经服务端写回源 HTML；Mark pin 只存在于浏览器 localStorage。 |
+| 正式交付稿 | HTML 不得含 Author Bootstrap、Direct Edit、Notes Editor、Inspector、源码定位 token 或内联标注编辑脚本。正式说明只来自 snapshot + Client Runtime。 |
 
-### 评审稿
-
-- 保留 `prepare-mark.mjs --inline` 生成的 html-mark 注入块。
-- 正式产品说明仍来自 snapshot + Viewer，评审 pin 只存在于浏览器 localStorage。
-
-### 正式交付稿
-
-- 须移除 html-mark；HTML 中不得存在 Author Loader、Editor、html-mark、Inspector、源码定位 token，以及任何内联标注编辑脚本（含把说明写入 localStorage 的 `file://` 变通方案）。
-- 根目录保留 `prototype.html`、`prototype/` 与 `screenshots/`；页面 CSS、业务 JS、snapshot 与 Viewer 均收进 `prototype/`。图片、字体等静态资源仅在需要时收进 `assets/`。
+正式文件结构与 runtime 复制规则见 [generation-contract.md §7](generation-contract.md#7-交付文件)。交付前按 [交付复检清单](delivery-checklist.md) 逐项核对。
 
 ## 迭代分流
 
-- 结构、布局、菜单或业务状态大改：返回 [ui-generation.md](ui-generation.md)。
-- 正式说明内容、顺序或目标变化：使用 [local-authoring.md](local-authoring.md)。
-- 仅有评审文字反馈：按 [review-mark.md](review-mark.md) 的 For AI 数据修改源 HTML。
-- 视觉状态变化后需要重新验收：运行 [screenshots.md](screenshots.md)。
+- 结构、布局、菜单或业务状态大改：[ui-generation.md](ui-generation.md)。
+- 正式说明内容、顺序或目标变化：[local-authoring.md](local-authoring.md)。
+- 样式或文案微调并写回源 HTML：Direct Edit（[local-authoring.md](local-authoring.md)）。
+- 评审文字反馈：[review-mark.md](review-mark.md) 导出 For AI 后修改源 HTML。
+- 视觉状态变化后重新验收：[screenshots.md](screenshots.md)。

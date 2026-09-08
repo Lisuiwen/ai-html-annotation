@@ -2,6 +2,48 @@
 
 All notable changes to AI HTML Annotation will be documented in this file.
 
+## v0.2.0 — 2026-09-08
+
+### Added
+
+- **Author Tools** shell with `Edit` and `Mark` tabs in one panel.
+- **Direct Edit** for in-browser style and copy changes that save back to `prototype.html` through the localhost authoring server.
+- **Mark** review pins with macOS `⌘`+click support and `Copy all → For AI` export.
+- Claude Code plugin marketplace entry (`.claude-plugin/marketplace.json`).
+- `skills.sh` and Claude Code install paths in the root README.
+- GitHub Pages landing page (`index.html`).
+- Chinese README (`README.zh-CN.md`) and delivery checklist reference.
+- Runtime unit and contract tests across `client/`, `author/`, `server/`, and `cli/`.
+
+### Changed
+
+- Runtime reorganized by execution boundary: `client/`, `author/`, `server/`, `cli/`.
+- `PrototypeViewers` state model v2 with split `display-mode.js`, `state.js`, `model.js`, and `viewer.js`.
+- Authoring server moved to `runtime/server/index.mjs`; screenshot CLI to `runtime/cli/screenshot.mjs`.
+- IDE config (`.env`) moved to the Skill root (`skills/html-prototype-build/.env`).
+- Skill references split by task (local authoring, review mark, screenshots, delivery).
+- Viewer action area: fixed scene switch / add note / author tools order; solid primary scene buttons.
+- Root README demo GIFs updated for Viewer and Author Tools (Direct Edit + Mark).
+
+### Fixed
+
+- Direct Edit source writes hardened with atomic patches and selector validation.
+- Notes Editor toolbar pinned to the left of the action area.
+- Example snapshot anchors aligned with DOM ids.
+
+### Migration
+
+- Update local Skill copies or reinstall:
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+```
+
+- Replace old runtime paths:
+  - `runtime/serve.mjs` → `runtime/server/index.mjs`
+  - `runtime/shoot.mjs` → `runtime/cli/screenshot.mjs`
+  - `runtime/html-mark.js` → `runtime/author/tools/mark/`
+
 ## v0.1.0 — Initial public release
 
 AI HTML Annotation introduces a native-HTML workflow for building, reviewing, annotating, and iterating UI prototypes with coding agents.

@@ -1,4 +1,4 @@
-/** 聚合 Skill 元数据、链接、浏览器脚本语法、UI Pack 和运行时契约验证。 */
+/** 聚合 Skill 元数据、链接、浏览器脚本语法、UI Pack、示例和运行时契约验证。 */
 import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -6,6 +6,7 @@ import vm from 'node:vm';
 
 const repositoryDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const skillDirectory = path.join(repositoryDirectory, 'skills', 'html-prototype-build');
+const examplesDirectory = path.join(repositoryDirectory, 'examples');
 
 /** 递归枚举目录中的全部文件。 */
 async function listFiles(directory) {
@@ -37,30 +38,73 @@ async function validateBrowserScripts(files) {
   }
 }
 
-/** 校验 Markdown 中不含断开的本地相对链接。 */
+function markdownSlug(value) {
+  return String(value)
+    .replace(/<[^>]*>/g, '')
+    .replace(/[`*_~]/g, '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\p{M}\s-]/gu, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
+const headingCache = new Map();
+async function markdownHeadings(file) {
+  if (headingCache.has(file)) return headingCache.get(file);
+  const source = await readFile(file, 'utf8');
+  const slugs = new Set();
+  const counts = new Map();
+  for (const match of source.matchAll(/^#{1,6}\s+(.+?)\s*#*\s*$/gm)) {
+    const base = markdownSlug(match[1]);
+    if (!base) continue;
+    const count = counts.get(base) || 0;
+    slugs.add(count ? `${base}-${count}` : base);
+    counts.set(base, count + 1);
+  }
+  headingCache.set(file, slugs);
+  return slugs;
+}
+
+/** 校验 Markdown 中本地相对链接及 Markdown 章节锚点。 */
 async function validateMarkdownLinks(files) {
   for (const file of files.filter((target) => target.endsWith('.md'))) {
     const source = await readFile(file, 'utf8');
-    for (const match of source.matchAll(/\[[^\]]+\]\(([^)#]+)(?:#[^)]+)?\)/g)) {
-      const target = match[1];
+    for (const match of source.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)) {
+      const target = match[1].trim();
       if (/^[a-z]+:/i.test(target)) continue;
+      const hash = target.indexOf('#');
+      const href = hash >= 0 ? target.slice(0, hash) : target;
+      const fragment = hash >= 0 ? target.slice(hash + 1) : '';
+      const resolved = href ? path.resolve(path.dirname(file), decodeURIComponent(href)) : file;
       try {
-        await stat(path.resolve(path.dirname(file), target));
+        await stat(resolved);
       } catch {
-        throw new Error(`Markdown 链接不存在：${path.relative(repositoryDirectory, file)} -> ${target}`);
+        throw new Error(`Markdown 链接不存在：${path.relative(repositoryDirectory, file)} -> ${href || target}`);
+      }
+      if (fragment && resolved.endsWith('.md')) {
+        const slug = markdownSlug(decodeURIComponent(fragment));
+        const headings = await markdownHeadings(resolved);
+        if (!headings.has(slug)) {
+          throw new Error(`Markdown 章节不存在：${path.relative(repositoryDirectory, file)} -> ${target}`);
+        }
       }
     }
   }
 }
 
 const skillFiles = await listFiles(skillDirectory);
+const exampleFiles = await listFiles(examplesDirectory);
+const rootMarkdownFiles = ['README.md', 'README.zh-CN.md'].map((name) => path.join(repositoryDirectory, name));
 await validateMetadata();
-await validateMarkdownLinks(skillFiles);
-await validateBrowserScripts(skillFiles);
+await validateMarkdownLinks([...skillFiles, ...exampleFiles, ...rootMarkdownFiles]);
+await validateBrowserScripts([...skillFiles, ...exampleFiles]);
 await import('../skills/html-prototype-build/ui/packs/admin-desktop/tools/validate-pack.mjs');
 if (process.exitCode) {
   throw new Error('UI Pack 校验失败，详见上方错误输出。');
 }
 process.exitCode = 0;
-await import('../tests/runtime-contract.test.mjs');
+await import('../tests/runtime/index.test.mjs');
+await import('../tests/contracts/runtime.test.mjs');
+await import('../tests/examples/minimal-notes/prototype.test.mjs');
 console.log('Skill 统一验证通过。');

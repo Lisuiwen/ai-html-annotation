@@ -30,69 +30,22 @@
     }
   }
 
-  /* 注入只在作者环境出现的编辑控件样式。 */
-  function installStyles() {
-    var style = document.createElement('style');
-    style.textContent = [
-      '.pn-notes{display:flex;flex-direction:column;min-height:0;height:100%;overflow:hidden}',
-      '.pn-head{flex:0 0 auto}',
-      '.pn-cards{flex:1 1 auto;min-height:0;overflow-y:auto}',
-      '.pn-author-toolbar{display:flex;align-items:center}',
-      '.pn-tool-icon{display:grid;place-items:center;width:32px;height:32px;padding:0;border:0;border-radius:50%;background:var(--ui-primary,#1677ff);color:#fff;box-shadow:none;cursor:pointer;font:500 20px/1 system-ui,sans-serif}',
-      '.pn-tool-icon:hover{filter:brightness(.94)}',
-      '.pn-editable{cursor:text}.pn-editable:hover{outline:1px dashed #ff8d6b;outline-offset:2px}',
-      '.pn-card{position:relative}',
-      '.pn-card-title{padding-right:84px;padding-left:22px}',
-      '.pn-card-drag-handle{position:absolute;left:4px;top:10px;z-index:2;display:grid;place-items:center;width:22px;height:22px;color:var(--ui-text-secondary,#595959);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}',
-      '.pn-card-drag-handle svg{pointer-events:none}',
-      '.pn-card-drag-handle:active,.pn-card.pn-card-dragging .pn-card-drag-handle{cursor:grabbing}',
-      '.pn-card.pn-card-dragging{opacity:.45}',
-      '.pn-card.pn-card-drop-before{box-shadow:inset 0 2px 0 var(--ui-primary,#1677ff)}',
-      '.pn-card.pn-card-drop-after{box-shadow:inset 0 -2px 0 var(--ui-primary,#1677ff)}',
-      'body.pn-card-sorting{cursor:grabbing;user-select:none;-webkit-user-select:none}',
-      '.pn-card-actions{position:absolute;top:8px;right:8px;display:flex;gap:4px}',
-      '.pn-card-icon{display:grid;place-items:center;width:24px;height:24px;padding:0;background:var(--ui-bg,#fff);color:var(--ui-text-secondary,#595959);cursor:pointer}',
-      '.pn-card-icon:hover{color:#ff8d6b}',
-      '.pn-confirm-pop{position:absolute;top:36px;right:8px;z-index:10025;min-width:160px;padding:10px 12px;border:1px solid var(--ui-border,#d9d9d9);border-radius:8px;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.16);font-size:12px;color:var(--ui-text,#262626)}',
-      '.pn-confirm-pop.pn-confirm-pop--fixed{position:fixed;z-index:2147483000}',
-      '.pn-confirm-pop p{margin:0 0 8px;word-break:break-all}',
-      '.pn-confirm-pop-actions{display:flex;justify-content:flex-end;gap:6px}',
-      '.pn-confirm-pop-actions button{padding:4px 10px;border:1px solid var(--ui-border,#d9d9d9);border-radius:6px;background:#fff;color:#262626;cursor:pointer}',
-      '.pn-confirm-pop-actions button.pn-danger{background:#b42318;border-color:#b42318;color:#fff}',
-      '.pn-picking,.pn-picking *{cursor:crosshair!important}',
-      '.pn-pick-preview{outline:2px dashed #ff8d6b!important;outline-offset:2px}',
-      '.pn-pick-layer{position:fixed;inset:0;z-index:2147483646;width:100%;height:100%;overflow:visible;pointer-events:none}',
-      '.pn-pick-tooltip{position:fixed;z-index:2147483647;max-width:480px;padding:10px 14px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(22,22,28,.88);color:#e0e0e0;font:12px/18px system-ui,-apple-system,sans-serif;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s}',
-      '.pn-pick-tooltip.pn-pick-tooltip-visible{opacity:1;transform:translateY(0)}',
-      '.pn-pick-tooltip .pn-pick-tag{display:inline-block;padding:1px 6px;border-radius:4px;background:rgba(255,141,107,.2);color:#ff8d6b;font-weight:600;margin-right:6px}',
-      '.pn-pick-tooltip .pn-pick-path{color:#a0a0a0;word-break:break-all}',
-      '.pn-pick-tooltip .pn-pick-token{color:#e07bff;font-family:monospace;margin-top:4px}',
-      '.pn-pick-tooltip .pn-pick-hint{color:#666;margin-top:6px;font-size:11px}'
-    ].join('');
-    document.head.appendChild(style);
-  }
-
-  /* 返回「重新绑定」定位十字图标的内联 SVG。 */
   function bindIconSvg() {
     return '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/><path d="M8 0v3M8 13v3M0 8h3M13 8h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';
   }
 
-  /* 返回「删除」垃圾桶图标的内联 SVG。 */
   function deleteIconSvg() {
     return '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 4h10M6.5 4V2.8A.8.8 0 0 1 7.3 2h1.4a.8.8 0 0 1 .8.8V4M4.5 4l.6 8.2A1 1 0 0 0 6.1 13h3.8a1 1 0 0 0 1-.8L11.5 4M6.5 6.5v4M9.5 6.5v4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   }
 
-  /* 返回「拖动排序」握把图标的内联 SVG。 */
   function dragHandleSvg() {
     return '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="5" cy="4" r="1.2" fill="currentColor"/><circle cx="11" cy="4" r="1.2" fill="currentColor"/><circle cx="5" cy="8" r="1.2" fill="currentColor"/><circle cx="11" cy="8" r="1.2" fill="currentColor"/><circle cx="5" cy="12" r="1.2" fill="currentColor"/><circle cx="11" cy="12" r="1.2" fill="currentColor"/></svg>';
   }
 
-  /* 返回「编辑」铅笔图标的内联 SVG。 */
   function editIconSvg() {
     return '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m3 11.8.5-2.5 6.8-6.8a1 1 0 0 1 1.4 0l1.8 1.8a1 1 0 0 1 0 1.4l-6.8 6.8-2.5.5a1 1 0 0 1-1.2-1.2ZM9.5 3.3l3.2 3.2M3.8 9.6l2.6 2.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   }
 
-  /* 把当前内存对象序列化为唯一 snapshot 文件并请求本地服务原子写入。 */
   async function save() {
     if (saving) return;
     saving = true;
@@ -111,7 +64,6 @@
     }
   }
 
-  /* 找到数据字段并在双击后使用输入控件原位编辑。 */
   function startEdit(element, getter, setter, multiline) {
     if (element.querySelector('input,textarea')) return;
     var control = document.createElement(multiline ? 'textarea' : 'input');
@@ -123,7 +75,6 @@
     control.focus();
     control.select();
 
-    /* 提交当前字段并刷新只读 Viewer。 */
     function commit() {
       setter(control.value);
       renderData();
@@ -144,56 +95,22 @@
     });
   }
 
-  /* 生成稳定卡片 ID，避免新增卡片覆盖既有数据。 */
-  function createCardId() {
-    var index = data.cards.length + 1;
-    while (data.cards.some(function (card) { return card.id === 'note-' + index; })) index++;
-    return 'note-' + index;
-  }
-
-  /* 从当前 PrototypeViewers 状态提取图层相关的 when，使新卡片仅在该图层/浮层栈下可见。 */
-  function whenForCurrentLayer() {
-    if (!window.PrototypeViewers || typeof window.PrototypeViewers.getState !== 'function') return undefined;
-    var product = window.PrototypeViewers.getState().product;
-    if (!product || Object.prototype.toString.call(product) !== '[object Object]') return undefined;
-    var when = {};
-    if (Object.prototype.hasOwnProperty.call(product, 'layer')) {
-      when['product.layer'] = product.layer;
-    }
-    if (Object.prototype.hasOwnProperty.call(product, 'layers')) {
-      when['product.layers'] = Array.isArray(product.layers) ? product.layers.slice() : product.layers;
-    }
-    /* 浮层栈场景常与 page 组合约束，列表态须同时锁定 page。 */
-    if (Object.prototype.hasOwnProperty.call(product, 'page') && Object.prototype.hasOwnProperty.call(product, 'layers')) {
-      when['product.page'] = product.page;
-    }
-    return Object.keys(when).length ? when : undefined;
-  }
-
-  /* 新增空白卡片，自动绑定当前图层；无 product 图层字段时仍始终显示。 */
+  /* 新增空白卡片；数据规则由 NotesEditorModel 统一维护。 */
   function addCard() {
-    var id = createCardId();
-    var card = {
-      id: id,
-      title: '新说明',
-      body: '双击编辑说明内容。',
-      target: { selector: '', label: '' }
-    };
-    var when = whenForCurrentLayer();
-    if (when) card.when = when;
-    data.cards.push(card);
+    var appState = window.PrototypeViewers && typeof window.PrototypeViewers.getState === 'function'
+      ? window.PrototypeViewers.getState()
+      : {};
+    data.cards.push(window.PrototypeNotesEditorModel.createCard(data.cards, appState));
     renderData();
     enhance();
     save();
   }
 
-  /* 关闭卡片内已打开的气泡确认框。 */
   function closeConfirm() {
     var pop = document.querySelector('.pn-confirm-pop');
     if (pop) pop.remove();
   }
 
-  /* 点击删除图标后弹出气泡确认框，确认后删除卡片。 */
   function requestDelete(card, article, icon) {
     closeConfirm();
     var pop = document.createElement('div');
@@ -202,13 +119,12 @@
     pop.querySelector('.pn-cancel').addEventListener('click', closeConfirm);
     pop.querySelector('.pn-danger').addEventListener('click', function () {
       closeConfirm();
-      data.cards = data.cards.filter(function (item) { return item.id !== card.id; });
+      data.cards = window.PrototypeNotesEditorModel.removeCard(data.cards, card.id);
       renderData();
       enhance();
       save();
     });
     document.body.appendChild(pop);
-    /* 挂到 body 并 fixed 定位，避免被说明栏底部工具钮盖住。 */
     var rect = icon.getBoundingClientRect();
     var gap = 6;
     var top = rect.bottom + gap;
@@ -220,7 +136,6 @@
     pop.style.left = left + 'px';
   }
 
-  /* 与 Mark 对齐：从点击点向上找最近可绑定语义单元。 */
   function resolvePickTarget(el) {
     var cur = el;
     while (cur && cur.nodeType === 1 && cur !== document.body && cur !== document.documentElement) {
@@ -231,7 +146,6 @@
         if (cur.matches('button, [role="button"], a[href], input, select, textarea')) return cur;
         if (cur.matches('h1, h2, h3, h4, h5, h6')) return cur;
         if (cur.matches('td, th')) return cur;
-        /* 浮层内点击优先绑定内层面板，避免落到遮罩或内部字段 id。 */
         if (cur.matches('.ui-modal, .ui-drawer') && cur.closest('.ui-overlay')) return cur;
       }
       if (cur.id) return cur;
@@ -241,7 +155,6 @@
     return el && el.nodeType === 1 ? el : null;
   }
 
-  /* 判断拾取模式下不可绑定的区域。 */
   function isPickBlocked(el) {
     if (!el || !el.closest) return true;
     if (el.closest('.pn-notes,.pn-author-toolbar,.mm-ui,.mm-pin,.mm-note-pop,.pn-pick-tooltip')) return true;
@@ -249,31 +162,6 @@
     return false;
   }
 
-  /* 生成绑定预览用的 CSS 路径。 */
-  function cssPathForPick(el) {
-    if (!el || el.nodeType !== 1) return '';
-    var parts = [];
-    var cur = el;
-    while (cur && cur.nodeType === 1 && cur !== document.body && cur !== document.documentElement) {
-      if (cur.id) {
-        parts.unshift('#' + (window.CSS && CSS.escape ? CSS.escape(cur.id) : cur.id));
-        return parts.join(' > ');
-      }
-      var sel = cur.tagName.toLowerCase();
-      var parent = cur.parentElement;
-      if (parent) {
-        var sameTag = Array.prototype.filter.call(parent.children, function (child) {
-          return child.tagName === cur.tagName;
-        });
-        if (sameTag.length > 1) sel += ':nth-of-type(' + (sameTag.indexOf(cur) + 1) + ')';
-      }
-      parts.unshift(sel);
-      cur = parent;
-    }
-    return parts.length ? 'body > ' + parts.join(' > ') : '';
-  }
-
-  /* 创建拾取模式玻璃浮层。 */
   function getPickTooltip() {
     if (pickTooltip) return pickTooltip;
     pickTooltip = document.createElement('div');
@@ -283,12 +171,10 @@
     return pickTooltip;
   }
 
-  /* 隐藏拾取浮层。 */
   function hidePickTooltip() {
     if (pickTooltip) pickTooltip.classList.remove('pn-pick-tooltip-visible');
   }
 
-  /* 在候选目标旁展示标签、路径与 insp token。 */
   function showPickTooltip(event, el) {
     var tip = getPickTooltip();
     var tag = el.tagName.toLowerCase();
@@ -297,7 +183,7 @@
     tip.innerHTML = [
       '<span class="pn-pick-tag">&lt;' + tag + '&gt;</span>',
       cls ? '<span class="pn-pick-tag">' + cls + '</span>' : '',
-      '<div class="pn-pick-path">' + cssPathForPick(el) + '</div>',
+      '<div class="pn-pick-path">' + window.AuthorToolsSelector.cssPath(el) + '</div>',
       token ? '<div class="pn-pick-token">' + token + '</div>' : '',
       '<div class="pn-pick-hint">Click to bind</div>'
     ].join('');
@@ -313,7 +199,6 @@
     tip.style.top = Math.max(8, y) + 'px';
   }
 
-  /* 开启一次目标选择：从卡片出发，SVG 线头跟随鼠标，点中 DOM 后绑定。 */
   function startPick(cardId) {
     stopPick();
     pickCardId = cardId;
@@ -329,7 +214,6 @@
     drawPickLine(x, y, x, y);
   }
 
-  /* 返回当前拾取卡片左侧中点，作为临时连线的固定起点。 */
   function pickOrigin() {
     var card = document.querySelector('.pn-card[data-note-id="' + cssEscape(pickCardId) + '"]');
     if (!card) return null;
@@ -337,7 +221,6 @@
     return { x: rect.left, y: rect.top + rect.height / 2 };
   }
 
-  /* 退出目标选择模式，供 Mark 或后续 Inspector 抢占点击模式时调用。 */
   function stopPick() {
     pickCardId = '';
     document.body.classList.remove('pn-picking');
@@ -353,7 +236,6 @@
     }
   }
 
-  /* 创建独立顶层 SVG 预览线，避免受原型 stacking context 或裁切影响。 */
   function getPickLayer() {
     var layer = document.querySelector('.pn-pick-layer');
     if (layer) return layer;
@@ -363,7 +245,6 @@
     return layer;
   }
 
-  /* 按正式连线样式绘制从卡片到鼠标的曲线、序号徽标和目标端。 */
   function drawPickLine(x1, y1, x2, y2) {
     var layer = getPickLayer();
     layer.innerHTML = '';
@@ -388,39 +269,16 @@
     layer.appendChild(text);
   }
 
-  /* 清除跟随预览线层。 */
   function clearPickLine() {
     var layer = document.querySelector('.pn-pick-layer');
     if (layer) layer.remove();
   }
 
-  /* 根据元素现有 ID、稳定属性或 DOM 路径生成 selector，不修改原型 HTML。 */
-  function selectorFor(element) {
-    if (element.id) return '#' + (window.CSS && CSS.escape ? CSS.escape(element.id) : element.id);
-    var existing = element.getAttribute('data-prototype-note-target');
-    if (existing) return '[data-prototype-note-target="' + existing.replace(/"/g, '\\"') + '"]';
-    var parts = [];
-    var current = element;
-    while (current && current !== document.body && current !== document.documentElement && !current.classList.contains('pn-preview')) {
-      var part = current.tagName.toLowerCase();
-      var siblings = current.parentElement ? Array.from(current.parentElement.children).filter(function (child) {
-        return child.tagName === current.tagName;
-      }) : [];
-      if (siblings.length > 1) part += ':nth-of-type(' + (siblings.indexOf(current) + 1) + ')';
-      parts.unshift(part);
-      current = current.parentElement;
-    }
-    return parts.join(' > ');
-  }
-
-  /* 对已有 ID 使用简洁 anchor；无 ID 的目标保留 selector。 */
+  /* Notes 绑定目标描述统一复用 author/core/selector.js。 */
   function targetFor(element) {
-    var label = (element.getAttribute('aria-label') || element.textContent || element.tagName).trim().slice(0, 60);
-    if (element.id) return { anchor: element.id, label: label };
-    return { selector: selectorFor(element), label: label };
+    return window.AuthorToolsSelector.noteTarget(element);
   }
 
-  /* 处理目标选择点击，作者工具区域和右侧说明区域不可作为绑定目标。 */
   function handlePick(event) {
     if (!pickCardId) return;
     if (isPickBlocked(event.target)) return;
@@ -429,16 +287,13 @@
     event.preventDefault();
     event.stopPropagation();
     var card = data.cards.find(function (item) { return item.id === pickCardId; });
-    if (card) {
-      card.target = targetFor(target);
-    }
+    if (card) card.target = targetFor(target);
     stopPick();
     renderData();
     enhance();
     save();
   }
 
-  /* 在选择模式中高亮候选目标、展示浮层，并让临时连线目标端实时跟随鼠标。 */
   function handlePickPreview(event) {
     document.querySelectorAll('.pn-pick-preview').forEach(function (element) {
       element.classList.remove('pn-pick-preview');
@@ -462,7 +317,6 @@
     showPickTooltip(event, target);
   }
 
-  /* Esc 取消拾取，不改动原绑定，并清理临时线与候选高亮。 */
   function handlePickKeydown(event) {
     if (pickCardId && event.key === 'Escape') {
       event.preventDefault();
@@ -473,16 +327,7 @@
 
   /* 按当前可见卡片的新顺序写回 data.cards，隐藏组卡片保持原相对位置。 */
   function applyVisibleOrder(visibleIds) {
-    var visibleSet = {};
-    visibleIds.forEach(function (id) { visibleSet[id] = true; });
-    var queue = visibleIds.map(function (id) {
-      return data.cards.find(function (card) { return card.id === id; });
-    }).filter(Boolean);
-    var qi = 0;
-    data.cards = data.cards.map(function (card) {
-      if (!visibleSet[card.id]) return card;
-      return queue[qi++];
-    });
+    data.cards = window.PrototypeNotesEditorModel.applyVisibleOrder(data.cards, visibleIds);
     renderData();
     enhance();
     save();
@@ -490,14 +335,12 @@
 
   var sortState = null;
 
-  /* 清除排序过程中的放置指示样式。 */
   function clearDropMarkers() {
     document.querySelectorAll('.pn-card-drop-before,.pn-card-drop-after').forEach(function (el) {
       el.classList.remove('pn-card-drop-before', 'pn-card-drop-after');
     });
   }
 
-  /* 根据指针位置计算应插入到目标卡片前还是后。 */
   function resolveDropTarget(clientY) {
     if (!sortState) return null;
     var cards = Array.prototype.slice.call(document.querySelectorAll('.pn-card'));
@@ -513,7 +356,6 @@
     return target ? { card: target, placeAfter: placeAfter } : null;
   }
 
-  /* 指针排序：在握把按下后跟随移动，松手写入新顺序。 */
   function onSortPointerMove(event) {
     if (!sortState || event.pointerId !== sortState.pointerId) return;
     if (!sortState.active && Math.hypot(event.clientX - sortState.x, event.clientY - sortState.y) > 4) {
@@ -530,7 +372,6 @@
     sortState.placeAfter = drop.placeAfter;
   }
 
-  /* 结束指针排序并按落点重排卡片。 */
   function onSortPointerUp(event) {
     if (!sortState || event.pointerId !== sortState.pointerId) return;
     var fromId = sortState.fromId;
@@ -545,20 +386,14 @@
     document.removeEventListener('pointercancel', onSortPointerUp, true);
     sortState = null;
     if (!wasActive || !dropId || dropId === fromId) return;
-    /* Viewer 已完成 when 过滤，直接采用当前 DOM 清单，避免编辑器重复实现组合条件。 */
     var visibleIds = Array.prototype.map.call(document.querySelectorAll('.pn-card'), function (card) {
       return card.dataset.noteId;
     });
-    var fromIdx = visibleIds.indexOf(fromId);
-    if (fromIdx < 0 || visibleIds.indexOf(dropId) < 0) return;
-    visibleIds.splice(fromIdx, 1);
-    var insertAt = visibleIds.indexOf(dropId);
-    if (placeAfter) insertAt += 1;
-    visibleIds.splice(insertAt, 0, fromId);
-    applyVisibleOrder(visibleIds);
+    var reordered = window.PrototypeNotesEditorModel.reorderVisibleIds(visibleIds, fromId, dropId, placeAfter);
+    if (reordered.indexOf(fromId) < 0 || reordered.indexOf(dropId) < 0) return;
+    applyVisibleOrder(reordered);
   }
 
-  /* 为卡片绑定指针拖拽排序，仅握把可发起。 */
   function bindCardDrag(article) {
     var handle = article.querySelector('.pn-card-drag-handle');
     if (!handle || handle.dataset.pnDragBound) return;
@@ -584,7 +419,6 @@
     });
   }
 
-  /* 为 Viewer 当前渲染的标题、总体信息和卡片挂接作者操作。 */
   function enhance() {
     if (!data) return;
     var head = document.querySelector('.pn-head');
@@ -637,10 +471,8 @@
       actions.appendChild(remove);
       article.appendChild(actions);
     });
-    buildToolbar();
   }
 
-  /* 给一个文本节点绑定一次双击编辑行为。 */
   function bindEditable(element, getter, setter, multiline) {
     if (!element || element.dataset.pnEditableBound) return;
     element.dataset.pnEditableBound = 'true';
@@ -648,42 +480,74 @@
     element.addEventListener('dblclick', function () { startEdit(element, getter, setter, multiline); });
   }
 
-  /* 在说明面板底部操作区创建唯一的新增说明按钮（位于场景切换与折叠钮之间）。 */
   function buildToolbar() {
     var actions = document.querySelector('.pn-panel-actions');
     if (!actions) return null;
-    var existing = document.querySelector('.pn-author-toolbar');
-    if (existing && existing.parentElement === actions) return existing;
-    if (existing) existing.remove();
+    var start = actions.querySelector('.pn-panel-actions-start');
+    if (!start && window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.ensureActionsStart === 'function') {
+      start = window.PrototypeNotesViewer.ensureActionsStart();
+    }
+    if (!start) return null;
+    var existing = start.querySelector('.pn-author-toolbar') || actions.querySelector('.pn-author-toolbar');
+    if (existing) {
+      if (existing.parentElement !== start) start.appendChild(existing);
+      if (window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.syncPanelActions === 'function') {
+        window.PrototypeNotesViewer.syncPanelActions();
+      }
+      return existing;
+    }
     var toolbar = document.createElement('div');
     toolbar.className = 'pn-author-toolbar';
     toolbar.innerHTML = '<div class="pn-tool-icon pn-add-card" role="button" tabindex="0" title="新增说明" aria-label="新增说明">+</div>';
     var add = toolbar.querySelector('.pn-add-card');
     add.addEventListener('click', addCard);
-    /* 保留普通 div 的键盘可操作性。 */
     add.addEventListener('keydown', function (event) {
       if (event.key !== 'Enter' && event.key !== ' ') return;
       event.preventDefault();
       addCard();
     });
-    var before = actions.querySelector('.pn-toggle') || null;
-    actions.insertBefore(toolbar, before);
+    start.appendChild(toolbar);
+    if (window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.syncPanelActions === 'function') {
+      window.PrototypeNotesViewer.syncPanelActions();
+    }
     return toolbar;
   }
 
-  /* 初始化编辑器并监听 Viewer 重绘后的 DOM。 */
+  var enhanceFrame = 0;
+
+  function scheduleEnhance() {
+    if (enhanceFrame) return;
+    enhanceFrame = requestAnimationFrame(function () {
+      enhanceFrame = 0;
+      enhance();
+    });
+  }
+
+  function onNotesRendered() {
+    buildToolbar();
+    scheduleEnhance();
+  }
+
   function init() {
     if (!data) {
       console.error('[prototype-author] Viewer 尚未初始化，无法启动标注编辑器。');
       return;
     }
-    installStyles();
+    if (!window.AuthorToolsSelector) {
+      console.error('[prototype-author] 缺少 AuthorToolsSelector，无法启动标注编辑器。');
+      return;
+    }
+    if (!window.PrototypeNotesEditorModel) {
+      console.error('[prototype-author] 缺少 PrototypeNotesEditorModel，无法启动标注编辑器。');
+      return;
+    }
     buildToolbar();
     enhance();
     document.addEventListener('click', handlePick, true);
     document.addEventListener('mousemove', handlePickPreview, true);
     document.addEventListener('keydown', handlePickKeydown, true);
-    new MutationObserver(enhance).observe(document.querySelector('.pn-notes'), { childList: true, subtree: true });
+    // 只跟随 Viewer 渲染事件增强卡片；不要观察 notes DOM，避免与底栏重排互相触发。
+    window.addEventListener('prototype-notes:rendered', onNotesRendered);
     if (window.PrototypeAuthor) window.PrototypeAuthor.register('notes-target', stopPick);
     window.addEventListener('beforeunload', function (event) {
       if (!saving && JSON.stringify(data) === revision) return;
@@ -692,7 +556,6 @@
     });
   }
 
-  /* 转义属性选择器中的卡片 ID。 */
   function cssEscape(value) {
     return window.CSS && CSS.escape ? CSS.escape(String(value)) : String(value).replace(/["\\]/g, '\\$&');
   }

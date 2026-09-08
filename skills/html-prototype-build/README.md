@@ -1,86 +1,75 @@
-# HTML Prototype Build 使用手册
+# HTML Prototype Build
 
-用于操作已有 HTML 原型：编辑正式说明、发起页面评审、生成场景截图和整理交付稿。项目价值、演示和适用范围见[仓库 README](../../README.md)。
+面向 AI Agent 的 HTML 产品原型 Skill：用 UI 包生成页面，在真实 DOM 上维护正式说明、发起评审、跳转源码，并按场景输出交付截图。
 
-## 开始前
+安装方式、产品演示与仓库级功能介绍见[仓库 README](../../README.md)。本文件负责 Skill 怎么用；具体命令与逐步操作仍在 `references/`。
 
-- 需要 Node.js 18+；所有脚本只依赖 Node 内建模块。
-- 批量截图需要本机 Microsoft Edge 或 Google Chrome。
-- 下文的 `<skill-root>` 指本目录 `skills/html-prototype-build`。
+## 适合谁用
 
-若需要新建或重建页面，请让 Agent 按 [SKILL.md](SKILL.md) 选择 UI 包并生成原型；本手册从已有 `prototype.html` 开始。
+- **和 Agent 协作**：把需求、截图或现有页面交给 Agent，让它按本 Skill 生成或修改原型。
+- **自己验收与迭代**：用作者服务启动skill生成的原型，在浏览器里查看说明、切换场景、打评审意见、直接改样式或文案，而不必每次从头描述页面结构。
+- **整理交付物**：区分「正式原型文件」和「作者会话工具」，输出干净的多状态页面截图。
 
-## 直接交给 AI
+不适合当作通用前端脚手架或生产代码生成器；它的目标是**可评审、可说明、可截图的原型交付**。
 
-推荐顺序：编辑正式说明 → 收集页面评审 → 按场景输出截图 → 清理评审层后交付。
+## 你会得到什么
 
-| 你可以这样说 | AI 会完成什么 |
-|---|---|
-| “启动 `xxx/prototype.html` 的作者服务，我要修改右侧说明。” | 启动本地服务，加载 snapshot，并支持编辑说明、重绑元素和跳转源码。 |
-| “给 `xxx/prototype.html` 注入评审层，我要在页面上打点。” | 生成可双击打开的评审稿；你可在页面中添加 pin，并复制 For AI 修改上下文。 |
-| “按 `xxx/prototype.html` 的场景生成交付截图。” | 读取 `scenarios`，输出 `screenshots/<scene-id>.png`。 |
-| “清理 `xxx/prototype.html` 的评审层，准备正式交付。” | 移除 html-mark，保留干净的原型与截图。 |
+一次完整任务通常包含三类产物：
 
-作者服务启动后，打开 AI 返回的 `http://127.0.0.1:4178/...` 地址。未传 `--snapshot` 时只能查看，不能保存正式说明。
 
-手动执行时，分别使用 `serve.mjs`、`prepare-mark.mjs` 和 `shoot.mjs`；命令参数见对应的[深入说明](#按任务查看详情)。
+| 产物                  | 作用                     |
+| ------------------- | ---------------------- |
+| 可运行的 HTML 原型        | 原生页面，可双击预览，也可经本地作者服务打开 |
+| `notes.snapshot.js` | 正式说明、场景状态与截图清单的唯一数据源   |
+| 按场景生成的 PNG          | 纯页面截图，不含右侧说明、连线和作者工具   |
 
-## 页面内手动操作
 
-以下操作在浏览器打开原型后完成；正式说明编辑和 Inspector 需要通过作者服务打开页面。
+正式原型只保留语义 DOM、稳定锚点与只读 Viewer；Mark、Direct Edit、Notes Editor、Inspector 和本地作者服务都属于**作者层**，不会写进交付 HTML。
 
-| 目标 | 页面操作 |
-|---|---|
-| 切换页面状态 | 点击右侧工具栏中的当前场景名称，按 `scenarios` 声明顺序循环切换；也可使用 `?scene=<场景-id>` 直达指定状态。 |
-| 收起或展开说明栏 | 点击右侧工具栏的 `››` / `‹‹` 按钮。 |
-| 编辑正式说明 | 双击说明标题、正文或页头文案进行原位编辑；标题和页头按 `Enter` 保存，正文按 `Ctrl + Enter` 保存，`Esc` 取消。 |
-| 管理正式说明 | 使用右侧卡片的 `+` 新增、铅笔编辑正文、目标绑定按钮重新绑定元素、垃圾桶删除、拖拽手柄调整顺序。 |
-| 添加评审标注 | 按 `M` 进入 Mark 模式，按住 `Ctrl` 点击页面元素；填写意见后按 `Enter` 保存、`Esc` 关闭。 |
-| 管理评审标注 | 在右下角 Mark 面板中定位、删除、清空或使用 `Copy all → For AI`；Mark 模式下按 `Backspace` 可删除最后一条标注。 |
-| 跳转到元素源码 | 按住 `Alt + Shift`，悬停查看元素范围和选择器后单击；浏览器会请求本机 IDE 打开对应源码位置。（需要在 runtime/.env配置你的编辑器） |
+## 典型怎么用
 
-Inspector 仅在作者服务页面中生效。松开 `Alt` 或 `Shift` 即退出检查模式；若没有配置 IDE，页面仍可定位元素，但无法自动打开源码文件。
+不必记命令，按意图分工即可：
 
-## 评审并交给 AI
+1. **新建或大改页面**
+  在 Cursor、Claude Code、Codex 等客户端启用本 Skill，用自然语言描述需求或附上材料，让 Agent 生成 `prototype.html` 与 `prototype/`。约束与任务分流见 [SKILL.md](SKILL.md)。
+2. **在页面上继续工作**
+  需要改样式、改说明、打评审 pin、从元素跳回源码时，通过本地作者服务在浏览器里操作。Direct Edit 与 Mark 同在 Author Tools 面板；能力说明见 [本地作者服务](references/local-authoring.md)、[评审打点](references/review-mark.md)。
+3. **按场景出图或交付**
+  需要批量纯页面截图或整理最终文件时，见 [场景截图](references/screenshots.md) 与 [交付与迭代](references/delivery.md)。
 
-1. 对原型执行 `prepare-mark.mjs ... --inline`。
-2. 打开页面后按 `M` 进入打点模式，按住 `Ctrl` 点击目标元素添加 pin。
-3. 在右下角面板中使用 `Copy all → For AI`，复制意见、selector 和元素 HTML 快照。
-4. 评审结束后移除临时评审层：
+仓库内 `[examples/minimal-notes](../../examples/minimal-notes)` 提供可对照的最小样例。
 
-```bash
-node <skill-root>/runtime/prepare-mark.mjs <prototype.html> --remove
-```
-
-## 原型与交付物
+## 能力一览
 
 ```text
-prototype.html                 原型入口
-prototype/
-├─ prototype.css
-├─ prototype.js
-├─ notes.snapshot.js           正式说明与场景定义
-└─ viewer.js
-screenshots/                   按场景输出的纯页面 PNG
-assets/                        按需存放图片、字体等静态资源
+原生 HTML 原型
+   │
+   ├── Viewer：右侧正式说明、场景切换、SVG 连线
+   ├── Direct Edit / Mark：直接改页面样式或打评审 pin，导出给 AI 的 selector 与元素快照
+   ├── Notes Editor：编辑正式说明卡片
+   ├── Inspector：从页面元素跳转到本机 IDE 源码
+   └── Screenshot：按 snapshot 场景输出纯页面 PNG
 ```
 
-- `notes.snapshot.js` 是正式说明唯一数据源，`scenarios` 是多状态截图唯一依据。
-- `screenshots/` 应包含新建、编辑、空态、关联等需要交付的页面状态；它不是页面运行依赖。
+同一套业务状态既支撑页面说明与场景切换，也支撑多状态截图，避免「效果图」和「可执行页面」两套口径。
 
-## 交付检查
+## 环境与可选配置
 
-- 正式说明只通过作者服务写入 snapshot。
-- html-mark 的 pin 只保存在浏览器 localStorage，不写入 snapshot。
-- 交付前移除 html-mark；Editor、Inspector 和源码定位 token 不得进入原型文件。
-- 最终截图不应包含右侧说明、SVG 连线、Mark 或作者工具。
-- 作者服务仅监听 `127.0.0.1`；仅对可信 HTML 和 snapshot 使用，原型中不要放真实凭据或生产数据。
+- 需要 **Node.js 18+**；Skill 自带运行时与脚本不依赖额外 npm 包。
+- 批量截图需要本机 **Microsoft Edge 或 Google Chrome**。
+- 若使用 Inspector 跳转源码，可在本目录参考 [.env.example](.env.example) 配置本机 IDE；该文件仅用于个人环境，不要提交。
 
-## 按任务查看详情
 
-- [UI 生成](references/ui-generation.md)
-- [产品说明标注](references/product-annotations.md)
-- [本地作者服务](references/local-authoring.md)
-- [评审打点](references/review-mark.md)
-- [场景截图](references/screenshots.md)
-- [交付与迭代](references/delivery.md)
+
+## 文档去哪看
+
+
+| 你想了解…              | 去看                               |
+| ------------------ | -------------------------------- |
+| 让 Agent 做什么、有哪些硬约束 | [SKILL.md](SKILL.md)             |
+| 某类任务的操作说明（含命令）     | [references/](references/) 下对应入口 |
+| UI 包怎么选            | [ui/catalog.md](ui/catalog.md)   |
+| 仓库安装与功能介绍         | [仓库 README](../../README.md)     |
+
+
+本文件只说明 Skill 的用途与协作方式；具体命令、逐步操作和 Agent 契约都在上述文档中按任务拆分维护。
