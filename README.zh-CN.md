@@ -2,7 +2,7 @@
 
 [English](README.md)
 
-[![skills.sh](https://skills.sh/b/Lisuiwen/ai-html-annotation)](https://skills.sh/Lisuiwen/ai-html-annotation)
+![skills.sh](https://skills.sh/b/Lisuiwen/ai-html-annotation)
 
 > 面向 AI Agent 的 HTML UI 原型生成、DOM 标注、评审与迭代工具。
 
@@ -41,6 +41,8 @@ Claude 插件直接引用仓库中的 `skills/html-prototype-build/`，所以仍
 
 ## 你可以先看演示
 
+
+
 ### 1. 右侧工具栏：标注的增删改查与场景切换
 
 Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除和查看标注，并按场景切换页面说明；标注通过 SVG 连线指向对应模块，阅读和定位都在同一页面完成。
@@ -60,6 +62,8 @@ Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除�
 ![Inspector：按住 Alt + Shift 锁定元素并跳转到对应源码](media/inspector.gif)
 
 ## 核心价值
+
+
 
 ### HTML 标注，意见和元素绑定
 
@@ -114,7 +118,7 @@ Mark 只在本地作者服务会话中加载，评审标记可以批量复制和
 
 ```powershell
 # 用作者服务打开示例
-node skills/html-prototype-build/runtime/server/index.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype/notes.snapshot.js
+node skills/html-prototype-build/runtime/server/index.mjs examples/minimal-notes/prototype.html --snapshot=prototype/notes.snapshot.js
 ```
 
 ```powershell
@@ -122,9 +126,9 @@ node skills/html-prototype-build/runtime/server/index.mjs examples/minimal-notes
 node skills/html-prototype-build/runtime/cli/screenshot.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype/notes.snapshot.js
 ```
 
-完整样例见 [`examples/minimal-notes`](examples/minimal-notes)。将 `skills/html-prototype-build/` 安装到 Agent Skill 路径后，即可让 Agent 创建或修改原型。
+完整样例见 `[examples/minimal-notes](examples/minimal-notes)`。将 `skills/html-prototype-build/` 安装到 Agent Skill 路径后，即可让 Agent 创建或修改原型。
 
-需要亲自启动作者服务、发起评审或输出截图时，请阅读 [Skill 使用手册](skills/html-prototype-build/README.md)。Agent 的任务分流和约束见 [`SKILL.md`](skills/html-prototype-build/SKILL.md)。
+需要亲自启动作者服务、发起评审或输出截图时，请阅读 [references/local-authoring.md](skills/html-prototype-build/references/local-authoring.md) 等任务入口。Agent 的任务分流和约束见 `[SKILL.md](skills/html-prototype-build/SKILL.md)`。
 
 ## 分发结构
 
@@ -147,16 +151,20 @@ Skill 内部 Runtime 按执行边界拆分：`client/` 是正式浏览器运行�
 - 需要在页面上评审，并把意见准确交给 AI；
 - 需要频繁修改页面结构、文案和状态，并保留可复现截图的场景。
 
+
+
 ## 安全边界
 
 - `runtime/server/index.mjs` 只监听 `127.0.0.1`。不要对不可信 HTML 或 snapshot 运行作者服务和截图。
-- 作者写接口要求 localhost 同源 JSON；`.env` 位于 `runtime/server/`，只用于本机 IDE 选择，不要提交。
+- 作者写接口要求 localhost 同源 JSON；`.env` 位于 `skills/html-prototype-build/`，只用于本机 IDE 选择，不要提交。
 - Mark 是临时作者工具，按页面把评审上下文存入 localStorage，也可能复制到剪贴板；它不会注入源 HTML，也不属于正式交付物。
 - 原型中不要放真实凭据、生产数据、个人信息或未授权品牌。
 
+
+
 ## 开源协作
 
-项目当前处于实验性 0.x 阶段，接口和目录仍可能变化。贡献方式见 [`CONTRIBUTING.md`](CONTRIBUTING.md)，行为规范见 [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)，漏洞请按 [`SECURITY.md`](SECURITY.md) 私下报告。
+项目当前处于实验性 0.x 阶段，接口和目录仍可能变化。贡献方式见 `[CONTRIBUTING.md](CONTRIBUTING.md)`，行为规范见 `[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)`，漏洞请按 `[SECURITY.md](SECURITY.md)` 私下报告。
 
 本项目 UI 包为自研原生 HTML 视觉模拟，不捆绑第三方设计系统代码或官方资源。
 

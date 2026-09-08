@@ -30,25 +30,23 @@ body.at-picker-armed .at-ui select { cursor: text !important; }
   width: 32px;
   height: 32px;
   padding: 0;
-  border: 1px solid var(--ui-border, #d9d9d9);
+  border: 1px solid var(--ui-primary, #1677ff);
   border-radius: 50%;
-  background: var(--ui-bg, #fff);
-  color: var(--ui-text-secondary, #595959);
+  background: var(--ui-primary, #1677ff);
+  color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   flex-shrink: 0;
 }
 .at-launch-icon {
   display: block;
-  width: 14px;
-  height: 2px;
-  background: currentColor;
-  box-shadow: 0 -4px 0 currentColor, 0 4px 0 currentColor;
+  width: 16px;
+  height: 16px;
 }
-.at-launch:hover { color: var(--ui-primary, #1677ff); border-color: var(--ui-primary, #1677ff); }
+.at-launch:hover { filter: brightness(.94); }
 .at-launch.is-open {
-  background: var(--ui-primary, #1677ff);
-  border-color: var(--ui-primary, #1677ff);
+  background: #0958d9;
+  border-color: #0958d9;
   color: #fff;
 }
 
@@ -128,19 +126,27 @@ body.at-drawer-open .pn-panel-actions {
 }
 .at-tab {
   flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   height: 32px;
+  padding: 0 8px;
   border: 1px solid #d9d9d9;
   border-radius: 6px;
   background: #fff;
   color: rgba(0, 0, 0, 0.65);
   font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
 }
 .at-tab.is-active {
   border-color: #1677ff;
   color: #1677ff;
   background: #e6f4ff;
-  font-weight: 600;
 }
 .at-tab[data-tab="mark"]:hover {
   border-color: #9333ea;
@@ -230,11 +236,20 @@ body.at-drawer-open .pn-panel-actions {
   font-size: 13px;
   margin-bottom: 2px;
 }
-.at-edit-empty {
-  padding: 20px 14px;
+/* 与 Mark 的 .mm-list 同层：可滚动主体，空态/表单都挂在这里。 */
+.at-edit-body {
+  padding: 10px;
   overflow-y: auto;
+  overflow-x: hidden;
   flex: 1;
   min-height: 0;
+}
+.at-edit-body > .at-edit-identity {
+  margin: -10px -10px 0;
+}
+.at-edit-empty {
+  padding: 24px 14px;
+  text-align: center;
   color: rgba(0, 0, 0, 0.45);
   font-size: 12.5px;
   line-height: 1.7;
@@ -248,11 +263,7 @@ body.at-drawer-open .pn-panel-actions {
   font-size: 10.5px;
 }
 .at-edit-fields {
-  padding: 8px 12px 12px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  flex: 1 1 auto;
-  min-height: 0;
+  padding: 0 2px 2px;
 }
 .at-edit-section {
   margin-top: 10px;

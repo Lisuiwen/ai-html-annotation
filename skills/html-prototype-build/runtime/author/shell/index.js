@@ -79,12 +79,22 @@
   function attachShell() {
     var notes = document.querySelector('.pn-notes');
     var actions = document.querySelector('.pn-panel-actions');
-    if (actions && launch && launch.parentElement !== actions) {
+    if (!notes || !actions || !launch) return;
+    if (window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.ensureActionsStart === 'function') {
+      window.PrototypeNotesViewer.ensureActionsStart();
+    }
+    var start = actions.querySelector('.pn-panel-actions-start');
+    if (start) {
+      if (launch.parentElement !== start) start.appendChild(launch);
+    } else if (launch.parentElement !== actions) {
       var before = actions.querySelector('.pn-toggle');
       actions.insertBefore(launch, before || null);
     }
-    if (notes && panel && panel.parentElement !== notes) {
-      if (actions && actions.parentElement === notes) notes.insertBefore(panel, actions);
+    if (window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.syncPanelActions === 'function') {
+      window.PrototypeNotesViewer.syncPanelActions();
+    }
+    if (panel.parentElement !== notes) {
+      if (actions.parentElement === notes) notes.insertBefore(panel, actions);
       else notes.appendChild(panel);
     }
   }
@@ -164,7 +174,10 @@
     launch.className = 'at-launch at-ui';
     launch.title = '原型工具';
     launch.setAttribute('aria-label', '原型工具');
-    launch.innerHTML = '<span class="at-launch-icon" aria-hidden="true"></span>';
+    launch.innerHTML =
+      '<svg class="at-launch-icon" viewBox="0 0 16 16" aria-hidden="true">' +
+      '<path d="M11.2 2.2a2.4 2.4 0 0 0-2.2 3.8L4.2 10.8a1.5 1.5 0 1 0 2.1 2.1l4.8-4.8a2.4 2.4 0 0 0 3.8-2.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '</svg>';
 
     panel = document.createElement('div');
     panel.className = 'at-panel at-ui';
@@ -211,10 +224,9 @@
     });
     document.addEventListener('keydown', handleKey);
 
-    var notes = document.querySelector('.pn-notes');
-    if (notes) {
-      new MutationObserver(attachShell).observe(notes, { childList: true });
-    }
+    // 只响应 Viewer 渲染完成事件；不要 MutationObserver 监听 notes，
+    // 否则 attachShell 搬 DOM 会再次触发观察者，造成重排抖动甚至丢按钮。
+    window.addEventListener('prototype-notes:rendered', attachShell);
     var page = document.querySelector('.pn-page');
     if (page) {
       new MutationObserver(function () {

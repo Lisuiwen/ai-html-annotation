@@ -105,7 +105,9 @@
   function render(container, session, meta) {
     if (!session) {
       container.innerHTML =
-        '<div class="at-edit-empty">按住 <kbd>Ctrl</kbd> 点击页面元素以选中。<br>普通点击保持页面交互。</div>' +
+        '<div class="at-edit-body">' +
+        '  <div class="at-edit-empty">按住 <kbd>Ctrl</kbd> 点击页面元素以选中。<br>普通点击保持页面交互。</div>' +
+        '</div>' +
         '<div class="at-edit-foot">' +
         '  <button type="button" class="at-btn" data-act="cancel" disabled>取消</button>' +
         '  <button type="button" class="at-btn" data-act="reset" disabled>重置该元素</button>' +
@@ -161,7 +163,8 @@
     }).join('') + '</div>';
 
     var dirty = session.isDirty();
-    container.innerHTML = identity + fieldsHtml +
+    container.innerHTML =
+      '<div class="at-edit-body">' + identity + fieldsHtml + '</div>' +
       '<div class="at-edit-foot">' +
       '  <button type="button" class="at-btn" data-act="cancel"' + (dirty ? '' : ' disabled') + '>取消</button>' +
       '  <button type="button" class="at-btn" data-act="reset">重置该元素</button>' +

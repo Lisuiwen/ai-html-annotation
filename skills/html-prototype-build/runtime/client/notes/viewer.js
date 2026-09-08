@@ -11,6 +11,7 @@
     notes: null,
     cards: null,
     actions: null,
+    actionsStart: null,
     svg: null,
     connections: [],
     drawTimer: 0,
@@ -43,12 +44,17 @@
       '.pn-line{fill:none;stroke:var(--ui-primary,#1677ff);stroke-width:2;opacity:.55}.pn-line.pn-highlighted{opacity:1;stroke-width:3}',
       '.pn-line-badge{fill:var(--ui-primary,#1677ff)}',
       '.pn-line-text{fill:var(--ui-text-on-primary,#fff);font-size:12px;font-weight:600;text-anchor:middle;dominant-baseline:central}',
-      '.pn-panel-actions{flex:0 0 auto;position:relative;z-index:2;display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:10px 0 0;margin-top:8px;border-top:1px solid var(--ui-border,#d9d9d9);background:var(--ui-bg-soft,#f5f5f5)}',
-      '.pn-toggle{display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid var(--ui-border,#d9d9d9);border-radius:50%;background:var(--ui-bg,#fff);color:var(--ui-text-secondary,#595959);box-shadow:0 4px 12px rgba(0,0,0,.12);cursor:pointer}',
-      '.pn-scene-switch{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 10px;border:1px solid var(--ui-border,#d9d9d9);border-radius:16px;background:var(--ui-bg,#fff);color:var(--ui-text-secondary,#595959);box-shadow:0 4px 12px rgba(0,0,0,.12);font-size:14px;line-height:1;cursor:pointer}',
+      '.pn-panel-actions{flex:0 0 auto;position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0 0;margin-top:8px;border-top:1px solid var(--ui-border,#d9d9d9);background:var(--ui-bg-soft,#f5f5f5)}',
+      '.pn-panel-actions-start{display:flex;align-items:center;gap:8px;flex:0 1 auto;min-width:0}',
+      '.pn-panel-actions-start>.pn-scene-switch,.pn-panel-actions-start>.pn-author-toolbar,.pn-panel-actions-start>.at-launch{flex:0 0 auto}',
+      '.pn-toggle{display:grid;place-items:center;flex:0 0 auto;width:32px;height:32px;padding:0;border:1px solid var(--ui-border,#d9d9d9);border-radius:50%;background:var(--ui-bg,#fff);color:var(--ui-text-secondary,#595959);box-shadow:0 4px 12px rgba(0,0,0,.12);cursor:pointer}',
+      '.pn-scene-switch{display:inline-flex;align-items:center;gap:6px;min-width:32px;height:32px;padding:0 10px;border:1px solid var(--ui-primary,#1677ff);border-radius:16px;background:var(--ui-primary,#1677ff);color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.12);font-size:14px;line-height:1;cursor:pointer}',
+      '.pn-scene-switch:hover{filter:brightness(.94)}',
+      '.pn-scene-switch-icon{flex:0 0 auto;display:block}',
+      '.pn-scene-switch-label{white-space:nowrap}',
       /* 折叠右栏时只保留展开钮；场景切换与作者加号一并隐藏。 */
       '.pn-page.pn-collapsed .pn-panel-actions{position:fixed;right:16px;bottom:16px;z-index:90;margin-top:0;padding:0;border-top:0;background:transparent}',
-      '.pn-page.pn-collapsed .pn-panel-actions .pn-scene-switch,.pn-page.pn-collapsed .pn-panel-actions .pn-author-toolbar{display:none!important}',
+      '.pn-page.pn-collapsed .pn-panel-actions .pn-scene-switch,.pn-page.pn-collapsed .pn-panel-actions .pn-author-toolbar,.pn-page.pn-collapsed .pn-panel-actions #at-launch{display:none!important}',
       '.pn-page.pn-collapsed~.pn-connections{display:none}',
       '.pn-mobile-toggle{display:none}',
       '[data-ui-interactive]{position:relative}',
@@ -114,12 +120,55 @@
     return window.PrototypeNotesModel.scenarioLabel(state.data && state.data.scenarios, id);
   }
 
-  /* 同步场景切换钮文案与位置（加号左侧；无加号时在折叠钮左侧）。 */
+  var sceneSwitchIcon =
+    '<svg class="pn-scene-switch-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">' +
+    '<path d="M6 4L2 8l4 4M10 12l4-4-4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '</svg>';
+
+  /* 左侧操作区：场景切换、新增说明与作者工具入口保持固定顺序。 */
+  function ensureActionsStart() {
+    if (!state.actions) return null;
+    if (!state.actionsStart || !state.actions.contains(state.actionsStart)) {
+      state.actionsStart = state.actions.querySelector('.pn-panel-actions-start');
+    }
+    if (!state.actionsStart) {
+      state.actionsStart = document.createElement('div');
+      state.actionsStart.className = 'pn-panel-actions-start';
+      var toggle = state.actions.querySelector('.pn-toggle');
+      if (toggle) state.actions.insertBefore(state.actionsStart, toggle);
+      else state.actions.appendChild(state.actionsStart);
+    }
+    return state.actionsStart;
+  }
+
+  /* 在 actions 子树内查找，避免 render 暂时 detach 时 document.querySelector/getElementById 找不到节点。 */
+  function findActionsChild(selector) {
+    if (!state.actions) return null;
+    return state.actions.querySelector(selector);
+  }
+
+  function syncPanelActions() {
+    var start = ensureActionsStart();
+    if (!start) return;
+    var ordered = [
+      findActionsChild('.pn-scene-switch'),
+      findActionsChild('.pn-author-toolbar'),
+      findActionsChild('#at-launch')
+    ].filter(Boolean);
+    ordered.forEach(function (el, index) {
+      if (start.children[index] !== el) start.insertBefore(el, start.children[index] || null);
+    });
+  }
+
+  /* 同步场景切换钮文案；重绘后仍留在左侧操作区首位。 */
   function ensureSceneSwitch() {
+    var start = ensureActionsStart();
+    if (!start || !state.actions) return;
     var ids = listScenarioIds();
-    var btn = state.actions.querySelector('.pn-scene-switch');
+    var btn = findActionsChild('.pn-scene-switch');
     if (ids.length < 2) {
       if (btn) btn.remove();
+      syncPanelActions();
       return;
     }
     if (!btn) {
@@ -128,19 +177,27 @@
       btn.type = 'button';
       btn.title = '切换场景';
       btn.setAttribute('aria-label', '切换场景');
+      btn.innerHTML = sceneSwitchIcon + '<span class="pn-scene-switch-label"></span>';
       btn.addEventListener('click', cycleScenario);
+      start.insertBefore(btn, start.firstChild);
+    } else if (btn.parentElement !== start) {
+      start.insertBefore(btn, start.firstChild);
     }
     var active = window.PrototypeViewers.getActiveScenario() || ids[0];
     var label = scenarioLabel(active);
-    btn.textContent = label;
+    var labelEl = btn.querySelector('.pn-scene-switch-label');
+    if (!labelEl) {
+      btn.innerHTML = sceneSwitchIcon + '<span class="pn-scene-switch-label"></span>';
+      labelEl = btn.querySelector('.pn-scene-switch-label');
+    }
+    labelEl.textContent = label;
     btn.title = '切换场景（当前：' + label + '）';
-    var before = state.actions.querySelector('.pn-author-toolbar') || state.actions.querySelector('.pn-toggle');
-    if (before) state.actions.insertBefore(btn, before);
-    else state.actions.appendChild(btn);
+    syncPanelActions();
   }
 
   /* 创建桌面收起按钮和移动端整页切换按钮。 */
   function buildControls(beforeNode) {
+    ensureActionsStart();
     var toggle = document.createElement('button');
     toggle.className = 'pn-toggle';
     toggle.type = 'button';
@@ -173,31 +230,38 @@
   /* 渲染当前可见说明卡片；目标数据仅用于连线，不在卡片内重复展示。 */
   function render() {
     var data = state.data;
-    if (state.actions.parentElement) state.actions.remove();
-    state.notes.innerHTML = '';
-    var head = document.createElement('div');
-    head.className = 'pn-head';
-    head.innerHTML = '<strong></strong><span></span>';
-    head.querySelector('strong').textContent = data.header && data.header.title || '功能说明';
-    head.querySelector('span').textContent = data.header && data.header.subtitle || '';
-    state.notes.appendChild(head);
+    try {
+      if (state.actions.parentElement) state.actions.remove();
+      state.notes.querySelectorAll('.pn-head, .pn-cards').forEach(function (el) { el.remove(); });
+      var head = document.createElement('div');
+      head.className = 'pn-head';
+      head.innerHTML = '<strong></strong><span></span>';
+      head.querySelector('strong').textContent = data.header && data.header.title || '功能说明';
+      head.querySelector('span').textContent = data.header && data.header.subtitle || '';
+      state.notes.appendChild(head);
 
-    state.cards = document.createElement('div');
-    state.cards.className = 'pn-cards';
-    visibleCards().forEach(function (card, index) {
-      var article = document.createElement('article');
-      article.className = 'pn-card';
-      article.dataset.noteId = card.id;
-      article.innerHTML = '<div class="pn-card-title"><span class="pn-index"></span><span class="pn-title-text"></span></div><p></p>';
-      article.querySelector('.pn-index').textContent = String(index + 1);
-      article.querySelector('.pn-title-text').textContent = card.title || '未命名说明';
-      article.querySelector('p').textContent = card.body || '';
-      bindHighlight(article, card.id);
-      state.cards.appendChild(article);
-    });
-    state.notes.appendChild(state.cards);
-    ensureSceneSwitch();
-    state.notes.appendChild(state.actions);
+      state.cards = document.createElement('div');
+      state.cards.className = 'pn-cards';
+      visibleCards().forEach(function (card, index) {
+        var article = document.createElement('article');
+        article.className = 'pn-card';
+        article.dataset.noteId = card.id;
+        article.innerHTML = '<div class="pn-card-title"><span class="pn-index"></span><span class="pn-title-text"></span></div><p></p>';
+        article.querySelector('.pn-index').textContent = String(index + 1);
+        article.querySelector('.pn-title-text').textContent = card.title || '未命名说明';
+        article.querySelector('p').textContent = card.body || '';
+        bindHighlight(article, card.id);
+        state.cards.appendChild(article);
+      });
+      state.notes.appendChild(state.cards);
+      ensureSceneSwitch();
+    } finally {
+      if (state.actions && state.actions.parentElement !== state.notes) state.notes.appendChild(state.actions);
+      syncPanelActions();
+    }
+    if (typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('prototype-notes:rendered'));
+    }
     scheduleDraw();
   }
 
@@ -438,6 +502,8 @@
     setData: setData,
     setPickCardId: setPickCardId,
     clearPickCardId: clearPickCardId,
+    syncPanelActions: syncPanelActions,
+    ensureActionsStart: ensureActionsStart,
     getData: function () { return state.data; }
   };
 

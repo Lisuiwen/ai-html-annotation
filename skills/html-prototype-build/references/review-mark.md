@@ -6,7 +6,14 @@
 
 Mark 是 `runtime/author/tools/mark/` 中的临时评审工具，不是右侧正式产品说明，也不写入 snapshot 或源 HTML。它通过本地作者服务动态加载。
 
-操作步骤见 [README.md](../README.md#评审打点)。
+## 操作步骤
+
+1. 按 [本地作者服务](local-authoring.md#启动) 启动作者服务并打开页面。
+2. 切到 Mark Tab（或按 `M`）。
+3. 按住 `Ctrl` / `⌘` 点击目标元素添加 pin。
+4. 在 Mark 面板中定位、删除、清空，或使用 `Copy all → For AI` 导出意见、selector 和 HTML 快照。
+
+Mark 数据只保存在当前页面 pathname 对应的浏览器 localStorage；不会修改 `prototype.html` 或 snapshot，因此交付前无需执行额外“移除 Mark 注入”步骤。
 
 ## Agent 边界
 

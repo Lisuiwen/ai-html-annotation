@@ -471,7 +471,6 @@
       actions.appendChild(remove);
       article.appendChild(actions);
     });
-    buildToolbar();
   }
 
   function bindEditable(element, getter, setter, multiline) {
@@ -484,9 +483,19 @@
   function buildToolbar() {
     var actions = document.querySelector('.pn-panel-actions');
     if (!actions) return null;
-    var existing = document.querySelector('.pn-author-toolbar');
-    if (existing && existing.parentElement === actions) return existing;
-    if (existing) existing.remove();
+    var start = actions.querySelector('.pn-panel-actions-start');
+    if (!start && window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.ensureActionsStart === 'function') {
+      start = window.PrototypeNotesViewer.ensureActionsStart();
+    }
+    if (!start) return null;
+    var existing = start.querySelector('.pn-author-toolbar') || actions.querySelector('.pn-author-toolbar');
+    if (existing) {
+      if (existing.parentElement !== start) start.appendChild(existing);
+      if (window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.syncPanelActions === 'function') {
+        window.PrototypeNotesViewer.syncPanelActions();
+      }
+      return existing;
+    }
     var toolbar = document.createElement('div');
     toolbar.className = 'pn-author-toolbar';
     toolbar.innerHTML = '<div class="pn-tool-icon pn-add-card" role="button" tabindex="0" title="新增说明" aria-label="新增说明">+</div>';
@@ -497,8 +506,26 @@
       event.preventDefault();
       addCard();
     });
-    actions.insertBefore(toolbar, actions.firstChild);
+    start.appendChild(toolbar);
+    if (window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.syncPanelActions === 'function') {
+      window.PrototypeNotesViewer.syncPanelActions();
+    }
     return toolbar;
+  }
+
+  var enhanceFrame = 0;
+
+  function scheduleEnhance() {
+    if (enhanceFrame) return;
+    enhanceFrame = requestAnimationFrame(function () {
+      enhanceFrame = 0;
+      enhance();
+    });
+  }
+
+  function onNotesRendered() {
+    buildToolbar();
+    scheduleEnhance();
   }
 
   function init() {
@@ -519,7 +546,8 @@
     document.addEventListener('click', handlePick, true);
     document.addEventListener('mousemove', handlePickPreview, true);
     document.addEventListener('keydown', handlePickKeydown, true);
-    new MutationObserver(enhance).observe(document.querySelector('.pn-notes'), { childList: true, subtree: true });
+    // 只跟随 Viewer 渲染事件增强卡片；不要观察 notes DOM，避免与底栏重排互相触发。
+    window.addEventListener('prototype-notes:rendered', onNotesRendered);
     if (window.PrototypeAuthor) window.PrototypeAuthor.register('notes-target', stopPick);
     window.addEventListener('beforeunload', function (event) {
       if (!saving && JSON.stringify(data) === revision) return;

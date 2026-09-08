@@ -47,6 +47,7 @@ test('Server 入口只装配 HTTP 路由，Snapshot 与 Inspector 逻辑由独�
   assert.doesNotMatch(source, /function validateSnapshot/);
   assert.doesNotMatch(source, /function injectTargets/);
   assert.doesNotMatch(source, /node:child_process/);
+  assert.match(source, /loadEnvFile\(join\(skillRoot, '\.env'\)\)/);
 });
 
 test('Server HTTP 集成守住资源边界并可写回 HTML / snapshot', async (t) => {

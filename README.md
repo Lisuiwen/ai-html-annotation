@@ -115,8 +115,10 @@ This fits admin consoles, config pages, and interaction prototypes that change o
 Requirements: Node.js 18+. Scenario screenshots also need a local Microsoft Edge or Google Chrome install.
 
 ```powershell
-# Open the sample with formal notes and Author Tools (use the printed 127.0.0.1 URL)
-node skills/html-prototype-build/runtime/server/index.mjs examples/minimal-notes/prototype.html --snapshot=examples/minimal-notes/prototype/notes.snapshot.js
+# Open the sample with formal notes and Author Tools
+node skills/html-prototype-build/runtime/server/index.mjs examples/minimal-notes/prototype.html --snapshot=prototype/notes.snapshot.js
+# Open in browser: http://127.0.0.1:4178/prototype.html
+# Stop the server: Ctrl+C in the terminal running the command
 ```
 
 ```powershell
@@ -126,7 +128,7 @@ node skills/html-prototype-build/runtime/cli/screenshot.mjs examples/minimal-not
 
 Install `skills/html-prototype-build/` into your agent skill path (keep the folder name `html-prototype-build`), then ask the agent to build or revise a prototype from your materials.
 
-The walkthrough sample is [`examples/minimal-notes`](examples/minimal-notes) (demo UI copy is Chinese). Human operator steps live in the [Skill handbook](skills/html-prototype-build/README.md); agent routing and hard constraints live in [`SKILL.md`](skills/html-prototype-build/SKILL.md). Those Skill docs are currently Chinese—use the commands above or ask an agent that can read them.
+The walkthrough sample is [`examples/minimal-notes`](examples/minimal-notes) (demo UI copy is Chinese). Human operator steps live in the Skill [references](skills/html-prototype-build/references/local-authoring.md); agent routing and hard constraints live in [`SKILL.md`](skills/html-prototype-build/SKILL.md). Those Skill docs are currently Chinese—use the commands above or ask an agent that can read them.
 
 ## Distribution layout
 
@@ -152,7 +154,7 @@ This is an AI-assisted HTML annotation and prototyping toolkit—not a productio
 ## Security boundaries
 
 - `runtime/server/index.mjs` binds to `127.0.0.1` only. Do not run authoring or screenshots against untrusted HTML or snapshot files.
-- Author write requests require same-origin localhost JSON; snapshot and source writes stay within the configured prototype workflow. Keep `runtime/server/.env` local for IDE selection; never commit it.
+- Author write requests require same-origin localhost JSON; snapshot and source writes stay within the configured prototype workflow. Keep `skills/html-prototype-build/.env` local for IDE selection; never commit it.
 - Mark is a temporary Author Tool. It stores review context in page-scoped `localStorage` and may copy it to the clipboard; it is never injected into the source HTML and is not part of the formal deliverable.
 - Do not put real credentials, production data, personal information, or unauthorized brand assets in prototypes.
 

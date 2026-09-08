@@ -14,12 +14,13 @@ export { injectTargets, resolveInspectorTarget } from './inspector.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const runtimeRoot = resolve(here, '..');
+const skillRoot = resolve(here, '../..');
 const input = process.argv.slice(2).find((arg) => !arg.startsWith('--'));
 const isDirectExecution = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 const portArg = process.argv.find((arg) => arg.startsWith('--port='));
 const port = Number(portArg && portArg.split('=')[1] || 4178);
 
-/* 读取 server 目录 .env；不覆盖已有 process.env，便于 CI/本机外层变量优先。 */
+/* 读取 skill 根目录 .env；不覆盖已有 process.env，便于 CI/本机外层变量优先。 */
 function loadEnvFile(filePath) {
   if (!existsSync(filePath)) return;
   readFileSync(filePath, 'utf8').split(/\r?\n/).forEach((raw) => {
@@ -34,7 +35,7 @@ function loadEnvFile(filePath) {
   });
 }
 
-loadEnvFile(join(here, '.env'));
+loadEnvFile(join(skillRoot, '.env'));
 
 const htmlPath = input ? resolve(input) : '';
 const root = htmlPath ? dirname(htmlPath) : '';

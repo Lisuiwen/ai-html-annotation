@@ -1,5 +1,5 @@
 # 本机 Inspector / Author Server 配置。
-skills/html-prototype-build/runtime/server/.env
+skills/html-prototype-build/.env
 
 # Agent / 本机临时产物。
 .agents/

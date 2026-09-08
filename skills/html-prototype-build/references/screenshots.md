@@ -4,7 +4,15 @@
 
 需要按显式场景批量生成纯页面截图，或验证 URL scene 对应组合业务状态时使用本入口。
 
-命令见 [README.md](../README.md#场景截图)，实现位于 `runtime/cli/screenshot.mjs`。
+实现位于 `runtime/cli/screenshot.mjs`。
+
+## 命令
+
+```bash
+node <skill-root>/runtime/cli/screenshot.mjs <prototype.html> --snapshot=prototype/notes.snapshot.js
+```
+
+工具按 `snapshot.scenarios` 生成 `screenshots/<scene-id>.png`，截图 URL 自动带 `collapsed=1&product-only=1`，隐藏说明和作者 UI。
 
 ## Agent 前置契约
 

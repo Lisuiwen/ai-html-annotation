@@ -7,7 +7,11 @@ const sourceUrl = new URL('../../../../../skills/html-prototype-build/runtime/au
 async function panelApi() { const source = await readFile(sourceUrl, 'utf8'); const window = {}; window.window = window; vm.runInNewContext(source, { window }, { filename: 'panel.js' }); return window.AuthorToolsEditPanel; }
 
 test('Panel 无 session 展示空态且操作按钮禁用', async () => {
-  const api = await panelApi(); const container = { innerHTML: '' }; api.render(container, null, {}); assert.match(container.innerHTML, /Ctrl/); assert.match(container.innerHTML, /data-act="save" disabled/); assert.match(container.innerHTML, /data-act="reset" disabled/);
+  const api = await panelApi(); const container = { innerHTML: '' }; api.render(container, null, {});
+  assert.match(container.innerHTML, /at-edit-body/);
+  assert.match(container.innerHTML, /Ctrl/);
+  assert.match(container.innerHTML, /data-act="save" disabled/);
+  assert.match(container.innerHTML, /data-act="reset" disabled/);
 });
 
 test('Panel 对 meta/value 做 HTML 转义', async () => {

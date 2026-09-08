@@ -58,7 +58,7 @@ test('NotesEditor 作者样式独立于 controller JS', async () => {
   assert.doesNotMatch(source, /function installStyles\(/);
   assert.doesNotMatch(source, /createElement\('style'\)/);
   assert.match(css, /\.pn-author-toolbar\s*\{/);
-  assert.match(css, /margin-right:\s*auto/);
-  assert.match(source, /actions\.insertBefore\(toolbar, actions\.firstChild\)/);
+  assert.match(source, /pn-panel-actions-start/);
+  assert.match(source, /syncPanelActions/);
   assert.match(css, /\.pn-pick-tooltip\s*\{/);
 });

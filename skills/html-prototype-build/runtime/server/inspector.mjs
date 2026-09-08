@@ -69,7 +69,7 @@ export function openIDE(filePath, line) {
   var candidates = configured ? [configured].concat(fallbacks.filter(function (item) { return item !== configured; })) : fallbacks;
   function tryNext(index) {
     if (index >= candidates.length) {
-      console.error('[inspector] 无法启动 IDE，请在 runtime/server/.env 配置 CODE_EDITOR，或手动打开：' + target);
+      console.error('[inspector] 无法启动 IDE，请在 <skill-root>/.env 配置 CODE_EDITOR，或手动打开：' + target);
       return;
     }
     var cmd = candidates[index];
