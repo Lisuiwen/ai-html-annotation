@@ -34,7 +34,9 @@
 
 ### 4. 文件结构
 
-- [ ] 根目录仅保留 `prototype.html`、`prototype/`、`screenshots/` 及按需 `assets/`
+- [ ] 最终产物位于独立 `<prototype-name>/` 上层目录，目录名稳定且文件系统安全
+- [ ] `<prototype-name>/AGENTS.md` 从 `templates/AGENTS.md` 原样复制
+- [ ] `<prototype-name>/` 仅保留 `AGENTS.md`、`prototype.html`、`prototype/`、`screenshots/` 及按需 `assets/`
 - [ ] 页面 CSS、业务 JS、snapshot、Client Runtime 均收进 `prototype/`
 - [ ] 脚本加载顺序：`notes.snapshot.js` → `display-mode.js` → `state.js` → `model.js` → `viewer.js` → `prototype.js`
 - [ ] 资源路径为相对路径，`file://` 可直接打开；`assets/` 若存在则不为空目录

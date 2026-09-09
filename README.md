@@ -95,7 +95,7 @@ Formal prototypes keep semantic DOM, stable anchors, the read-only Viewer, and r
 
 A typical prototype task yields three coordinated outputs:
 
-- **Runnable prototype files** — native HTML you can open locally or via the authoring server
+- **Self-contained handoff package** — a named directory with `AGENTS.md`, native HTML, and supporting files; `AGENTS.md` directs coding agents to annotations and screenshots rather than prototype implementation
 - **Reusable state definitions** — snapshot notes and `scenarios` as a stable baseline for later edits
 - **Multi-state screenshots** — batch PNGs for create / edit / empty / linked views without the notes rail, connectors, or author tools
 

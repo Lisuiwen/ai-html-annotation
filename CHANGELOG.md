@@ -2,6 +2,24 @@
 
 All notable changes to AI HTML Annotation will be documented in this file.
 
+## v0.3.0 — 2026-09-09
+
+### Added
+
+- Final prototype deliveries now use a self-contained named parent directory with `AGENTS.md`, the runnable HTML, supporting files, and scenario screenshots.
+- A concise Coding Agent handoff template directs implementation work to product annotations and screenshots, with anchor-scoped HTML lookup only when necessary.
+
+### Changed
+
+- The delivery contract and checklist now require copying the handoff template into every final prototype package.
+- The minimal example includes the same handoff file and verifies it stays synchronized with the Skill template.
+
+### Install / update
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+```
+
 ## v0.2.1 — 2026-09-08
 
 ### Fixed

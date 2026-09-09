@@ -10,7 +10,7 @@
 
 ## 1. 适用范围与优先级
 
-本契约约束后续 AI 生成的所有单页 HTML 产品原型。根目录仅保留页面入口 HTML；配套 CSS、业务 JS、状态数据与运行时收进 `prototype/`。发生冲突时按以下顺序执行：
+本契约约束后续 AI 生成的所有单页 HTML 产品原型。每个交付物使用独立上层目录；目录内只保留页面入口 HTML、交接说明和按职责归档的配套文件。发生冲突时按以下顺序执行：
 
 1. 用户在当前任务中的明确要求。
 2. 当前所选 UI foundation 的 `design-system.md`、foundation 契约与基础源文件。
@@ -77,20 +77,24 @@ Notes Viewer 负责 `?scene=<id>` 与 `?collapsed=1` 的恢复；`runtime/client
 所有原型统一生成：
 
 ```text
-prototype.html
-prototype/
-├─ prototype.css
-├─ prototype.js
-├─ notes.snapshot.js
-├─ display-mode.js
-├─ state.js
-├─ model.js
-└─ viewer.js
-screenshots/
-assets/
+<prototype-name>/
+├─ AGENTS.md
+├─ prototype.html
+├─ prototype/
+│  ├─ prototype.css
+│  ├─ prototype.js
+│  ├─ notes.snapshot.js
+│  ├─ display-mode.js
+│  ├─ state.js
+│  ├─ model.js
+│  └─ viewer.js
+├─ screenshots/
+└─ assets/
 ```
 
-- 根目录只允许 `prototype.html`、`prototype/`、`screenshots/`，以及按需创建的 `assets/`；不要散落 CSS、JS、snapshot 或运行时文件。
+- `<prototype-name>/` 是完整、可独立交接的最终产物目录；名称来自当前任务，使用稳定且文件系统安全的名称。
+- 从 `templates/AGENTS.md` 原样复制为 `<prototype-name>/AGENTS.md`。它规定下游 Coding Agent 只能从 snapshot、截图和按锚点定位的 HTML 局部提取产品信息，不得将原型实现迁入目标工程。
+- `<prototype-name>/` 内只允许 `AGENTS.md`、`prototype.html`、`prototype/`、`screenshots/`，以及按需创建的 `assets/`；不要散落 CSS、JS、snapshot 或运行时文件。
 - HTML 在 `<head>` 中加载 `./prototype/prototype.css`，在 `</body>` 前依次加载 `./prototype/notes.snapshot.js`、`./prototype/display-mode.js`、`./prototype/state.js`、`./prototype/model.js`、`./prototype/viewer.js` 与 `./prototype/prototype.js`。路径必须相对 HTML，可在 `file://` 下直接双击使用。
 - `prototype.html` 保留可读页面 DOM、稳定锚点和少量资源引用；禁止内联大段 CSS 或业务脚本。
 - 正式 Client Runtime 使用四个原样副本：`prototype/display-mode.js` 从 `runtime/client/core/display-mode.js` 复制，`prototype/state.js` 从 `runtime/client/core/state.js` 复制，`prototype/model.js` 从 `runtime/client/notes/model.js` 复制，`prototype/viewer.js` 从 `runtime/client/notes/viewer.js` 复制；不得把四者重新合并进单个 Viewer 文件。
