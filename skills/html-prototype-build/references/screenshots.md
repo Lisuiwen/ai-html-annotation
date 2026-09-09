@@ -12,7 +12,7 @@
 node <skill-root>/runtime/cli/screenshot.mjs <prototype.html> --snapshot=prototype/notes.snapshot.js
 ```
 
-工具按 `snapshot.scenarios` 生成 `screenshots/<scene-id>.png`，截图 URL 自动带 `collapsed=1&product-only=1`，隐藏说明和作者 UI。
+工具按 `snapshot.scenarios` 在 HTML 所在交付目录生成 `screenshots/<scene-id>.png`，截图 URL 自动带 `collapsed=1&product-only=1`，隐藏说明和作者 UI。
 
 ## Agent 前置契约
 

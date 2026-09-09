@@ -9,7 +9,7 @@
 | 范围 | 规则 |
 |------|------|
 | 作者 / 评审会话 | Author Tools 由 `runtime/server/index.mjs` 动态注入；Direct Edit、Mark、Notes Editor、Inspector 均不写入正式 HTML。Direct Edit 经服务端写回源 HTML；Mark pin 只存在于浏览器 localStorage。 |
-| 正式交付稿 | HTML 不得含 Author Bootstrap、Direct Edit、Notes Editor、Inspector、源码定位 token 或内联标注编辑脚本。正式说明只来自 snapshot + Client Runtime。 |
+| 正式交付稿 | 以独立 `<prototype-name>/` 目录交付；其中 `AGENTS.md` 从模板原样复制。HTML 不得含 Author Bootstrap、Direct Edit、Notes Editor、Inspector、源码定位 token 或内联标注编辑脚本。正式说明只来自 snapshot + Client Runtime。 |
 
 正式文件结构与 runtime 复制规则见 [generation-contract.md §7](generation-contract.md#7-交付文件)。交付前按 [交付复检清单](delivery-checklist.md) 逐项核对。
 

@@ -4,6 +4,8 @@ import test from 'node:test';
 import vm from 'node:vm';
 
 const sourceUrl = new URL('../../../examples/minimal-notes/prototype/prototype.js', import.meta.url);
+const handoffTemplateUrl = new URL('../../../skills/html-prototype-build/templates/AGENTS.md', import.meta.url);
+const handoffExampleUrl = new URL('../../../examples/minimal-notes/AGENTS.md', import.meta.url);
 
 function classList() {
   const values = new Set();
@@ -115,6 +117,14 @@ async function boot() {
   vm.runInNewContext(source, { window, document, console, Object, Array, Boolean }, { filename: 'prototype.js' });
   return { adapter, ids, activated, patches, focusLog };
 }
+
+test('示例交接说明与 Skill 模板一致', async () => {
+  const [template, example] = await Promise.all([
+    readFile(handoffTemplateUrl, 'utf8'),
+    readFile(handoffExampleUrl, 'utf8')
+  ]);
+  assert.equal(example, template);
+});
 
 test('示例 Adapter 规范化 page、layers 与 select 局部状态', async () => {
   const { adapter } = await boot();
