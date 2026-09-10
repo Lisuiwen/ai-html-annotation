@@ -1,5 +1,5 @@
 <style>
-  /* Header 高度由组件声明，Application Shell 复用该 Token。 */
+  /* Header height is declared by the component; Application Shell reuses this token. */
   :root { --ui-header-height: 64px; }
   .ui-header {
     position: sticky;
@@ -39,7 +39,7 @@
     text-decoration: none;
     font-size: 16px;
   }
-  /* ponytail: 顶部导航选中态未采集；取得真实状态截图后替换当前近似。 */
+  /* ponytail: top nav selected state not captured; replace current approximation with real state screenshot when available. */
   .ui-topnav a[aria-current="page"] { color: var(--ui-primary); box-shadow: inset 0 -2px var(--ui-primary); }
   .ui-header-actions {
     display: flex;
@@ -53,10 +53,10 @@
 <header class="ui-header" id="uiHeader">
   <div class="ui-brand" id="uiBrand">
     <span class="ui-brand-mark" aria-hidden="true">UI</span>
-    <span>系统名称</span>
+    <span>System name</span>
   </div>
-  <nav class="ui-topnav" id="uiTopnav" aria-label="一级导航">
-    <a href="#" aria-current="page">当前模块</a>
+  <nav class="ui-topnav" id="uiTopnav" aria-label="Primary navigation">
+    <a href="#" aria-current="page">Current module</a>
   </nav>
   <div class="ui-header-actions" id="uiHeaderActions"><!-- slot: optional action.button --></div>
 </header>

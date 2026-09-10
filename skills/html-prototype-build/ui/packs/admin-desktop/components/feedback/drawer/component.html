@@ -1,19 +1,19 @@
 <style>
-  /* ponytail: Drawer 视觉未采集；取得真实状态后替换当前近似。 */
+  /* ponytail: Drawer visuals not captured; replace current approximation with real state when available. */
   .ui-drawer-overlay { justify-content: flex-end; }
   .ui-drawer { width: min(420px, 92vw); height: 100%; background: var(--ui-bg); }
 </style>
 
-<!-- 将本结构放入左侧产品区 .ui-preview。 -->
-<button class="ui-button ui-button--primary" id="uiDemoDrawerOpen" type="button" aria-controls="uiDemoDrawer" aria-haspopup="dialog">打开 Drawer</button>
+<!-- Place this structure in the left product area .ui-preview. -->
+<button class="ui-button ui-button--primary" id="uiDemoDrawerOpen" type="button" aria-controls="uiDemoDrawer" aria-haspopup="dialog">Open Drawer</button>
 <div class="ui-overlay ui-drawer-overlay" id="uiDemoDrawer" role="dialog" aria-modal="true" aria-labelledby="uiDrawerTitle" aria-hidden="true" hidden>
-  <!-- 标注连线绑定内层面板 id（{overlayId}Panel），遮罩 id 仅用于 Adapter / ARIA。 -->
+  <!-- Annotation wiring binds to inner panel id ({overlayId}Panel); overlay id is for Adapter / ARIA only. -->
   <aside class="ui-drawer" id="uiDemoDrawerPanel">
     <div class="ui-layer-head">
-      <strong id="uiDrawerTitle">Drawer 标题</strong>
-      <button class="ui-button ui-button--icon" id="uiDemoDrawerClose" type="button" aria-label="关闭">×</button>
+      <strong id="uiDrawerTitle">Drawer title</strong>
+      <button class="ui-button ui-button--icon" id="uiDemoDrawerClose" type="button" aria-label="Close">×</button>
     </div>
-    <div class="ui-layer-body">通用内容区域</div>
+    <div class="ui-layer-body">General content area</div>
   </aside>
 </div>
 

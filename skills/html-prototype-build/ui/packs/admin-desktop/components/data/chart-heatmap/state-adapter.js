@@ -1,10 +1,10 @@
-/* Heatmap 局部状态投影。 */
+/* Heatmap local state projection. */
 (function () {
   'use strict';
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
   var core = window.PrototypeChartCore;
 
-  /** 归一化热力图状态。 */
+  /** Normalize heatmap state. */
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : {};
     return {
@@ -16,17 +16,17 @@
     };
   }
 
-  /** 渲染热力图。 */
+  /** Render heatmap. */
   function render(root, value) {
     if (!root || !core) return;
     var state = normalize(value);
     core.renderLeaf(root, state, {
       preset: 'heatmap',
-      emptyText: '暂无热力数据',
+      emptyText: 'No heatmap data',
       summary: function (s) {
         var xs = s.xCategories || ['0', '4', '8', '12', '16', '20'];
-        var ys = s.yCategories || ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
-        return ys.length + '×' + xs.length + ' 活跃分布';
+        var ys = s.yCategories || ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        return ys.length + '×' + xs.length + ' Activity distribution';
       }
     });
   }

@@ -1,8 +1,8 @@
-/* 单日期局部状态投影：仅渲染已给定值和可见状态，不处理日历计算。 */
+/* Single date local state projection: renders given values and visibility only; does not handle calendar computation. */
 (function () {
   'use strict';
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
-  /* 归一化单日期状态，未知状态回退默认展示。 */
+  /* Normalize single date state; unknown states fall back to default display. */
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : {};
     var status = ['default', 'error', 'disabled'].indexOf(state.status) !== -1 ? state.status : 'default';
@@ -12,7 +12,7 @@
       status: status
     };
   }
-  /* 同步触发器的值、展开、错误和禁用语义。 */
+  /* Sync trigger value, expanded, error, and disabled semantics. */
   function render(root, value) {
     if (!root) return;
     var state = normalize(value);
@@ -24,7 +24,7 @@
       trigger.disabled = state.status === 'disabled';
       trigger.setAttribute('aria-expanded', String(state.open));
     }
-    if (output) output.textContent = state.value || '请选择日期';
+    if (output) output.textContent = state.value || 'Please select date';
   }
   adapters['form.date-picker'] = { normalize: normalize, render: render };
 })();

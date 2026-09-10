@@ -1,13 +1,13 @@
-/* Tooltip 局部状态投影：控制可见性与提示文案。 */
+/* Tooltip local state projection: controls visibility and tooltip text. */
 (function () {
   'use strict';
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
-  /* 归一化 Tooltip 的 open 与 text。 */
+  /* Normalize Tooltip open and text. */
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : {};
     return { open: !!state.open, text: typeof state.text === 'string' ? state.text : '' };
   }
-  /* 同步触发器描述关系与浮层可见性、文案。 */
+  /* Sync trigger description relationship, panel visibility, and copy. */
   function render(root, value) {
     if (!root) return;
     var state = normalize(value);

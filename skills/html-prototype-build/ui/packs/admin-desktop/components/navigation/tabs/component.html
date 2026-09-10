@@ -9,7 +9,7 @@
     border: 0;
     background: transparent;
   }
-  /* ponytail: Tabs 选中态未采集；取得真实状态后替换当前近似。 */
+  /* ponytail: Tabs selected state not captured; replace current approximation with real state when available. */
   .ui-tab[aria-selected="true"] { color: var(--ui-primary); }
   .ui-tab[aria-selected="true"]::after {
     position: absolute;
@@ -25,12 +25,12 @@
 </style>
 
 <div class="ui-tabs-root" id="uiTabs">
-  <div class="ui-tabs" role="tablist" aria-label="内容分组">
+  <div class="ui-tabs" role="tablist" aria-label="Content groups">
     <div class="ui-tab-list">
-      <button class="ui-tab" id="uiTabOne" type="button" role="tab" aria-selected="true" aria-controls="uiPanelOne">分组一</button>
-      <button class="ui-tab" id="uiTabTwo" type="button" role="tab" aria-selected="false" aria-controls="uiPanelTwo">分组二</button>
+      <button class="ui-tab" id="uiTabOne" type="button" role="tab" aria-selected="true" aria-controls="uiPanelOne">Group 1</button>
+      <button class="ui-tab" id="uiTabTwo" type="button" role="tab" aria-selected="false" aria-controls="uiPanelTwo">Group 2</button>
     </div>
   </div>
-  <div class="ui-tab-panel" id="uiPanelOne" role="tabpanel" aria-labelledby="uiTabOne">内容一</div>
-  <div class="ui-tab-panel" id="uiPanelTwo" role="tabpanel" aria-labelledby="uiTabTwo" hidden>内容二</div>
+  <div class="ui-tab-panel" id="uiPanelOne" role="tabpanel" aria-labelledby="uiTabOne">Content 1</div>
+  <div class="ui-tab-panel" id="uiPanelTwo" role="tabpanel" aria-labelledby="uiTabTwo" hidden>Content 2</div>
 </div>

@@ -25,7 +25,7 @@
   .ui-upload--dragger .ui-upload-dragger { display: flex; align-items: center; justify-content: center; }
   .ui-upload.is-disabled .ui-upload-button,
   .ui-upload.is-disabled .ui-upload-dragger { color: var(--ui-text-disabled); cursor: not-allowed; opacity: 0.55; }
-  /* ponytail: 真实文件选择与拖拽未采集；取得真实交互证据后补充 input[type=file] 与拖放事件。 */
+  /* ponytail: real file selection and drag-drop not captured; add input[type=file] and drag-drop events after capturing real interaction evidence. */
   .ui-upload-list { display: grid; gap: var(--ui-space-2); margin: 0; padding: 0; list-style: none; }
   .ui-upload-list-item {
     display: grid;
@@ -38,7 +38,7 @@
   .ui-upload-list-item-name { overflow: hidden; color: var(--ui-text); text-overflow: ellipsis; white-space: nowrap; }
   .ui-upload-list-item.is-error { border-color: var(--ui-error); background: var(--ui-error-bg); }
   .ui-upload-list-item-status { color: var(--ui-error); font-size: var(--ui-font-size-caption); }
-  /* ponytail: uploading 进度条视觉为近似；取得真实上传态后替换。 */
+  /* ponytail: uploading progress bar visuals are approximate; replace with real upload state when available. */
   .ui-upload-list-item-progress {
     overflow: hidden;
     height: 4px;
@@ -55,7 +55,7 @@
 </style>
 
 <div class="ui-upload ui-upload--button" id="uiUpload">
-  <button class="ui-upload-button" type="button">点击上传</button>
-  <div class="ui-upload-dragger">拖拽文件到此处或点击上传</div>
+  <button class="ui-upload-button" type="button">Click to upload</button>
+  <div class="ui-upload-dragger">Drag files here or click to upload</div>
   <ul class="ui-upload-list" role="list"></ul>
 </div>

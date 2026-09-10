@@ -1,8 +1,8 @@
-/* Popover 局部状态投影：控制可见性与标题；内容区保留 DOM。 */
+/* Popover local state projection: controls visibility and title; content area retains DOM. */
 (function () {
   'use strict';
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
-  /* 归一化 Popover 的 open 与可选 title。 */
+  /* Normalize Popover open and optional title. */
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : {};
     return {
@@ -10,7 +10,7 @@
       title: typeof state.title === 'string' ? state.title : undefined
     };
   }
-  /* 同步触发器、浮层可见性与标题区域。 */
+  /* Sync trigger, panel visibility, and title area. */
   function render(root, value) {
     if (!root) return;
     var state = normalize(value);

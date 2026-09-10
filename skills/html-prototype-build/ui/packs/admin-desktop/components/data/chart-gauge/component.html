@@ -5,13 +5,13 @@
   .ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }
   .ui-chart[data-status="empty"] .ui-chart-data { display: none; }
   .ui-chart[data-status="data"] .ui-chart-empty { display: none; }
-  /* ponytail: 指针动画时长与分段阈值样式未采集正式规范。 */
+  /* ponytail: pointer animation duration and segment threshold styles not captured from formal spec. */
 </style>
 <section class="ui-chart ui-chart-gauge" id="uiChartGauge" data-status="data" aria-labelledby="uiChartGaugeTitle">
-  <h2 class="ui-visually-hidden" id="uiChartGaugeTitle">完成率</h2>
+  <h2 class="ui-visually-hidden" id="uiChartGaugeTitle">Completion rate</h2>
   <div class="ui-chart-data">
-    <div class="ui-chart-canvas" role="img" aria-label="当前完成率仪表盘"></div>
+    <div class="ui-chart-canvas" role="img" aria-label="Current completion rate gauge"></div>
   </div>
-  <div class="ui-chart-empty" hidden>暂无指标数据</div>
-  <div class="ui-chart-summary" aria-live="polite">当前完成率 72%</div>
+  <div class="ui-chart-empty" hidden>No metric data</div>
+  <div class="ui-chart-summary" aria-live="polite">Current completion rate 72%</div>
 </section>

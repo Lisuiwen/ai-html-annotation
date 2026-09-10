@@ -1,10 +1,10 @@
-/* Data Table 局部状态投影：表格生命周期和可选行选择均由同一业务字段驱动。 */
+/* Data Table local state projection: table lifecycle and optional row selection are driven by the same business field. */
 (function () {
   'use strict';
 
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
 
-  /* 限制组件可渲染的数据状态，并规范可选行选择集合。 */
+  /* Restrict renderable data states and normalize optional row selection set. */
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : null;
     var status = state ? state.status : value;
@@ -19,14 +19,14 @@
     };
   }
 
-  /* 通过 hidden 渲染生命周期，并投影已有选择列的选中语义。 */
+  /* Render lifecycle via hidden and project selection semantics for existing selection column. */
   function render(root, value) {
     if (!root) return;
     var state = normalize(value);
     var status = state.status;
     var table = root.querySelector('.ui-table-data');
     var empty = root.querySelector('.ui-table-state:not([aria-label])');
-    var loading = root.querySelector('.ui-table-state[aria-label="正在加载"]');
+    var loading = root.querySelector('.ui-table-state[aria-label="Loading..."]');
     if (table) table.hidden = status !== 'data';
     if (empty) empty.hidden = status !== 'empty';
     if (loading) loading.hidden = status !== 'loading';

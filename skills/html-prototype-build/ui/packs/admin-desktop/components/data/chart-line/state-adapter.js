@@ -1,10 +1,10 @@
-/* Line Chart 局部状态投影。 */
+/* Line Chart local state projection. */
 (function () {
   'use strict';
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
   var core = window.PrototypeChartCore;
 
-  /** 归一化折线图状态；demo 默认值由 preset 提供。 */
+  /** Normalize line chart state; demo defaults provided by preset. */
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : {};
     var series = Array.isArray(state.series) ? state.series : null;
@@ -22,19 +22,19 @@
     };
   }
 
-  /** 渲染折线图。 */
+  /** Render line chart. */
   function render(root, value) {
     if (!root || !core) return;
     core.renderLeaf(root, normalize(value), {
       preset: 'line',
-      emptyText: '暂无趋势数据',
+      emptyText: 'No trend data',
       summary: function (state) {
         var series = state.series || [
-          { key: 'primary', name: '本期' },
-          { key: 'success', name: '上期' }
+          { key: 'primary', name: 'Current period' },
+          { key: 'success', name: 'Previous period' }
         ];
         var visible = state.visibleSeries || series.map(function (item) { return item.key; });
-        return '当前显示：' + series.filter(function (item) {
+        return 'Currently showing: ' + series.filter(function (item) {
           return visible.indexOf(item.key) !== -1;
         }).map(function (item) { return item.name; }).join('、');
       }

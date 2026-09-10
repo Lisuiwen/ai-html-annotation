@@ -13,14 +13,14 @@
   .ui-tree-children { display: grid; gap: var(--ui-space-1); padding-left: var(--ui-space-6); }
 </style>
 
-<!-- ponytail: 当前是带展开按钮的普通层级列表；取得完整键盘行为记录后才能升级为 ARIA Tree。 -->
+<!-- ponytail: currently a plain hierarchical list with expand buttons; upgrade to ARIA Tree after capturing full keyboard behavior. -->
 <ul class="ui-tree" id="uiTree">
   <li class="ui-tree-node" id="uiTreeRoot">
     <div class="ui-tree-row">
-      <button class="ui-tree-toggle" type="button" aria-label="折叠分组" aria-expanded="true" aria-controls="uiTreeRootChildren">⌄</button>
-      <span>分组</span>
+      <button class="ui-tree-toggle" type="button" aria-label="Collapse group" aria-expanded="true" aria-controls="uiTreeRootChildren">⌄</button>
+      <span>Group</span>
     </div>
-    <ul class="ui-tree-children" id="uiTreeRootChildren"><li>子项</li></ul>
+    <ul class="ui-tree-children" id="uiTreeRootChildren"><li>Child item</li></ul>
   </li>
 </ul>
 

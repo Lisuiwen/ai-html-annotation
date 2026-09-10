@@ -1,10 +1,10 @@
-/* Donut Chart 局部状态投影。 */
+/* Donut Chart local state projection. */
 (function () {
   'use strict';
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
   var core = window.PrototypeChartCore;
 
-  /** 归一化环图状态。 */
+  /** Normalize donut chart state. */
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : {};
     var items = Array.isArray(state.items) ? state.items : null;
@@ -21,20 +21,20 @@
     };
   }
 
-  /** 渲染环图。 */
+  /** Render donut chart. */
   function render(root, value) {
     if (!root || !core) return;
     core.renderLeaf(root, normalize(value), {
       preset: 'donut',
-      emptyText: '暂无构成数据',
+      emptyText: 'No composition data',
       summary: function (state) {
         var items = state.items || [
-          { key: 'primary', name: '线上' },
-          { key: 'success', name: '线下' },
-          { key: 'warning', name: '转介绍' }
+          { key: 'primary', name: 'Online' },
+          { key: 'success', name: 'Offline' },
+          { key: 'warning', name: 'Referral' }
         ];
         var visible = state.visibleKeys || items.map(function (item) { return item.key; });
-        return '构成：' + items.filter(function (item) {
+        return 'Composition: ' + items.filter(function (item) {
           return visible.indexOf(item.key) !== -1;
         }).map(function (item) { return item.name; }).join('、');
       }

@@ -21,7 +21,7 @@
   .ui-table-wrap.has-selection .ui-table-selection { display: table-cell; }
   .ui-table input[type="checkbox"] { accent-color: var(--ui-primary); }
   .ui-table tbody tr:has(input[type="checkbox"]:checked) { background: var(--ui-info-bg); }
-  /* ponytail: 表格行 hover 未采集；取得真实状态后替换当前近似。 */
+  /* ponytail: table row hover not captured; replace current approximation with real state when available. */
   .ui-table tbody tr:hover { background: var(--ui-bg-soft); }
   .ui-table-state {
     display: grid;
@@ -32,7 +32,7 @@
   }
   .ui-table-state[hidden], .ui-table-data[hidden] { display: none; }
   .ui-empty-icon { font-size: 32px; color: var(--ui-text-disabled); }
-  /* ponytail: 加载骨架未采集；取得真实 loading 状态后替换当前近似。 */
+  /* ponytail: loading skeleton not captured; replace current approximation with real loading state when available. */
   .ui-loading-lines { display: grid; width: 180px; gap: var(--ui-space-2); }
   .ui-loading-line { height: var(--ui-table-cell-padding); border-radius: var(--ui-space-1); background: var(--ui-border-soft); }
   .ui-loading-line:nth-child(2) { width: 70%; }
@@ -40,13 +40,13 @@
 
 <div class="ui-table-wrap" id="uiTableWrap">
   <table class="ui-table ui-table-data" id="uiDataTable">
-    <thead><tr><th class="ui-table-selection"><input type="checkbox" data-selection-all aria-label="全选当前页"></th><th>名称</th><th>状态</th><th>操作</th></tr></thead>
-    <tbody><tr><td class="ui-table-selection"><input type="checkbox" data-selection-key="item-1" aria-label="选择示例条目"></td><td>示例条目</td><td>状态</td><td>操作</td></tr></tbody>
+    <thead><tr><th class="ui-table-selection"><input type="checkbox" data-selection-all aria-label="Select all on this page"></th><th>Name</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody><tr><td class="ui-table-selection"><input type="checkbox" data-selection-key="item-1" aria-label="Select sample item"></td><td>Sample item</td><td>Status</td><td>Actions</td></tr></tbody>
   </table>
   <div class="ui-table-state" id="uiTableEmpty" hidden>
-    <div><div class="ui-empty-icon" aria-hidden="true">□</div><div>暂无数据</div></div>
+    <div><div class="ui-empty-icon" aria-hidden="true">□</div><div>No data</div></div>
   </div>
-  <div class="ui-table-state" id="uiTableLoading" aria-label="正在加载" hidden>
+  <div class="ui-table-state" id="uiTableLoading" aria-label="Loading..." hidden>
     <div class="ui-loading-lines"><span class="ui-loading-line"></span><span class="ui-loading-line"></span></div>
   </div>
 </div>

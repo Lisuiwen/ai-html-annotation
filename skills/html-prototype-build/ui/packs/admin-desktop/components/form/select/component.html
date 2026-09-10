@@ -15,9 +15,9 @@
     background: var(--ui-bg);
     cursor: pointer;
   }
-  /* ponytail: focus 视觉未采集；取得真实焦点态后替换当前近似。 */
+  /* ponytail: focus visuals not captured; replace current approximation with real focus state when available. */
   .ui-select-trigger:focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 1px; }
-  /* ponytail: 下拉层与选项状态未采集；取得真实展开态后替换当前近似。 */
+  /* ponytail: dropdown layer and option states not captured; replace current approximation with real expanded state when available. */
   .ui-select-menu {
     position: absolute;
     top: calc(100% + var(--ui-space-1));
@@ -48,13 +48,13 @@
 </style>
 
 <label class="ui-select-field">
-  <span>字段名称</span>
+  <span>Field label</span>
   <div class="ui-select" id="uiSelect">
     <button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-controls="uiSelectOptions" aria-expanded="false">
-      <span class="ui-select-value">请选择</span><span aria-hidden="true">⌄</span>
+      <span class="ui-select-value">Please select</span><span aria-hidden="true">⌄</span>
     </button>
     <div class="ui-select-menu" id="uiSelectOptions" role="listbox">
-      <button class="ui-select-option" type="button" role="option" aria-selected="false">选项一</button>
+      <button class="ui-select-option" type="button" role="option" aria-selected="false">Option 1</button>
     </div>
   </div>
 </label>

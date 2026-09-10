@@ -5,13 +5,13 @@
   .ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }
   .ui-chart[data-status="empty"] .ui-chart-data { display: none; }
   .ui-chart[data-status="data"] .ui-chart-empty, .ui-chart[data-status="loading"] .ui-chart-empty { display: none; }
-  /* ponytail: 扇区选中交互当前由 ECharts emphasis 近似，未单独实现中心标签联动。 */
+  /* ponytail: sector selection interaction currently approximated by ECharts emphasis; center label linkage not implemented separately. */
 </style>
 <section class="ui-chart ui-chart-donut" id="uiChartDonut" data-status="data" aria-labelledby="uiChartDonutTitle">
-  <h2 class="ui-visually-hidden" id="uiChartDonutTitle">来源构成</h2>
+  <h2 class="ui-visually-hidden" id="uiChartDonutTitle">Source composition</h2>
   <div class="ui-chart-data">
-    <div class="ui-chart-canvas" role="img" aria-label="线上、线下和转介绍三个来源的构成占比"></div>
+    <div class="ui-chart-canvas" role="img" aria-label="Share of three sources: online, offline, referral"></div>
   </div>
-  <div class="ui-chart-empty" hidden>暂无构成数据</div>
-  <div class="ui-chart-summary" aria-live="polite">构成：线上、线下、转介绍</div>
+  <div class="ui-chart-empty" hidden>No composition data</div>
+  <div class="ui-chart-summary" aria-live="polite">Composition: online, offline, referral</div>
 </section>
