@@ -118,7 +118,7 @@
       "category": "form",
       "keywords": [
         "field",
-        "表单项",
+        "form item",
         "in-box label"
       ],
       "contract": "components/form/field/COMPONENT.md",
@@ -135,7 +135,7 @@
     "form.search": {
       "category": "form",
       "keywords": [
-        "search框",
+        "search box",
         "keyword search",
         "combined search"
       ],
@@ -149,8 +149,8 @@
     "form.select": {
       "category": "form",
       "keywords": [
-        "选择器",
         "select",
+        "dropdown",
         "filter option"
       ],
       "contract": "components/form/select/COMPONENT.md",
@@ -172,8 +172,8 @@
     "data.filter-bar": {
       "category": "data",
       "keywords": [
-        "筛选栏",
-        "查询条件",
+        "filter bar",
+        "query criteria",
         "filter area"
       ],
       "contract": "components/data/filter-bar/COMPONENT.md",
@@ -189,7 +189,7 @@
       "category": "data",
       "keywords": [
         "toolbar",
-        "list操作",
+        "list actions",
         "action area"
       ],
       "contract": "components/data/toolbar/COMPONENT.md",
@@ -202,9 +202,9 @@
     "data.tag": {
       "category": "data",
       "keywords": [
-        "label",
-        "状态label",
-        "分类label"
+        "tag",
+        "status tag",
+        "category tag"
       ],
       "contract": "components/data/tag/COMPONENT.md",
       "source": "components/data/tag/component.html",
@@ -214,7 +214,7 @@
       "category": "data",
       "keywords": [
         "table",
-        "数据table",
+        "data table",
         "empty state",
         "loading state"
       ],
@@ -231,7 +231,7 @@
       "category": "data",
       "keywords": [
         "pagination",
-        "pagination"
+        "page navigation"
       ],
       "contract": "components/data/pagination/COMPONENT.md",
       "source": "components/data/pagination/component.html",
@@ -251,7 +251,7 @@
     "feedback.alert": {
       "category": "feedback",
       "keywords": [
-        "alert条",
+        "alert",
         "notice",
         "Alert"
       ],
@@ -278,7 +278,7 @@
       "category": "feedback",
       "keywords": [
         "drawer",
-        "drawer",
+        "side panel",
         "Drawer"
       ],
       "contract": "components/feedback/drawer/COMPONENT.md",
@@ -293,7 +293,7 @@
       "category": "feedback",
       "keywords": [
         "Toast",
-        "toast",
+        "message feedback",
         "auto-dismiss toast"
       ],
       "contract": "components/feedback/toast/COMPONENT.md",
@@ -306,8 +306,8 @@
     "navigation.breadcrumb": {
       "category": "navigation",
       "keywords": [
-        "面包屑",
         "breadcrumb",
+        "path navigation",
         "page hierarchy"
       ],
       "contract": "components/navigation/breadcrumb/COMPONENT.md",
@@ -319,7 +319,7 @@
       "keywords": [
         "date range",
         "time filter",
-        "date选择"
+        "date range picker"
       ],
       "contract": "components/form/date-range-picker/COMPONENT.md",
       "source": "components/form/date-range-picker/component.html",
@@ -342,7 +342,7 @@
       "category": "form",
       "keywords": [
         "radio",
-        "radio组",
+        "radio group",
         "config selection"
       ],
       "contract": "components/form/radio-group/COMPONENT.md",
@@ -355,7 +355,7 @@
       "keywords": [
         "confirm dialog",
         "delete confirm",
-        "气泡确认"
+        "popconfirm"
       ],
       "contract": "components/feedback/popconfirm/COMPONENT.md",
       "source": "components/feedback/popconfirm/component.html",
@@ -379,9 +379,9 @@
     "feedback.result": {
       "category": "feedback",
       "keywords": [
-        "结果页",
-        "成功页",
-        "异常页",
+        "result page",
+        "success page",
+        "error page",
         "permission denied"
       ],
       "contract": "components/feedback/result/COMPONENT.md",
@@ -393,7 +393,7 @@
       "category": "data",
       "keywords": [
         "descriptions",
-        "详情",
+        "details",
         "read-only info"
       ],
       "contract": "components/data/descriptions/COMPONENT.md",
@@ -404,7 +404,7 @@
     "navigation.steps": {
       "category": "navigation",
       "keywords": [
-        "步骤条",
+        "steps",
         "approval flow",
         "creation wizard"
       ],
@@ -428,7 +428,7 @@
     "feedback.progress": {
       "category": "feedback",
       "keywords": [
-        "进度条",
+        "progress bar",
         "upload progress",
         "task progress"
       ],
@@ -440,7 +440,7 @@
     "feedback.skeleton": {
       "category": "feedback",
       "keywords": [
-        "骨架屏",
+        "skeleton",
         "loading placeholder",
         "content loading"
       ],
@@ -452,7 +452,7 @@
     "data.statistic": {
       "category": "data",
       "keywords": [
-        "统计数值",
+        "statistic",
         "metric",
         "trend"
       ],
@@ -464,7 +464,7 @@
     "data.card": {
       "category": "data",
       "keywords": [
-        "卡片",
+        "card",
         "content container",
         "metric card"
       ],
@@ -505,7 +505,7 @@
     "data.chart-line": {
       "category": "data",
       "keywords": [
-        "折线图",
+        "line chart",
         "trend chart",
         "area chart",
         "time trend"
@@ -523,7 +523,7 @@
     "data.chart-bar": {
       "category": "data",
       "keywords": [
-        "柱状图",
+        "bar chart",
         "comparison chart",
         "grouped bar",
         "stacked bar"
@@ -541,7 +541,7 @@
     "data.chart-donut": {
       "category": "data",
       "keywords": [
-        "环图",
+        "donut chart",
         "share chart",
         "composition chart",
         "pie chart"
@@ -559,7 +559,7 @@
     "data.chart-mixed": {
       "category": "data",
       "keywords": [
-        "混合图",
+        "mixed chart",
         "bar-line mixed",
         "dual-axis chart"
       ],
@@ -576,7 +576,7 @@
     "data.chart-funnel": {
       "category": "data",
       "keywords": [
-        "漏斗图",
+        "funnel chart",
         "conversion",
         "drop-off"
       ],
@@ -593,9 +593,9 @@
     "data.chart-gauge": {
       "category": "data",
       "keywords": [
-        "仪表盘",
-        "完成率",
-        "SLA"
+        "gauge",
+        "completion rate",
+        "progress ring"
       ],
       "contract": "components/data/chart-gauge/COMPONENT.md",
       "source": "components/data/chart-gauge/component.html",
@@ -610,8 +610,8 @@
     "data.chart-heatmap": {
       "category": "data",
       "keywords": [
-        "热力图",
-        "活跃分布",
+        "heatmap",
+        "activity distribution",
         "matrix"
       ],
       "contract": "components/data/chart-heatmap/COMPONENT.md",
@@ -627,7 +627,7 @@
     "data.chart-map": {
       "category": "data",
       "keywords": [
-        "地图",
+        "map",
         "regional stats",
         "provincial distribution"
       ],
@@ -649,8 +649,8 @@
       "category": "form",
       "keywords": [
         "multiline input",
-        "备注",
-        "描述",
+        "notes",
+        "description",
         "textarea"
       ],
       "contract": "components/form/textarea/COMPONENT.md",
@@ -666,7 +666,7 @@
       "keywords": [
         "switch",
         "toggle",
-        "启用禁用"
+        "enable disable"
       ],
       "contract": "components/form/switch/COMPONENT.md",
       "source": "components/form/switch/component.html",
@@ -682,7 +682,7 @@
         "date",
         "due date",
         "single date",
-        "date选择"
+        "date picker"
       ],
       "contract": "components/form/date-picker/COMPONENT.md",
       "source": "components/form/date-picker/component.html",
@@ -695,7 +695,7 @@
     "form.upload": {
       "category": "form",
       "keywords": [
-        "上传",
+        "upload",
         "attachment",
         "file",
         "drag upload"
@@ -712,7 +712,7 @@
     "data.avatar": {
       "category": "data",
       "keywords": [
-        "头像",
+        "avatar",
         "owner",
         "user",
         "participant"
@@ -725,7 +725,7 @@
     "feedback.tooltip": {
       "category": "feedback",
       "keywords": [
-        "alert",
+        "tooltip",
         "Tooltip",
         "hover hint"
       ],
@@ -781,8 +781,8 @@
     "pattern.filter-table": {
       "keywords": [
         "filter table",
-        "list workspace",
-        "查询list"
+        "query list",
+        "search list"
       ],
       "contract": "patterns/filter-table/PATTERN.md",
       "source": "patterns/filter-table/pattern.html",
@@ -799,8 +799,9 @@
   "presets": {
     "preset.admin-list": {
       "keywords": [
-        "中后台list页",
-        "admin list"
+        "admin list page",
+        "backend list page",
+        "table page"
       ],
       "contract": "presets/admin-list/PRESET.md",
       "source": "presets/admin-list/seed.html",
@@ -815,9 +816,10 @@
     },
     "preset.admin-form": {
       "keywords": [
-        "中后台表单页",
-        "新建页",
-        "编辑页"
+        "admin form page",
+        "backend form page",
+        "create page",
+        "edit page"
       ],
       "contract": "presets/admin-form/PRESET.md",
       "source": "presets/admin-form/seed.html",
