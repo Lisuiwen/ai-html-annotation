@@ -1,53 +1,53 @@
-# 本地作者服务
+# Local Authoring Service
 
-## 适用范围
+## Scope
 
-需要在浏览器中直接修改原型样式/文本、编辑正式说明、增删或排序卡片、重新绑定目标，或者使用 Inspector 跳转源码时使用本入口。
+Use this entry when you need to modify prototype styles/text directly in the browser, edit formal annotations, add/remove or reorder cards, re-bind targets, or use the Inspector to jump to source.
 
-作者服务只绑定 `127.0.0.1`，动态注入 `runtime/author/` 工具，不修改原型源 HTML 的加载结构。
+The authoring service binds only to `127.0.0.1`, dynamically injects the `runtime/author/` tools, and does not modify the prototype source HTML's load structure.
 
-## 启动
+## Start
 
 ```bash
 node <skill-root>/runtime/server/index.mjs <prototype.html> --snapshot=prototype/notes.snapshot.js
 ```
 
-打开终端返回的 `http://127.0.0.1:4178/...`。未传 `--snapshot` 时仍可使用 Direct Edit、Mark 与 Inspector，但不能保存正式说明卡片。
+Open the `http://127.0.0.1:4178/...` URL printed by the terminal. Without `--snapshot`, Direct Edit, Mark, and Inspector still work, but formal annotation cards cannot be saved.
 
-IDE 跳转配置放在 `<skill-root>/.env`，模板为 [.env.example](../.env.example)。
+The IDE jump configuration lives in `<skill-root>/.env`, with the template at [.env.example](../.env.example).
 
-## 页面内作者工具
+## In-page authoring tools
 
-Author Tools 浮层中，`Edit` 与 `Mark` 为同一面板的两个 Tab；右侧正式说明与 Inspector 分别独立。
+In the Author Tools overlay, `Edit` and `Mark` are two tabs of the same panel; the right-rail formal annotations and the Inspector are each independent.
 
-| 目标 | 页面操作 |
+| Goal | Page operation |
 |---|---|
-| Direct Edit | 打开 Author Tools → `Edit`，按住 `Ctrl`（macOS 为 `⌘`）点击页面元素；修改后保存写回源 HTML。 |
-| Mark 评审 | 打开 Author Tools → `Mark`，或按 `M`；按住 `Ctrl`（macOS 为 `⌘`）点击元素添加 pin。 |
-| 编辑正式说明 | 双击说明标题、正文或页头文案；标题/页头 `Enter` 保存，正文 `Ctrl + Enter`（macOS：`⌘ + Enter`）保存，`Esc` 取消。 |
-| 管理正式说明 | 使用 `+`、编辑、目标绑定、删除和拖拽排序。 |
-| Inspector | 按住 `Alt + Shift` 悬停并点击目标，跳转 IDE 源码位置。 |
-| 切换页面场景 | 使用右侧场景按钮，或 `?scene=<场景-id>`。 |
+| Direct Edit | Open Author Tools → `Edit`, hold `Ctrl` (macOS: `⌘`) and click a page element; save after modifying to write back to the source HTML. |
+| Mark review | Open Author Tools → `Mark`, or press `M`; hold `Ctrl` (macOS: `⌘`) and click an element to add a pin. |
+| Edit formal annotations | Double-click an annotation title, body, or header copy; press `Enter` to save title/header, `Ctrl + Enter` (macOS: `⌘ + Enter`) to save body, `Esc` to cancel. |
+| Manage formal annotations | Use `+`, edit, target binding, delete, and drag-to-reorder. |
+| Inspector | Hold `Alt + Shift`, hover and click a target to jump to the IDE source location. |
+| Switch page scenario | Use the right-side scenario buttons, or `?scene=<scenario-id>`. |
 
-## 平台差异
+## Platform differences
 
-Direct Edit 与 Mark 共用 `author/core/picker.js` 的元素选择逻辑：
+Direct Edit and Mark share the element-picking logic in `author/core/picker.js`:
 
-- **Windows / Linux**：按住 `Ctrl` + 左键点击选中元素；普通点击不拦截页面。
-- **macOS**：优先 `⌘` + 左键；`Control` + 左键触发 contextmenu 时也会选中（Edit 与 Mark 均适用）。
+- **Windows / Linux**: hold `Ctrl` + left-click to select an element; a normal click does not intercept the page.
+- **macOS**: prefer `⌘` + left-click; a `Control` + left-click that triggers the context menu also selects (applies to both Edit and Mark).
 
-正式说明正文保存快捷键：
+Formal annotation body save shortcuts:
 
-- **Windows / Linux**：`Ctrl + Enter`
-- **macOS**：`⌘ + Enter` 或 `Control + Enter`
+- **Windows / Linux**: `Ctrl + Enter`
+- **macOS**: `⌘ + Enter` or `Control + Enter`
 
-## Agent 边界
+## Agent boundaries
 
-- 服务入口为 `runtime/server/index.mjs`；IDE 配置位于 `<skill-root>/.env`。
-- `file://` 双击只用于只读预览正式说明；改卡片须启动作者服务且配置 `--snapshot`。
-- 直接修改样式/纯文本 → `author/tools/direct-edit/`，经 `/__prototype-author/edit` 写回源 HTML。
-- 正式说明 → `author/tools/notes-editor/`，写回 snapshot。
-- 临时评审 pin → `author/tools/mark/`，只写 localStorage。
-- 源码定位 → `author/tools/inspector/`。
-- Inspector 动态注入的 `data-insp-target` 仅用于当前作者会话行号映射，禁止保存为正式 selector 或 For-AI selector。
-- `<skill-root>/.env` 仅本机使用，不提交或分发。
+- The service entry is `runtime/server/index.mjs`; the IDE configuration lives in `<skill-root>/.env`.
+- Double-clicking under `file://` is for read-only preview of formal annotations only; editing cards requires starting the authoring service with `--snapshot` configured.
+- Direct style/plain-text changes → `author/tools/direct-edit/`, written back to the source HTML via `/__prototype-author/edit`.
+- Formal annotations → `author/tools/notes-editor/`, written back to the snapshot.
+- Temporary review pins → `author/tools/mark/`, writing only to localStorage.
+- Source location → `author/tools/inspector/`.
+- The dynamically injected `data-insp-target` from the Inspector is only for line-number mapping in the current authoring session; it must not be saved as a formal selector or a For-AI selector.
+- `<skill-root>/.env` is local-only; do not commit or distribute it.

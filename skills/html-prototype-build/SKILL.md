@@ -9,7 +9,7 @@ description: Build, annotate, review, screenshot, and deliver native HTML UI pro
 
 1. Confirm the prototype type and business facts from the user's materials; ask first when information is insufficient, do not guess.
 2. When generating or heavily changing UI, run `node <skill-root>/scripts/resolve-pack.mjs --select=<preset, pattern, or component id>` and read only the minimal file closure it outputs.
-3. Generate the complete `<prototype-name>/` delivery directory per [shared generation contract §7](references/generation-contract.md#7-交付文件); route all business state through `PrototypeViewers`, and use the Runtime copy as-is for the formal Client Runtime.
+3. Generate the complete `<prototype-name>/` delivery directory per [shared generation contract §7](references/generation-contract.md#7-delivery-files); route all business state through `PrototypeViewers`, and use the Runtime copy as-is for the formal Client Runtime.
 4. When done, run `npm test` at the repository root; start the authoring server or scenario screenshots only when the task needs them.
 
 ## Route the task first
