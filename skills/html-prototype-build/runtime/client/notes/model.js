@@ -1,4 +1,4 @@
-/* Notes Viewer 纯数据模型：场景元数据与 when 匹配，不读写 DOM。 */
+/* Notes Viewer pure data model: scenario metadata and when matching; no DOM I/O. */
 (function () {
   'use strict';
 

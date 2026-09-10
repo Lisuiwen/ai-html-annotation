@@ -10,5 +10,4 @@ states:
 
 # Filter Bar
 
-筛选条件的布局容器。实际字段和操作通过可选组件插入，筛选项数量与排列必须来自当前需求。
-
+Layout container for filter conditions. Actual fields and actions are inserted through optional components; filter count and arrangement must come from the current requirements.

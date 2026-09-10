@@ -33,7 +33,7 @@ test('DisplayMode 安装一次样式并识别 overlay', async () => {
   assert.equal(window.PrototypeAuthorChrome.isOverlay(null), false);
 });
 
-test('product-only=1 自动进入纯页面态', async () => {
+test('product-only=1 自动进入纯page面态', async () => {
   const { window, document } = await boot('?product-only=1');
   assert.equal(window.PrototypeAuthorChrome.isProductOnly(), true);
   assert.equal(document.body.classList.contains('pa-product-only'), true);

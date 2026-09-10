@@ -1,7 +1,7 @@
 (() => {
-  /* 业务 DOM 只作为状态输出目标，所有组合状态统一存入 PrototypeViewers。 */
+  /* Product DOM is only a state output target; all combined state lives in PrototypeViewers. */
   const viewers = window.PrototypeViewers;
-  if (!viewers) throw new Error('PrototypeViewers 状态协调器未加载');
+  if (!viewers) throw new Error('PrototypeViewers state coordinator not loaded');
 
   const layerNames = ['create', 'edit', 'strategy'];
   const modalByLayer = {
@@ -25,7 +25,7 @@
   };
   let lastOpenLayers = [];
 
-  /* 将外部场景或局部更新归一为完整、可预测的产品状态。 */
+  /* Normalize external scenarios or partial updates into complete, predictable product state. */
   function normalizeProductState(value) {
     const source = value && typeof value === 'object' ? value : {};
     const sourceSelects = source.selects && typeof source.selects === 'object' ? source.selects : {};
@@ -54,7 +54,7 @@
     return product.page === 'list' && product.layers.includes(layerName);
   }
 
-  /* Adapter 负责把单一 JS 状态投影为 hidden、视觉 class 与 ARIA。 */
+  /* Adapter projects a single JS state into hidden, visual classes, and ARIA. */
   function applyProductState(value) {
     const product = normalizeProductState(value);
     layerNames.forEach((layerName) => {
@@ -91,7 +91,7 @@
     apply: applyProductState
   });
 
-  /* 合并产品状态的嵌套维度，避免一次 Select 更新覆盖当前浮层或其他选择器。 */
+  /* Merge nested product-state dimensions so one Select update does not overwrite open layers or other selects. */
   function patchProductState(partial) {
     const current = normalizeProductState(viewers.getState().product);
     viewers.patchState({
@@ -104,12 +104,12 @@
     });
   }
 
-  /* 激活稳定场景名，由协调器同时恢复业务组合状态与对应说明。 */
+  /* Activate a stable scenario name; coordinator restores combined product state and matching notes. */
   function activateLayerScenario(id) {
     viewers.activateScenario(id);
   }
 
-  /* 更新一个 Select 的展开或选中状态，其余组合状态保持不变。 */
+  /* Update one Select open/selected state while leaving other combined state unchanged. */
   function patchSelectState(id, partial) {
     const current = normalizeProductState(viewers.getState().product);
     patchProductState({
@@ -119,12 +119,12 @@
     });
   }
 
-  /* 根据事件节点定位已注册的 Select，不读取样式 class 推断业务身份。 */
+  /* Locate a registered Select from the event node without inferring identity from style classes. */
   function findSelectId(node) {
     return Object.keys(selectById).find((id) => selectById[id].root.contains(node));
   }
 
-  /* 关闭点击目标之外的下拉框，并以一次事务提交组合状态。 */
+  /* Close dropdowns outside the click target and commit combined state in one transaction. */
   function closeOtherSelects(target) {
     const current = normalizeProductState(viewers.getState().product);
     let changed = false;
@@ -138,7 +138,7 @@
     if (changed) patchProductState({ selects: nextSelects });
   }
 
-  /* 显示简短结果反馈；当前仅服务于原型操作闭环。 */
+  /* Show brief result feedback; currently only for prototype action closure. */
   function showToast(message) {
     const region = document.getElementById('toastRegion');
     const toast = document.createElement('div');
@@ -194,5 +194,5 @@
     });
   });
 
-  /* ponytail: 当前只还原截图确认的静态状态和评审流程；取得真实接口、校验和完整页面截图后替换 mock 行为。 */
+  /* ponytail: currently only reproduces screenshot-confirmed static state and review flow; replace mock behavior after real APIs, validation, and full-page capture. */
 })();

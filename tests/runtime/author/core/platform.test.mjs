@@ -16,7 +16,7 @@ async function boot(platform = 'Win32') {
   return window.AuthorToolsPlatform;
 }
 
-test('clickModifierLabel 在 macOS 返回 ⌘，其他平台返回 Ctrl', async () => {
+test('clickModifierLabel 在 macOS Back ⌘，其他平台Back Ctrl', async () => {
   assert.equal((await boot('MacIntel')).clickModifierLabel(), '⌘');
   assert.equal((await boot('Win32')).clickModifierLabel(), 'Ctrl');
 });

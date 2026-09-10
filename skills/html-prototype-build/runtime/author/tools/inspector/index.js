@@ -1,4 +1,4 @@
-/* 原型源码检查器：Alt+Shift 悬停 DOM → 玻璃浮层 → 点击跳转 IDE 源码定位。 */
+/* Prototype source inspector: Alt+Shift hover DOM → glass tooltip → click to jump to IDE source. */
 (function () {
   'use strict';
 
@@ -9,7 +9,7 @@
   var hoveredEl = null;
   var tooltip = null;
 
-  /* 生成唯一 CSS 选择器，复用 html-mark 的 cssPath 逻辑。 */
+  /* Build a unique CSS selector, reusing html-mark cssPath logic. */
   function cssPath(el) {
     if (!el || el.nodeType !== 1) return '';
     var parts = [];
@@ -33,12 +33,12 @@
     return parts.length ? 'body > ' + parts.join(' > ') : '';
   }
 
-  /* 注入保护自家 UI 的样式，不影响原型页面。 */
+  /* Inject styles that protect our own UI without affecting the prototype page. */
   function installStyles() {
     var style = document.createElement('style');
     style.id = 'prototype-inspector-style';
     style.textContent = [
-      /* 不用十字叉，避免与 Mark 的 Ctrl 打点态混淆；靠紫色虚线高亮区分。 */
+      /* No crosshair cursor — avoids confusion with Mark Ctrl+click pin mode; use purple dashed outline instead. */
       '.pi-inspecting { cursor: default; }',
       '.pi-hover { outline: 2px dashed #e07bff !important; outline-offset: 2px; }',
       '.pi-tooltip { position: fixed; z-index: 2147483645; max-width: 480px; padding: 10px 14px; border: 1px solid rgba(255,255,255,.18); border-radius: 10px; background: rgba(22,22,28,.88); color: #e0e0e0; font: 12px/18px system-ui, -apple-system, sans-serif; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity .15s, transform .15s; }',
@@ -52,7 +52,7 @@
     document.head.appendChild(style);
   }
 
-  /* 创建单例浮层提示。 */
+  /* Create singleton tooltip overlay. */
   function getTooltip() {
     if (tooltip) return tooltip;
     tooltip = document.createElement('div');
@@ -62,7 +62,7 @@
     return tooltip;
   }
 
-  /* 更新浮层位置和内容。 */
+  /* Update tooltip position and content. */
   function showTooltip(event, el) {
     var tip = getTooltip();
     var tag = el.tagName.toLowerCase();
@@ -80,7 +80,7 @@
       '<div class="pi-hint">Click to open in IDE</div>'
     ].join('');
 
-    /* 浮层跟随鼠标，保持在视口内。 */
+    /* Follow the mouse while keeping the tooltip inside the viewport. */
     var x = event.clientX + 16;
     var y = event.clientY + 16;
     var rect = tip.getBoundingClientRect();
@@ -91,7 +91,7 @@
     tip.classList.add('pi-visible');
   }
 
-  /* 隐藏浮层并移除高亮。 */
+  /* Hide tooltip and remove highlight. */
   function hideTooltip() {
     if (tooltip) tooltip.classList.remove('pi-visible');
     if (hoveredEl) {
@@ -100,12 +100,12 @@
     }
   }
 
-  /* 检查是否按住 Alt+Shift。 */
+  /* Check whether Alt+Shift is held. */
   function isHotkey(event) {
     return event.altKey && event.shiftKey && !event.metaKey && !event.ctrlKey;
   }
 
-  /* 只在产品区且非作者 overlay 的元素上启用检查。 */
+  /* Enable inspection only on product-area elements outside author overlays. */
   function isInspectable(el) {
     if (!el || el === document.body || el === document.documentElement) return false;
     if (window.PrototypeAuthorChrome && window.PrototypeAuthorChrome.isOverlay(el)) return false;
@@ -114,7 +114,7 @@
     return true;
   }
 
-  /* 鼠标移动：显示悬停预览。 */
+  /* Mouse move: show hover preview. */
   function handleMouseMove(event) {
     if (!active) return;
     var el = event.target;
@@ -132,7 +132,7 @@
     showTooltip(event, el);
   }
 
-  /* 点击：发送请求到服务端打开 IDE。 */
+  /* Click: send request to server to open IDE. */
   function handleClick(event) {
     if (!active) return;
     var el = event.target;
@@ -156,35 +156,35 @@
         console.log('[prototype-inspector] ' + msg);
       })
       .catch(function (err) {
-        console.error('[prototype-inspector] 跳转失败：' + err.message);
+        console.error('[prototype-inspector] Navigation failed: ' + err.message);
       });
 
     deactivate();
   }
 
-  /* 键盘按下：检测 Alt+Shift 进入检查模式；纯页面截图态不启用。 */
+  /* Key down: detect Alt+Shift to enter inspect mode; disabled in product-only screenshot mode. */
   function handleKeyDown(event) {
     if (window.PrototypeAuthorChrome && window.PrototypeAuthorChrome.isProductOnly()) return;
     if (isHotkey(event) && !active) activate();
   }
 
-  /* 键盘释放：退出检查模式。 */
+  /* Key up: exit inspect mode. */
   function handleKeyUp(event) {
     if (active && !isHotkey(event)) {
       deactivate();
     }
   }
 
-  /* 进入检查模式并通知其他插件退出。 */
+  /* Enter inspect mode and tell other plugins to deactivate. */
   function activate() {
     if (active) return;
     active = true;
     if (window.PrototypeAuthor) window.PrototypeAuthor.activate('inspector');
     document.body.classList.add('pi-inspecting');
-    console.log('[prototype-inspector] 检查模式已开启，Alt+Shift+Click 跳转源码。');
+    console.log('[prototype-inspector] Inspect mode on; Alt+Shift+Click to jump to source.');
   }
 
-  /* 退出检查模式并清理 UI。 */
+  /* Exit inspect mode and clean up UI. */
   function deactivate() {
     if (!active) return;
     active = false;
@@ -195,7 +195,7 @@
     }
   }
 
-  /* 初始化：注册到 prototype-author 并监听全局键盘事件。 */
+  /* Init: register with prototype-author and listen for global keyboard events. */
   function init() {
     installStyles();
     document.addEventListener('keydown', handleKeyDown, true);
@@ -203,7 +203,7 @@
     document.addEventListener('mousemove', handleMouseMove, true);
     document.addEventListener('click', handleClick, true);
     if (window.PrototypeAuthor) window.PrototypeAuthor.register('inspector', deactivate);
-    console.log('[prototype-inspector] 已就绪，Alt+Shift 进入检查模式。');
+    console.log('[prototype-inspector] Ready; Alt+Shift for inspect mode.');
   }
 
   init();

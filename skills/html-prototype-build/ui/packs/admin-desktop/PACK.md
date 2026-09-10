@@ -1,25 +1,24 @@
 ---
 id: admin-desktop
-name: 中后台桌面 UI
+name: Admin Desktop UI
 ---
 
-# 中后台桌面 UI 包
+# Admin Desktop UI Pack
 
-## 读取入口
+## Entry points
 
-- 设计事实：`design-system.md`
-- 路由索引：`manifest.json`
-- 基础层契约：`foundation/FOUNDATION.md`
-- 基础 Token：`foundation/tokens.css`
-- CSS 基线：`foundation/base.css`
+- Design facts: `design-system.md`
+- Route index: `manifest.json`
+- Foundation contract: `foundation/FOUNDATION.md`
+- Foundation Tokens: `foundation/tokens.css`
+- CSS baseline: `foundation/base.css`
 
-读取 `manifest.json` 后，根据用户需求选择 Component、Pattern 或 Preset，递归展开 `requires`，再读取命中的契约和实现文件。需要组件交互时，读取 manifest 声明的 `adapter`。`optional` 依赖只有在当前页面实际需要时才加入；禁止按类别遍历或加载全部组件。
+After reading `manifest.json`, choose Component, Pattern, or Preset based on user needs, recursively expand `requires`, then read the matched contracts and implementation files. When component interaction is needed, read the `adapter` declared in the manifest. Add `optional` dependencies only when the current page actually needs them; never traverse or load all components by category.
 
-## 组合限制
+## Composition limits
 
-- 本包所有组件默认依赖 `admin-desktop.default` foundation。
-- 同一类别不得与其他 provider 同时加载。
-- 其他包只有显式声明兼容 `admin-desktop.default` foundation 后，才可替换本包某个组件类别。
-- `feedback._overlay-core` 是私有组件，只能由 Modal 或 Drawer 间接加载。
-- 本包提供中后台桌面原型视觉，不捆绑第三方设计系统代码，也不承诺兼容任何商业 UI 库版本。
-
+- All components in this pack default to the `admin-desktop.default` foundation.
+- Do not load another provider in the same category at the same time.
+- Other packs may replace a component category in this pack only after explicitly declaring compatibility with the `admin-desktop.default` foundation.
+- `feedback._overlay-core` is a private component and may be loaded only indirectly through Modal or Drawer.
+- This pack provides admin-desktop prototype visuals; it does not bundle third-party design system code and does not promise compatibility with any commercial UI library version.

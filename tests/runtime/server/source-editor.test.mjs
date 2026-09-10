@@ -18,22 +18,22 @@ test('源码写回支持 CSS.escape id 与直接子级 nth-of-type', () => {
   assert.doesNotMatch(next, /<section><p>&lt;done&gt;<\/p>/);
 });
 
-test('源码定位忽略 raw-text 伪标签并允许属性值包含 >', () => {
+test('源码定位忽略 raw-text 伪Tag并允许属性值包含 >', () => {
   const html = '<script>const tpl = `<div id="target">fake</div>`;</script><div id="target" title="a > b">real</div>';
   const next = applyPrototypeEdit(html, { selector: '#target', changes: { styles: { height: '20px' }, text: 'changed' } });
   assert.match(next, /<script>const tpl = `<div id="target">fake<\/div>`;<\/script>/);
   assert.match(next, /title="a > b" style="height: 20px">changed<\/div>/);
 });
 
-test('源码写回拒绝覆盖含元素子节点的文本', () => {
-  assert.throws(() => applyPrototypeEdit('<div id="box">a<span>b</span></div>', { selector: '#box', changes: { text: 'replace' } }), /含子节点/);
+test('源码写回拒绝覆盖含元素子节点 A本', () => {
+  assert.throws(() => applyPrototypeEdit('<div id="box">a<span>b</span></div>', { selector: '#box', changes: { text: 'replace' } }), /child nodes/);
 });
 
-test('源码写回校验 selector、CSS 属性和值类型', () => {
+test('源码写回校验 selector、CSS 属性和值Type', () => {
   assert.throws(() => applyPrototypeEdit('<div id="box"></div>', { changes: {} }), /selector/);
-  assert.throws(() => applyPrototypeEdit('<div id="box"></div>', { selector: '#missing', changes: { styles: {} } }), /找不到元素/);
-  assert.throws(() => applyPrototypeEdit('<div id="box"></div>', { selector: '#box', changes: { styles: { 'bad prop': '1' } } }), /非法 CSS 属性/);
-  assert.throws(() => applyPrototypeEdit('<div id="box"></div>', { selector: '#box', changes: { styles: { width: 1 } } }), /必须是字符串/);
+  assert.throws(() => applyPrototypeEdit('<div id="box"></div>', { selector: '#missing', changes: { styles: {} } }), /not found in source HTML/);
+  assert.throws(() => applyPrototypeEdit('<div id="box"></div>', { selector: '#box', changes: { styles: { 'bad prop': '1' } } }), /Invalid CSS property/);
+  assert.throws(() => applyPrototypeEdit('<div id="box"></div>', { selector: '#box', changes: { styles: { width: 1 } } }), /must be strings/);
 });
 
 test('作者写接口只接受同源 localhost JSON', () => {

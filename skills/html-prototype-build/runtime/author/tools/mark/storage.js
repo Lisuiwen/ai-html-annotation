@@ -1,4 +1,4 @@
-/* Mark 持久化：仍按页面 pathname 写入 localStorage，不碰 prototype.html。 */
+/* Mark persistence: still writes to localStorage by page pathname; does not touch prototype.html. */
 (function () {
   'use strict';
 
@@ -34,7 +34,7 @@
     save: function (annotations) {
       try {
         localStorage.setItem(STORE_KEY, JSON.stringify(serialize(annotations)));
-      } catch (_) { /* storage 不可用时仅保留内存态。 */ }
+      } catch (_) { /* When storage is unavailable, keep in-memory state only. */ }
     }
   };
 })();

@@ -1,4 +1,4 @@
-/* Notes Editor 纯数据模型：卡片创建、图层 when 与可见卡片排序，不读写 DOM。 */
+/* Notes Editor pure data model: card creation, layer when rules, and visible-card ordering; no DOM I/O. */
 (function () {
   'use strict';
 
@@ -32,8 +32,8 @@
   function createCard(cards, appState) {
     var card = {
       id: createCardId(cards),
-      title: '新说明',
-      body: '双击编辑说明内容。',
+      title: 'New note',
+      body: '双击Edit noteContent。',
       target: { selector: '', label: '' }
     };
     var when = whenForCurrentLayer(appState);

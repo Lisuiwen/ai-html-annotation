@@ -9,5 +9,4 @@ states:
 
 # Alert
 
-中性提示条。未确认成功、警告、错误等状态时不得自行添加语义颜色。
-
+Neutral alert bar. Do not add semantic success, warning, or error colors when those states are not confirmed.

@@ -24,7 +24,7 @@ test('validateSnapshot 接受对象式和数组式 scenarios', () => {
   assert.equal(validateSnapshot(array), true);
 });
 
-test('validateSnapshot 拒绝错误 schema/header/cards/scenarios/when', () => {
+test('validateSnapshot 拒绝Error schema/header/cards/scenarios/when', () => {
   assert.equal(validateSnapshot(null), false);
   assert.equal(validateSnapshot({ ...validSnapshot(), schemaVersion: 1 }), false);
   assert.equal(validateSnapshot({ ...validSnapshot(), header: {} }), false);
@@ -39,13 +39,13 @@ test('validateSnapshot 拒绝错误 schema/header/cards/scenarios/when', () => {
 test('serializeSnapshot 保持单一 window 赋值格式', () => {
   const data = validSnapshot();
   const source = serializeSnapshot(data);
-  assert.match(source, /^\/\* 原型正式标注唯一数据源/);
+  assert.match(source, /^\/\* Canonical prototype annotation data source/);
   assert.match(source, /window\.__PROTOTYPE_NOTES__ = \{/);
   assert.equal(source.endsWith(';\n'), true);
   assert.equal(JSON.parse(source.match(/window\.__PROTOTYPE_NOTES__ = ([\s\S]*);\n$/)[1]).schemaVersion, 2);
 });
 
-test('writeSnapshot 使用临时文件后原子替换', () => {
+test('writeSnapshot 使用临HourA件后原子替换', () => {
   const dir = mkdtempSync(join(tmpdir(), 'prototype-snapshot-'));
   try {
     const target = join(dir, 'notes.snapshot.js');

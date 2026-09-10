@@ -14,7 +14,7 @@ async function bootBridge() {
   return { window, calls, get initCount() { return initCount; }, get disposed() { return disposed; } };
 }
 
-test('ChartBridge 从 token 构造主题并缓存', async () => {
+test('ChartBridge From token 构造主题并缓存', async () => {
   const env = await bootBridge(); const first = env.window.PrototypeChartBridge.getThemeFromTokens(); const second = env.window.PrototypeChartBridge.getThemeFromTokens();
   assert.equal(first, second); assert.deepEqual(Array.from(first.color), ['#111111', '#222222', '#333333', '#444444', '#555555']); assert.equal(first.textStyle.fontFamily, 'Inter');
 });

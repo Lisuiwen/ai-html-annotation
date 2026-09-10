@@ -9,9 +9,8 @@ states:
 
 # Toast
 
-自动消失的中性反馈。消息内容与显示时机必须来自当前交互，不得补造成功或错误语义。
+Auto-dismissing neutral feedback. Message content and timing must come from the current interaction; do not invent success or error semantics.
 
-## 状态 Adapter
+## State Adapter
 
-`state-adapter.js` 暴露 `window.PrototypeUiAdapters['feedback.toast']`，局部 state 为 `{ visible: boolean, message: string }`。超时关闭策略属于最终原型业务逻辑；组件 Adapter 只渲染 live region 内容。
-
+`state-adapter.js` exposes `window.PrototypeUiAdapters['feedback.toast']`; local state is `{ visible: boolean, message: string }`. Timeout dismiss policy belongs to final prototype business logic; the component Adapter only renders live region content.

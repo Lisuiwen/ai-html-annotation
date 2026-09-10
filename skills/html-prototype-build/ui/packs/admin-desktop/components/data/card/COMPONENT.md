@@ -10,4 +10,4 @@ states:
 
 # data.card
 
-通用内容容器。不默认提供悬浮阴影或 hover 浮起效果。
+General content container. Does not provide hover elevation or floating shadow effects by default.

@@ -1,4 +1,4 @@
-/* 作者工具统一入口：只在本地作者服务中按顺序加载 Client Core 与各 Author Tool。 */
+/* Author-tools entry: loads Client Core and each Author Tool in order, only in the local author server. */
 (function () {
   'use strict';
 
@@ -49,7 +49,7 @@
       if (window.AuthorTools && typeof window.AuthorTools.init === 'function') window.AuthorTools.init();
       window.dispatchEvent(new CustomEvent('prototype-author:ready'));
     } catch (error) {
-      console.error('[prototype-author] 作者工具加载失败。', error);
+      console.error('[prototype-author] Failed to load author tools.', error);
     }
   }
 

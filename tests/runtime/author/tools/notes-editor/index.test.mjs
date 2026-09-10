@@ -11,22 +11,22 @@ function run(source, window, errors) {
   vm.runInNewContext(source, { window, document: {}, console: { error: (...args) => errors.push(args.join(' ')), log() {} }, JSON }, { filename: 'notes-editor/index.js' });
 }
 
-test('NotesEditor 在 Viewer 未初始化时安全退出并保留公开 API', async () => {
+test('NotesEditor 在 Viewer 未初始化Hour安全退出并保留公开 API', async () => {
   const source = await readFile(sourceUrl, 'utf8'); const errors = []; const window = {};
   run(source, window, errors);
   assert.equal(typeof window.PrototypeNotesEditor.init, 'function');
   assert.equal(typeof window.PrototypeNotesEditor.save, 'function');
-  assert.match(errors.join('\n'), /Viewer 尚未初始化/);
+  assert.match(errors.join('\n'), /Viewer not initialized/);
 });
 
-test('NotesEditor 缺少共享 selector 时安全退出', async () => {
+test('NotesEditor 缺少Total享 selector Hour安全退出', async () => {
   const source = await readFile(sourceUrl, 'utf8'); const errors = [];
   const window = { PrototypeNotesViewer: { getData: () => ({ header: {}, cards: [] }) } };
   run(source, window, errors);
   assert.match(errors.join('\n'), /AuthorToolsSelector/);
 });
 
-test('NotesEditor 缺少数据模型时安全退出', async () => {
+test('NotesEditor 缺少数据模型Hour安全退出', async () => {
   const source = await readFile(sourceUrl, 'utf8'); const errors = [];
   const window = {
     PrototypeNotesViewer: { getData: () => ({ header: {}, cards: [] }) },
@@ -36,7 +36,7 @@ test('NotesEditor 缺少数据模型时安全退出', async () => {
   assert.match(errors.join('\n'), /PrototypeNotesEditorModel/);
 });
 
-test('NotesEditor 将数据与 selector 规则委托给共享模型，并保留绑定与脏状态保护', async () => {
+test('NotesEditor 将数据与 selector 规则委托给Total享模型，并保留绑定与脏Status保护', async () => {
   const source = await readFile(sourceUrl, 'utf8');
   assert.match(source, /PrototypeNotesEditorModel\.createCard/);
   assert.match(source, /PrototypeNotesEditorModel\.removeCard/);

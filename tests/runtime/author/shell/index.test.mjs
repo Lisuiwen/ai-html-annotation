@@ -21,7 +21,7 @@ test('product-only 模式 init 不创建作者 UI', async () => {
   const env = await boot(true); env.window.AuthorTools.init(); assert.equal(env.created, 0);
 });
 
-test('Shell 保留 dirty 切换与关闭保护', async () => {
+test('Shell 保留 dirty 切换与Close保护', async () => {
   const { source } = await boot();
   assert.match(source, /prev\.isDirty\(\)/);
   assert.match(source, /pendingTab = '__close__'/);

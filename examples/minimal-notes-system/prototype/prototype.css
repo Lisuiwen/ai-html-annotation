@@ -1,4 +1,4 @@
-/* 产品视觉 Token：复用 html-prototype-build 已确认的通用设计系统。 */
+/* Product visual tokens: reuse the confirmed shared design system from html-prototype-build. */
     :root {
       --ui-primary: #1677ff;
       --ui-bg-page: #f3f4f7;
@@ -37,7 +37,7 @@
       --ui-shadow-primary: 0 2px 0 rgba(5, 145, 255, 0.1);
     }
 
-    /* 页面基础与产品壳层。 */
+    /* Page base and product shell. */
     * { box-sizing: border-box; }
     html, body { min-height: 100%; }
     body {
@@ -102,7 +102,7 @@
       min-height: calc(100vh - var(--ui-header-height));
     }
 
-    /* 左侧多级菜单；只复刻截图中可见层级。 */
+    /* Left multi-level menu; only levels visible in the screenshot. */
     .ui-sider {
       padding: var(--ui-space-3) var(--ui-space-2);
       border-right: 1px solid var(--ui-border-subtle);
@@ -124,10 +124,10 @@
     .ui-menu-group { justify-content: space-between; }
     .ui-menu-sub { padding-left: var(--ui-space-4); }
     .ui-menu-item.is-active { color: var(--ui-primary); background: rgba(22, 119, 255, 0.08); }
-    /* ponytail: 菜单 hover、折叠动画和键盘导航未采集；取得真实交互记录后替换当前静态层级。 */
+    /* ponytail: menu hover, collapse animation, and keyboard nav not captured; replace static hierarchy after real interaction recording. */
     .ui-menu-item:hover { color: var(--ui-primary); }
 
-    /* 列表页工作区。 */
+    /* List page workspace. */
     .ui-content { min-width: 0; padding: var(--ui-space-4); }
     .ui-content-card {
       min-height: calc(100vh - var(--ui-header-height) - 2 * var(--ui-space-4));
@@ -160,7 +160,7 @@
     }
     textarea.ui-input { height: 72px; padding-block: var(--ui-space-2); resize: none; }
     .ui-input::placeholder { color: var(--ui-text-tertiary); }
-    /* ponytail: 正式焦点样式未采集；当前保留明显焦点，取得计算样式后替换。 */
+    /* ponytail: formal focus styles not captured; keep visible focus until computed styles are available. */
     .ui-input:focus-visible, .ui-select-trigger:focus-visible, .ui-button:focus-visible {
       outline: 2px solid var(--ui-primary);
       outline-offset: 1px;
@@ -209,7 +209,7 @@
     }
     .ui-table th { font-weight: var(--ui-font-weight-semibold); background: var(--ui-bg-soft); }
     .ui-table td:nth-child(3) { max-width: 360px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    /* ponytail: 表格行 hover 未采集；取得真实状态截图后替换当前轻量提示。 */
+    /* ponytail: table row hover not captured; replace light hint after real state screenshots. */
     .ui-table tbody tr:hover { background: var(--ui-bg-soft); }
     .ui-pagination {
       display: flex;
@@ -229,7 +229,7 @@
       border-radius: var(--ui-radius-control);
     }
 
-    /* Modal 浮层只覆盖产品预览区，不遮挡正式说明栏。 */
+    /* Modal overlay covers only the product preview, not the formal notes panel. */
     .ui-preview { position: relative; min-height: 100vh; }
     .ui-overlay {
       position: absolute;

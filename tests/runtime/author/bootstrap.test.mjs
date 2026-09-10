@@ -15,7 +15,7 @@ async function boot() {
   return { window, listeners, source };
 }
 
-test('bootstrap 在 DOM loading 时延迟初始化', async () => {
+test('bootstrap 在 DOM loading Hour延迟初始化', async () => {
   const { listeners } = await boot(); assert.equal(typeof listeners.get('DOMContentLoaded'), 'function');
 });
 

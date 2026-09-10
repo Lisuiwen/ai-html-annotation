@@ -32,20 +32,20 @@ test('onSelect=false 保留旧选中态', async () => {
   assert.equal(a.classList.contains('at-hl'), true); assert.equal(b.classList.contains('at-hl'), false);
 });
 
-test('persistSelection=false 不留下选中高亮', async () => {
+test('persistSelection=false 不留下选中High亮', async () => {
   const { window, listeners, body } = await boot(); const target = element('div', body); target.id = 'x'; let called = 0;
   window.AuthorToolsPicker.activate({ owner: 'mark', persistSelection: false, onSelect: () => { called++; } }); listeners.get('click')(clickEvent(target));
   assert.equal(called, 1); assert.equal(target.classList.contains('at-hl'), false);
 });
 
-test('stableSelector 通过共享 selector 保持 id、note target、cssPath 行为', async () => {
+test('stableSelector 通过Total享 selector 保持 id、note target、cssPath 行为', async () => {
   const { window, body, source } = await boot(); const byId = element('div', body); byId.id = 'foo:bar'; assert.equal(window.AuthorToolsPicker.stableSelector(byId), '#foo\\:bar');
   const byNote = element('div', body); byNote.setAttribute('data-prototype-note-target', 'save'); assert.equal(window.AuthorToolsPicker.stableSelector(byNote), '[data-prototype-note-target="save"]');
   const parent = element('section', body); element('span', parent); const two = element('span', parent); assert.match(window.AuthorToolsPicker.cssPath(two), /span:nth-of-type\(2\)$/);
   assert.match(source, /AuthorToolsSelector\.stableSelector/); assert.match(source, /AuthorToolsSelector\.cssPath/);
 });
 
-test('切换 owner 会释放旧 owner 的监听与高亮', async () => {
+test('切换 owner 会释放旧 owner  监听与High亮', async () => {
   const { window, listeners, body } = await boot(); const target = element('div', body); target.id = 'x'; window.AuthorToolsPicker.activate({ owner: 'edit' }); listeners.get('click')(clickEvent(target));
   assert.equal(target.classList.contains('at-hl'), true); window.AuthorToolsPicker.activate({ owner: 'mark', persistSelection: false }); assert.equal(target.classList.contains('at-hl'), false); window.AuthorToolsPicker.release('mark'); assert.equal(listeners.has('click'), false);
 });

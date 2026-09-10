@@ -30,16 +30,16 @@ test('whenForCurrentLayer 只提取 layer/layers/page 并复制 layers', async (
   assert.deepEqual(JSON.parse(JSON.stringify(model.whenForCurrentLayer({ product: { layer: 'modal' } }))), { 'product.layer': 'modal' });
 });
 
-test('createCard 生成默认卡片并带当前图层 when', async () => {
+test('createCard 生成DefaultCard并带当前图层 when', async () => {
   const model = await loadModel();
   const card = model.createCard([{ id: 'note-2' }], { product: { page: 'list', layers: [] } });
   assert.equal(card.id, 'note-3');
-  assert.equal(card.title, '新说明');
+  assert.equal(card.title, 'New note');
   assert.deepEqual(JSON.parse(JSON.stringify(card.target)), { selector: '', label: '' });
   assert.deepEqual(JSON.parse(JSON.stringify(card.when)), { 'product.layers': [], 'product.page': 'list' });
 });
 
-test('removeCard 删除指定 id 且不改原数组', async () => {
+test('removeCard Delete指定 id 且不改原数组', async () => {
   const model = await loadModel();
   const cards = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
   const next = model.removeCard(cards, 'b');
@@ -47,7 +47,7 @@ test('removeCard 删除指定 id 且不改原数组', async () => {
   assert.deepEqual(cards.map((item) => item.id), ['a', 'b', 'c']);
 });
 
-test('applyVisibleOrder 只替换可见卡片槽位，隐藏卡片相对位置不变', async () => {
+test('applyVisibleOrder 只替换可见Card槽位，隐藏Card相对位置不变', async () => {
   const model = await loadModel();
   const cards = [{ id: 'a' }, { id: 'hidden-1' }, { id: 'b' }, { id: 'hidden-2' }, { id: 'c' }];
   const next = model.applyVisibleOrder(cards, ['c', 'a', 'b']);

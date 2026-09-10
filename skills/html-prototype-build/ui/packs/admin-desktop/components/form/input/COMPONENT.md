@@ -9,5 +9,4 @@ states:
 
 # Input
 
-基础文本输入控件。字段名必须使用关联的 `label` 表达，placeholder 只放输入提示。
-
+Basic text input control. Field name must be expressed through an associated `label`; placeholder is for input hints only.

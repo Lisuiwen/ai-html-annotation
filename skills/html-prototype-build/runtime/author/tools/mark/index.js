@@ -1,4 +1,4 @@
-/* Mark 业务：Pin、Note、localStorage、For AI。UI 挂在 Author Tools Drawer 内。 */
+/* Mark tool: Pin, Note, localStorage, For AI. UI lives inside the Author Tools Drawer. */
 (function () {
   'use strict';
 
@@ -321,7 +321,7 @@
       if (item.selector) candidates.push(item.selector);
       if (item.path && item.path !== item.selector) candidates.push(item.path);
       for (var i = 0; i < candidates.length && !target; i++) {
-        try { target = document.querySelector(candidates[i]); } catch (_) { /* 过期 selector/path。 */ }
+        try { target = document.querySelector(candidates[i]); } catch (_) { /* Stale selector/path. */ }
       }
       var ann = {
         id: item.id,

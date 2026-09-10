@@ -24,14 +24,14 @@ test('previewStyle 只把用户修改写入 patch 并继承原单位', async () 
   const el = createElement(); const session = await boot(el, { width: '100px' }); session.previewStyle('width', '120'); assert.equal(el.style.getPropertyValue('width'), '120px'); assert.equal(session.isDirty(), true); assert.deepEqual(JSON.parse(JSON.stringify(session.toPatch())), { styles: { width: '120px' }, removeStyles: [] });
 });
 
-test('resetProperty 删除 inline 并生成 removeStyles', async () => {
+test('resetProperty Delete inline 并生成 removeStyles', async () => {
   const el = createElement({ width: '80px' }); const session = await boot(el, { width: '80px' }); session.resetProperty('width'); assert.equal(el.style.getPropertyValue('width'), ''); assert.deepEqual(Array.from(session.toPatch().removeStyles), ['width']);
 });
 
-test('discard 恢复 inline 和文本', async () => {
+test('discard 恢复 inline 和A本', async () => {
   const el = createElement({ width: '80px' }, 'before'); const session = await boot(el, { width: '80px' }); session.previewStyle('width', '120'); session.setText('after'); session.discard(); assert.equal(el.style.getPropertyValue('width'), '80px'); assert.equal(el.textContent, 'before'); assert.equal(session.isDirty(), false);
 });
 
-test('含子节点元素禁用文本编辑', async () => {
+test('含子节点元素DisabledA本Edit', async () => {
   const el = createElement(); el.childNodes = [{ nodeType: 1, textContent: 'child' }]; const session = await boot(el); assert.equal(session.canEditText, false); session.setText('ignored'); assert.equal(session.isDirty(), false);
 });

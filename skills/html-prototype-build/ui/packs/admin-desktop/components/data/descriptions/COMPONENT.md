@@ -10,4 +10,4 @@ states:
 
 # data.descriptions
 
-只读详情键值展示，使用 dl/dt/dd 语义。业务项内容和空值含义由页面提供。
+Read-only detail key-value display using dl/dt/dd semantics. Business item content and empty-value meaning are supplied by the page.

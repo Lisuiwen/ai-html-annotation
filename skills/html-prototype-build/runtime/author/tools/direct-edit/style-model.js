@@ -1,4 +1,4 @@
-/* Direct Edit 样式模型：computed 只展示，dirty 才写入 inline。 */
+/* Direct Edit style model: computed values are display-only; only dirty fields are written inline. */
 (function () {
   'use strict';
 
@@ -320,7 +320,7 @@
       var inlineValue = readInline(el, prop);
       var computedValue = readComputed(el, prop);
       var source = findStyleSource(el, prop);
-      /* 输入框始终回显浏览器真实生效值；inline 只作为来源与保存基线。 */
+      /* Inputs always reflect the browser's effective value; inline is only the source and save baseline. */
       var shown = displayFromCss(prop, computedValue);
       originalByProp[prop] = inlineValue;
       rows[prop] = {

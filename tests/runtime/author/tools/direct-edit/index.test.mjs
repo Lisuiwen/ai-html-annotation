@@ -40,23 +40,23 @@ async function boot({ dirty = false, selector = '#box' } = {}) {
   return { window, calls, toasts, sessions, fetchCalls, container, source };
 }
 
-test('Direct Edit activate/release 通过共享 Picker 管理 owner', async () => {
+test('Direct Edit activate/release 通过Total享 Picker 管理 owner', async () => {
   const env = await boot(); env.window.AuthorToolsEditTool.activate(); assert.equal(env.calls[0][1].owner, 'edit'); assert.equal(typeof env.calls[0][1].onSelect, 'function'); env.window.AuthorToolsEditTool.deactivate(); assert.deepEqual(env.calls.at(-1), ['release', 'edit']);
 });
 
-test('dirty session 拒绝切换元素并提示', async () => {
+test('dirty session 拒绝切换元素并Notice', async () => {
   const env = await boot({ dirty: true }); env.window.AuthorToolsEditTool.activate(); const onSelect = env.calls[0][1].onSelect;
-  assert.equal(onSelect({ tagName: 'DIV', id: 'a', className: '' }), true); assert.equal(onSelect({ tagName: 'DIV', id: 'b', className: '' }), false); assert.match(env.toasts.at(-1), /先保存或取消/);
+  assert.equal(onSelect({ tagName: 'DIV', id: 'a', className: '' }), true); assert.equal(onSelect({ tagName: 'DIV', id: 'b', className: '' }), false); assert.match(env.toasts.at(-1), /Save or cancel/);
 });
 
-test('无稳定 selector 时点击保存不会发送写请求', async () => {
+test('无稳定 selector Hour点击Save不会发送写请求', async () => {
   const env = await boot({ dirty: true, selector: 'body > div' }); env.window.AuthorToolsEditTool.activate(); env.calls[0][1].onSelect({ tagName: 'DIV', id: '', className: '' });
   env.container.save.dispatch();
   assert.equal(env.fetchCalls.length, 0);
-  assert.match(env.toasts.at(-1), /缺少稳定 id/);
+  assert.match(env.toasts.at(-1), /stable id/);
 });
 
-test('稳定 selector 保存会向 edit 路由发送 patch', async () => {
+test('稳定 selector Save会向 edit 路由发送 patch', async () => {
   const env = await boot({ dirty: true, selector: '#box' }); env.window.AuthorToolsEditTool.activate(); env.calls[0][1].onSelect({ tagName: 'DIV', id: 'box', className: '' });
   env.container.save.dispatch();
   await new Promise((resolve) => setImmediate(resolve));

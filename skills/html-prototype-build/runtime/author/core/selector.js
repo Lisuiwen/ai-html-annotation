@@ -1,4 +1,4 @@
-/* 作者工具共享 selector：统一稳定 selector、DOM 路径与 Notes target 描述。 */
+/* Shared author-tool selector: stable selector, DOM path, and Notes target description. */
 (function () {
   'use strict';
 

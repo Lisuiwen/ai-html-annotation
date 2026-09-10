@@ -10,4 +10,4 @@ states:
 
 # data.chart-bar
 
-类目数值对比展示，ECharts 渲染。`layout: horizontal` 可做排名条；图例显隐不改变数据。
+Category value comparison rendered with ECharts. `layout: horizontal` supports ranking bars; legend visibility does not change the data.

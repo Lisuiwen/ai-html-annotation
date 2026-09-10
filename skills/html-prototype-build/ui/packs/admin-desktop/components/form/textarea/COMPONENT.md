@@ -10,8 +10,8 @@ states:
 
 # form.textarea
 
-多行文本输入控件。字段名必须使用关联的 `label` 表达，placeholder 只放输入提示。
+Multiline text input control. Field name must be expressed through an associated `label`; placeholder is for input hints only.
 
-## 状态 Adapter
+## State Adapter
 
-`state-adapter.js` 暴露 `window.PrototypeUiAdapters['form.textarea']`，局部 state 为 `{ value: string, disabled?: boolean, status?: 'default'|'error' }`。最终原型负责把业务字段映射到该 state；组件 Adapter 仅同步值、禁用与错误样式。
+`state-adapter.js` exposes `window.PrototypeUiAdapters['form.textarea']`; local state is `{ value: string, disabled?: boolean, status?: 'default'|'error' }`. The final prototype maps business fields to this state; the component Adapter only syncs value, disabled, and error styles.

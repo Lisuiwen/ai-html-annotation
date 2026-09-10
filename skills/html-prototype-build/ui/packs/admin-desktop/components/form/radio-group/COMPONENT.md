@@ -10,4 +10,4 @@ states:
 
 # form.radio-group
 
-少量互斥选项。使用原生 radio，Adapter 不绑定点击或业务校验。
+Small set of mutually exclusive options. Uses native radios; Adapter does not bind clicks or business validation.

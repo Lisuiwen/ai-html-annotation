@@ -9,7 +9,6 @@ states:
 
 # Button
 
-用于页面操作、表单提交、工具栏动作和浮层操作。仅图标按钮必须提供 `aria-label`。
+For page actions, form submission, toolbar actions, and overlay operations. Icon-only buttons must provide an `aria-label`.
 
-读取 `component.html` 后，只复制当前页面实际使用的变体。hover 与 focus 视觉仍受文件内 `ponytail:` 约束。
-
+After reading `component.html`, copy only the variants the current page actually uses. Hover and focus visuals remain constrained by `ponytail:` markers in the file.

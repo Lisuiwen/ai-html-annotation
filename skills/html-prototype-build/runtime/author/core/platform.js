@@ -1,4 +1,4 @@
-/* 作者工具平台检测：macOS 修饰键文案与 picker/save 手势判定。 */
+/* Author-tool platform detection: macOS modifier labels and picker/save gesture rules. */
 (function () {
   'use strict';
 

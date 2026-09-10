@@ -10,4 +10,4 @@ states:
 
 # data.chart-donut
 
-构成占比展示，ECharts 环/饼图。`radius` 控制环图与实心饼图。
+Composition share display using ECharts ring or pie charts. `radius` controls ring versus solid pie layout.

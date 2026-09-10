@@ -10,4 +10,4 @@ states:
 
 # data.timeline
 
-已发生的操作或审批历史。日期格式、事件聚合和增量加载均由页面提供。
+History of completed operations or approvals. Date format, event grouping, and incremental loading are supplied by the page.

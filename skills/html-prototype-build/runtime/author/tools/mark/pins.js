@@ -1,4 +1,4 @@
-/* Mark Pin：相对目标元素定位，随页面缩放贴住原位置。 */
+/* Mark Pin: positioned relative to the target element; stays anchored on page zoom. */
 (function () {
   'use strict';
 

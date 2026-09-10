@@ -1,4 +1,4 @@
-/* 原型正式标注唯一数据源；由 prototype-author 编辑器维护。 */
+/* Canonical prototype annotation data source; maintained by the prototype-author editor. */
 window.__PROTOTYPE_NOTES__ = {
   "schemaVersion": 2,
   "state": {

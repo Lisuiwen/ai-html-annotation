@@ -9,31 +9,31 @@ const manifestPath = path.join(packDirectory, 'manifest.json');
 const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
 const errors = [];
 
-/** 检查 manifest 中引用的相对文件是否存在。 */
+/** 检查 manifest 中引用 相对A件YesNo存在。 */
 async function requireFile(relativePath, label, rootDirectory = packDirectory) {
   try {
     const entry = await stat(path.join(rootDirectory, relativePath));
-    if (!entry.isFile()) errors.push(`${label} 不是文件: ${relativePath}`);
+    if (!entry.isFile()) errors.push(`${label} 不YesA件: ${relativePath}`);
   } catch (err) {
     if (err && err.code === 'ENOENT') {
       errors.push(`${label} 不存在: ${relativePath}`);
     } else {
-      errors.push(`${label} 无法访问: ${relativePath} (${err.message})`);
+      errors.push(`${label} 无法Visit: ${relativePath} (${err.message})`);
     }
   }
 }
 
-/** 检查文本资源使用 UTF-8、无 BOM，且实现文件不引入外部 URL。 */
+/** 检查A本资源使用 UTF-8、无 BOM，且实现A件不引入外部 URL。 */
 async function validateTextFile(relativePath) {
   const buffer = await readFile(path.join(packDirectory, relativePath));
   if (buffer[0] === 0xef && buffer[1] === 0xbb && buffer[2] === 0xbf) {
-    errors.push(`文件不得包含 UTF-8 BOM: ${relativePath}`);
+    errors.push(`A件不得包含 UTF-8 BOM: ${relativePath}`);
   }
   const content = new TextDecoder('utf-8', { fatal: true }).decode(buffer);
-  if (/https?:\/\//i.test(content)) errors.push(`实现文件不得引用外部 URL: ${relativePath}`);
+  if (/https?:\/\//i.test(content)) errors.push(`实现A件不得引用外部 URL: ${relativePath}`);
 }
 
-/** 读取契约 frontmatter 中的 id，验证索引和叶子契约没有漂移。 */
+/** 读取契约 frontmatter 中  id，验证索引和叶子契约没有漂移。 */
 async function validateContractId(id, relativePath) {
   const content = await readFile(path.join(packDirectory, relativePath), 'utf8');
   const match = content.match(/^---\s*[\s\S]*?^id:\s*([^\r\n]+)[\s\S]*?^---/m);
@@ -57,7 +57,7 @@ for (const source of manifest.foundation.sources) {
 const componentRootEntries = await readdir(path.join(packDirectory, 'components'), { withFileTypes: true });
 for (const entry of componentRootEntries) {
   if (entry.isFile() && entry.name.endsWith('.html')) {
-    errors.push(`不得保留类别聚合文件: components/${entry.name}`);
+    errors.push(`不得保留类别聚合A件: components/${entry.name}`);
   }
 }
 
@@ -67,7 +67,7 @@ for (const [id, entry] of Object.entries(registries)) {
   await validateTextFile(entry.contract);
   await validateTextFile(entry.source);
   if (entry.adapter) {
-    await requireFile(entry.adapter, `${id} 状态 Adapter`);
+    await requireFile(entry.adapter, `${id} Status Adapter`);
     await validateTextFile(entry.adapter);
   }
   await validateContractId(id, entry.contract);
@@ -95,11 +95,11 @@ for (const [id, entry] of Object.entries({ ...manifest.patterns, ...manifest.pre
   }
 }
 
-/** 深度优先检查强依赖和 uses 的循环。 */
+/** 深度优先检查强依赖和 uses  循环。 */
 function visit(id, visiting = new Set(), visited = new Set()) {
   if (visited.has(id)) return;
   if (visiting.has(id)) {
-    errors.push(`检测到循环依赖: ${[...visiting, id].join(' -> ')}`);
+    errors.push(`检测To循环依赖: ${[...visiting, id].join(' -> ')}`);
     return;
   }
   visiting.add(id);
@@ -117,5 +117,5 @@ if (errors.length) {
   console.error(errors.join('\n'));
   process.exitCode = 1;
 } else {
-  console.log(`UI Pack 有效：${Object.keys(manifest.components).length} 个组件，${Object.keys(manifest.patterns).length} 个 Pattern，${Object.keys(manifest.presets).length} 个 Preset。`);
+  console.log(`UI Pack 有效：${Object.keys(manifest.components).length} 组件，${Object.keys(manifest.patterns).length}  Pattern，${Object.keys(manifest.presets).length}  Preset。`);
 }

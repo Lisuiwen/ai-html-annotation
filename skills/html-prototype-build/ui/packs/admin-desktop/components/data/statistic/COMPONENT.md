@@ -10,4 +10,4 @@ states:
 
 # data.statistic
 
-指标展示。趋势的好坏必须由业务指定，不得依据方向自行解释。
+Metric display. Whether a trend is good or bad must be specified by business logic; do not infer meaning from direction alone.

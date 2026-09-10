@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* 原型作者本地服务：只负责 HTTP、静态资源与作者工具装配。 */
+/* Local prototype author server: HTTP, static assets, and author-tool wiring only. */
 import { createServer } from 'node:http';
 import { existsSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, extname, join, normalize, relative, resolve } from 'node:path';
@@ -20,7 +20,7 @@ const isDirectExecution = process.argv[1] && resolve(process.argv[1]) === fileUR
 const portArg = process.argv.find((arg) => arg.startsWith('--port='));
 const port = Number(portArg && portArg.split('=')[1] || 4178);
 
-/* 读取 skill 根目录 .env；不覆盖已有 process.env，便于 CI/本机外层变量优先。 */
+/* Load skill-root .env without overriding existing process.env so outer CI/local vars win. */
 function loadEnvFile(filePath) {
   if (!existsSync(filePath)) return;
   readFileSync(filePath, 'utf8').split(/\r?\n/).forEach((raw) => {
@@ -55,7 +55,7 @@ function readJson(request) {
       if (size > limit) {
         settled = true;
         body = '';
-        reject(new Error('标注数据超过 2MB 上限。'));
+        reject(new Error('Annotation payload exceeds 2MB limit.'));
         return;
       }
       body += chunk;
@@ -63,7 +63,7 @@ function readJson(request) {
     request.on('end', () => {
       if (settled) return;
       settled = true;
-      try { resolveBody(JSON.parse(body)); } catch { reject(new Error('请求体不是有效 JSON。')); }
+      try { resolveBody(JSON.parse(body)); } catch { reject(new Error('Request body is not valid JSON.')); }
     });
     request.on('error', (error) => {
       if (settled) return;
@@ -94,9 +94,9 @@ const server = createServer(async (request, response) => {
     const url = new URL(request.url, `http://127.0.0.1:${port}`);
     if (request.method === 'PUT' && url.pathname === '/__prototype-author/notes') {
       if (!isTrustedAuthorRequest(request, port)) return response.writeHead(403).end('Forbidden author request');
-      if (!snapshotPath) return response.writeHead(503).end('本服务未配置 snapshot 文件。');
+      if (!snapshotPath) return response.writeHead(503).end('This service has no snapshot file configured.');
       const data = await readJson(request);
-      if (!validateSnapshot(data)) return response.writeHead(400).end('标注数据不符合 schema v2 最小契约。');
+      if (!validateSnapshot(data)) return response.writeHead(400).end('Annotation data does not meet schema v2 minimum contract.');
       writeSnapshot(snapshotPath, data);
       response.writeHead(204).end();
       return;
@@ -104,7 +104,7 @@ const server = createServer(async (request, response) => {
 
     if (request.method === 'POST' && url.pathname === '/__prototype-author/edit') {
       if (!isTrustedAuthorRequest(request, port)) return response.writeHead(403).end('Forbidden author request');
-      if (!htmlPath) return response.writeHead(503).end('本服务未配置原型 HTML。');
+      if (!htmlPath) return response.writeHead(503).end('This service has no prototype HTML configured.');
       const payload = await readJson(request);
       const next = applyPrototypeEdit(readFileSync(htmlPath, 'utf8'), payload);
       writeFileAtomic(htmlPath, next);
@@ -121,11 +121,11 @@ const server = createServer(async (request, response) => {
       });
       if (!target.ok) return response.writeHead(target.status).end(target.message);
       openIDE(target.resolvedPath, target.line);
-      response.writeHead(200, { 'content-type': 'text/plain; charset=utf-8' }).end('已跳转到 ' + target.filePath + ':' + target.line);
+      response.writeHead(200, { 'content-type': 'text/plain; charset=utf-8' }).end('Opened ' + target.filePath + ':' + target.line);
       return;
     }
 
-    /* 作者浏览器资源只允许来自 runtime/author 与 runtime/client。 */
+    /* Author browser assets may only come from runtime/author and runtime/client. */
     if (url.pathname.startsWith('/__prototype-author/')) {
       const rel = decodeURIComponent(url.pathname.slice('/__prototype-author/'.length));
       const allowed = rel.startsWith('author/') || rel.startsWith('client/');
@@ -159,21 +159,21 @@ function injectAuthorLoader(content) {
 
 export function startServer() {
   if (!input) {
-    console.error('用法：node runtime/server/index.mjs <prototype.html> [--port=4178] [--snapshot=prototype/notes.snapshot.js]');
+    console.error('Usage: node runtime/server/index.mjs <prototype.html> [--port=4178] [--snapshot=prototype/notes.snapshot.js]');
     process.exit(1);
   }
   if (!existsSync(htmlPath) || !statSync(htmlPath).isFile()) {
-    console.error(`找不到原型 HTML：${htmlPath}`);
+    console.error(`Prototype HTML not found: ${htmlPath}`);
     process.exit(1);
   }
   if (snapshotArg && relative(root, snapshotPath).startsWith('..')) {
-    console.error('snapshot 文件必须位于原型目录内。');
+    console.error('Snapshot file must be inside the prototype directory.');
     process.exit(1);
   }
   server.listen(port, '127.0.0.1', () => {
-    console.log(`作者服务：http://127.0.0.1:${port}/${htmlPath.split(/[\\/]/).pop()}`);
-    console.log('Inspector IDE：' + ((process.env.CODE_EDITOR || '').trim() || '未配置，回退 cursor → code'));
-    console.log('关闭服务：Ctrl+C');
+    console.log(`Author server: http://127.0.0.1:${port}/${htmlPath.split(/[\\/]/).pop()}`);
+    console.log('Inspector IDE: ' + ((process.env.CODE_EDITOR || '').trim() || 'not configured, fallback cursor → code'));
+    console.log('Stop server: Ctrl+C');
   });
 }
 

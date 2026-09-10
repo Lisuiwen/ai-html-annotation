@@ -10,8 +10,8 @@ states:
 
 # Overlay Core
 
-Modal 与 Drawer 共用的私有浮层定位、结构和开关行为。只能通过公开组件依赖加载，不得由 Pattern 或 Preset 直接选择。
+Private overlay positioning, structure, and open/close behavior shared by Modal and Drawer. May be loaded only through public component dependencies; Patterns and Presets must not select it directly.
 
-## 状态 Adapter
+## State Adapter
 
-`state-adapter.js` 暴露 `window.PrototypeUiAdapters['feedback._overlay-core']`，局部 state 为 `{ open: boolean }`。最终原型负责把业务场景映射到浮层开关并处理焦点；组件 Adapter 仅在产品区内投影 `hidden`、ARIA、尺寸和视觉 class。
+`state-adapter.js` exposes `window.PrototypeUiAdapters['feedback._overlay-core']`; local state is `{ open: boolean }`. The final prototype maps business scenarios to overlay open/close and handles focus; the component Adapter only projects `hidden`, ARIA, dimensions, and visual classes within the product area.

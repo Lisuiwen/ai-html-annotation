@@ -1,4 +1,4 @@
-/* Author Tools Shell：统一入口、Drawer、Tab 生命周期与公共 Toast。 */
+/* Author Tools Shell: unified entry, Drawer, tab lifecycle, and shared toast. */
 (function () {
   'use strict';
 
@@ -224,8 +224,8 @@
     });
     document.addEventListener('keydown', handleKey);
 
-    // 只响应 Viewer 渲染完成事件；不要 MutationObserver 监听 notes，
-    // 否则 attachShell 搬 DOM 会再次触发观察者，造成重排抖动甚至丢按钮。
+    // React only to Viewer render-complete events; do not MutationObserver notes,
+    // or attachShell DOM moves will retrigger the observer, causing layout jitter or lost buttons.
     window.addEventListener('prototype-notes:rendered', attachShell);
     var page = document.querySelector('.pn-page');
     if (page) {

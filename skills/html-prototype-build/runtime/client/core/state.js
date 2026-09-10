@@ -1,4 +1,4 @@
-/* 原型统一状态协调器：JS state 是唯一状态源，业务 DOM 与各 Viewer 都只消费提交后的状态。 */
+/* Unified prototype state coordinator: JS state is the single source of truth; product DOM and viewers consume committed state only. */
 (function () {
   'use strict';
 
@@ -14,12 +14,12 @@
   var isCommitting = false;
   var pendingCommit = null;
 
-  /* 判断普通对象，避免把数组和 DOM 对象当作可递归状态处理。 */
+  /* Detect plain objects so arrays and DOM nodes are not treated as recursively mergeable state. */
   function isPlainObject(value) {
     return !!value && Object.prototype.toString.call(value) === '[object Object]';
   }
 
-  /* 深复制公开状态，防止 Adapter、Viewer 或调用方绕过 setState 直接改写唯一状态源。 */
+  /* Deep-clone public state so adapters, viewers, or callers cannot bypass setState and mutate the source of truth. */
   function cloneValue(value) {
     if (Array.isArray(value)) return value.map(cloneValue);
     if (!isPlainObject(value)) return value;
@@ -28,7 +28,7 @@
     return copy;
   }
 
-  /* 递归合并状态片段；数组按完整值替换，避免多次 patch 后残留旧组合项。 */
+  /* Recursively merge state fragments; arrays replace wholesale to avoid stale combined entries after multiple patches. */
   function mergeState(base, patch) {
     var result = isPlainObject(base) ? cloneValue(base) : {};
     if (!isPlainObject(patch)) return result;
@@ -40,7 +40,7 @@
     return result;
   }
 
-  /* 依注册顺序归一化各命名空间，保证业务状态具有稳定结构。 */
+  /* Normalize each namespace in registration order so product state has a stable shape. */
   function normalizeState(nextState) {
     var normalized = isPlainObject(nextState) ? cloneValue(nextState) : {};
     Object.keys(stateAdapters).forEach(function (name) {
@@ -50,13 +50,13 @@
         var normalizedValue = adapter.normalize(cloneValue(normalized[name]), cloneValue(normalized));
         if (normalizedValue !== undefined) normalized[name] = normalizedValue;
       } catch (error) {
-        console.error('[prototype-viewers] 状态归一化失败：' + name, error);
+        console.error('[prototype-viewers] State normalization failed: ' + name, error);
       }
     });
     return normalized;
   }
 
-  /* 可选同步场景到 URL；默认不改历史，避免普通状态 patch 污染浏览记录。 */
+  /* Optionally sync scenario to URL; default skips history so routine state patches do not pollute browser history. */
   function syncSceneUrl(scene, historyMode) {
     if (!historyMode || !window.history || !window.URL) return;
     try {
@@ -66,11 +66,11 @@
       if (historyMode === 'push') window.history.pushState(null, '', url.toString());
       else if (historyMode === 'replace') window.history.replaceState(null, '', url.toString());
     } catch (_) {
-      /* file:// 或旧浏览器不支持 URL 更新时，状态提交本身仍应成功。 */
+      /* State commit should still succeed when file:// or older browsers cannot update the URL. */
     }
   }
 
-  /* 执行一次原子提交，严格保持 normalize → adapter apply → viewer render 顺序。 */
+  /* Perform one atomic commit in strict order: normalize → adapter apply → viewer render. */
   function commit(nextState, options) {
     var opts = options || {};
     if (isCommitting) {
@@ -87,7 +87,7 @@
       try {
         adapter.apply(cloneValue(currentState[name]), cloneValue(currentState));
       } catch (error) {
-        console.error('[prototype-viewers] 状态应用失败：' + name, error);
+        console.error('[prototype-viewers] State apply failed: ' + name, error);
       }
     });
     Object.keys(viewers).forEach(function (name) {
@@ -96,7 +96,7 @@
       try {
         viewer.render(cloneValue(currentState));
       } catch (error) {
-        console.error('[prototype-viewers] Viewer 渲染失败：' + name, error);
+        console.error('[prototype-viewers] Viewer render failed: ' + name, error);
       }
     });
     hasCommitted = true;
@@ -110,72 +110,72 @@
     return getState();
   }
 
-  /* 注册一个顶层状态命名空间 Adapter；初始化后注册会立即纳入完整提交流程。 */
+  /* Register a top-level state namespace adapter; post-init registration joins the full commit pipeline immediately. */
   function registerState(name, adapter) {
-    if (!name) throw new Error('[prototype-viewers] registerState 缺少 name。');
+    if (!name) throw new Error('[prototype-viewers] registerState missing name.');
     stateAdapters[name] = typeof adapter === 'function' ? { apply: adapter } : (adapter || {});
     if (hasCommitted) commit(currentState, { scene: activeScenario });
     return function () { delete stateAdapters[name]; };
   }
 
-  /* 注册状态消费者；初始化后注册立即收到当前完整状态。 */
+  /* Register a state consumer; post-init registration receives the current full state immediately. */
   function registerViewer(name, viewer) {
-    if (!name) throw new Error('[prototype-viewers] registerViewer 缺少 name。');
+    if (!name) throw new Error('[prototype-viewers] registerViewer missing name.');
     viewers[name] = typeof viewer === 'function' ? { render: viewer } : (viewer || {});
     if (hasCommitted && typeof viewers[name].render === 'function') {
       try {
         viewers[name].render(getState());
       } catch (error) {
-        console.error('[prototype-viewers] Viewer 初次渲染失败：' + name, error);
+        console.error('[prototype-viewers] Viewer initial render failed: ' + name, error);
       }
     }
     return function () { delete viewers[name]; };
   }
 
-  /* 返回唯一状态源的副本。 */
+  /* Return a copy of the single source of truth. */
   function getState() {
     return cloneValue(currentState);
   }
 
-  /* 返回当前激活的显式场景 ID；手动 set/patch 默认会退出场景。 */
+  /* Return the active explicit scenario ID; manual set/patch exits the scenario by default. */
   function getActiveScenario() {
     return activeScenario;
   }
 
-  /* 浅复制提交选项，避免内部补默认值时修改调用方对象。 */
+  /* Shallow-copy commit options so internal default filling does not mutate caller objects. */
   function copyOptions(options) {
     var copy = {};
     Object.keys(options || {}).forEach(function (key) { copy[key] = options[key]; });
     return copy;
   }
 
-  /* 用完整状态替换当前状态。 */
+  /* Replace current state with a full snapshot. */
   function setState(nextState, options) {
     var opts = copyOptions(options);
     if (!Object.prototype.hasOwnProperty.call(opts, 'scene')) opts.scene = '';
     return commit(nextState, opts);
   }
 
-  /* 深合并局部状态；数组与原始值按完整值替换。 */
+  /* Deep-merge partial state; arrays and primitives replace wholesale. */
   function patchState(partial, options) {
     var opts = copyOptions(options);
     if (!Object.prototype.hasOwnProperty.call(opts, 'scene')) opts.scene = '';
     return commit(mergeState(currentState, partial), opts);
   }
 
-  /* 注册显式场景；标准结构为 { extends, state }，同时宽容兼容直接状态对象。 */
+  /* Register an explicit scenario; standard shape is { extends, state }, with direct state objects also accepted. */
   function registerScenario(id, configOrState) {
-    if (!id) throw new Error('[prototype-viewers] registerScenario 缺少 id。');
+    if (!id) throw new Error('[prototype-viewers] registerScenario missing id.');
     scenarios[id] = cloneValue(configOrState || {});
   }
 
-  /* 递归解析场景继承，并拦截循环 extends。 */
+  /* Resolve scenario inheritance recursively and block cyclic extends. */
   function resolveScenario(id, chain) {
     var config = scenarios[id];
     if (!config) return null;
     var visited = chain || [];
     if (visited.indexOf(id) !== -1) {
-      console.error('[prototype-viewers] 场景继承存在循环：' + visited.concat(id).join(' -> '));
+      console.error('[prototype-viewers] Scenario inheritance cycle: ' + visited.concat(id).join(' -> '));
       return null;
     }
     var standard = Object.prototype.hasOwnProperty.call(config, 'state') || Object.prototype.hasOwnProperty.call(config, 'extends');
@@ -185,7 +185,7 @@
     return parentState ? mergeState(parentState, ownState) : null;
   }
 
-  /* 激活场景并以 snapshot 默认 state 为基础应用组合，避免从上一场景泄漏状态。 */
+  /* Activate a scenario on top of snapshot default state to avoid leaking state from the previous scenario. */
   function activateScenario(id, options) {
     var scenarioState = resolveScenario(id, []);
     if (!scenarioState) return false;

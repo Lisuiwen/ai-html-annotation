@@ -10,4 +10,4 @@ states:
 
 # data.chart-gauge
 
-SLA、完成率、配额占用等单值指标，ECharts 仪表盘。
+Single-value metrics such as SLA, completion rate, and quota usage, rendered with an ECharts gauge.

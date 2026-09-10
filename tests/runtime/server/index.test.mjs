@@ -24,16 +24,16 @@ async function freePort() {
 async function waitForServer(child) {
   return new Promise((resolve, reject) => {
     let stderr = '';
-    const timer = setTimeout(() => reject(new Error(`作者服务启动超时：${stderr}`)), 5000);
+    const timer = setTimeout(() => reject(new Error(`Author server startup timeout: ${stderr}`)), 5000);
     child.stderr.on('data', (chunk) => { stderr += String(chunk); });
     child.stdout.on('data', (chunk) => {
-      if (!String(chunk).includes('作者服务：http://127.0.0.1:')) return;
+      if (!String(chunk).includes('Author server: http://127.0.0.1:')) return;
       clearTimeout(timer);
       resolve();
     });
     child.once('exit', (code) => {
       clearTimeout(timer);
-      reject(new Error(`作者服务提前退出 ${code}：${stderr}`));
+      reject(new Error(`Author server exited early ${code}: ${stderr}`));
     });
   });
 }

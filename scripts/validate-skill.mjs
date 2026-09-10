@@ -1,4 +1,4 @@
-/** 聚合 Skill 元数据、链接、浏览器脚本语法、UI Pack、示例和运行时契约验证。 */
+/** 聚合 Skill 元数据、链接、浏览器脚本语法、UI Pack、Example和运行Hour契约验证。 */
 import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,7 +8,7 @@ const repositoryDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.
 const skillDirectory = path.join(repositoryDirectory, 'skills', 'html-prototype-build');
 const examplesDirectory = path.join(repositoryDirectory, 'examples');
 
-/** 递归枚举目录中的全部文件。 */
+/** 递归枚举目录中 AllA件。 */
 async function listFiles(directory) {
   const files = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -19,7 +19,7 @@ async function listFiles(directory) {
   return files;
 }
 
-/** 校验 SKILL.md 的必需 frontmatter 与目录命名。 */
+/** 校验 SKILL.md  必需 frontmatter 与目录命名。 */
 async function validateMetadata() {
   const source = await readFile(path.join(skillDirectory, 'SKILL.md'), 'utf8');
   const match = source.match(/^---\s*\r?\n([\s\S]*?)\r?\n---/);
@@ -30,7 +30,7 @@ async function validateMetadata() {
   if (!/^html-prototype-build$/.test(path.basename(skillDirectory))) throw new Error('Skill 目录名不符合命名规则。');
 }
 
-/** 使用 VM 编译不含 ESM import 的浏览器脚本，避免依赖派生进程。 */
+/** 使用 VM 编译不含 ESM import  浏览器脚本，避免依赖派生进程。 */
 async function validateBrowserScripts(files) {
   for (const file of files.filter((target) => target.endsWith('.js') && !target.includes(`${path.sep}vendor${path.sep}`))) {
     const source = await readFile(file, 'utf8');
@@ -101,7 +101,7 @@ await validateMarkdownLinks([...skillFiles, ...exampleFiles, ...rootMarkdownFile
 await validateBrowserScripts([...skillFiles, ...exampleFiles]);
 await import('../skills/html-prototype-build/ui/packs/admin-desktop/tools/validate-pack.mjs');
 if (process.exitCode) {
-  throw new Error('UI Pack 校验失败，详见上方错误输出。');
+  throw new Error('UI Pack 校验Failure，详见上方Error输出。');
 }
 process.exitCode = 0;
 await import('../tests/runtime/index.test.mjs');

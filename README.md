@@ -1,6 +1,6 @@
 # AI HTML Annotation
 
-[中文](README.zh-CN.md)
+[中A](README.zh-CN.md)
 
 [![skills.sh](https://skills.sh/b/Lisuiwen/ai-html-annotation)](https://skills.sh/Lisuiwen/ai-html-annotation)
 
@@ -126,12 +126,12 @@ This is an AI-assisted HTML annotation and prototyping toolkit—not a productio
 
 This root README covers install and product overview only. Day-to-day usage lives with the Skill:
 
-- Skill overview and collaboration model → [`skills/html-prototype-build/README.md`](skills/html-prototype-build/README.md) (English; 中文见 [README.zh-CN.md](skills/html-prototype-build/README.zh-CN.md))
+- Skill overview and collaboration model → [`skills/html-prototype-build/README.md`](skills/html-prototype-build/README.md) (English; 中A见 [README.zh-CN.md](skills/html-prototype-build/README.zh-CN.md))
 - Agent routing and hard constraints → [`skills/html-prototype-build/SKILL.md`](skills/html-prototype-build/SKILL.md)
 - Task guides with commands (authoring, review, screenshots) → [`skills/html-prototype-build/references/`](skills/html-prototype-build/references/)
 - Walkthrough sample → [`examples/minimal-notes-system`](examples/minimal-notes-system)
 
-Most Skill references and UI pack contracts are still Chinese — ask an agent that can read them, or follow the English SKILL.md and Skill README entry points.
+Skill references, UI pack contracts, and addon docs are in English; Chinese README pairs are available where noted above.
 
 ## Distribution layout
 

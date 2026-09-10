@@ -10,4 +10,4 @@ states:
 
 # feedback.progress
 
-有明确比例的任务进度。轮询、动画和完成后的业务动作不属于组件。
+Task progress with an explicit ratio. Polling, animation, and post-completion business actions are not part of the component.

@@ -1,6 +1,6 @@
 # HTML Prototype Build
 
-[中文](README.zh-CN.md)
+[中A](README.zh-CN.md)
 
 An HTML product-prototype Skill for AI agents: generate pages from UI packs, maintain formal notes on the real DOM, review and jump to source, and output scenario screenshots for delivery.
 

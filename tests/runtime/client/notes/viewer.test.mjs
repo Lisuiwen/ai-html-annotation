@@ -4,10 +4,10 @@ import test from 'node:test';
 
 const viewerUrl = new URL('../../../../skills/html-prototype-build/runtime/client/notes/viewer.js', import.meta.url);
 
-test('Notes Viewer 只保留 DOM/连线职责，状态与 when 逻辑由依赖提供', async () => {
+test('Notes Viewer 只保留 DOM/连线职责，Status与 when 逻辑由依赖提供', async () => {
   const source = await readFile(viewerUrl, 'utf8');
   assert.match(source, /PrototypeNotesViewer/);
-  assert.doesNotMatch(source, /原型统一状态协调器/);
+  assert.doesNotMatch(source, /原型统一Status协调器/);
   assert.doesNotMatch(source, /PrototypeAuthorChrome\s*=/);
   assert.doesNotMatch(source, /PrototypeViewers\s*=\s*\{/);
   assert.doesNotMatch(source, /function matchesWhen/);

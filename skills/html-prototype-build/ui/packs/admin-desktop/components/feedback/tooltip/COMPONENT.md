@@ -9,4 +9,4 @@ states:
 
 # feedback.tooltip
 
-行内文字提示。hover 时序、portal 与定位策略由最终原型处理。
+Inline text hint. Hover timing, portal, and positioning strategy are handled by the final prototype.

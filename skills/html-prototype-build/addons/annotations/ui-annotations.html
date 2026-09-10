@@ -1,28 +1,28 @@
 <!--
-  UI 正式标注包：所有原型均加载，作为 Notes Viewer 与统一状态协调器的声明式示例。
-  状态协调由 runtime/client/core/state.js 提供，场景元数据与 when 匹配由 runtime/client/notes/model.js 提供，
-  右栏 DOM、样式和连线逻辑由 runtime/client/notes/viewer.js 创建；原型 HTML 不得硬编码这些运行时职责。
-  卡片只展示标题与正文；target.label 保留为结构化数据，不在卡片内重复显示。
-  作者态操作由 html-prototype-build 本地服务（runtime/server/index.mjs）动态注入。
+  UI 正式标注包：所有原型均加载，作为 Notes Viewer 与统一Status协调器 声明式Example。
+  Status协调由 runtime/client/core/state.js 提供，场景元数据与 when 匹配由 runtime/client/notes/model.js 提供，
+  右栏 DOM、样式和连线逻辑由 runtime/client/notes/viewer.js 创建；原型 HTML 不得硬编码这些运行Hour职责。
+  Card只展示Title与正A；target.label 保留为结构化数据，不在Card内重复显示。
+  作者态Actions由 html-prototype-build 本地服务（runtime/server/index.mjs）动态注入。
 -->
 
-<!-- 原型优先复用语义 id 作为稳定锚点；状态不存入 DOM 属性。 -->
+<!-- 原型优先复用语义 id 作为稳定锚点；Status不存入 DOM 属性。 -->
 <button
   id="primaryAction"
   class="ui-button ui-button--primary"
   data-ui-interactive>
-  主操作
+  主Actions
 </button>
-<section id="contentArea" class="ui-component-box">内容区域</section>
+<section id="contentArea" class="ui-component-box">Content区域</section>
 
 <!--
   prototype/notes.snapshot.js：唯一标注数据源。
-  实际生成时写入独立 UTF-8 文件，不要把该脚本块内联到 prototype.html，也不要再生成 notes.json。
+  实际生成Hour写入独立 UTF-8 A件，不要把该脚本块内联To prototype.html，也不要再生成 notes.json。
 -->
 <script>
 /*
- * 为只读 Viewer、作者编辑器和 AI 提供同一份结构化标注数据。
- * 赋值右侧保持严格 JSON；顶层 state 是基础状态，scenarios 只保存可恢复差异。
+ * 为只读 Viewer、作者Edit器和 AI 提供同一份结构化标注数据。
+ * 赋值右侧保持严格 JSON；顶层 state Yes基础Status，scenarios 只Save可恢复差异。
  */
 window.__PROTOTYPE_NOTES__ = {
   "schemaVersion": 2,
@@ -32,7 +32,7 @@ window.__PROTOTYPE_NOTES__ = {
   "activeScenario": "base",
   "header": {
     "title": "功能说明",
-    "subtitle": "按统一业务状态展示匹配说明"
+    "subtitle": "按统一业务Status展示匹配说明"
   },
   "scenarios": {
     "base": { "state": {} },
@@ -45,20 +45,20 @@ window.__PROTOTYPE_NOTES__ = {
     {
       "id": "primary-action",
       "when": { "product.page": "list", "product.layers": [] },
-      "title": "主操作",
-      "body": "说明该操作的业务目的。",
+      "title": "主Actions",
+      "body": "说明该Actions 业务目 。",
       "target": {
         "anchor": "primaryAction",
-        "label": "主操作"
+        "label": "主Actions"
       }
     },
     {
       "id": "content-area",
-      "title": "内容区域",
-      "body": "说明该区域的数据和状态。",
+      "title": "Content区域",
+      "body": "说明该区域 数据和Status。",
       "target": {
         "anchor": "contentArea",
-        "label": "内容区域"
+        "label": "Content区域"
       }
     }
   ]

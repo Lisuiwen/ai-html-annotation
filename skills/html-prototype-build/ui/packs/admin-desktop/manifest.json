@@ -43,11 +43,11 @@
     "action.button": {
       "category": "action",
       "keywords": [
-        "按钮",
-        "主操作",
-        "次操作",
-        "文字按钮",
-        "图标按钮"
+        "Button",
+        "主Actions",
+        "次Actions",
+        "A字Button",
+        "图标Button"
       ],
       "contract": "components/action/button/COMPONENT.md",
       "source": "components/action/button/component.html",
@@ -56,7 +56,7 @@
     "navigation.app-header": {
       "category": "navigation",
       "keywords": [
-        "顶部导航",
+        "Top navigation",
         "全局导航",
         "品牌区",
         "用户菜单"
@@ -95,9 +95,9 @@
       "category": "navigation",
       "keywords": [
         "Tabs",
-        "页签",
-        "标签页",
-        "内容切换"
+        "page签",
+        "Tabs",
+        "Content切换"
       ],
       "contract": "components/navigation/tabs/COMPONENT.md",
       "source": "components/navigation/tabs/component.html",
@@ -107,8 +107,8 @@
     "form.input": {
       "category": "form",
       "keywords": [
-        "输入框",
-        "文本输入"
+        "Input",
+        "A本输入"
       ],
       "contract": "components/form/input/COMPONENT.md",
       "source": "components/form/input/component.html",
@@ -118,8 +118,8 @@
       "category": "form",
       "keywords": [
         "字段",
-        "表单项",
-        "框内标签"
+        "Formitem",
+        "框内Tag"
       ],
       "contract": "components/form/field/COMPONENT.md",
       "source": "components/form/field/component.html",
@@ -135,8 +135,8 @@
     "form.search": {
       "category": "form",
       "keywords": [
-        "搜索框",
-        "关键词搜索",
+        "Search",
+        "Keyword搜索",
         "组合搜索"
       ],
       "contract": "components/form/search/COMPONENT.md",
@@ -149,9 +149,9 @@
     "form.select": {
       "category": "form",
       "keywords": [
-        "选择器",
+        "Select",
         "下拉框",
-        "筛选选项"
+        "筛选Option"
       ],
       "contract": "components/form/select/COMPONENT.md",
       "source": "components/form/select/component.html",
@@ -161,9 +161,9 @@
     "form.form-grid": {
       "category": "form",
       "keywords": [
-        "表单布局",
+        "Form布局",
         "字段网格",
-        "两列表单"
+        "两List单"
       ],
       "contract": "components/form/form-grid/COMPONENT.md",
       "source": "components/form/form-grid/component.html",
@@ -172,8 +172,8 @@
     "data.filter-bar": {
       "category": "data",
       "keywords": [
-        "筛选栏",
-        "查询条件",
+        "Filter bar",
+        "Searchitems件",
         "过滤区域"
       ],
       "contract": "components/data/filter-bar/COMPONENT.md",
@@ -188,9 +188,9 @@
     "data.toolbar": {
       "category": "data",
       "keywords": [
-        "工具栏",
-        "列表操作",
-        "操作区"
+        "Toolbar",
+        "ListActions",
+        "Actions区"
       ],
       "contract": "components/data/toolbar/COMPONENT.md",
       "source": "components/data/toolbar/component.html",
@@ -202,9 +202,9 @@
     "data.tag": {
       "category": "data",
       "keywords": [
-        "标签",
-        "状态标签",
-        "分类标签"
+        "Tag",
+        "StatusTag",
+        "CategoryTag"
       ],
       "contract": "components/data/tag/COMPONENT.md",
       "source": "components/data/tag/component.html",
@@ -214,7 +214,7 @@
       "category": "data",
       "keywords": [
         "表格",
-        "数据表格",
+        "Data table",
         "空态",
         "加载态"
       ],
@@ -230,8 +230,8 @@
     "data.pagination": {
       "category": "data",
       "keywords": [
-        "分页",
-        "翻页"
+        "Pagination",
+        "翻page"
       ],
       "contract": "components/data/pagination/COMPONENT.md",
       "source": "components/data/pagination/component.html",
@@ -251,7 +251,7 @@
     "feedback.alert": {
       "category": "feedback",
       "keywords": [
-        "提示条",
+        "Noticeitems",
         "提醒",
         "Alert"
       ],
@@ -263,7 +263,7 @@
       "category": "feedback",
       "keywords": [
         "弹窗",
-        "对话框",
+        "Modal",
         "Modal"
       ],
       "contract": "components/feedback/modal/COMPONENT.md",
@@ -277,7 +277,7 @@
     "feedback.drawer": {
       "category": "feedback",
       "keywords": [
-        "抽屉",
+        "Drawer",
         "侧滑面板",
         "Drawer"
       ],
@@ -294,7 +294,7 @@
       "keywords": [
         "Toast",
         "消息反馈",
-        "自动消失提示"
+        "自动消失Notice"
       ],
       "contract": "components/feedback/toast/COMPONENT.md",
       "source": "components/feedback/toast/component.html",
@@ -306,9 +306,9 @@
     "navigation.breadcrumb": {
       "category": "navigation",
       "keywords": [
-        "面包屑",
+        "Breadcrumb",
         "路径导航",
-        "页面层级"
+        "page面层级"
       ],
       "contract": "components/navigation/breadcrumb/COMPONENT.md",
       "source": "components/navigation/breadcrumb/component.html",
@@ -317,9 +317,9 @@
     "form.date-range-picker": {
       "category": "form",
       "keywords": [
-        "日期范围",
-        "时间筛选",
-        "日期选择"
+        "Date range",
+        "Hour间筛选",
+        "Date picker"
       ],
       "contract": "components/form/date-range-picker/COMPONENT.md",
       "source": "components/form/date-range-picker/component.html",
@@ -342,7 +342,7 @@
       "category": "form",
       "keywords": [
         "单选",
-        "单选组",
+        "Radio group",
         "配置选择"
       ],
       "contract": "components/form/radio-group/COMPONENT.md",
@@ -354,8 +354,8 @@
       "category": "feedback",
       "keywords": [
         "二次确认",
-        "删除确认",
-        "气泡确认"
+        "Delete确认",
+        "Popconfirm"
       ],
       "contract": "components/feedback/popconfirm/COMPONENT.md",
       "source": "components/feedback/popconfirm/component.html",
@@ -367,8 +367,8 @@
     "data.empty": {
       "category": "data",
       "keywords": [
-        "空状态",
-        "无数据",
+        "空Status",
+        "No data",
         "无搜索结果"
       ],
       "contract": "components/data/empty/COMPONENT.md",
@@ -379,9 +379,9 @@
     "feedback.result": {
       "category": "feedback",
       "keywords": [
-        "结果页",
-        "成功页",
-        "异常页",
+        "Result",
+        "Successpage",
+        "Abnormalpage",
         "权限不足"
       ],
       "contract": "components/feedback/result/COMPONENT.md",
@@ -392,9 +392,9 @@
     "data.descriptions": {
       "category": "data",
       "keywords": [
-        "描述列表",
-        "详情",
-        "只读信息"
+        "DescriptionList",
+        "Detail",
+        "只读Info"
       ],
       "contract": "components/data/descriptions/COMPONENT.md",
       "source": "components/data/descriptions/component.html",
@@ -404,8 +404,8 @@
     "navigation.steps": {
       "category": "navigation",
       "keywords": [
-        "步骤条",
-        "审批流程",
+        "Steps",
+        "Approve流程",
         "创建向导"
       ],
       "contract": "components/navigation/steps/COMPONENT.md",
@@ -416,9 +416,9 @@
     "data.timeline": {
       "category": "data",
       "keywords": [
-        "时间线",
-        "操作记录",
-        "审批历史"
+        "Hour间线",
+        "Actions记录",
+        "Approve历史"
       ],
       "contract": "components/data/timeline/COMPONENT.md",
       "source": "components/data/timeline/component.html",
@@ -428,8 +428,8 @@
     "feedback.progress": {
       "category": "feedback",
       "keywords": [
-        "进度条",
-        "上传进度",
+        "Progress",
+        "Upload进度",
         "任务进度"
       ],
       "contract": "components/feedback/progress/COMPONENT.md",
@@ -440,9 +440,9 @@
     "feedback.skeleton": {
       "category": "feedback",
       "keywords": [
-        "骨架屏",
-        "加载占位",
-        "内容加载"
+        "Skeleton",
+        "加载Placeholder",
+        "Content加载"
       ],
       "contract": "components/feedback/skeleton/COMPONENT.md",
       "source": "components/feedback/skeleton/component.html",
@@ -452,7 +452,7 @@
     "data.statistic": {
       "category": "data",
       "keywords": [
-        "统计数值",
+        "Statistic",
         "指标",
         "趋势"
       ],
@@ -464,9 +464,9 @@
     "data.card": {
       "category": "data",
       "keywords": [
-        "卡片",
-        "内容容器",
-        "指标卡片"
+        "Card",
+        "Content容器",
+        "指标Card"
       ],
       "contract": "components/data/card/COMPONENT.md",
       "source": "components/data/card/component.html",
@@ -476,9 +476,9 @@
     "data.list": {
       "category": "data",
       "keywords": [
-        "列表",
-        "任务列表",
-        "消息列表",
+        "List",
+        "任务List",
+        "消息List",
         "轻量记录"
       ],
       "contract": "components/data/list/COMPONENT.md",
@@ -505,10 +505,10 @@
     "data.chart-line": {
       "category": "data",
       "keywords": [
-        "折线图",
+        "Line chart",
         "趋势图",
         "面积图",
-        "时间趋势"
+        "Hour间趋势"
       ],
       "contract": "components/data/chart-line/COMPONENT.md",
       "source": "components/data/chart-line/component.html",
@@ -523,9 +523,9 @@
     "data.chart-bar": {
       "category": "data",
       "keywords": [
-        "柱状图",
+        "Bar chart",
         "对比图",
-        "分组柱图",
+        "Minute组柱图",
         "堆叠柱图"
       ],
       "contract": "components/data/chart-bar/COMPONENT.md",
@@ -541,7 +541,7 @@
     "data.chart-donut": {
       "category": "data",
       "keywords": [
-        "环图",
+        "Donut chart",
         "占比图",
         "构成图",
         "饼图"
@@ -559,7 +559,7 @@
     "data.chart-mixed": {
       "category": "data",
       "keywords": [
-        "混合图",
+        "Mixed chart",
         "柱线混合",
         "双轴图"
       ],
@@ -576,7 +576,7 @@
     "data.chart-funnel": {
       "category": "data",
       "keywords": [
-        "漏斗图",
+        "Funnel chart",
         "转化",
         "流失"
       ],
@@ -593,8 +593,8 @@
     "data.chart-gauge": {
       "category": "data",
       "keywords": [
-        "仪表盘",
-        "完成率",
+        "Gauge",
+        "Completion %",
         "SLA"
       ],
       "contract": "components/data/chart-gauge/COMPONENT.md",
@@ -610,8 +610,8 @@
     "data.chart-heatmap": {
       "category": "data",
       "keywords": [
-        "热力图",
-        "活跃分布",
+        "Heatmap",
+        "活跃Minute布",
         "矩阵"
       ],
       "contract": "components/data/chart-heatmap/COMPONENT.md",
@@ -627,9 +627,9 @@
     "data.chart-map": {
       "category": "data",
       "keywords": [
-        "地图",
+        "Map",
         "区域统计",
-        "省级分布"
+        "省级Minute布"
       ],
       "contract": "components/data/chart-map/COMPONENT.md",
       "source": "components/data/chart-map/component.html",
@@ -649,9 +649,9 @@
       "category": "form",
       "keywords": [
         "多行输入",
-        "备注",
-        "描述",
-        "文本域"
+        "Notes",
+        "Description",
+        "A本域"
       ],
       "contract": "components/form/textarea/COMPONENT.md",
       "source": "components/form/textarea/component.html",
@@ -664,9 +664,9 @@
     "form.switch": {
       "category": "form",
       "keywords": [
-        "开关",
+        "Switch",
         "切换",
-        "启用禁用"
+        "EnabledDisabled"
       ],
       "contract": "components/form/switch/COMPONENT.md",
       "source": "components/form/switch/component.html",
@@ -679,10 +679,10 @@
     "form.date-picker": {
       "category": "form",
       "keywords": [
-        "日期",
-        "截止日期",
-        "单日期",
-        "日期选择"
+        "Day期",
+        "截止Day期",
+        "单Day期",
+        "Date picker"
       ],
       "contract": "components/form/date-picker/COMPONENT.md",
       "source": "components/form/date-picker/component.html",
@@ -695,10 +695,10 @@
     "form.upload": {
       "category": "form",
       "keywords": [
-        "上传",
+        "Upload",
         "附件",
-        "文件",
-        "拖拽上传"
+        "A件",
+        "拖拽Upload"
       ],
       "contract": "components/form/upload/COMPONENT.md",
       "source": "components/form/upload/component.html",
@@ -712,7 +712,7 @@
     "data.avatar": {
       "category": "data",
       "keywords": [
-        "头像",
+        "Avatar",
         "负责人",
         "用户",
         "参与人"
@@ -725,7 +725,7 @@
     "feedback.tooltip": {
       "category": "feedback",
       "keywords": [
-        "提示",
+        "Notice",
         "Tooltip",
         "悬停说明"
       ],
@@ -739,9 +739,9 @@
     "feedback.popover": {
       "category": "feedback",
       "keywords": [
-        "气泡卡片",
+        "气泡Card",
         "Popover",
-        "浮层内容"
+        "浮层Content"
       ],
       "contract": "components/feedback/popover/COMPONENT.md",
       "source": "components/feedback/popover/component.html",
@@ -754,8 +754,8 @@
   "patterns": {
     "pattern.application-shell": {
       "keywords": [
-        "中后台壳层",
-        "顶部导航加侧栏",
+        "Admin壳层",
+        "Top navigation加侧栏",
         "应用框架"
       ],
       "contract": "patterns/application-shell/PATTERN.md",
@@ -768,8 +768,8 @@
     },
     "pattern.page-header": {
       "keywords": [
-        "页面标题",
-        "标题操作区"
+        "page面Title",
+        "TitleActions区"
       ],
       "contract": "patterns/page-header/PATTERN.md",
       "source": "patterns/page-header/pattern.html",
@@ -781,8 +781,8 @@
     "pattern.filter-table": {
       "keywords": [
         "筛选表格",
-        "列表工作区",
-        "查询列表"
+        "List工作区",
+        "SearchList"
       ],
       "contract": "patterns/filter-table/PATTERN.md",
       "source": "patterns/filter-table/pattern.html",
@@ -799,8 +799,8 @@
   "presets": {
     "preset.admin-list": {
       "keywords": [
-        "中后台列表页",
-        "管理列表"
+        "AdminListpage",
+        "管理List"
       ],
       "contract": "presets/admin-list/PRESET.md",
       "source": "presets/admin-list/seed.html",
@@ -815,9 +815,9 @@
     },
     "preset.admin-form": {
       "keywords": [
-        "中后台表单页",
-        "新建页",
-        "编辑页"
+        "AdminFormpage",
+        "Createpage",
+        "Editpage"
       ],
       "contract": "presets/admin-form/PRESET.md",
       "source": "presets/admin-form/seed.html",

@@ -9,5 +9,4 @@ states:
 
 # Search
 
-Input 与搜索按钮的紧凑组合。搜索按钮必须具有可理解的可访问名称。
-
+Compact Input and search button combination. The search button must have an understandable accessible name.

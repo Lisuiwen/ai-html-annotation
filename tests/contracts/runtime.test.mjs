@@ -18,7 +18,7 @@ const packManifestUrl = new URL('../../skills/html-prototype-build/ui/packs/admi
 async function readSnapshot() {
   const source = await readFile(snapshotUrl, 'utf8');
   const match = source.match(/^\s*(?:(?:\/\*[\s\S]*?\*\/|\/\/[^\r\n]*(?:\r?\n|$))\s*)*window\.__PROTOTYPE_NOTES__\s*=\s*([\s\S]*?)\s*;\s*$/);
-  assert.ok(match, '示例 snapshot 应保持单一 JSON 赋值格式');
+  assert.ok(match, 'Example snapshot 应保持单一 JSON 赋值格式');
   return JSON.parse(match[1]);
 }
 
@@ -26,7 +26,7 @@ function collectHtmlIds(html) {
   return [...html.matchAll(/\bid\s*=\s*["']([^"']+)["']/gi)].map((match) => match[1]);
 }
 
-test('Client Runtime 与示例分发副本逐文件一致', async () => {
+test('Client Runtime 与ExampleMinute发副本逐A件一致', async () => {
   const pairs = [
     [runtimeDisplayModeUrl, exampleDisplayModeUrl],
     [runtimeStateUrl, exampleStateUrl],
@@ -39,7 +39,7 @@ test('Client Runtime 与示例分发副本逐文件一致', async () => {
   }
 });
 
-test('示例按 display-mode → state → model → viewer 顺序加载 Client Runtime', async () => {
+test('Example按 display-mode → state → model → viewer 顺序加载 Client Runtime', async () => {
   const html = await readFile(prototypeUrl, 'utf8');
   const snapshot = html.indexOf('./prototype/notes.snapshot.js');
   const displayMode = html.indexOf('./prototype/display-mode.js');
@@ -50,24 +50,24 @@ test('示例按 display-mode → state → model → viewer 顺序加载 Client 
   assert.ok(snapshot >= 0 && displayMode > snapshot && state > displayMode && model > state && viewer > model && product > viewer);
 });
 
-test('示例不使用状态型 data-ui 属性', async () => {
+test('Example不使用Status型 data-ui 属性', async () => {
   const html = await readFile(prototypeUrl, 'utf8');
   const deprecated = /\bdata-ui-(?:open|layer|confirm|edit|delete|select(?:-value)?)\b/gi;
   assert.deepEqual([...html.matchAll(deprecated)].map((match) => match[0]), []);
 });
 
-test('示例 DOM id 唯一且 snapshot v2 锚点均唯一命中', async () => {
+test('Example DOM id 唯一且 snapshot v2 锚点均唯一命中', async () => {
   const [html, snapshot] = await Promise.all([readFile(prototypeUrl, 'utf8'), readSnapshot()]);
   assert.equal(snapshot.schemaVersion, 2); assert.equal(validateSnapshot(snapshot), true);
   const ids = collectHtmlIds(html); assert.equal(new Set(ids).size, ids.length, 'HTML id 不得重复');
   for (const card of snapshot.cards || []) {
     const anchor = String(card?.target?.anchor || '').replace(/^#/, '');
-    assert.ok(anchor, `卡片 ${card?.id || '<unknown>'} 应声明 target.anchor`);
+    assert.ok(anchor, `Card ${card?.id || '<unknown>'} 应声明 target.anchor`);
     assert.equal(ids.filter((id) => id === anchor).length, 1, `锚点 ${anchor} 应唯一命中 DOM`);
   }
 });
 
-test('UI pack 有状态组件提供局部 Adapter 且静态片段不绑定状态型 data-ui 协议', async () => {
+test('UI pack 有Status组件提供局部 Adapter 且静态片段不绑定Status型 data-ui 协议', async () => {
   const manifest = JSON.parse(await readFile(packManifestUrl, 'utf8'));
   const statefulIds = Object.entries(manifest.components).filter(([, entry]) => entry.adapter).map(([id]) => id);
   const deprecated = /\bdata-ui-(?:open|layer|close|confirm|select(?:-value)?|tree-toggle|tabs|toast|table-state)\b/gi;
@@ -77,7 +77,7 @@ test('UI pack 有状态组件提供局部 Adapter 且静态片段不绑定状态
       readFile(new URL(`../../skills/html-prototype-build/ui/packs/admin-desktop/${entry.source}`, import.meta.url), 'utf8'),
       readFile(new URL(`../../skills/html-prototype-build/ui/packs/admin-desktop/${entry.adapter}`, import.meta.url), 'utf8')
     ]);
-    assert.doesNotMatch(source, /<script\b/i, `${id} 静态组件片段不应注册全局事件`);
+    assert.doesNotMatch(source, /<script\b/i, `${id} 静态组件片段不应Sign up全局事件`);
     assert.deepEqual([...source.matchAll(deprecated)].map((match) => match[0]), []);
     assert.match(adapter, /PrototypeUiAdapters/); assert.match(adapter, /render/);
   }

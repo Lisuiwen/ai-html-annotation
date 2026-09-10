@@ -10,4 +10,4 @@ states:
 
 # Field
 
-框内标签与控件的组合容器。根据字段类型选择 `form.input` 或 `form.select`，不得把 label 与 placeholder 合成一句。
+In-box label and control container. Choose `form.input` or `form.select` by field type; do not merge label and placeholder into one string.

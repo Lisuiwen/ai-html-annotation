@@ -1,4 +1,4 @@
-/* Direct Edit 面板：回显 computed / inline / dirty，只改用户动过的字段。 */
+/* Direct Edit panel: shows computed / inline / dirty; only changes fields the user edited. */
 (function () {
   'use strict';
 

@@ -14,7 +14,7 @@ async function boot() {
   return { window, document, listeners, registered, get mode() { return mode; } };
 }
 
-test('Inspector 初始化注册全局事件和 PrototypeAuthor 插件', async () => {
+test('Inspector 初始化Sign up全局事件和 PrototypeAuthor 插件', async () => {
   const env = await boot(); assert.equal(env.window.__PROTOTYPE_INSPECTOR_LOADED__, true); assert.equal(typeof env.listeners.get('keydown'), 'function'); assert.equal(typeof env.listeners.get('mousemove'), 'function'); assert.equal(typeof env.listeners.get('click'), 'function'); assert.equal(env.registered[0][0], 'inspector');
 });
 

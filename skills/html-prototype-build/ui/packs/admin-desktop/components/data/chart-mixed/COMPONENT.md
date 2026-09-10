@@ -10,4 +10,4 @@ states:
 
 # data.chart-mixed
 
-柱线混合图薄 leaf，内部仅 compose bar + line + 双 yAxis，无重复 ECharts 逻辑。
+Bar-line mixed chart leaf; internally composes bar + line + dual yAxis only, with no duplicated ECharts logic.

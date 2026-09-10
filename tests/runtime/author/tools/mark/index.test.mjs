@@ -8,11 +8,11 @@ const styleUrl = new URL('../../../../../skills/html-prototype-build/runtime/aut
 
 async function boot() { const source = await readFile(sourceUrl, 'utf8'); const calls = []; const bodyClasses = new Set(); const window = { AuthorToolsPicker: { activate: (options) => calls.push(['activate', options]), release: (owner) => calls.push(['release', owner]) } }; window.window = window; const document = { body: { classList: { add: (name) => bodyClasses.add(name), remove: (name) => bodyClasses.delete(name), contains: (name) => bodyClasses.has(name) } }, getElementById: () => null, createElement: () => ({}), head: { appendChild() {} } }; vm.runInNewContext(source, { window, document, location: { pathname: '/demo', hash: '' }, console, setTimeout, clearTimeout }, { filename: 'mark/index.js' }); return { window, calls, bodyClasses, source }; }
 
-test('Mark activate 使用共享 Picker 且不持久化选择高亮', async () => {
+test('Mark activate 使用Total享 Picker 且不持久化选择High亮', async () => {
   const { window, calls, bodyClasses } = await boot(); window.AuthorToolsMarkTool.activate(); const [, options] = calls[0]; assert.equal(options.owner, 'mark'); assert.equal(options.persistSelection, false); assert.equal(typeof options.onSelect, 'function'); assert.equal(bodyClasses.has('mm-on'), true);
 });
 
-test('Mark deactivate 释放 owner 并关闭显示态', async () => {
+test('Mark deactivate 释放 owner 并Close显示态', async () => {
   const { window, calls, bodyClasses } = await boot(); window.AuthorToolsMarkTool.activate(); window.AuthorToolsMarkTool.deactivate(); assert.deepEqual(calls.at(-1), ['release', 'mark']); assert.equal(bodyClasses.has('mm-on'), false);
 });
 

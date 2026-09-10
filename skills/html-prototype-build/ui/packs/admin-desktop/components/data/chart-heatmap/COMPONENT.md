@@ -10,4 +10,4 @@ states:
 
 # data.chart-heatmap
 
-7×24 活跃、日历热力、工时分布等二维矩阵，ECharts 热力图。
+Two-dimensional matrices such as 7×24 activity, calendar heat, and hour distribution, rendered with an ECharts heatmap.

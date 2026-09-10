@@ -10,4 +10,4 @@ states:
 
 # form.checkbox-group
 
-多选筛选或配置项。使用原生 checkbox，Adapter 不绑定点击或业务校验。
+Multi-select filters or configuration items. Uses native checkboxes; Adapter does not bind clicks or business validation.

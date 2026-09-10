@@ -1,4 +1,4 @@
-/* ECharts 桥接：init/dispose/resize/theme/registerMap；不持有业务 state。 */
+/* ECharts bridge: init/dispose/resize/theme/registerMap; does not own product state. */
 (function () {
   'use strict';
 
@@ -8,7 +8,7 @@
   var mapPending = Object.create(null);
   var themeCache = null;
 
-  /** 单次读取 documentElement 上多个 CSS 变量。 */
+  /** Read multiple CSS variables from documentElement in one pass. */
   function readTokens(names, fallbacks) {
     var style = getComputedStyle(document.documentElement);
     return names.map(function (name, index) {
@@ -17,7 +17,7 @@
     });
   }
 
-  /** 汇总 admin-desktop token → ECharts 色板与轴样式。 */
+  /** Aggregate admin-desktop tokens into ECharts palette and axis styles. */
   function getThemeFromTokens() {
     if (themeCache) return themeCache;
     var values = readTokens(
@@ -33,13 +33,13 @@
     return themeCache;
   }
 
-  /** 解析图表挂载节点：优先 .ui-chart-canvas。 */
+  /** Resolve chart mount node; prefer .ui-chart-canvas. */
   function resolveCanvas(root) {
     if (!root) return null;
     return root.querySelector('.ui-chart-canvas') || root;
   }
 
-  /** 释放已有实例与 resize 监听。 */
+  /** Dispose existing instance and resize listener. */
   function dispose(root) {
     var entry = pools.get(root);
     if (!entry) return;
@@ -49,7 +49,7 @@
     pools.delete(root);
   }
 
-  /** 确保 root 上存在有效 ECharts 实例。 */
+  /** Ensure a valid ECharts instance exists on root. */
   function ensureInstance(root) {
     if (!root || !window.echarts) return null;
     var entry = pools.get(root);
@@ -74,7 +74,7 @@
     return instance;
   }
 
-  /** lazy init 后 setOption。 */
+  /** setOption after lazy init. */
   function setOption(root, option, config) {
     if (!root || !option) return;
     var instance = ensureInstance(root);
@@ -82,14 +82,14 @@
     instance.setOption(option, { notMerge: !!(config && config.notMerge) });
   }
 
-  /** 注册 geo 地图（内部）。 */
+  /** Register geo map (internal). */
   function registerMap(name, geoJson) {
     if (!window.echarts || !name || !geoJson) return;
     window.echarts.registerMap(name, geoJson);
     mapLoaded[name] = true;
   }
 
-  /** 读取 script 预注册的 geo（file:// 下 fetch json 会被拦截）。 */
+  /** Read geo pre-registered by script (fetch json is blocked under file://). */
   function loadFromRegistry(mapId) {
     var registry = window.PrototypeMapRegistry;
     if (!registry || !registry[mapId]) return null;
@@ -97,7 +97,7 @@
     return registry[mapId];
   }
 
-  /** 优先 registry，否则 fetch assets/maps/*.json；in-flight 去重。 */
+  /** Prefer registry, else fetch assets/maps/*.json; dedupe in-flight loads. */
   function loadMapJson(mapId) {
     var id = String(mapId || 'china');
     if (mapLoaded[id]) return Promise.resolve(true);
