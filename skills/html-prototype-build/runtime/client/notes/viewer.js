@@ -82,7 +82,7 @@
     state.preview.className = 'pn-preview';
     state.notes = document.createElement('aside');
     state.notes.className = 'pn-notes';
-    state.notes.setAttribute('aria-label', '功能说明');
+    state.notes.setAttribute('aria-label', 'Function notes');
     state.cards = document.createElement('div');
     state.cards.className = 'pn-cards';
     state.actions = document.createElement('div');
@@ -175,8 +175,8 @@
       btn = document.createElement('button');
       btn.className = 'pn-scene-switch';
       btn.type = 'button';
-      btn.title = '切换场景';
-      btn.setAttribute('aria-label', '切换场景');
+      btn.title = 'Switch scenario';
+      btn.setAttribute('aria-label', 'Switch scenario');
       btn.innerHTML = sceneSwitchIcon + '<span class="pn-scene-switch-label"></span>';
       btn.addEventListener('click', cycleScenario);
       start.insertBefore(btn, start.firstChild);
@@ -191,7 +191,7 @@
       labelEl = btn.querySelector('.pn-scene-switch-label');
     }
     labelEl.textContent = label;
-    btn.title = '切换场景（当前：' + label + '）';
+    btn.title = 'Switch scenario (current: ' + label + ')';
     syncPanelActions();
   }
 
@@ -201,12 +201,12 @@
     var toggle = document.createElement('button');
     toggle.className = 'pn-toggle';
     toggle.type = 'button';
-    toggle.title = '隐藏说明';
+    toggle.title = 'Hide notes';
     toggle.setAttribute('aria-expanded', 'true');
     toggle.textContent = '››';
     toggle.addEventListener('click', function () {
       var collapsed = state.page.classList.toggle('pn-collapsed');
-      toggle.title = collapsed ? '显示说明' : '隐藏说明';
+      toggle.title = collapsed ? 'Show notes' : 'Hide notes';
       toggle.setAttribute('aria-expanded', String(!collapsed));
       toggle.textContent = collapsed ? '‹‹' : '››';
       scheduleDraw();
@@ -217,11 +217,11 @@
     var mobile = document.createElement('button');
     mobile.className = 'pn-mobile-toggle';
     mobile.type = 'button';
-    mobile.textContent = '查看说明';
+    mobile.textContent = 'View notes';
     mobile.setAttribute('aria-pressed', 'false');
     mobile.addEventListener('click', function () {
       var visible = state.page.classList.toggle('pn-notes-visible');
-      mobile.textContent = visible ? '查看界面' : '查看说明';
+      mobile.textContent = visible ? 'View page' : 'View notes';
       mobile.setAttribute('aria-pressed', String(visible));
     });
     document.body.insertBefore(mobile, beforeNode);
@@ -236,7 +236,7 @@
       var head = document.createElement('div');
       head.className = 'pn-head';
       head.innerHTML = '<strong></strong><span></span>';
-      head.querySelector('strong').textContent = data.header && data.header.title || '功能说明';
+      head.querySelector('strong').textContent = data.header && data.header.title || 'Function notes';
       head.querySelector('span').textContent = data.header && data.header.subtitle || '';
       state.notes.appendChild(head);
 
@@ -248,7 +248,7 @@
         article.dataset.noteId = card.id;
         article.innerHTML = '<div class="pn-card-title"><span class="pn-index"></span><span class="pn-title-text"></span></div><p></p>';
         article.querySelector('.pn-index').textContent = String(index + 1);
-        article.querySelector('.pn-title-text').textContent = card.title || '未命名说明';
+        article.querySelector('.pn-title-text').textContent = card.title || 'Untitled note';
         article.querySelector('p').textContent = card.body || '';
         bindHighlight(article, card.id);
         state.cards.appendChild(article);
@@ -416,7 +416,7 @@
     state.page.classList.add('pn-collapsed');
     var toggle = state.actions.querySelector('.pn-toggle');
     if (toggle) {
-      toggle.title = '显示说明';
+      toggle.title = 'Show notes';
       toggle.setAttribute('aria-expanded', 'false');
       toggle.textContent = '‹‹';
     }
@@ -468,16 +468,16 @@
   function init() {
     if (state.page) return;
     if (!window.PrototypeViewers) {
-      console.error('[prototype-notes] 缺少 PrototypeViewers 状态内核，请先加载 client/core/state.js。');
+      console.error('[prototype-notes] missing PrototypeViewers state core; load client/core/state.js first.');
       return;
     }
     if (!window.PrototypeNotesModel) {
-      console.error('[prototype-notes] 缺少 PrototypeNotesModel，请先加载 client/notes/model.js。');
+      console.error('[prototype-notes] missing PrototypeNotesModel; load client/notes/model.js first.');
       return;
     }
     var data = window.__PROTOTYPE_NOTES__;
     if (!data || !Array.isArray(data.cards)) {
-      console.error('[prototype-notes] 缺少有效的 window.__PROTOTYPE_NOTES__ 数据。');
+      console.error('[prototype-notes] missing valid window.__PROTOTYPE_NOTES__ data.');
       return;
     }
     state.data = data;

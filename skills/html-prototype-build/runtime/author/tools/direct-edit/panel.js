@@ -10,7 +10,7 @@
 
   function sourceLabel(row) {
     var kind = row.sourceKind || (row.dirty ? 'dirty' : row.overridden ? 'inline' : 'class');
-    var text = row.sourceLabel || (kind === 'inline' ? 'Inline' : '样式表');
+    var text = row.sourceLabel || (kind === 'inline' ? 'Inline' : 'Stylesheet');
     var title = row.sourceTitle ? ' title="' + esc(row.sourceTitle) + '"' : '';
     var cls = 'at-src';
     if (kind === 'dirty') cls += ' is-dirty';
@@ -62,7 +62,7 @@
     if (mixed && first) {
       return sourceLabel({
         sourceKind: first.sourceKind,
-        sourceLabel: '混合',
+        sourceLabel: 'Mixed',
         sourceTitle: props.map(function (prop) {
           var row = session.rows[prop];
           return prop + ': ' + ((row && row.sourceLabel) || '');
@@ -77,14 +77,14 @@
     if (field.kind === 'align') {
       return '<select data-prop="' + field.key + '">' +
         ['', 'left', 'center', 'right', 'justify'].map(function (opt) {
-          return '<option value="' + opt + '"' + (value === opt ? ' selected' : '') + '>' + (opt || '默认') + '</option>';
+          return '<option value="' + opt + '"' + (value === opt ? ' selected' : '') + '>' + (opt || 'Default') + '</option>';
         }).join('') +
         '</select>';
     }
     if (field.kind === 'color') return colorControl(field.key, row);
     if (field.kind === 'length') return lengthControl(field.key, row);
     return '<input data-prop="' + field.key + '" value="' + esc(value) + '"' +
-      (field.kind === 'text' && !session.canEditText ? ' disabled placeholder="含子节点，请用 Mark"' : '') + '>';
+      (field.kind === 'text' && !session.canEditText ? ' disabled placeholder="Has child nodes, use Mark"' : '') + '>';
   }
 
   function borderMeta(field, session) {
@@ -93,8 +93,8 @@
     var options = ['none', 'solid', 'dashed'];
     if (styleValue && options.indexOf(styleValue) < 0) options.unshift(styleValue);
     return '<div class="at-border-meta">' +
-      '<label class="at-border-extra">颜色' + colorControl(field.color, session.rows[field.color]) + '</label>' +
-      '<label class="at-border-extra">线型<select data-prop="' + field.style + '">' +
+      '<label class="at-border-extra">Color' + colorControl(field.color, session.rows[field.color]) + '</label>' +
+      '<label class="at-border-extra">Style<select data-prop="' + field.style + '">' +
       options.map(function (opt) {
         return '<option value="' + esc(opt) + '"' + (styleValue === opt ? ' selected' : '') + '>' + esc(opt) + '</option>';
       }).join('') +
@@ -110,12 +110,12 @@
     if (!session) {
       container.innerHTML =
         '<div class="at-edit-body">' +
-        '  <div class="at-edit-empty">按住 <kbd>' + esc(clickModifierLabel()) + '</kbd> 点击页面元素以选中。<br>普通点击保持页面交互。</div>' +
+        '  <div class="at-edit-empty">Hold <kbd>' + esc(clickModifierLabel()) + '</kbd> and click a page element to select it.<br>Normal clicks keep the page interactive.</div>' +
         '</div>' +
         '<div class="at-edit-foot">' +
-        '  <button type="button" class="at-btn" data-act="cancel" disabled>取消</button>' +
-        '  <button type="button" class="at-btn" data-act="reset" disabled>重置该元素</button>' +
-        '  <button type="button" class="at-btn primary" data-act="save" disabled>保存</button>' +
+        '  <button type="button" class="at-btn" data-act="cancel" disabled>Cancel</button>' +
+        '  <button type="button" class="at-btn" data-act="reset" disabled>Reset element</button>' +
+        '  <button type="button" class="at-btn primary" data-act="save" disabled>Save</button>' +
         '</div>';
       return;
     }
@@ -143,7 +143,7 @@
             return '<div class="at-edit-row">' +
               '<label>' + esc(field.label) + '</label>' +
               fieldControl(field, null, session) +
-              '<span class="at-src">' + (session.canEditText ? 'Text' : '禁用') + '</span>' +
+              '<span class="at-src">' + (session.canEditText ? 'Text' : 'Disabled') + '</span>' +
               '<span></span></div>';
           }
           if (field.kind === 'box' || field.kind === 'border') {
@@ -170,9 +170,9 @@
     container.innerHTML =
       '<div class="at-edit-body">' + identity + fieldsHtml + '</div>' +
       '<div class="at-edit-foot">' +
-      '  <button type="button" class="at-btn" data-act="cancel"' + (dirty ? '' : ' disabled') + '>取消</button>' +
-      '  <button type="button" class="at-btn" data-act="reset">重置该元素</button>' +
-      '  <button type="button" class="at-btn primary" data-act="save"' + (dirty ? '' : ' disabled') + '>保存</button>' +
+      '  <button type="button" class="at-btn" data-act="cancel"' + (dirty ? '' : ' disabled') + '>Cancel</button>' +
+      '  <button type="button" class="at-btn" data-act="reset">Reset element</button>' +
+      '  <button type="button" class="at-btn primary" data-act="save"' + (dirty ? '' : ' disabled') + '>Save</button>' +
       '</div>';
   }
 

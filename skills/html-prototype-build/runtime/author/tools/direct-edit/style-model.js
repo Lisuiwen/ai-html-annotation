@@ -4,10 +4,10 @@
 
   var COLOR_PROPS = { color: true, 'background-color': true, 'border-color': true };
   var BOX_SIDES = [
-    { suffix: 'top', label: '上' },
-    { suffix: 'right', label: '右' },
-    { suffix: 'bottom', label: '下' },
-    { suffix: 'left', label: '左' }
+    { suffix: 'top', label: 'Top' },
+    { suffix: 'right', label: 'Right' },
+    { suffix: 'bottom', label: 'Bottom' },
+    { suffix: 'left', label: 'Left' }
   ];
   function boxSides(prefix) {
     return BOX_SIDES.map(function (side) {
@@ -15,21 +15,21 @@
     });
   }
   var FIELDS = [
-    { group: '内容', key: 'text', label: '文本', kind: 'text' },
-    { group: '尺寸', key: 'width', label: '宽度', kind: 'length' },
-    { group: '尺寸', key: 'height', label: '高度', kind: 'length' },
-    { group: '间距', key: 'padding', label: 'Padding', kind: 'box', sides: boxSides('padding') },
-    { group: '间距', key: 'margin', label: 'Margin', kind: 'box', sides: boxSides('margin') },
-    { group: '间距', key: 'gap', label: 'Gap', kind: 'length' },
-    { group: '文字', key: 'font-size', label: '字号', kind: 'length' },
-    { group: '文字', key: 'font-weight', label: '字重', kind: 'css' },
-    { group: '文字', key: 'color', label: '颜色', kind: 'color' },
-    { group: '文字', key: 'text-align', label: '对齐', kind: 'align' },
-    { group: '外观', key: 'background-color', label: '背景', kind: 'color' },
+    { group: 'Content', key: 'text', label: 'Text', kind: 'text' },
+    { group: 'Size', key: 'width', label: 'Width', kind: 'length' },
+    { group: 'Size', key: 'height', label: 'Height', kind: 'length' },
+    { group: 'Spacing', key: 'padding', label: 'Padding', kind: 'box', sides: boxSides('padding') },
+    { group: 'Spacing', key: 'margin', label: 'Margin', kind: 'box', sides: boxSides('margin') },
+    { group: 'Spacing', key: 'gap', label: 'Gap', kind: 'length' },
+    { group: 'Typography', key: 'font-size', label: 'Font size', kind: 'length' },
+    { group: 'Typography', key: 'font-weight', label: 'Font weight', kind: 'css' },
+    { group: 'Typography', key: 'color', label: 'Color', kind: 'color' },
+    { group: 'Typography', key: 'text-align', label: 'Align', kind: 'align' },
+    { group: 'Appearance', key: 'background-color', label: 'Background', kind: 'color' },
     {
-      group: '外观',
+      group: 'Appearance',
       key: 'border',
-      label: '边框',
+      label: 'Border',
       kind: 'border',
       sides: BOX_SIDES.map(function (side) {
         return { key: 'border-' + side.suffix + '-width', label: side.label };
@@ -38,15 +38,15 @@
       style: 'border-style'
     },
     {
-      group: '外观',
+      group: 'Appearance',
       key: 'border-radius',
-      label: '圆角',
+      label: 'Border radius',
       kind: 'box',
       sides: [
-        { key: 'border-top-left-radius', label: '左上' },
-        { key: 'border-top-right-radius', label: '右上' },
-        { key: 'border-bottom-right-radius', label: '右下' },
-        { key: 'border-bottom-left-radius', label: '左下' }
+        { key: 'border-top-left-radius', label: 'Top left' },
+        { key: 'border-top-right-radius', label: 'Top right' },
+        { key: 'border-bottom-right-radius', label: 'Bottom right' },
+        { key: 'border-bottom-left-radius', label: 'Bottom left' }
       ]
     }
   ];
@@ -195,7 +195,7 @@
     if (el.id && selector.indexOf('#' + el.id) !== -1) return '#' + el.id;
     var first = selector.match(/\.(-?[_a-zA-Z]+[_a-zA-Z0-9-]*)/);
     if (first) return '.' + first[1];
-    return selector.replace(/\s+/g, ' ').trim().slice(0, 48) || '样式表';
+    return selector.replace(/\s+/g, ' ').trim().slice(0, 48) || 'Stylesheet';
   }
 
   function collectRules(list, out) {
@@ -253,19 +253,19 @@
     var inlineValue = readInline(el, prop);
     var inlineImportant = !!(el.style && typeof el.style.getPropertyPriority === 'function' && el.style.getPropertyPriority(prop) === 'important');
     if (inlineValue && !(found && found.important && !inlineImportant)) {
-      return { kind: 'inline', label: 'Inline', title: '元素 style 属性' };
+      return { kind: 'inline', label: 'Inline', title: 'Element style attribute' };
     }
     if (found) return { kind: 'class', label: found.label, title: found.selector + (found.important ? ' !important' : '') };
     if (INHERITED[prop]) {
       cur = el.parentElement;
       while (cur && cur !== document.documentElement) {
-        if (readInline(cur, prop)) return { kind: 'inherit', label: '继承 Inline', title: '继承自父元素 inline style' };
+        if (readInline(cur, prop)) return { kind: 'inherit', label: 'Inherited Inline', title: 'Inherited from parent element inline style' };
         found = findOnElement(cur, prop);
-        if (found) return { kind: 'inherit', label: '继承 ' + found.label, title: found.selector };
+        if (found) return { kind: 'inherit', label: 'Inherited ' + found.label, title: found.selector };
         cur = cur.parentElement;
       }
     }
-    return { kind: 'ua', label: '浏览器默认', title: 'User Agent / 未命中样式规则' };
+    return { kind: 'ua', label: 'Browser default', title: 'User Agent / no matching style rule' };
   }
 
   function readComputed(el, prop) {
@@ -376,8 +376,8 @@
         row.displayValue = typed;
         row.dirty = typed !== row.baselineDisplay || !!row.originalInline;
         row.sourceKind = 'dirty';
-        row.sourceLabel = '未保存';
-        row.sourceTitle = '仅预览，尚未写入源文件';
+        row.sourceLabel = 'Unsaved';
+        row.sourceTitle = 'Preview only; not written to the source file yet';
         return;
       }
       var cssValue = LENGTH_PROPS[prop] ? cssFromLengthInput(row, typed) : typed;
@@ -390,8 +390,8 @@
       row.dirty = current !== row.originalInline || typed !== row.baselineDisplay;
       if (row.dirty) {
         row.sourceKind = 'dirty';
-        row.sourceLabel = '未保存';
-        row.sourceTitle = '仅预览，尚未写入源文件';
+        row.sourceLabel = 'Unsaved';
+        row.sourceTitle = 'Preview only; not written to the source file yet';
       }
     }
 
@@ -406,8 +406,8 @@
         row.displayValue = shown.displayValue;
         row.unit = shown.unit;
         row.sourceKind = 'dirty';
-        row.sourceLabel = '未保存';
-        row.sourceTitle = '仅预览，尚未写入源文件';
+        row.sourceLabel = 'Unsaved';
+        row.sourceTitle = 'Preview only; not written to the source file yet';
       }
     }
 

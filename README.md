@@ -129,7 +129,7 @@ This root README covers install and product overview only. Day-to-day usage live
 - Skill overview and collaboration model → [`skills/html-prototype-build/README.md`](skills/html-prototype-build/README.md)
 - Agent routing and hard constraints → [`skills/html-prototype-build/SKILL.md`](skills/html-prototype-build/SKILL.md)
 - Task guides with commands (authoring, review, screenshots) → [`skills/html-prototype-build/references/`](skills/html-prototype-build/references/)
-- Walkthrough sample → [`examples/minimal-notes`](examples/minimal-notes) (demo UI copy is Chinese)
+- Walkthrough sample → [`examples/minimal-notes`](examples/minimal-notes)
 
 Those Skill docs are currently Chinese—ask an agent that can read them, or follow the Skill README entry points.
 

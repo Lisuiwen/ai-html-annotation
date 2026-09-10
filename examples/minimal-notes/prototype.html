@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>项目配置中心 - 配置项维护</title>
+  <title>Project Config Center - Configuration Items</title>
   <link rel="stylesheet" href="./prototype/prototype.css">
 
 </head>
@@ -12,36 +12,36 @@
     <!-- 项目配置中心列表页。 -->
     <div class="ui-shell">
       <header class="ui-header">
-        <div class="ui-brand"><span class="ui-brand-mark" aria-hidden="true">D</span><span>项目配置中心</span></div>
-        <div class="ui-breadcrumb">⌂　/　配置管理　/　配置项</div>
+        <div class="ui-brand"><span class="ui-brand-mark" aria-hidden="true">D</span><span>Project Config Center</span></div>
+        <div class="ui-breadcrumb">⌂　/　Configuration　/　Configuration Items</div>
         <div class="ui-header-actions">
           <span aria-hidden="true">文</span>
-          <select class="ui-tenant" aria-label="工作区"><option>示例工作区</option></select>
+          <select class="ui-tenant" aria-label="Workspace"><option>Demo workspace</option></select>
           <span aria-hidden="true">♙</span><span>demo-user</span>
         </div>
       </header>
 
       <div class="ui-shell-body">
         <aside class="ui-sider">
-          <nav class="ui-menu" aria-label="系统菜单">
-            <span class="ui-menu-item">欢迎</span>
-            <span class="ui-menu-group">项目管理 <span>⌄</span></span>
-            <span class="ui-menu-item">项目列表</span>
-            <span class="ui-menu-item">成员管理</span>
-            <span class="ui-menu-item">版本记录</span>
-            <span class="ui-menu-group">任务中心 <span>›</span></span>
-            <span class="ui-menu-group">资源管理 <span>›</span></span>
-            <span class="ui-menu-group">数据分析 <span>›</span></span>
-            <span class="ui-menu-group">通知中心 <span>›</span></span>
-            <span class="ui-menu-group">统计报表 <span>›</span></span>
-            <span class="ui-menu-group">系统设置 <span>⌄</span></span>
+          <nav class="ui-menu" aria-label="System menu">
+            <span class="ui-menu-item">Welcome</span>
+            <span class="ui-menu-group">Project Management <span>⌄</span></span>
+            <span class="ui-menu-item">Project List</span>
+            <span class="ui-menu-item">Member Management</span>
+            <span class="ui-menu-item">Version History</span>
+            <span class="ui-menu-group">Task Center <span>›</span></span>
+            <span class="ui-menu-group">Resource Management <span>›</span></span>
+            <span class="ui-menu-group">Data Analysis <span>›</span></span>
+            <span class="ui-menu-group">Notification Center <span>›</span></span>
+            <span class="ui-menu-group">Statistics & Reports <span>›</span></span>
+            <span class="ui-menu-group">System Settings <span>⌄</span></span>
             <div class="ui-menu-sub">
               <button
                 id="menuConfig"
                 class="ui-menu-item is-active"
                 type="button"
                 data-ui-interactive>
-                配置项
+                Configuration Items
               </button>
             </div>
           </nav>
@@ -51,12 +51,12 @@
           <article class="ui-content-card">
             <section class="ui-filter" id="filterArea">
               <div class="ui-filter-fields">
-                <input class="ui-input" id="filterName" aria-label="配置项名称" placeholder="配置项名称 请输入">
-                <input class="ui-input" id="filterCode" aria-label="配置项编码" placeholder="配置项编码 请输入">
+                <input class="ui-input" id="filterName" aria-label="Configuration item name" placeholder="Enter configuration item name">
+                <input class="ui-input" id="filterCode" aria-label="Configuration item code" placeholder="Enter configuration item code">
               </div>
               <div class="ui-actions">
-                <button class="ui-button" type="button" id="resetButton">重置</button>
-                <button class="ui-button ui-button--primary" type="button" id="queryButton">查询</button>
+                <button class="ui-button" type="button" id="resetButton">Reset</button>
+                <button class="ui-button ui-button--primary" type="button" id="queryButton">Search</button>
               </div>
             </section>
 
@@ -66,7 +66,7 @@
                 type="button"
                 id="createButton"
                 data-ui-interactive>
-                新建配置项
+                New Configuration Item
               </button>
             </div>
 
@@ -75,39 +75,39 @@
                 <table class="ui-table">
                   <thead>
                     <tr>
-                      <th>配置项名称</th>
-                      <th>配置项编码</th>
-                      <th>描述</th>
-                      <th>创建者</th>
-                      <th>创建时间</th>
-                      <th>操作</th>
+                      <th>Name</th>
+                      <th>Code</th>
+                      <th>Description</th>
+                      <th>Created By</th>
+                      <th>Created At</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody id="preconditionRows">
                     <tr>
-                      <td>通知开关</td>
+                      <td>Notification Switch</td>
                       <td>notification_enabled</td>
-                      <td>是否启用通知，0 表示关闭，1 表示开启</td>
+                      <td>Whether notifications are enabled; 0 means off, 1 means on</td>
                       <td>maintainer-a</td>
                       <td>2026-01-15 09:30:00</td>
                       <td>
                         <div class="ui-table-actions">
-                          <button class="ui-button ui-button--text" type="button" data-action="edit" data-ui-interactive>编辑</button>
-                          <button class="ui-button ui-button--text" type="button" data-action="delete">删除</button>
+                          <button class="ui-button ui-button--text" type="button" data-action="edit" data-ui-interactive>Edit</button>
+                          <button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button>
                         </div>
                       </td>
                     </tr>
-                    <tr><td>默认超时时间</td><td>default_timeout</td><td>任务默认超时时间，单位为分钟</td><td>maintainer-b</td><td>2026-01-16 10:15:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">编辑</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">删除</button></td></tr>
-                    <tr><td>显示名称</td><td>display_name</td><td>列表中展示的配置项名称</td><td style="background-color: rgb(202, 88, 88)">maintainer-a</td><td style="width: 210px">2026-01-16 14:20:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">编辑</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">删除</button></td></tr>
-                    <tr><td>自动归档</td><td>auto_archive</td><td>是否自动归档已完成记录，0 表示关闭，1 表示开启</td><td>maintainer-c</td><td>2026-01-17 09:00:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">编辑</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">删除</button></td></tr>
-                    <tr><td>最大重试次数</td><td>max_retry_count</td><td>任务失败后的最大重试次数</td><td>maintainer-b</td><td>2026-01-17 11:45:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">编辑</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">删除</button></td></tr>
-                    <tr><td>语言偏好</td><td>locale</td><td>界面默认语言设置</td><td>maintainer-a</td><td>2026-01-18 16:30:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">编辑</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">删除</button></td></tr>
-                    <tr><td>页面主题</td><td>theme_mode</td><td>界面主题，可选 light 或 dark</td><td>maintainer-c</td><td>2026-01-19 08:40:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">编辑</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">删除</button></td></tr>
+                    <tr><td>Default Timeout</td><td>default_timeout</td><td>Default task timeout, in minutes</td><td>maintainer-b</td><td>2026-01-16 10:15:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">Edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button></td></tr>
+                    <tr><td>Display Name</td><td>display_name</td><td>Configuration item name shown in lists</td><td>maintainer-a</td><td style="width: 210px">2026-01-16 14:20:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">Edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button></td></tr>
+                    <tr><td>Auto Archive</td><td>auto_archive</td><td>Whether to auto-archive completed records; 0 means off, 1 means on</td><td>maintainer-c</td><td>2026-01-17 09:00:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">Edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button></td></tr>
+                    <tr><td>Max Retry Count</td><td>max_retry_count</td><td>Maximum retry count after a task failure</td><td>maintainer-b</td><td>2026-01-17 11:45:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">Edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button></td></tr>
+                    <tr><td>Language Preference</td><td>locale</td><td>Default interface language setting</td><td>maintainer-a</td><td>2026-01-18 16:30:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">Edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button></td></tr>
+                    <tr><td>Page Theme</td><td>theme_mode</td><td>Interface theme; choose light or dark</td><td>maintainer-c</td><td>2026-01-19 08:40:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">Edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button></td></tr>
                   </tbody>
                 </table>
               </div>
               <div class="ui-pagination">
-                <span>第 1-8 条/总共 13 条</span><span>‹</span><span class="ui-page-number">1</span><span>2</span><span>›</span><span>跳至</span><input class="ui-input" aria-label="跳转页码" style="width:48px"><span>页</span>
+                <span>Items 1-8 of 13</span><span>‹</span><span class="ui-page-number">1</span><span>2</span><span>›</span><span>Go to</span><input class="ui-input" aria-label="Jump to page" style="width:48px"><span>page</span>
               </div>
             </section>
           </article>
@@ -115,53 +115,53 @@
       </div>
     </div>
 
-    <!-- 新建配置项 Modal。 -->
+    <!-- New configuration item modal. -->
     <div class="ui-overlay" id="createModal" role="dialog" aria-modal="true" aria-labelledby="createTitle" aria-hidden="true" hidden>
       <div class="ui-modal">
-        <div class="ui-layer-head"><strong id="createTitle">新建</strong><button class="ui-close" type="button" data-action="close" aria-label="关闭">×</button></div>
+        <div class="ui-layer-head"><strong id="createTitle">New</strong><button class="ui-close" type="button" data-action="close" aria-label="Close">×</button></div>
         <div class="ui-layer-body" id="createForm">
-          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 名称：</span><input class="ui-input" id="createName" maxlength="36" placeholder="请输入不超过36字符"></label>
-          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 编码：</span><input class="ui-input" id="createCode" maxlength="36" placeholder="请输入不超过36字符"></label>
-          <label class="ui-field"><span class="ui-field-label">描述：</span><textarea class="ui-input" id="createDescription" placeholder="请输入描述"></textarea></label>
+          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> Name:</span><input class="ui-input" id="createName" maxlength="36" placeholder="Up to 36 characters"></label>
+          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> Code:</span><input class="ui-input" id="createCode" maxlength="36" placeholder="Up to 36 characters"></label>
+          <label class="ui-field"><span class="ui-field-label">Description:</span><textarea class="ui-input" id="createDescription" placeholder="Enter a description"></textarea></label>
         </div>
-        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">取消</button><button class="ui-button ui-button--primary" type="button" data-action="save">确定</button></div>
+        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">Cancel</button><button class="ui-button ui-button--primary" type="button" data-action="save">OK</button></div>
       </div>
     </div>
 
-    <!-- 编辑配置项 Modal。 -->
+    <!-- Edit configuration item modal. -->
     <div class="ui-overlay" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editTitle" aria-hidden="true" hidden>
       <div class="ui-modal">
-        <div class="ui-layer-head"><strong id="editTitle">编辑</strong><button class="ui-close" type="button" data-action="close" aria-label="关闭">×</button></div>
+        <div class="ui-layer-head"><strong id="editTitle">Edit</strong><button class="ui-close" type="button" data-action="close" aria-label="Close">×</button></div>
         <div class="ui-layer-body" id="editForm">
-          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 名称：</span><input class="ui-input" value="通知开关"></label>
-          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 编码：</span><input class="ui-input" value="notification_enabled"></label>
-          <label class="ui-field"><span class="ui-field-label">描述：</span><textarea class="ui-input">是否启用通知，0 表示关闭，1 表示开启</textarea></label>
+          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> Name:</span><input class="ui-input" value="Notification Switch"></label>
+          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> Code:</span><input class="ui-input" value="notification_enabled"></label>
+          <label class="ui-field"><span class="ui-field-label">Description:</span><textarea class="ui-input">Whether notifications are enabled; 0 means off, 1 means on</textarea></label>
         </div>
-        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">取消</button><button class="ui-button ui-button--primary" type="button" data-action="save">确定</button></div>
+        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">Cancel</button><button class="ui-button ui-button--primary" type="button" data-action="save">OK</button></div>
       </div>
     </div>
 
-    <!-- 项目任务中新建配置项的关联示意。 -->
+    <!-- Linking a configuration item when creating a project task. -->
     <div class="ui-overlay" id="strategyModal" role="dialog" aria-modal="true" aria-labelledby="strategyTitle" aria-hidden="true" hidden>
       <div class="ui-modal ui-modal--strategy">
-        <div class="ui-layer-head"><strong id="strategyTitle">新建</strong><button class="ui-close" type="button" data-action="close" aria-label="关闭">×</button></div>
+        <div class="ui-layer-head"><strong id="strategyTitle">New</strong><button class="ui-close" type="button" data-action="close" aria-label="Close">×</button></div>
         <div class="ui-layer-body">
           <div class="ui-field" id="strategyNameField">
-            <span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 名称：</span>
+            <span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> Name:</span>
             <div class="ui-select" id="strategyNameSelect">
-              <button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-controls="strategyNameOptions" aria-expanded="false" data-action="select-toggle" data-ui-interactive><span id="strategyNameValue">请选择</span><span aria-hidden="true">⌄</span></button>
+              <button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-controls="strategyNameOptions" aria-expanded="false" data-action="select-toggle" data-ui-interactive><span id="strategyNameValue">Please select</span><span aria-hidden="true">⌄</span></button>
               <div class="ui-select-menu" id="strategyNameOptions" role="listbox">
-                <button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">通知开关</button>
-                <button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">默认超时时间</button>
-                <button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">显示名称</button>
+                <button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">Notification Switch</button>
+                <button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">Default Timeout</button>
+                <button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">Display Name</button>
               </div>
             </div>
           </div>
-          <label class="ui-field"><span class="ui-field-label">编码：</span><input class="ui-input" placeholder="请输入"></label>
-          <div class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 条件：</span><div class="ui-select" id="strategyConditionSelect"><button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-controls="strategyConditionOptions" aria-expanded="false" data-action="select-toggle"><span id="strategyConditionValue">请选择</span><span aria-hidden="true">⌄</span></button><div class="ui-select-menu" id="strategyConditionOptions" role="listbox"><button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">等于</button><button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">大于</button></div></div></div>
-          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> 状态：</span><input class="ui-input" placeholder="请输入"></label>
+          <label class="ui-field"><span class="ui-field-label">Code:</span><input class="ui-input" placeholder="Enter here"></label>
+          <div class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> Condition:</span><div class="ui-select" id="strategyConditionSelect"><button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-controls="strategyConditionOptions" aria-expanded="false" data-action="select-toggle"><span id="strategyConditionValue">Please select</span><span aria-hidden="true">⌄</span></button><div class="ui-select-menu" id="strategyConditionOptions" role="listbox"><button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">Equals</button><button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">Greater than</button></div></div></div>
+          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> Status:</span><input class="ui-input" placeholder="Enter here"></label>
         </div>
-        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">取消</button><button class="ui-button ui-button--primary" type="button" data-action="save">确定</button></div>
+        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">Cancel</button><button class="ui-button ui-button--primary" type="button" data-action="save">OK</button></div>
       </div>
     </div>
   </div>

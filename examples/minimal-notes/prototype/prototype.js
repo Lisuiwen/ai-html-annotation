@@ -69,7 +69,7 @@
       const select = product.selects[id];
       elements.root.classList.toggle('is-open', select.open);
       elements.trigger.setAttribute('aria-expanded', String(select.open));
-      elements.value.textContent = select.value || '请选择';
+      elements.value.textContent = select.value || 'Please select';
       elements.options.forEach((option) => {
         option.setAttribute('aria-selected', String(Boolean(select.value) && option.textContent.trim() === select.value));
       });
@@ -153,7 +153,7 @@
     document.getElementById('filterName').value = '';
     document.getElementById('filterCode').value = '';
   });
-  document.getElementById('queryButton').addEventListener('click', () => showToast('查询完成'));
+  document.getElementById('queryButton').addEventListener('click', () => showToast('Search complete'));
 
   document.addEventListener('click', (event) => {
     const actionTarget = event.target.closest('[data-action]');
@@ -164,11 +164,11 @@
 
     const action = actionTarget.dataset.action;
     if (action === 'edit') activateLayerScenario('edit');
-    if (action === 'delete' && window.confirm('确认删除该配置项吗？')) showToast('删除成功');
+    if (action === 'delete' && window.confirm('Delete this configuration item?')) showToast('Deleted');
     if (action === 'close') activateLayerScenario('base');
     if (action === 'save') {
       activateLayerScenario('base');
-      showToast('保存成功');
+      showToast('Saved');
     }
     if (action === 'select-toggle') {
       const id = findSelectId(actionTarget);

@@ -13,8 +13,8 @@ test('Notes Viewer 只保留 DOM/连线职责，状态与 when 逻辑由依赖�
   assert.doesNotMatch(source, /function matchesWhen/);
   assert.doesNotMatch(source, /function equalStateValue/);
   assert.match(source, /PrototypeNotesModel\.visibleCards/);
-  assert.match(source, /缺少 PrototypeViewers 状态内核/);
-  assert.match(source, /缺少 PrototypeNotesModel/);
+  assert.match(source, /missing PrototypeViewers state core/);
+  assert.match(source, /missing PrototypeNotesModel/);
 });
 
 test('Viewer 深链恢复只读取 scene', async () => {
