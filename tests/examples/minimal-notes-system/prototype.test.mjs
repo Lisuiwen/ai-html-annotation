@@ -3,9 +3,9 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import vm from 'node:vm';
 
-const sourceUrl = new URL('../../../examples/minimal-notes/prototype/prototype.js', import.meta.url);
+const sourceUrl = new URL('../../../examples/minimal-notes-system/prototype/prototype.js', import.meta.url);
 const handoffTemplateUrl = new URL('../../../skills/html-prototype-build/templates/AGENTS.md', import.meta.url);
-const handoffExampleUrl = new URL('../../../examples/minimal-notes/AGENTS.md', import.meta.url);
+const handoffExampleUrl = new URL('../../../examples/minimal-notes-system/AGENTS.md', import.meta.url);
 
 function classList() {
   const values = new Set();

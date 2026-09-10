@@ -1,75 +1,71 @@
 # HTML Prototype Build
 
-面向 AI Agent 的 HTML 产品原型 Skill：用 UI 包生成页面，在真实 DOM 上维护正式说明、发起评审、跳转源码，并按场景输出交付截图。
+[中文](README.zh-CN.md)
 
-安装方式、产品演示与仓库级功能介绍见[仓库 README](../../README.md)。本文件负责 Skill 怎么用；具体命令与逐步操作仍在 `references/`。
+An HTML product-prototype Skill for AI agents: generate pages from UI packs, maintain formal notes on the real DOM, review and jump to source, and output scenario screenshots for delivery.
 
-## 适合谁用
+Installation, product demo, and repository-level overview live in the [repository README](../../README.md). This file covers how to use the Skill; concrete commands and step-by-step operations live in `references/`.
 
-- **和 Agent 协作**：把需求、截图或现有页面交给 Agent，让它按本 Skill 生成或修改原型。
-- **自己验收与迭代**：用作者服务启动skill生成的原型，在浏览器里查看说明、切换场景、打评审意见、直接改样式或文案，而不必每次从头描述页面结构。
-- **整理交付物**：区分「正式原型文件」和「作者会话工具」，输出干净的多状态页面截图。
+## Who it is for
 
-不适合当作通用前端脚手架或生产代码生成器；它的目标是**可评审、可说明、可截图的原型交付**。
+- **Collaborate with an agent**: hand requirements, screenshots, or an existing page to an agent and let it generate or modify the prototype with this Skill.
+- **Review and iterate yourself**: use the authoring server to open the generated prototype, view notes, switch scenarios, add review feedback, and tweak styles or copy directly — without re-describing the page structure every time.
+- **Prepare deliverables**: keep "formal prototype files" and "authoring-session tools" separate, and produce clean multi-state page screenshots.
 
-## 你会得到什么
+It is not meant as a general frontend scaffold or production code generator; its goal is **reviewable, annotatable, screenshotable prototype delivery**.
 
-一次完整任务通常包含三类产物：
+## What you get
 
+A complete task typically yields three outputs:
 
-| 产物                  | 作用                     |
-| ------------------- | ---------------------- |
-| 可运行的 HTML 原型        | 原生页面，可双击预览，也可经本地作者服务打开 |
-| `notes.snapshot.js` | 正式说明、场景状态与截图清单的唯一数据源   |
-| 按场景生成的 PNG          | 纯页面截图，不含右侧说明、连线和作者工具   |
+| Output | Role |
+| ------ | ---- |
+| Runnable HTML prototype | Native page; double-click to preview, or open via the local authoring server |
+| `notes.snapshot.js` | Single source of truth for formal notes, scenario states, and the screenshot manifest |
+| Per-scenario PNGs | Clean page screenshots without the notes rail, connectors, or author tools |
 
+Formal prototypes keep only semantic DOM, stable anchors, and the read-only Viewer; Mark, Direct Edit, Notes Editor, Inspector, and the local authoring server all belong to the **authoring layer** and never enter the delivered HTML.
 
-正式原型只保留语义 DOM、稳定锚点与只读 Viewer；Mark、Direct Edit、Notes Editor、Inspector 和本地作者服务都属于**作者层**，不会写进交付 HTML。
+## Typical usage
 
-## 典型怎么用
+No need to memorize commands — work by intent:
 
-不必记命令，按意图分工即可：
+1. **Create or heavily change a page**
+   Enable this Skill in Cursor, Claude Code, Codex, or other clients, describe the requirement in natural language or attach materials, and let the agent generate `prototype.html` and `prototype/`. Constraints and task routing: [SKILL.md](SKILL.md).
+2. **Keep working on the page**
+   To change styles or notes, drop review pins, or jump from an element back to source, operate through the local authoring server in the browser. Direct Edit and Mark share the Author Tools panel; capabilities are described in [Local authoring](references/local-authoring.md) and [Review mark](references/review-mark.md).
+3. **Capture scenarios or deliver**
+   For batch clean-page screenshots or final file assembly, see [Scenario screenshots](references/screenshots.md) and [Delivery & iteration](references/delivery.md).
 
-1. **新建或大改页面**
-  在 Cursor、Claude Code、Codex 等客户端启用本 Skill，用自然语言描述需求或附上材料，让 Agent 生成 `prototype.html` 与 `prototype/`。约束与任务分流见 [SKILL.md](SKILL.md)。
-2. **在页面上继续工作**
-  需要改样式、改说明、打评审 pin、从元素跳回源码时，通过本地作者服务在浏览器里操作。Direct Edit 与 Mark 同在 Author Tools 面板；能力说明见 [本地作者服务](references/local-authoring.md)、[评审打点](references/review-mark.md)。
-3. **按场景出图或交付**
-  需要批量纯页面截图或整理最终文件时，见 [场景截图](references/screenshots.md) 与 [交付与迭代](references/delivery.md)。
+The [`examples/minimal-notes-system`](../../examples/minimal-notes-system) sample inside the repo is a minimal runnable reference.
 
-仓库内 `[examples/minimal-notes](../../examples/minimal-notes)` 提供可对照的最小样例。
-
-## 能力一览
+## Capability overview
 
 ```text
-原生 HTML 原型
+Native HTML prototype
    │
-   ├── Viewer：右侧正式说明、场景切换、SVG 连线
-   ├── Direct Edit / Mark：直接改页面样式或打评审 pin，导出给 AI 的 selector 与元素快照
-   ├── Notes Editor：编辑正式说明卡片
-   ├── Inspector：从页面元素跳转到本机 IDE 源码
-   └── Screenshot：按 snapshot 场景输出纯页面 PNG
+   ├── Viewer: formal notes on the right, scenario switching, SVG connectors
+   ├── Direct Edit / Mark: tweak page styles or drop review pins, export selectors and element snapshots for AI
+   ├── Notes Editor: edit formal note cards
+   ├── Inspector: jump from a page element to local IDE source
+   └── Screenshot: output clean page PNGs per snapshot scenario
 ```
 
-同一套业务状态既支撑页面说明与场景切换，也支撑多状态截图，避免「效果图」和「可执行页面」两套口径。
+The same business state drives page notes and scenario switching as well as multi-state screenshots, so there is no drift between the "visual mock" and the "runnable page".
 
-## 环境与可选配置
+## Environment & optional configuration
 
-- 需要 **Node.js 18+**；Skill 自带运行时与脚本不依赖额外 npm 包。
-- 批量截图需要本机 **Microsoft Edge 或 Google Chrome**。
-- 若使用 Inspector 跳转源码，可在本目录参考 [.env.example](.env.example) 配置本机 IDE；该文件仅用于个人环境，不要提交。
+- Requires **Node.js 18+**; the Skill ships its own runtime and scripts with no extra npm packages.
+- Batch screenshots need **Microsoft Edge or Google Chrome** on your machine.
+- To use Inspector source-jump, configure your local IDE in this directory following [.env.example](.env.example); that file is for personal environments only — do not commit it.
 
+## Where to look next
 
+| To understand… | See |
+| -------------- | --- |
+| What to make the agent do, hard constraints | [SKILL.md](SKILL.md) |
+| Task-specific instructions (with commands) | Matching entry under [references/](references/) |
+| How to pick UI packs | [ui/catalog.md](ui/catalog.md) |
+| Repository install and feature overview | [Repository README](../../README.md) |
 
-## 文档去哪看
-
-
-| 你想了解…              | 去看                               |
-| ------------------ | -------------------------------- |
-| 让 Agent 做什么、有哪些硬约束 | [SKILL.md](SKILL.md)             |
-| 某类任务的操作说明（含命令）     | [references/](references/) 下对应入口 |
-| UI 包怎么选            | [ui/catalog.md](ui/catalog.md)   |
-| 仓库安装与功能介绍         | [仓库 README](../../README.md)     |
-
-
-本文件只说明 Skill 的用途与协作方式；具体命令、逐步操作和 Agent 契约都在上述文档中按任务拆分维护。
+This file only explains what the Skill is for and how to collaborate; concrete commands, step-by-step operations, and agent contracts are maintained per-task in the documents above.

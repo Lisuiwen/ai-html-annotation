@@ -1,25 +1,25 @@
-# UI 生成
+# UI Generation
 
-## 适用范围
+## Scope
 
-用户要求生成原型、UI 重建、底图还原，或大改页面结构、布局、菜单和业务状态时使用本入口。
+Use this entry when the user asks to generate a prototype, rebuild a UI, restore an underlying image/mock, or heavily change page structure, layout, menus, or business state.
 
-## 最小路径
+## Minimal path
 
-1. 选择唯一 foundation，再按 action / navigation / form / data / feedback 各选择最多一个兼容 provider，并用 `node <skill-root>/scripts/resolve-pack.mjs --select=<id[,id...]>` 解析最小依赖闭包。
-2. 生成 snapshot + Client Runtime；所有原型都通过 `runtime/client/core/state.js` 的 `PrototypeViewers` 管理场景和 state，Notes Viewer 只消费状态。
-3. 交付前按 [交付复检清单](delivery-checklist.md) 逐项核对。
+1. Pick exactly one foundation, then select at most one compatible provider per action / navigation / form / data / feedback category, and resolve the minimal dependency closure with `node <skill-root>/scripts/resolve-pack.mjs --select=<id[,id...]>`.
+2. Generate the snapshot + Client Runtime; every prototype manages scenarios and state through `PrototypeViewers` from `runtime/client/core/state.js`, and Notes Viewer only consumes state.
+3. Before delivery, verify against the [delivery checklist](delivery-checklist.md) item by item.
 
-当前已有完整 UI 包为 `../ui/packs/admin-desktop/`，提供 foundation 与 action / navigation / form / data / feedback 全部类别的 provider，用于中后台桌面风格原型。
+The current complete UI pack is `../ui/packs/admin-desktop/`, which provides a foundation and providers for all categories (action / navigation / form / data / feedback), for admin-desktop style prototypes.
 
-## 生成流程
+## Generation flow
 
-1. 业务材料不完整时先确认，不补造业务规则。
-2. UI pack 只提供组件与局部 Adapter；业务 Adapter 负责把 `PrototypeViewers` state 映射到组件。
-3. foundation 与 Case 颜色都先声明为 token；未确认的视觉和行为用 `ponytail:` 就地说明。
+1. When the business materials are incomplete, confirm first; do not fabricate business rules.
+2. The UI pack only provides components and local adapters; the business Adapter maps `PrototypeViewers` state to the components.
+3. Declare foundation and Case colors as tokens up front; describe unconfirmed visuals and behaviors in place with `ponytail:`.
 
-## 完成后分流
+## After completion
 
-- Viewer、场景和标注：读取 [product-annotations.md](product-annotations.md)。
-- 用户要求评审、打点、review pin 或导出 For AI：读取 [review-mark.md](review-mark.md)。
-- 用户明确不要打点或评审层：直接进入 [delivery.md](delivery.md)。
+- Viewer, scenarios, and annotations: read [product-annotations.md](product-annotations.md).
+- When the user asks for review, pinning, review pins, or exporting For AI: read [review-mark.md](review-mark.md).
+- When the user explicitly wants no pinning or review layer: go straight to [delivery.md](delivery.md).

@@ -1,23 +1,23 @@
-# 场景截图
+# Scenario Screenshots
 
-## 适用范围
+## Scope
 
-需要按显式场景批量生成纯页面截图，或验证 URL scene 对应组合业务状态时使用本入口。
+Use this entry when you need to batch-generate clean page screenshots per explicit scenario, or verify that a URL scene corresponds to the composed business state.
 
-实现位于 `runtime/cli/screenshot.mjs`。
+The implementation lives in `runtime/cli/screenshot.mjs`.
 
-## 命令
+## Command
 
 ```bash
 node <skill-root>/runtime/cli/screenshot.mjs <prototype.html> --snapshot=prototype/notes.snapshot.js
 ```
 
-工具按 `snapshot.scenarios` 在 HTML 所在交付目录生成 `screenshots/<scene-id>.png`，截图 URL 自动带 `collapsed=1&product-only=1`，隐藏说明和作者 UI。
+The tool writes `screenshots/<scene-id>.png` into the delivery directory next to the HTML, iterating over `snapshot.scenarios`; the screenshot URL automatically carries `collapsed=1&product-only=1`, hiding annotations and author UI.
 
-## Agent 前置契约
+## Agent prerequisites
 
-- snapshot 使用 `schemaVersion: 2`，并以 `scenarios` 对象显式声明截图清单和每个场景的组合 state。
-- HTML 支持 `?scene=<id>`，由 `PrototypeViewers` 激活场景并通过业务 Adapter 恢复 DOM 状态。
-- 截图固定附加 `collapsed=1&product-only=1`，隐藏右栏、SVG 连线、Mark 和作者 UI。
-- 截图场景必须来自 `snapshot.scenarios`；场景 id 须可安全作为文件名。
-- 任一组失败时保留其他已生成截图并返回失败状态，不把部分成功误报为全部完成。
+- The snapshot uses `schemaVersion: 2` and explicitly declares the screenshot list and each scenario's composed state via the `scenarios` object.
+- The HTML supports `?scene=<id>`; `PrototypeViewers` activates the scenario and the business Adapter restores the DOM state.
+- Screenshots always append `collapsed=1&product-only=1`, hiding the right rail, SVG connectors, Mark, and author UI.
+- Screenshot scenarios must come from `snapshot.scenarios`; scenario ids must be safe to use as file names.
+- If any group fails, keep the already-generated screenshots and return a failure status; do not report partial success as complete.

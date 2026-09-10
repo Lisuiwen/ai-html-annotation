@@ -106,5 +106,5 @@ if (process.exitCode) {
 process.exitCode = 0;
 await import('../tests/runtime/index.test.mjs');
 await import('../tests/contracts/runtime.test.mjs');
-await import('../tests/examples/minimal-notes/prototype.test.mjs');
+await import('../tests/examples/minimal-notes-system/prototype.test.mjs');
 console.log('Skill 统一验证通过。');

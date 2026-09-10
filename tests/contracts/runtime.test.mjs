@@ -7,12 +7,12 @@ const runtimeDisplayModeUrl = new URL('../../skills/html-prototype-build/runtime
 const runtimeStateUrl = new URL('../../skills/html-prototype-build/runtime/client/core/state.js', import.meta.url);
 const runtimeModelUrl = new URL('../../skills/html-prototype-build/runtime/client/notes/model.js', import.meta.url);
 const runtimeViewerUrl = new URL('../../skills/html-prototype-build/runtime/client/notes/viewer.js', import.meta.url);
-const exampleDisplayModeUrl = new URL('../../examples/minimal-notes/prototype/display-mode.js', import.meta.url);
-const exampleStateUrl = new URL('../../examples/minimal-notes/prototype/state.js', import.meta.url);
-const exampleModelUrl = new URL('../../examples/minimal-notes/prototype/model.js', import.meta.url);
-const exampleViewerUrl = new URL('../../examples/minimal-notes/prototype/viewer.js', import.meta.url);
-const prototypeUrl = new URL('../../examples/minimal-notes/prototype.html', import.meta.url);
-const snapshotUrl = new URL('../../examples/minimal-notes/prototype/notes.snapshot.js', import.meta.url);
+const exampleDisplayModeUrl = new URL('../../examples/minimal-notes-system/prototype/display-mode.js', import.meta.url);
+const exampleStateUrl = new URL('../../examples/minimal-notes-system/prototype/state.js', import.meta.url);
+const exampleModelUrl = new URL('../../examples/minimal-notes-system/prototype/model.js', import.meta.url);
+const exampleViewerUrl = new URL('../../examples/minimal-notes-system/prototype/viewer.js', import.meta.url);
+const prototypeUrl = new URL('../../examples/minimal-notes-system/prototype.html', import.meta.url);
+const snapshotUrl = new URL('../../examples/minimal-notes-system/prototype/notes.snapshot.js', import.meta.url);
 const packManifestUrl = new URL('../../skills/html-prototype-build/ui/packs/admin-desktop/manifest.json', import.meta.url);
 
 async function readSnapshot() {

@@ -3,7 +3,7 @@ skills/html-prototype-build/.env
 
 # 全局忽略 AGENTS.md；本仓库的 Skill 模板与最小交付样例必须受版本控制。
 !/skills/html-prototype-build/templates/AGENTS.md
-!/examples/minimal-notes/AGENTS.md
+!/examples/minimal-notes-system/AGENTS.md
 
 # Agent / 本机临时产物。
 .agents/
