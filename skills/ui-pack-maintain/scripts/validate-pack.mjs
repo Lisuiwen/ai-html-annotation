@@ -22,6 +22,22 @@ const referencedFiles = new Set(['PACK.md', 'manifest.json', 'design-system.md']
 const slash = (value) => value.split(path.sep).join('/');
 const isObject = (value) => value && typeof value === 'object' && !Array.isArray(value);
 const list = (value) => Array.isArray(value) ? value : [];
+const CSS_CUSTOM_PROPERTY_DECLARATION = /(--[a-zA-Z0-9_-]+)\s*:(?=\s|;|$)/g;
+const STATE_CLASS_PATTERN = /^is-[a-z0-9-]+$/;
+
+/** Strip block and line comments before static adapter checks. */
+function stripJsComments(source) {
+  return source
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/(^|[^:\\])\/\/.*$/gm, '$1');
+}
+
+/** Pack classes use manifest.classPrefix; local state hooks may use is-* modifiers. */
+function isAllowedClassName(className, classPrefix) {
+  if (!className) return true;
+  if (className.startsWith(classPrefix)) return true;
+  return STATE_CLASS_PATTERN.test(className);
+}
 
 async function fileExists(relativePath, rootDirectory = packDirectory) {
   try {
@@ -220,7 +236,10 @@ for (const [id, entry] of Object.entries(registries)) {
       [/\b(?:location|URLSearchParams)\b/, 'parses location or URLs'],
       [/(?:window|document)(?:\.|\[['"])(?:addEventListener|on[a-z]+)\b/, 'registers a global event handler']
     ];
-    for (const [pattern, reason] of forbidden) if (pattern.test(adapter)) errors.push(`${id} adapter ${reason}: ${entry.adapter}`);
+    const adapterBody = stripJsComments(adapter);
+    for (const [pattern, reason] of forbidden) {
+      if (pattern.test(adapterBody)) errors.push(`${id} adapter ${reason}: ${entry.adapter}`);
+    }
   }
   for (const dependency of [...list(entry.requires), ...list(entry.optional), ...list(entry.uses)]) {
     if (!registries[dependency]) errors.push(`${id} references unknown dependency: ${dependency}`);
@@ -275,7 +294,7 @@ if (strict) {
   for (const file of textFiles) {
     const source = await readText(file);
     if (/https?:\/\//i.test(source)) errors.push(`Pack implementation must not reference external URLs: ${file}`);
-    for (const match of source.matchAll(/(--[a-zA-Z0-9_-]+)\s*:/g)) {
+    for (const match of source.matchAll(CSS_CUSTOM_PROPERTY_DECLARATION)) {
       customProperties.add(match[1]);
       if (!match[1].startsWith(`--${manifest.tokenPrefix}`)) errors.push(`Token declaration does not use manifest.tokenPrefix in ${file}: ${match[1]}`);
     }
@@ -283,7 +302,9 @@ if (strict) {
     if (/\.(?:html?|js)$/.test(file)) {
       for (const match of source.matchAll(/\bclass\s*=\s*["']([^"']+)["']/gi)) {
         for (const className of match[1].trim().split(/\s+/)) {
-          if (className && !className.startsWith(manifest.classPrefix)) errors.push(`Class does not use manifest.classPrefix in ${file}: ${className}`);
+          if (className && !isAllowedClassName(className, manifest.classPrefix)) {
+            errors.push(`Class does not use manifest.classPrefix in ${file}: ${className}`);
+          }
         }
       }
     }
