@@ -10,4 +10,4 @@ states:
 
 # data.chart-funnel
 
-审批流转、任务阶段流失与转化，ECharts 漏斗图。`steps` 自上而下排列。
+Approval flow, task-stage drop-off, and conversion using an ECharts funnel chart. `steps` are ordered top to bottom.

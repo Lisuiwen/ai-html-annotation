@@ -10,5 +10,4 @@ states:
 
 # Toolbar
 
-列表主操作和辅助操作的布局容器。没有操作的分组必须删除。
-
+Layout container for primary and secondary list actions. Remove groups that have no actions.

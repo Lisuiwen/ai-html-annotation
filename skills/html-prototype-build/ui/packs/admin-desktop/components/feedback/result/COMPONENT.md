@@ -10,4 +10,4 @@ states:
 
 # feedback.result
 
-全页或工作区终态。跳转、重试和错误码映射属于业务状态。
+Full-page or workspace terminal state. Navigation, retry, and error-code mapping belong to business state.

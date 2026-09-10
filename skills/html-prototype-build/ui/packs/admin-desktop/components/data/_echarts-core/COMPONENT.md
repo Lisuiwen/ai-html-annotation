@@ -10,15 +10,15 @@ states:
 
 # ECharts Core
 
-图表 leaf 共用的 ECharts 实例池与 setOption 入口。只能通过公开 chart 组件依赖加载，不得由 Pattern 或 Preset 直接选择。
+Shared ECharts instance pool and setOption entry for chart leaf components. May be loaded only through public chart component dependencies; Patterns and Presets must not select it directly.
 
-## 运行时依赖
+## Runtime dependencies
 
-生成原型时需 copy：
+When generating a prototype, copy:
 
-- `assets/echarts.min.js`（来自 skill vendor）
-- `prototype/bridge.js`、`prototype/presets.js`（来自 `runtime/client/charts/`）
+- `assets/echarts.min.js` (from the skill vendor)
+- `prototype/bridge.js` and `prototype/presets.js` (from `runtime/client/charts/`)
 
-## 状态 Adapter
+## State Adapter
 
-`state-adapter.js` 暴露 `window.PrototypeChartCore`，提供 `render(root, option)` 与 `destroy(root)`；不读取 `PrototypeViewers`。
+`state-adapter.js` exposes `window.PrototypeChartCore`, providing `render(root, option)` and `destroy(root)`; it does not read `PrototypeViewers`.

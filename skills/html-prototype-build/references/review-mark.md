@@ -1,37 +1,37 @@
-# 评审打点
+# Review Mark
 
-## 适用范围
+## Scope
 
-需要给已有 HTML 写修改意见、通过 pin 交接反馈，或导出 For AI 定位信息时使用本入口。
+Use this entry when you need to write change feedback on existing HTML, hand off feedback via pins, or export For AI locating information.
 
-Mark 是 `runtime/author/tools/mark/` 中的临时评审工具，与 Direct Edit 同在 Author Tools 面板的 `Mark` Tab 中；它不是右侧正式产品说明，也不写入 snapshot 或源 HTML。它通过本地作者服务动态加载。
+Mark is a temporary review tool in `runtime/author/tools/mark/`, in the `Mark` tab of the Author Tools panel alongside Direct edit; it is not the formal product annotations on the right rail, and it never writes to the snapshot or the source HTML. It is dynamically loaded through the local authoring service.
 
-## 操作步骤
+## Steps
 
-1. 按 [本地作者服务](local-authoring.md#启动) 启动作者服务并打开页面。
-2. 打开 Author Tools，切到 `Mark` Tab（或按 `M`）。
-3. 按住 `Ctrl` / `⌘` 点击目标元素添加 pin。
-4. 在 Mark 面板中定位、删除、清空，或使用 `Copy all → For AI` 导出意见、selector 和 HTML 快照。
+1. Start the authoring service following [local authoring service](local-authoring.md#start) and open the page.
+2. Open Author Tools and switch to the `Mark` tab (or press `M`).
+3. Hold `Ctrl` / `⌘` and click a target element to add a pin.
+4. In the Mark panel, locate, delete, or clear pins, or use `Copy all → For AI` to export feedback, selectors, and HTML snapshots.
 
-Mark 数据只保存在当前页面 pathname 对应的浏览器 localStorage；不会修改 `prototype.html` 或 snapshot，因此交付前无需执行额外“移除 Mark 注入”步骤。
+Mark data is only kept in the browser localStorage scoped to the current page pathname; it never modifies `prototype.html` or the snapshot, so no extra "remove Mark injection" step is required before delivery.
 
-## Agent 边界
+## Agent boundaries
 
-- 用户要求评审、打点、review pin 或导出 For AI 时，启动作者服务并进入 Mark Tab。
-- Pin 数据按页面 pathname 保存到 localStorage；DOM 大改导致 selector 失效时，清空该页标注并重新打点。
-- For AI 的 selector 和 HTML snapshot 用于定位源 HTML；Inspector 临时 token 不得成为导出 selector。
-- Mark 不需要交付前“移除注入”，因为作者工具从未写入正式 HTML。
+- When the user asks for review, pinning, review pins, or For AI export, start the authoring service and enter the Mark tab.
+- Pin data is saved to localStorage by page pathname; when a major DOM change makes selectors invalid, clear that page's pins and re-pin.
+- The For AI selectors and HTML snapshots are used to locate the source HTML; Inspector temporary tokens must not become exported selectors.
+- Mark needs no pre-delivery "remove injection", because the authoring tools never write to the formal HTML.
 
-## 平台差异
+## Platform differences
 
-Direct Edit 与 Mark 共用 `author/core/picker.js` 的元素选择逻辑：
+Direct edit and Mark share the element-picking logic in `author/core/picker.js`:
 
-- **Windows / Linux**：按住 `Ctrl` + 左键点击打点或选中；普通点击不拦截页面。
-- **macOS**：优先 `⌘` + 左键；`Control`+左键触发 contextmenu 时也会处理该手势。
+- **Windows / Linux**: hold `Ctrl` + left-click to pin or select; a normal click does not intercept the page.
+- **macOS**: prefer `⌘` + left-click; a `Control` + left-click that triggers the context menu also handles the gesture (applies to both edit and Mark).
 
-## 与其他工具的边界
+## Boundaries with other tools
 
-- 写文字反馈让 Agent 修改源码：Mark。
-- 直接在浏览器改样式或纯文本并写回源文件：Direct Edit。
-- 编辑右侧正式说明卡片：Notes Editor。
-- 查看并跳转元素源码：Inspector。
+- Write text feedback for an agent to modify the source: Mark.
+- Change styles or plain text directly in the browser and write back to the source file: Direct edit.
+- edit formal annotation cards on the right rail: Notes editor.
+- Inspect and jump to an element's source: Inspector.

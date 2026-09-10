@@ -15,11 +15,11 @@ async function boot() {
   return { window, listeners, source };
 }
 
-test('bootstrap 在 DOM loading 时延迟初始化', async () => {
+test('bootstrap delays init while DOM is loading', async () => {
   const { listeners } = await boot(); assert.equal(typeof listeners.get('DOMContentLoaded'), 'function');
 });
 
-test('bootstrap 只负责加载新 client/author 资源路径', async () => {
+test('bootstrap loads new client/author asset paths only', async () => {
   const { source } = await boot();
   for (const path of [
     '/__prototype-author/author/core/platform.js',
@@ -43,7 +43,7 @@ test('bootstrap 只负责加载新 client/author 资源路径', async () => {
   assert.doesNotMatch(source, /author-loader\.js/);
 });
 
-test('bootstrap 在工具脚本之前加载各自 CSS 依赖', async () => {
+test('bootstrap loads each tool CSS dependency before its script', async () => {
   const { source } = await boot();
   const platform = source.indexOf('/__prototype-author/author/core/platform.js');
   const selector = source.indexOf('/__prototype-author/author/core/selector.js');

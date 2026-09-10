@@ -1,11 +1,11 @@
-/* 作者工具 chrome 统一契约：纯页面截图态隐藏 overlay，Inspector/Mark/Editor 共用同一套判定。 */
+/* Shared author-chrome contract: product-only screenshot mode hides overlays; Inspector/Mark/editor share one rule set. */
 (function () {
   'use strict';
 
   if (window.PrototypeAuthorChrome) return;
 
   var BODY_CLASS = 'pa-product-only';
-  /* 与 Inspector isOverlay 共用；新增作者 UI 时只改这一处。 */
+  /* Shared with Inspector isOverlay; add new author UI selectors here only. */
   var OVERLAY_SELECTOR = [
     '.at-ui',
     '.mm-ui', '.mm-pin', '.mm-note-pop',
@@ -15,7 +15,7 @@
   ].join(',');
   var STYLE_ID = 'prototype-author-chrome-style';
 
-  /* 纯页面态 CSS：隐藏全部作者/评审 overlay，并清理 Inspector 悬停与交互闪电。 */
+  /* Product-only CSS: hide all author/review overlays and clear Inspector hover plus interaction badges. */
   function productOnlyCss() {
     var scoped = OVERLAY_SELECTOR.split(',').map(function (sel) {
       return 'body.' + BODY_CLASS + ' ' + sel.trim();
@@ -27,7 +27,7 @@
     ].join('');
   }
 
-  /* 注入纯页面态样式，幂等。 */
+  /* Inject product-only styles; idempotent. */
   function installStyles() {
     if (document.getElementById(STYLE_ID)) return;
     var style = document.createElement('style');
@@ -36,7 +36,7 @@
     document.head.appendChild(style);
   }
 
-  /* 读取 ?product-only=1，供 runtime/cli/screenshot.mjs 截图时隐藏全部作者 overlay。 */
+  /* Read ?product-only=1 so runtime/cli/screenshot.mjs can hide all author overlays during capture. */
   function readFromUrl() {
     try {
       return new URLSearchParams(window.location.search).get('product-only') === '1';
@@ -45,24 +45,24 @@
     }
   }
 
-  /* 进入纯页面态：隐藏全部作者 overlay 与交互闪电。 */
+  /* Enter product-only mode: hide all author overlays and interaction badges. */
   function enable() {
     installStyles();
     document.body.classList.add(BODY_CLASS);
   }
 
-  /* 判断节点是否属于作者 overlay；Inspector/Mark 拾取等统一调用。 */
+  /* Whether a node belongs to an author overlay; used by Inspector/Mark picking, etc. */
   function isOverlay(el) {
     if (!el || !el.closest) return false;
     return !!el.closest(OVERLAY_SELECTOR);
   }
 
-  /* 当前是否处于纯页面态。 */
+  /* Whether product-only mode is active. */
   function isProductOnly() {
     return document.body.classList.contains(BODY_CLASS);
   }
 
-  /* URL 带 product-only=1 时自动进入纯页面态。 */
+  /* Auto-enter product-only mode when the URL has product-only=1. */
   function applyFromUrl() {
     if (readFromUrl()) enable();
   }
@@ -77,7 +77,7 @@
     isProductOnly: isProductOnly
   };
 
-  /* 作者服务与 file:// 双击均可能在 Viewer 之前加载，此处先装样式并响应 URL。 */
+  /* Author server and file:// double-click may load before Viewer; install styles and react to URL here. */
   installStyles();
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyFromUrl);
   else applyFromUrl();

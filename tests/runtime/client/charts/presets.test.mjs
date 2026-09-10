@@ -10,7 +10,7 @@ async function bootPresets() {
   return window.PrototypeChartPresets;
 }
 
-test('Chart presets 覆盖 line/bar/donut/map 关键变体', async () => {
+test('Chart presets cover line/bar/donut/map key variants', async () => {
   const presets = await bootPresets();
   const line = presets.line({ variant: 'area', categories: ['A'], visibleSeries: ['x'], series: [{ key: 'x', name: 'X', data: [1] }, { key: 'y', name: 'Y', data: [2] }] });
   assert.equal(line.series[0].show, true); assert.equal(line.series[1].show, false); assert.ok(line.series[0].areaStyle);

@@ -1,21 +1,21 @@
-# UI 包目录
+# UI Pack Catalog
 
-## 可用包
+## Available packs
 
-- `admin-desktop`：中后台桌面风格 UI，提供 foundation、action、navigation、form、data、feedback，以及可选 Pattern 与 Preset。
+- `admin-desktop`: Admin desktop-style UI providing foundation, action, navigation, form, data, feedback, plus optional Patterns and Presets.
 
-## 选择规则
+## Selection rules
 
-1. 每个原型必须且只能选择一个 foundation。
-2. action、navigation、form、data、feedback 等类别各最多选择一个 provider。
-3. provider 必须在自身 `PACK.md` 中声明兼容当前 foundation。
-4. 用户材料能够确定 UI 类型时选择对应包；无法确定时先询问，禁止默认套用任一视觉体系。
-5. Addon 不属于 UI provider，可在不改变产品视觉 Token 的前提下按需叠加。
-6. 选定包后运行 `node <skill-root>/scripts/resolve-pack.mjs --pack=<pack-id> --select=<id[,id...]>`，按输出读取最小依赖闭包；只有维护索引或排查解析器时才直接读取完整 `manifest.json`，禁止按类别加载全部组件。
+1. Each prototype must choose exactly one foundation.
+2. At most one provider per category such as action, navigation, form, data, and feedback.
+3. A provider must declare compatibility with the current foundation in its own `PACK.md`.
+4. When user materials identify the UI type, choose the matching pack; when unclear, ask first — never default to any visual system.
+5. Addons are not UI providers and may be layered on demand without changing product visual Tokens.
+6. After choosing a pack, run `node <skill-root>/scripts/resolve-pack.mjs --pack=<pack-id> --select=<id[,id...]>` and read only the minimal dependency closure it outputs; read the full `manifest.json` only when maintaining the index or debugging the resolver — never load all components by category.
 
-## 当前组合
+## Current combination
 
-当前仅有一个完整包：
+There is currently one complete pack:
 
 ```text
 foundation: admin-desktop.default
@@ -24,7 +24,7 @@ navigation: admin-desktop
 form: admin-desktop
 data: admin-desktop
 feedback: admin-desktop
-addons: 按需求选择
+addons: choose as needed
 ```
 
-新增 UI 包时只登记能力和兼容关系，不修改共享生成流程。
+When adding a new UI pack, register only capabilities and compatibility; do not change the shared generation flow.

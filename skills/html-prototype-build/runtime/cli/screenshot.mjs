@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-/* 无头截图：按显式场景分别截图。
-   Viewer 在 collapsed=1&product-only=1 时进入纯页面态，自动隐藏 Mark、右下角折叠钮与交互闪电。 */
+/* Headless capture: one screenshot per explicit scenario.
+   Viewer enters product-only mode at collapsed=1&product-only=1, hiding Mark, collapse control, and interaction badges. */
 import { existsSync, mkdirSync, readFileSync, statSync } from 'node:fs';
 import { spawn, spawnSync } from 'node:child_process';
 import { dirname, join, relative, resolve } from 'node:path';
@@ -16,67 +16,67 @@ const flag = (name, fallback) => {
 const isDirectExecution = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 const htmlPath = input ? resolve(input) : '';
 
-/* 正式产物将截图与页面运行资源分开：截图位于根目录 screenshots。 */
+/* Ship screenshots separately from page runtime assets: screenshots live under screenshots/. */
 const outDir = resolve(flag('out', htmlPath ? join(dirname(htmlPath), 'screenshots') : 'screenshots'));
 const width = flag('width', '1440');
 const height = flag('height', '900');
 
-/* 解析唯一标注数据源：默认 <原型目录>/prototype/notes.snapshot.js，可 --snapshot= 覆盖。 */
+/* Resolve the single annotation data source: default <prototype-dir>/prototype/notes.snapshot.js, overridable via --snapshot=. */
 const snapshotPath = resolve(flag('snapshot', htmlPath ? join(dirname(htmlPath), 'prototype', 'notes.snapshot.js') : 'prototype/notes.snapshot.js'));
 
-/* 严格读取由作者服务生成的静态 snapshot，拒绝执行其中的任意 JavaScript。 */
+/* Strictly read the static snapshot from the author server; refuse to execute any JavaScript inside. */
 export function readNotes() {
   const code = readFileSync(snapshotPath, 'utf8');
   const match = code.match(/^\s*(?:(?:\/\*[\s\S]*?\*\/|\/\/[^\r\n]*(?:\r?\n|$))\s*)*window\.__PROTOTYPE_NOTES__\s*=\s*([\s\S]*?)\s*;\s*$/);
   if (!match) {
-    throw new Error('标注数据必须是单个 window.__PROTOTYPE_NOTES__ = <JSON>; 赋值，不能包含可执行代码。');
+    throw new Error('Annotation data must be a single window.__PROTOTYPE_NOTES__ = <JSON>; assignment with no executable code.');
   }
   try {
     return JSON.parse(match[1]);
   } catch {
-    throw new Error('标注数据中的 __PROTOTYPE_NOTES__ 必须是有效 JSON。');
+    throw new Error('__PROTOTYPE_NOTES__ in annotation data must be valid JSON.');
   }
 }
 
-/* 校验场景 ID 可安全作为跨平台文件名，避免路径穿越、设备名和隐式覆盖。 */
+/* Validate scenario id is safe as a cross-platform filename to avoid traversal, device names, and implicit overwrite. */
 function assertSafeFileName(id) {
   if (typeof id !== 'string' || !id || id.length > 120) {
-    throw new Error('场景 ID 必须是 1～120 个字符的字符串。');
+    throw new Error('Scenario ID must be a string of 1–120 characters.');
   }
   if (id === '.' || id === '..' || /[<>:"/\\|?*\u0000-\u001f]/.test(id) || /[. ]$/.test(id)) {
-    throw new Error(`场景 ID 不能安全用作截图文件名：${id}`);
+    throw new Error(`Scenario ID is not safe as a screenshot filename: ${id}`);
   }
   if (/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\..*)?$/i.test(id)) {
-    throw new Error(`场景 ID 命中 Windows 保留设备名：${id}`);
+    throw new Error(`Scenario ID matches a Windows reserved device name: ${id}`);
   }
   return id;
 }
 
-/* 从 snapshot 纯数据提取截图场景，仅接受显式声明的 scenarios。 */
+/* Extract capture scenarios from snapshot data; only explicitly declared scenarios are accepted. */
 export function collectScenarios(notes) {
   if (!notes || !Array.isArray(notes.cards)) {
-    throw new Error('标注数据不符合契约：缺少 cards 数组。');
+    throw new Error('Annotation data violates contract: missing cards array.');
   }
   if (!notes.scenarios || typeof notes.scenarios !== 'object') {
-    throw new Error('snapshot 必须显式声明 scenarios。');
+    throw new Error('snapshot must declare scenarios explicitly.');
   }
   const ids = Array.isArray(notes.scenarios)
     ? notes.scenarios.map((scenario) => scenario && (scenario.id || scenario.name))
     : Object.keys(notes.scenarios);
   if (ids.length === 0 || ids.some((id) => typeof id !== 'string' || !id)) {
-    throw new Error('scenarios 必须包含带有效 ID 的场景。');
+    throw new Error('scenarios must include entries with valid IDs.');
   }
   return ids.map((id) => ({ id: assertSafeFileName(id), query: 'scene' }));
 }
 
-/* 逐场景执行截图；统一使用 scene 查询参数并折叠右栏与连线。 */
+/* Capture each scenario with scene query param while collapsing the right rail and connectors. */
 function shoot(shot, exe) {
   return new Promise((resolveShot) => {
     const url = pathToFileURL(htmlPath).href + '?' + shot.query + '=' + encodeURIComponent(shot.id) + '&collapsed=1&product-only=1';
     const outFile = resolve(outDir, shot.id + '.png');
-    /* 双重验证最终路径仍在输出目录中，防止未来放宽名称规则后引入穿越。 */
+    /* Double-check final path stays inside output dir in case name rules are relaxed later. */
     if (relative(outDir, outFile).startsWith('..')) {
-      console.error(`✗ 不安全的截图输出路径：${outFile}`);
+      console.error(`✗ Unsafe screenshot output path: ${outFile}`);
       resolveShot(false);
       return;
     }
@@ -91,30 +91,30 @@ function shoot(shot, exe) {
       url
     ], { stdio: 'ignore' });
     child.on('error', () => {
-      console.error(`✗ 启动浏览器失败：${exe}`);
+      console.error(`✗ Failed to launch browser: ${exe}`);
       process.exitCode = 1;
       resolveShot(false);
     });
-    /* 用 close（stdio 完全关闭）而非 exit：Edge 截图文件可能在进程退出后仍有落盘延迟。 */
+    /* Use close (stdio fully closed) not exit: Edge may delay writing the screenshot after process exit. */
     child.on('close', (code) => {
       if (code === 0) waitForFile(outFile, 4000).then((exists) => {
         if (exists) {
           console.log(`✓ [${shot.id}] ${outFile}`);
           resolveShot(true);
         } else {
-          console.error(`✗ [${shot.id}] 截图文件未生成（exit ${code}）：${url}`);
+          console.error(`✗ [${shot.id}] Screenshot file not created (exit ${code}): ${url}`);
           resolveShot(false);
         }
       });
       else {
-        console.error(`✗ [${shot.id}] 截图失败（exit ${code}）：${url}`);
+        console.error(`✗ [${shot.id}] Screenshot failed (exit ${code}): ${url}`);
         resolveShot(false);
       }
     });
   });
 }
 
-/* 轮询等待截图文件落盘，最多等待 timeout 毫秒。 */
+/* Poll until screenshot file exists, up to timeout ms. */
 function waitForFile(path, timeout) {
   return new Promise((resolveWait) => {
     const start = Date.now();
@@ -126,7 +126,7 @@ function waitForFile(path, timeout) {
   });
 }
 
-/* 按常见安装路径依次探测可用浏览器，优先 msedge。 */
+/* Probe common install paths for an available browser; prefer msedge. */
 function resolveBrowser() {
   const explicit = flag('browser', '');
   if (explicit) return existsSync(explicit) ? explicit : null;
@@ -148,24 +148,24 @@ function resolveBrowser() {
   return null;
 }
 
-/* 检查命令是否在 PATH 中可用。 */
+/* Check whether a command is available on PATH. */
 function commandExists(cmd) {
   const probe = spawnSync(cmd, ['--version'], { stdio: 'ignore', shell: true });
   return probe.error === undefined && probe.status === 0;
 }
 
-/* 串行截图，避免多个无头实例同时抢占同一输出文件。 */
+/* Capture serially so multiple headless instances do not race the same output file. */
 async function main() {
   if (!input) {
-    console.error('用法：node runtime/cli/screenshot.mjs <prototype.html> [--out=目录] [--browser=exe路径] [--width=1440] [--height=900] [--snapshot=标注数据路径]');
+    console.error('Usage: node runtime/cli/screenshot.mjs <prototype.html> [--out=dir] [--browser=exe] [--width=1440] [--height=900] [--snapshot=annotation-path]');
     process.exit(1);
   }
   if (!existsSync(htmlPath) || !statSync(htmlPath).isFile()) {
-    console.error(`找不到原型 HTML：${htmlPath}`);
+    console.error(`Prototype HTML not found: ${htmlPath}`);
     process.exit(1);
   }
   if (!existsSync(snapshotPath)) {
-    console.error(`✗ 找不到标注数据：${snapshotPath}`);
+    console.error(`✗ Annotation data not found: ${snapshotPath}`);
     process.exit(1);
   }
   mkdirSync(outDir, { recursive: true });
@@ -177,20 +177,20 @@ async function main() {
     process.exit(1);
   }
   if (shots.length === 0) {
-    console.error('✗ 未在标注数据中找到任何场景。');
+    console.error('✗ No scenarios found in annotation data.');
     process.exit(1);
   }
   const exe = resolveBrowser();
   if (!exe) {
-    console.error('✗ 未找到 Edge/Chrome 浏览器，请用 --browser= 指定可执行文件路径。');
+    console.error('✗ Edge/Chrome not found; use --browser= to specify an executable path.');
     process.exit(1);
   }
-  console.log(`发现 ${shots.length} 个场景：${shots.map((shot) => shot.id).join(', ')}`);
+  console.log(`Found ${shots.length} scenario(s): ${shots.map((shot) => shot.id).join(', ')}`);
   let ok = 0;
   for (const shot of shots) {
     if (await shoot(shot, exe)) ok++;
   }
-  console.log(`完成：${ok}/${shots.length}，输出目录 ${outDir}`);
+  console.log(`Done: ${ok}/${shots.length}, output dir ${outDir}`);
   process.exit(ok === shots.length ? 0 : 1);
 }
 

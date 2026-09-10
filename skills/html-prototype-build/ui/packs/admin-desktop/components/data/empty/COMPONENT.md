@@ -10,4 +10,4 @@ states:
 
 # data.empty
 
-内容区空态。新建操作、权限和具体引导文案由页面提供。
+content-area empty state. create actions, permissions, and specific guidance copy are supplied by the page.

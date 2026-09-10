@@ -1,4 +1,4 @@
-/* Author Tools Shell：关=胶囊，开=Drawer。不抢占页面普通点击。 */
+/* Author Tools Shell: closed = capsule, open = Drawer. Does not steal normal page clicks. */
 .at-ui, .at-ui * {
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
@@ -236,7 +236,7 @@ body.at-drawer-open .pn-panel-actions {
   font-size: 13px;
   margin-bottom: 2px;
 }
-/* 与 Mark 的 .mm-list 同层：可滚动主体，空态/表单都挂在这里。 */
+/* Same layer as Mark .mm-list: scrollable body; empty state and forms attach here. */
 .at-edit-body {
   padding: 10px;
   overflow-y: auto;

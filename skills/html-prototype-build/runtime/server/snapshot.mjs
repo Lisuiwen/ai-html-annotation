@@ -38,7 +38,7 @@ export function validateSnapshot(data) {
 }
 
 export function serializeSnapshot(data) {
-  return `/* 原型正式标注唯一数据源；由 prototype-author 编辑器维护。 */\nwindow.__PROTOTYPE_NOTES__ = ${JSON.stringify(data, null, 2)};\n`;
+  return `/* Canonical prototype annotation data source; maintained by the prototype-author editor. */\nwindow.__PROTOTYPE_NOTES__ = ${JSON.stringify(data, null, 2)};\n`;
 }
 
 export function writeSnapshot(filePath, data) {

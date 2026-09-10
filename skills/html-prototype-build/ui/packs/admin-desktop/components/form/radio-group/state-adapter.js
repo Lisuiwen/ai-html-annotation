@@ -1,13 +1,13 @@
-/* 单选组局部状态投影：只同步原生控件选中与禁用属性。 */
+/* Radio group local state projection: syncs native control selection and disabled attributes only. */
 (function () {
   'use strict';
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
-  /* 归一化选择状态，保持组件不承担业务校验。 */
+  /* Normalize selection state; component does not perform business validation. */
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : {};
     return { value: typeof state.value === 'string' ? state.value : '', disabled: Array.isArray(state.disabled) ? state.disabled : [], status: state.status === 'error' ? 'error' : 'default' };
   }
-  /* 同步原生输入框状态及组级错误标记。 */
+  /* Sync native input state and group-level error markers. */
   function render(root, value) {
     if (!root) return;
     var state = normalize(value);

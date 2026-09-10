@@ -5,13 +5,13 @@
   .ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }
   .ui-chart[data-status="empty"] .ui-chart-data { display: none; }
   .ui-chart[data-status="data"] .ui-chart-empty, .ui-chart[data-status="loading"] .ui-chart-empty { display: none; }
-  /* ponytail: 堆叠与横向排名条的几何细节未逐像素对齐 常见图表视觉。 */
+  /* ponytail: stacked and horizontal rank bar geometry not pixel-aligned with common chart visuals. */
 </style>
 <section class="ui-chart ui-chart-bar" id="uiChartBar" data-status="data" aria-labelledby="uiChartBarTitle">
-  <h2 class="ui-visually-hidden" id="uiChartBarTitle">季度计划与完成对比</h2>
+  <h2 class="ui-visually-hidden" id="uiChartBarTitle">Quarterly plan vs completion</h2>
   <div class="ui-chart-data">
-    <div class="ui-chart-canvas" role="img" aria-label="四个季度的计划和完成数值对比"></div>
+    <div class="ui-chart-canvas" role="img" aria-label="Planned vs completed values across four quarters"></div>
   </div>
-  <div class="ui-chart-empty" hidden>暂无对比数据</div>
-  <div class="ui-chart-summary" aria-live="polite">分组对比：计划、完成</div>
+  <div class="ui-chart-empty" hidden>No comparison data</div>
+  <div class="ui-chart-summary" aria-live="polite">Grouped comparison: planned, completed</div>
 </section>

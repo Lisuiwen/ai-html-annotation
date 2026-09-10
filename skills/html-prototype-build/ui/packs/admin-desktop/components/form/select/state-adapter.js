@@ -1,16 +1,16 @@
-/* Select 局部状态投影：由最终原型 Adapter 调用，不保存业务状态或绑定交互事件。 */
+/* Select local state projection: invoked by final prototype Adapter; does not persist business state or bind interaction events. */
 (function () {
   'use strict';
 
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
 
-  /* 归一化 Select 的局部 state，保证渲染层只处理稳定字段。 */
+  /* Normalize Select local state so render layer only handles stable fields. */
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : {};
     return { open: !!state.open, value: typeof state.value === 'string' ? state.value : '' };
   }
 
-  /* 将局部 Select state 投影为可见菜单、文本和 ARIA 输出。 */
+  /* Project local Select state to visible menu, text, and ARIA output. */
   function render(root, value) {
     if (!root) return;
     var state = normalize(value);
@@ -18,7 +18,7 @@
     var output = root.querySelector('.ui-select-value');
     root.classList.toggle('is-open', state.open);
     if (trigger) trigger.setAttribute('aria-expanded', String(state.open));
-    if (output) output.textContent = state.value || '请选择';
+    if (output) output.textContent = state.value || 'Please select';
     root.querySelectorAll('[role="option"]').forEach(function (option) {
       option.setAttribute('aria-selected', String(!!state.value && option.textContent.trim() === state.value));
     });

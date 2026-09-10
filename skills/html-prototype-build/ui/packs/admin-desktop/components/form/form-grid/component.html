@@ -5,13 +5,13 @@
     gap: var(--ui-space-4);
   }
   .ui-form-stack { display: grid; gap: var(--ui-space-4); }
-  /* ponytail: 600px 为原型容错断点；取得真实窄屏布局证据后替换。 */
+  /* ponytail: 600px is a prototype fallback breakpoint; replace after capturing real narrow-screen layout evidence. */
   @media (max-width: 600px) {
     .ui-form-grid { grid-template-columns: minmax(0, 1fr); }
   }
 </style>
 
 <div class="ui-form-grid" id="uiFormGrid">
-  <!-- slot: 使用 ui-form-stack 包裹纵向字段，默认间隔为 --ui-space-4。 -->
+  <!-- slot: wrap vertical fields with ui-form-stack; default spacing is --ui-space-4. -->
 </div>
 

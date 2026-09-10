@@ -1,22 +1,22 @@
-# 交付与迭代
+# Delivery & Iteration
 
-## 适用范围
+## Scope
 
-需要整理最终文件、区分作者会话与正式交付稿，或根据反馈继续迭代时使用本入口。
+Use this entry when you need to organize the final files, distinguish the authoring session from the formal delivery package, or keep iterating based on feedback.
 
-## 作者 / 评审 vs 正式交付稿
+## Authoring / review vs formal delivery package
 
-| 范围 | 规则 |
-|------|------|
-| 作者 / 评审会话 | Author Tools 由 `runtime/server/index.mjs` 动态注入；Direct Edit、Mark、Notes Editor、Inspector 均不写入正式 HTML。Direct Edit 经服务端写回源 HTML；Mark pin 只存在于浏览器 localStorage。 |
-| 正式交付稿 | 以独立 `<prototype-name>/` 目录交付；其中 `AGENTS.md` 从模板原样复制。HTML 不得含 Author Bootstrap、Direct Edit、Notes Editor、Inspector、源码定位 token 或内联标注编辑脚本。正式说明只来自 snapshot + Client Runtime。 |
+| Scope | Rule |
+|---|---|
+| Authoring / review session | Author Tools are injected dynamically by `runtime/server/index.mjs`; Direct edit, Mark, Notes editor, and Inspector never write to the formal HTML. Direct edit writes back to the source HTML through the server; Mark pins exist only in browser localStorage. |
+| Formal delivery package | Delivered as a standalone `<prototype-name>/` directory; `AGENTS.md` inside is copied verbatim from the template. The HTML must not contain Author Bootstrap, Direct edit, Notes editor, Inspector, source-locating tokens, or inline annotation editing scripts. Formal annotations come only from the snapshot + Client Runtime. |
 
-正式文件结构与 runtime 复制规则见 [generation-contract.md §7](generation-contract.md#7-交付文件)。交付前按 [交付复检清单](delivery-checklist.md) 逐项核对。
+The formal file structure and runtime copy rules follow [generation-contract.md §7](generation-contract.md#7-delivery-files). Before delivery, verify item by item against the [delivery checklist](delivery-checklist.md).
 
-## 迭代分流
+## Iteration routing
 
-- 结构、布局、菜单或业务状态大改：[ui-generation.md](ui-generation.md)。
-- 正式说明内容、顺序或目标变化：[local-authoring.md](local-authoring.md)。
-- 样式或文案微调并写回源 HTML：Direct Edit（[local-authoring.md](local-authoring.md)）。
-- 评审文字反馈：[review-mark.md](review-mark.md) 导出 For AI 后修改源 HTML。
-- 视觉状态变化后重新验收：[screenshots.md](screenshots.md)。
+- Major changes to structure, layout, menus, or business state: [ui-generation.md](ui-generation.md).
+- Changes to formal annotation content, order, or targets: [local-authoring.md](local-authoring.md).
+- Style or copy tweaks written back to the source HTML: Direct edit ([local-authoring.md](local-authoring.md)).
+- Text feedback from review: export For AI via [review-mark.md](review-mark.md), then modify the source HTML.
+- Re-verify after visual state changes: [screenshots.md](screenshots.md).

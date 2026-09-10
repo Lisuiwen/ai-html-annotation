@@ -1,4 +1,4 @@
-/* 原型正式标注只读 Viewer：从唯一 snapshot 数据源创建右栏、卡片和 SVG 连线。 */
+/* Read-only formal prototype annotation viewer: builds right rail, cards, and SVG connectors from the single snapshot source. */
 (function () {
   'use strict';
 
@@ -18,7 +18,7 @@
     pickCardId: ''
   };
 
-  /* 注入隔离的 Viewer 样式，不要求原型预先携带说明栏 CSS。 */
+  /* Inject isolated Viewer styles; prototype need not ship notes-panel CSS upfront. */
   function installStyles() {
     var style = document.createElement('style');
     style.id = 'prototype-notes-viewer-style';
@@ -52,7 +52,7 @@
       '.pn-scene-switch:hover{filter:brightness(.94)}',
       '.pn-scene-switch-icon{flex:0 0 auto;display:block}',
       '.pn-scene-switch-label{white-space:nowrap}',
-      /* 折叠右栏时只保留展开钮；场景切换与作者加号一并隐藏。 */
+      /* When the right rail is collapsed, keep only the expand button; hide scenario switch and author add button too. */
       '.pn-page.pn-collapsed .pn-panel-actions{position:fixed;right:16px;bottom:16px;z-index:90;margin-top:0;padding:0;border-top:0;background:transparent}',
       '.pn-page.pn-collapsed .pn-panel-actions .pn-scene-switch,.pn-page.pn-collapsed .pn-panel-actions .pn-author-toolbar,.pn-page.pn-collapsed .pn-panel-actions #at-launch{display:none!important}',
       '.pn-page.pn-collapsed~.pn-connections{display:none}',
@@ -64,7 +64,7 @@
     document.head.appendChild(style);
   }
 
-  /* 创建 Viewer 外壳，并把 script 之前的原型节点整体移入左侧预览区。 */
+  /* Build Viewer shell and move all prototype nodes before scripts into the left preview pane. */
   function buildShell() {
     var viewerScript = document.currentScript || document.querySelector('[data-prototype-notes-viewer]');
     var movable = [];
@@ -100,12 +100,12 @@
     buildControls(viewerScript);
   }
 
-  /* 读取 snapshot 中 scenarios 的声明顺序 id 列表。 */
+  /* Read scenario ids in snapshot declaration order. */
   function listScenarioIds() {
     return window.PrototypeNotesModel.listScenarioIds(state.data && state.data.scenarios);
   }
 
-  /* 按声明顺序循环激活下一场景。 */
+  /* Cycle to the next scenario in declaration order. */
   function cycleScenario() {
     var ids = listScenarioIds();
     if (ids.length < 2) return;
@@ -115,7 +115,7 @@
     window.PrototypeViewers.activateScenario(next);
   }
 
-  /* 读取场景可选 label，用于场景切换钮展示。 */
+  /* Read optional scenario label for the scenario switch button. */
   function scenarioLabel(id) {
     return window.PrototypeNotesModel.scenarioLabel(state.data && state.data.scenarios, id);
   }
@@ -125,7 +125,7 @@
     '<path d="M6 4L2 8l4 4M10 12l4-4-4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
     '</svg>';
 
-  /* 左侧操作区：场景切换、新增说明与作者工具入口保持固定顺序。 */
+  /* Left action area: scenario switch, add note, and author-tool entry keep a fixed order. */
   function ensureActionsStart() {
     if (!state.actions) return null;
     if (!state.actionsStart || !state.actions.contains(state.actionsStart)) {
@@ -141,8 +141,8 @@
     return state.actionsStart;
   }
 
-  /* 在 actions 子树内查找，避免 render 暂时 detach 时 document.querySelector/getElementById 找不到节点。 */
-  function findActionsChild(selector) {
+  /* Search within the actions subtree so nodes are found when render temporarily detaches them. */
+  function findactionsChild(selector) {
     if (!state.actions) return null;
     return state.actions.querySelector(selector);
   }
@@ -151,21 +151,21 @@
     var start = ensureActionsStart();
     if (!start) return;
     var ordered = [
-      findActionsChild('.pn-scene-switch'),
-      findActionsChild('.pn-author-toolbar'),
-      findActionsChild('#at-launch')
+      findactionsChild('.pn-scene-switch'),
+      findactionsChild('.pn-author-toolbar'),
+      findactionsChild('#at-launch')
     ].filter(Boolean);
     ordered.forEach(function (el, index) {
       if (start.children[index] !== el) start.insertBefore(el, start.children[index] || null);
     });
   }
 
-  /* 同步场景切换钮文案；重绘后仍留在左侧操作区首位。 */
+  /* Sync scenario switch label; after redraw it stays first in the left action area. */
   function ensureSceneSwitch() {
     var start = ensureActionsStart();
     if (!start || !state.actions) return;
     var ids = listScenarioIds();
-    var btn = findActionsChild('.pn-scene-switch');
+    var btn = findactionsChild('.pn-scene-switch');
     if (ids.length < 2) {
       if (btn) btn.remove();
       syncPanelActions();
@@ -195,7 +195,7 @@
     syncPanelActions();
   }
 
-  /* 创建桌面收起按钮和移动端整页切换按钮。 */
+  /* create desktop collapse button and mobile full-page toggle button. */
   function buildControls(beforeNode) {
     ensureActionsStart();
     var toggle = document.createElement('button');
@@ -227,7 +227,7 @@
     document.body.insertBefore(mobile, beforeNode);
   }
 
-  /* 渲染当前可见说明卡片；目标数据仅用于连线，不在卡片内重复展示。 */
+  /* Render visible note cards; target data is for connectors only, not repeated in the card. */
   function render() {
     var data = state.data;
     try {
@@ -265,7 +265,7 @@
     scheduleDraw();
   }
 
-  /* 返回当前应显示的卡片：无 when 的卡片始终显示，有 when 的按组合状态匹配。 */
+  /* Return cards to show: cards without when always show; others match combined state. */
   function visibleCards() {
     return window.PrototypeNotesModel.visibleCards(
       state.data && state.data.cards,
@@ -273,7 +273,7 @@
     );
   }
 
-  /* Modal/Drawer 连线落点：内层面板才有语义边界，遮罩层 id 仅用于 Adapter。 */
+  /* Modal/Drawer connector anchor: inner panel defines semantics; overlay id is for the adapter only. */
   function resolveNoteAnchor(el) {
     if (!el || !el.classList) return el;
     if (el.classList.contains('ui-overlay')) {
@@ -283,7 +283,7 @@
     return el;
   }
 
-  /* 解析稳定 ID 锚点或 selector 兜底；非法、失效或预览区外目标均视为未绑定。 */
+  /* Resolve stable id anchor or selector fallback; invalid, stale, or out-of-preview targets count as unbound. */
   function resolveTarget(card) {
     var anchor = card && card.target && card.target.anchor;
     if (anchor) {
@@ -300,20 +300,20 @@
     }
   }
 
-  /* 判断连线锚点是否位于对应滚动容器可视矩形内。 */
+  /* Whether a connector anchor lies inside the scroll container visible rect. */
   function isAnchorVisible(container, x, y) {
     var rect = container.getBoundingClientRect();
     return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
   }
 
-  /* 绘制当前可见卡片的贝塞尔连线与稳定序号。 */
+  /* Draw Bézier connectors and stable indices for currently visible cards. */
   function draw() {
     clearHighlights();
     state.svg.innerHTML = '';
     state.connections = [];
     if (window.innerWidth <= 768 || state.page.classList.contains('pn-collapsed')) return;
     visibleCards().forEach(function (card, index) {
-      /* 绑定模式中：当前卡片由 editor 预览线接管，其余卡片照常绘制。 */
+      /* During rebinding: editor preview line owns the active card; other cards draw normally. */
       if (state.pickCardId && card.id === state.pickCardId) return;
       var target = resolveTarget(card);
       var note = state.cards.querySelector('[data-note-id="' + cssEscape(card.id) + '"]');
@@ -347,7 +347,7 @@
     });
   }
 
-  /* 清理上一轮连线留下的悬停状态，避免重新绑定或重绘后原型目标残留蓝框。 */
+  /* Clear hover state from the previous draw to avoid leftover blue boxes after rebind or redraw. */
   function clearHighlights() {
     state.preview.querySelectorAll('.pn-target-highlighted').forEach(function (target) {
       target.classList.remove('pn-target-highlighted');
@@ -357,13 +357,13 @@
     });
   }
 
-  /* 合并滚动、尺寸变化和 DOM 变化产生的高频重绘。 */
+  /* Coalesce high-frequency redraws from scroll, resize, and DOM changes. */
   function scheduleDraw() {
     window.clearTimeout(state.drawTimer);
     state.drawTimer = window.setTimeout(draw, 50);
   }
 
-  /* 为目标或卡片绑定一次悬停联动。 */
+  /* Bind one hover link between a target or card. */
   function bindHighlight(element, id) {
     if (element.dataset.pnHighlightBound === id) return;
     element.dataset.pnHighlightBound = id;
@@ -371,7 +371,7 @@
     element.addEventListener('mouseleave', function () { highlight(id, false); });
   }
 
-  /* 同步高亮目标、说明卡片和对应路径。 */
+  /* Sync highlight across target, note card, and matching path. */
   function highlight(id, on) {
     state.connections.forEach(function (item) {
       if (item.id !== id) return;
@@ -381,18 +381,18 @@
     });
   }
 
-  /* 更新说明数据；标注组已统一由组合状态表达，这里只重渲染卡片。 */
+  /* Update note data; annotation groups are expressed via combined state, so only re-render cards here. */
   function setData(data) {
     state.data = data;
     render();
   }
 
-  /* 转义属性选择器中的卡片 ID。 */
+  /* Escape card id for attribute selectors. */
   function cssEscape(value) {
     return window.CSS && CSS.escape ? CSS.escape(String(value)) : String(value).replace(/["\\]/g, '\\$&');
   }
 
-  /* 从 URL 读取参数；解析失败或参数不存在时返回空字符串。 */
+  /* Read a URL param; return empty string on parse failure or missing param. */
   function readUrlParam(name) {
     try {
       return new URLSearchParams(window.location.search).get(name) || '';
@@ -401,7 +401,7 @@
     }
   }
 
-  /* 从 URL 读取 ?collapsed=1，供无头截图等场景默认折叠右栏。 */
+  /* Read ?collapsed=1 from URL so headless capture defaults to a collapsed right rail. */
   function readUrlCollapsed() {
     try {
       return new URLSearchParams(window.location.search).get('collapsed') === '1';
@@ -410,7 +410,7 @@
     }
   }
 
-  /* 按 URL 折叠参数同步右栏；纯页面截图态改由 ?product-only=1 触发。 */
+  /* Sync right-rail collapse from URL; product-only capture uses ?product-only=1 instead. */
   function applyUrlCollapsed() {
     if (!readUrlCollapsed()) return;
     state.page.classList.add('pn-collapsed');
@@ -422,17 +422,17 @@
     }
   }
 
-  /* 标记正在重新绑定的卡片，draw 时跳过其正式连线。 */
+  /* Mark the card being rebound; draw skips its formal connector. */
   function setPickCardId(id) {
     state.pickCardId = id || '';
   }
 
-  /* 清除绑定标记，恢复全部正式连线。 */
+  /* Clear rebind marker and restore all formal connectors. */
   function clearPickCardId() {
     state.pickCardId = '';
   }
 
-  /* 把 snapshot 场景注册到统一协调器；对象和数组两种载入形态均可读取。 */
+  /* Register snapshot scenarios with the unified coordinator; object and array shapes both supported. */
   function registerSnapshotScenarios(data) {
     var definitions = data && data.scenarios;
     if (Array.isArray(definitions)) {
@@ -447,13 +447,13 @@
     });
   }
 
-  /* 读取 snapshot 顶层 state 作为初始统一状态。 */
+  /* Read snapshot top-level state as initial unified state. */
   function snapshotInitialState(data) {
     var initial = data && data.state;
     return initial && Object.prototype.toString.call(initial) === '[object Object]' ? initial : {};
   }
 
-  /* 按 ?scene=<id> 恢复深链；无 scene 时回退 snapshot.activeScenario，否则保持默认状态。 */
+  /* Restore deep link via ?scene=<id>; without scene, fall back to snapshot.activeScenario, else default state. */
   function activateInitialState(data) {
     var scene = readUrlParam('scene');
     window.PrototypeViewers.setState(snapshotInitialState(data), { baseline: true, scene: '' });
@@ -464,7 +464,7 @@
     if (data.activeScenario) window.PrototypeViewers.activateScenario(data.activeScenario);
   }
 
-  /* 初始化只读 Viewer，并把 notes 注册为统一状态的一个只读消费者。 */
+  /* Initialize read-only Viewer and register notes as a read-only unified-state consumer. */
   function init() {
     if (state.page) return;
     if (!window.PrototypeViewers) {

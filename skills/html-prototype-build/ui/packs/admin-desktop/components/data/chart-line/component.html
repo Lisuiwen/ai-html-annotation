@@ -5,13 +5,13 @@
   .ui-chart-summary, .ui-chart-empty { color: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); }
   .ui-chart[data-status="empty"] .ui-chart-data { display: none; }
   .ui-chart[data-status="data"] .ui-chart-empty, .ui-chart[data-status="loading"] .ui-chart-empty { display: none; }
-  /* ponytail: tooltip 位置、缩放与动画时长未采集正式规范，当前沿用 ECharts 默认。 */
+  /* ponytail: tooltip position, zoom, and animation duration not captured from formal spec; currently using ECharts defaults. */
 </style>
 <section class="ui-chart ui-chart-line" id="uiChartLine" data-status="data" aria-labelledby="uiChartLineTitle">
-  <h2 class="ui-visually-hidden" id="uiChartLineTitle">近六个月趋势</h2>
+  <h2 class="ui-visually-hidden" id="uiChartLineTitle">Six-month trend</h2>
   <div class="ui-chart-data">
-    <div class="ui-chart-canvas" role="img" aria-label="本期与上期的月度趋势对比"></div>
+    <div class="ui-chart-canvas" role="img" aria-label="Monthly trend comparison: current vs previous period"></div>
   </div>
-  <div class="ui-chart-empty" hidden>暂无趋势数据</div>
-  <div class="ui-chart-summary" aria-live="polite">当前显示：本期、上期</div>
+  <div class="ui-chart-empty" hidden>No trend data</div>
+  <div class="ui-chart-summary" aria-live="polite">Currently showing: current period, previous period</div>
 </section>

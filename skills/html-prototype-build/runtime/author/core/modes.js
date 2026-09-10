@@ -1,4 +1,4 @@
-/* 作者工具模式协调器：统一注册/切换选择型工具，避免多个工具同时接管页面。 */
+/* Author-tool mode coordinator: register/switch selection tools so only one owns the page at a time. */
 (function () {
   'use strict';
 
@@ -7,12 +7,12 @@
   var active = '';
   var plugins = [];
 
-  /* 注册作者插件及其停用方法。 */
+  /* Register an author plugin and its deactivate handler. */
   function register(name, deactivate) {
     plugins.push({ name: name, deactivate: deactivate });
   }
 
-  /* 切换模式前停用其他插件，并广播统一 mode-change 事件。 */
+  /* Deactivate other plugins before switching mode, and broadcast a unified mode-change event. */
   function activate(name) {
     active = name || '';
     plugins.forEach(function (plugin) {

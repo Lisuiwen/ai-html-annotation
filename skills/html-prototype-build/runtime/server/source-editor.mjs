@@ -1,4 +1,4 @@
-/* Direct Edit 源码补丁：以源码位置安全定位元素，只修改 style/纯文本，不依赖 DOM outerHTML。 */
+/* Direct edit source patch: locate elements by source position; only mutates style/plain text, not DOM outerHTML. */
 
 const VOID_TAGS = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']);
 const RAW_TEXT_TAGS = new Set(['script', 'style', 'textarea', 'title']);
@@ -345,7 +345,7 @@ function mergeStyleAttribute(openTag, styles, removeStyles) {
   });
   Object.entries(styles || {}).forEach(function (entry) {
     var key = String(entry[0]).trim().toLowerCase();
-    if (!validCssProperty(key)) throw new Error('非法 CSS 属性：' + entry[0]);
+    if (!validCssProperty(key)) throw new Error('Invalid CSS property: ' + entry[0]);
     if (!parsed.order.includes(key)) parsed.order.push(key);
     parsed.map[key] = String(entry[1]);
   });
@@ -368,17 +368,17 @@ export function applyPrototypeEdit(html, payload) {
   var selector = payload && payload.selector;
   var changes = payload && payload.changes;
   if (typeof selector !== 'string' || !selector || !isObject(changes)) {
-    throw new Error('缺少 selector 或 changes。');
+    throw new Error('Missing selector or changes.');
   }
   var found = locateElement(html, selector);
-  if (!found) throw new Error('源 HTML 中找不到元素：' + selector);
+  if (!found) throw new Error('Element not found in source HTML: ' + selector);
   var openTag = html.slice(found.tagStart, found.tagEnd);
   var styles = isObject(changes.styles) ? changes.styles : {};
   var removeStyles = Array.isArray(changes.removeStyles) ? changes.removeStyles : [];
   var hasStylePatch = Object.keys(styles).length > 0 || removeStyles.length > 0;
   if (hasStylePatch) {
     Object.values(styles).forEach(function (value) {
-      if (typeof value !== 'string') throw new Error('styles 的值必须是字符串。');
+      if (typeof value !== 'string') throw new Error('styles values must be strings.');
     });
     openTag = mergeStyleAttribute(openTag, styles, removeStyles);
   }
@@ -387,10 +387,10 @@ export function applyPrototypeEdit(html, payload) {
   found.tagEnd += delta;
   if (found.closeStart >= 0) found.closeStart += delta;
   if (Object.prototype.hasOwnProperty.call(changes, 'text')) {
-    if (typeof changes.text !== 'string') throw new Error('text 必须是字符串。');
-    if (found.selfClosing || found.closeStart < 0) throw new Error('该元素不能改文本。');
+    if (typeof changes.text !== 'string') throw new Error('text must be a string.');
+    if (found.selfClosing || found.closeStart < 0) throw new Error('This element cannot change text.');
     var inner = result.slice(found.tagEnd, found.closeStart);
-    if (containsElementMarkup(inner)) throw new Error('该元素含子节点，不能用文本补丁覆盖。');
+    if (containsElementMarkup(inner)) throw new Error('Element has child nodes; cannot overwrite with text patch.');
     result = result.slice(0, found.tagEnd) + escapeText(changes.text) + result.slice(found.closeStart);
   }
   return result;

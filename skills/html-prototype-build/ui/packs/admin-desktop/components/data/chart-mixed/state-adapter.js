@@ -1,14 +1,14 @@
-/* Mixed Chart 薄 leaf：仅调 presets.mixed。 */
+/* Mixed Chart thin leaf: only calls presets.mixed. */
 (function () {
   'use strict';
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
   var core = window.PrototypeChartCore;
 
-  /** 归一化柱线混合图状态。 */
+  /** Normalize mixed bar-line chart state. */
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : {};
     return {
-      status: core.normalizeChartStatus(state.status, false),
+      status: core.normalizeChartstate(state.status, false),
       categories: Array.isArray(state.categories) ? state.categories : undefined,
       bars: state.bars && typeof state.bars === 'object' ? state.bars : undefined,
       lines: state.lines && typeof state.lines === 'object' ? state.lines : undefined,
@@ -17,17 +17,17 @@
     };
   }
 
-  /** 渲染混合图。 */
+  /** Render mixed chart. */
   function render(root, value) {
     if (!root || !core) return;
     var state = normalize(value);
     core.renderLeaf(root, state, {
       preset: 'mixed',
-      emptyText: '暂无混合图数据',
+      emptyText: 'No mixed chart data',
       summary: function (s) {
-        var bars = s.bars || { name: '任务量' };
-        var lines = s.lines || { name: '完成率' };
-        return '柱线混合：' + bars.name + ' + ' + lines.name;
+        var bars = s.bars || { name: 'Task volume' };
+        var lines = s.lines || { name: 'Completion rate' };
+        return 'Mixed bar-line: ' + bars.name + ' + ' + lines.name;
       }
     });
   }

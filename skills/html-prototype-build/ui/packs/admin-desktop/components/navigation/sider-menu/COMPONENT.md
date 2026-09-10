@@ -9,5 +9,4 @@ states:
 
 # Sider Menu
 
-中后台侧栏菜单。侧栏宽度、菜单层级和选中状态必须来自当前材料。
-
+Admin sidebar menu. Sidebar width, menu hierarchy, and selected state must come from the current materials.

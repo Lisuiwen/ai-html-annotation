@@ -1,24 +1,22 @@
-# 贡献指南
+# Contributing
 
-感谢参与 HTML Prototype Build。当前项目处于实验性 0.x 阶段，贡献前请先确认改动
-不会把内部业务信息、真实个人信息或未经授权的品牌资源带入仓库。参与本仓库即表示你同意遵守
-[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)。
+Thank you for contributing to HTML Prototype Build. The project is in experimental 0.x; before contributing, confirm your changes will not bring internal business information, real personal data, or unauthorized brand assets into the repository. By participating, you agree to follow [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
 
-## 提交前检查
+## Before you submit
 
-- 使用 UTF-8 保存文件。
-- 保持 Node.js 内建模块优先，不为少量功能新增依赖。
-- 新增原型内容使用中性或明确虚构的数据。
-- 运行时脚本、函数和主要代码块保留中文注释。
-- 有意简化的交互、未采集状态和静态占位使用 `ponytail:` 注释说明上限与升级路径。
-- 正式交付物不得包含 html-mark、Author Loader、Editor、Inspector 或临时 token。
+- save files as UTF-8.
+- Prefer Node.js built-in modules; do not add dependencies for small features.
+- Use neutral or clearly fictional data in new prototype content.
+- Prefer English comments for new code in runtime scripts, functions, and major code blocks (legacy Chinese may remain in untouched blocks).
+- Use `ponytail:` comments for intentionally simplified interactions, uncollected states, and static placeholders, stating limits and upgrade paths.
+- Formal deliverables must not include html-mark, Author Loader, editor, Inspector, or temporary tokens.
 
-## 提交方式
+## How to submit
 
-1. 先通过 Issue 或 Discussion 描述问题、使用场景和预期行为。
-2. 提交小而独立的改动，并说明验证方式。
-3. 涉及 UI 包、示例或交付结构的改动，应同步更新对应 references 文档。
-4. 不要在公开 Issue 中提交凭据、内部页面、客户资料或可利用的安全漏洞细节。
+1. Describe the problem, use case, and expected behavior in an Issue or Discussion first.
+2. Submit small, independent changes and explain how you validated them.
+3. Changes to UI packs, examples, or delivery structure should update the matching references docs.
+4. Do not post credentials, internal pages, customer data, or exploitable security details in public Issues.
 
-项目维护者会在实验性阶段根据兼容性、隐私、可访问性和安全边界审查贡献。
-提交前请运行 `npm test`（Skill 元数据、链接、UI 包与运行时契约）。
+Maintainers review contributions during the experimental phase for compatibility, privacy, accessibility, and security boundaries.
+Run `npm test` before submitting (Skill metadata, links, UI pack, and runtime contracts).

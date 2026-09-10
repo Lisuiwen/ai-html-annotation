@@ -1,5 +1,5 @@
 <style>
-  /* Sider 宽度由组件声明，Application Shell 与 App Header 复用。 */
+  /* Sider width is declared by the component; Application Shell and App Header reuse it. */
   :root { --ui-sider-width: 224px; }
   .ui-sider {
     padding: var(--ui-space-4) var(--ui-space-2);
@@ -20,17 +20,17 @@
     border-radius: var(--ui-radius-control);
     background: transparent;
   }
-  /* ponytail: 菜单 hover 和 active 未采集；取得真实状态后替换当前近似。 */
+  /* ponytail: menu hover and active not captured; replace current approximation with real state when available. */
   .ui-menu-item:hover, .ui-menu-item.is-active { color: var(--ui-primary); background: var(--ui-bg-soft); }
 </style>
 
 <aside class="ui-sider" id="uiSider">
-  <nav class="ui-menu" id="uiSiderMenu" aria-label="侧栏菜单">
+  <nav class="ui-menu" id="uiSiderMenu" aria-label="Sidebar menu">
     <button class="ui-menu-item is-active" type="button" aria-current="page">
-      <span aria-hidden="true">◇</span><span>当前菜单</span>
+      <span aria-hidden="true">◇</span><span>Current menu</span>
     </button>
     <button class="ui-menu-item" type="button">
-      <span aria-hidden="true">□</span><span>其他菜单</span>
+      <span aria-hidden="true">□</span><span>Other menu</span>
     </button>
   </nav>
 </aside>

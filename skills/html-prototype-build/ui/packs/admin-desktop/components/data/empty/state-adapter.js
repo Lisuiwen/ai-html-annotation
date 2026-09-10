@@ -1,9 +1,9 @@
-/* 空态局部状态投影：仅切换可见性和已声明文案变体。 */
+/* Empty state local state projection: toggles visibility and declared copy variants only. */
 (function () {
   'use strict'; var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
-  /* 归一化空态状态。 */
+  /* Normalize empty state. */
   function normalize(value) { var state = value && typeof value === 'object' ? value : {}; return { visible: state.visible !== false, variant: state.variant === 'search-empty' ? 'search-empty' : 'empty' }; }
-  /* 同步空态展示文本。 */
-  function render(root, value) { if (!root) return; var state = normalize(value); root.hidden = !state.visible; var text = root.querySelector('.ui-empty-text'); if (text) text.textContent = state.variant === 'search-empty' ? '未找到匹配结果' : '暂无数据'; }
+  /* Sync empty state display text. */
+  function render(root, value) { if (!root) return; var state = normalize(value); root.hidden = !state.visible; var text = root.querySelector('.ui-empty-text'); if (text) text.textContent = state.variant === 'search-empty' ? 'No matching results' : 'No data'; }
   adapters['data.empty'] = { normalize: normalize, render: render };
 })();

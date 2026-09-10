@@ -11,22 +11,22 @@ function run(source, window, errors) {
   vm.runInNewContext(source, { window, document: {}, console: { error: (...args) => errors.push(args.join(' ')), log() {} }, JSON }, { filename: 'notes-editor/index.js' });
 }
 
-test('NotesEditor 在 Viewer 未初始化时安全退出并保留公开 API', async () => {
+test('NotesEditor exits safely when Viewer uninitialized and keeps public API', async () => {
   const source = await readFile(sourceUrl, 'utf8'); const errors = []; const window = {};
   run(source, window, errors);
   assert.equal(typeof window.PrototypeNotesEditor.init, 'function');
   assert.equal(typeof window.PrototypeNotesEditor.save, 'function');
-  assert.match(errors.join('\n'), /Viewer 尚未初始化/);
+  assert.match(errors.join('\n'), /Viewer not initialized/);
 });
 
-test('NotesEditor 缺少共享 selector 时安全退出', async () => {
+test('NotesEditor exits safely when shared selector missing', async () => {
   const source = await readFile(sourceUrl, 'utf8'); const errors = [];
   const window = { PrototypeNotesViewer: { getData: () => ({ header: {}, cards: [] }) } };
   run(source, window, errors);
   assert.match(errors.join('\n'), /AuthorToolsSelector/);
 });
 
-test('NotesEditor 缺少数据模型时安全退出', async () => {
+test('NotesEditor exits safely when data model missing', async () => {
   const source = await readFile(sourceUrl, 'utf8'); const errors = [];
   const window = {
     PrototypeNotesViewer: { getData: () => ({ header: {}, cards: [] }) },
@@ -36,7 +36,7 @@ test('NotesEditor 缺少数据模型时安全退出', async () => {
   assert.match(errors.join('\n'), /PrototypeNotesEditorModel/);
 });
 
-test('NotesEditor 将数据与 selector 规则委托给共享模型，并保留绑定与脏状态保护', async () => {
+test('NotesEditor delegates data and selector rules to shared model with bind/dirty guards', async () => {
   const source = await readFile(sourceUrl, 'utf8');
   assert.match(source, /PrototypeNotesEditorModel\.createCard/);
   assert.match(source, /PrototypeNotesEditorModel\.removeCard/);
@@ -54,7 +54,7 @@ test('NotesEditor 将数据与 selector 规则委托给共享模型，并保留�
   assert.match(source, /AuthorToolsPlatform\.saveModifierActive/);
 });
 
-test('NotesEditor 作者样式独立于 controller JS', async () => {
+test('NotesEditor author styles independent of controller JS', async () => {
   const [source, css] = await Promise.all([readFile(sourceUrl, 'utf8'), readFile(styleUrl, 'utf8')]);
   assert.doesNotMatch(source, /function installStyles\(/);
   assert.doesNotMatch(source, /createElement\('style'\)/);

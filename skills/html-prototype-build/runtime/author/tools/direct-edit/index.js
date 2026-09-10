@@ -1,4 +1,4 @@
-/* Direct Edit 工具：选 DOM、runtime 预览、结构化写回 prototype.html。 */
+/* Direct edit tool: pick DOM, runtime preview, structured write-back to prototype.html. */
 (function () {
   'use strict';
 
@@ -36,10 +36,10 @@
       var editRow = input.closest && input.closest('.at-edit-row');
       var source = editRow && editRow.querySelector('.at-src');
       if (source && row.dirty) {
-        source.textContent = '未保存';
+        source.textContent = 'Unsaved';
         source.classList.add('is-dirty');
         source.classList.remove('is-inline', 'is-class');
-        source.title = '仅预览，尚未写入源文件';
+        source.title = 'Preview only; not written to source yet';
       }
       var wrap = input.closest && input.closest('.at-length-wrap');
       var unit = wrap && wrap.querySelector('.at-unit');
@@ -99,7 +99,7 @@
 
   function selectElement(el) {
     if (session && session.isDirty() && el !== selected) {
-      if (context && context.toast) context.toast('请先保存或取消当前修改');
+      if (context && context.toast) context.toast('save or cancel current edits first');
       return false;
     }
     selected = el;
@@ -117,7 +117,7 @@
     if (!session || !session.isDirty() || !selected) return;
     var selector = window.AuthorToolsPicker.stableSelector(selected);
     if (!selector || (selector.charAt(0) !== '#' && selector.charAt(0) !== '[')) {
-      if (context && context.toast) context.toast('该元素缺少稳定 id，无法保存');
+      if (context && context.toast) context.toast('Element lacks a stable id; cannot save');
       return;
     }
     var patch = session.toPatch();
@@ -129,9 +129,9 @@
       if (!res.ok) return res.text().then(function (msg) { throw new Error(msg || res.statusText); });
       session = window.AuthorToolsStyleModel.createSession(selected);
       render();
-      if (context && context.toast) context.toast('已写入 prototype.html');
+      if (context && context.toast) context.toast('Written to prototype.html');
     }).catch(function (error) {
-      if (context && context.toast) context.toast('保存失败：' + error.message);
+      if (context && context.toast) context.toast('save failed: ' + error.message);
     });
   }
 

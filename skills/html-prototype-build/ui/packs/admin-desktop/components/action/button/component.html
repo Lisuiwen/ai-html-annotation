@@ -1,5 +1,5 @@
 <style>
-  /* Button 专用尺寸和阴影不进入全局 Foundation。 */
+  /* button-specific sizing and shadows are not part of global Foundation. */
   :root {
     --ui-button-padding-inline: 15px;
     --ui-button-icon-size: 32px;
@@ -20,7 +20,7 @@
     background: var(--ui-bg);
     box-shadow: var(--ui-button-shadow);
   }
-  /* ponytail: hover 和 focus 视觉未采集；取得真实计算样式后替换当前近似。 */
+  /* ponytail: hover and focus visuals not captured; replace current approximations with real computed styles when available. */
   .ui-button:hover:not(:disabled):not(.ui-button--primary):not(.ui-button--text):not(.ui-button--danger-text) {
     color: var(--ui-primary);
     border-color: var(--ui-primary);
@@ -58,11 +58,11 @@
   .ui-button-row { display: flex; flex-wrap: wrap; gap: var(--ui-space-2); }
 </style>
 
-<!-- 按需保留实际使用的按钮变体。 -->
+<!-- Keep only the button variants actually used. -->
 <div class="ui-button-row">
-  <button class="ui-button" type="button">次操作</button>
-  <button class="ui-button ui-button--primary" type="button">主操作</button>
-  <button class="ui-button ui-button--text" type="button">文字操作</button>
-  <button class="ui-button ui-button--icon" type="button" aria-label="图标操作">◇</button>
+  <button class="ui-button" type="button">Secondary action</button>
+  <button class="ui-button ui-button--primary" type="button">Primary action</button>
+  <button class="ui-button ui-button--text" type="button">Text action</button>
+  <button class="ui-button ui-button--icon" type="button" aria-label="Icon action">◇</button>
 </div>
 

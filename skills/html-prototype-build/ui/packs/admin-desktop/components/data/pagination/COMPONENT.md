@@ -9,5 +9,4 @@ states:
 
 # Pagination
 
-分页操作布局。当前仅提供评审流程占位；页数、当前页、禁用状态和行为必须由需求材料确认。
-
+Pagination action layout. Currently provides review-flow placeholders only; page count, current page, disabled states, and behavior must be confirmed in requirement materials.

@@ -10,4 +10,4 @@ states:
 
 # data.list
 
-轻量记录流。虚拟滚动、无限加载和分页请求由页面实现。
+Lightweight record stream. Virtual scrolling, infinite loading, and paginated requests are implemented by the page.

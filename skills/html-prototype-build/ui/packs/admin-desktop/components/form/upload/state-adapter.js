@@ -1,8 +1,8 @@
-/* 上传控件局部状态投影：只同步变体、禁用与文件列表，不处理选择与上传请求。 */
+/* upload control local state projection: syncs variant, disabled, and file list only; does not handle selection or upload requests. */
 (function () {
   'use strict';
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
-  /* 归一化单个文件项，过滤未知状态。 */
+  /* Normalize single file item; filter unknown states. */
   function normalizeFile(file) {
     var item = file && typeof file === 'object' ? file : {};
     var status = ['done', 'uploading', 'error'].indexOf(item.status) !== -1 ? item.status : 'done';
@@ -13,7 +13,7 @@
       percent: typeof item.percent === 'number' ? item.percent : 0
     };
   }
-  /* 归一化上传控件状态，未知变体回退按钮模式。 */
+  /* Normalize upload control state; unknown variants fall back to button mode. */
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : {};
     return {
@@ -22,7 +22,7 @@
       files: Array.isArray(state.files) ? state.files.map(normalizeFile).filter(function (file) { return file.uid && file.name; }) : []
     };
   }
-  /* 根据文件状态创建列表项 DOM。 */
+  /* create list item DOM from file state. */
   function createFileItem(file) {
     var item = document.createElement('li');
     item.className = 'ui-upload-list-item is-' + file.status;
@@ -42,12 +42,12 @@
     if (file.status === 'error') {
       var status = document.createElement('span');
       status.className = 'ui-upload-list-item-status';
-      status.textContent = '上传失败';
+      status.textContent = 'upload failed';
       item.appendChild(status);
     }
     return item;
   }
-  /* 同步变体修饰类、禁用态与文件列表投影。 */
+  /* Sync variant modifier classes, disabled state, and file list projection. */
   function render(root, value) {
     if (!root) return;
     var state = normalize(value);

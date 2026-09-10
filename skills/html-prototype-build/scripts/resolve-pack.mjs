@@ -1,6 +1,6 @@
 /**
- * 根据 UI Pack manifest 解析 Component、Pattern 或 Preset 的最小强依赖闭包。
- * optional 依赖仅在调用方通过 --optional 显式选择时加入。
+ * Resolve minimal strong dependency closure for Component, Pattern, or Preset from UI Pack manifest.
+ * optional dependencies are added only when caller explicitly selects via --optional.
  */
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -9,19 +9,19 @@ import { fileURLToPath } from 'node:url';
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const skillDirectory = path.resolve(scriptDirectory, '..');
 
-/** 读取形如 --name=value 的命令行参数。 */
+/** Read command-line argument shaped like --name=value. */
 function readOption(name, fallback = '') {
   const prefix = `--${name}=`;
   const match = process.argv.slice(2).find((value) => value.startsWith(prefix));
   return match ? match.slice(prefix.length) : fallback;
 }
 
-/** 把逗号分隔的 ID 列表归一化为去重数组。 */
+/** Normalize comma-separated ID list to a deduplicated array. */
 function parseIds(value) {
   return [...new Set(String(value || '').split(',').map((id) => id.trim()).filter(Boolean))];
 }
 
-/** 递归展开 requires 与 uses，并检测循环依赖。 */
+/** Recursively expand requires and uses, detecting cyclic dependencies. */
 function resolveClosure(registry, roots) {
   const resolved = [];
   const visited = new Set();
@@ -29,8 +29,8 @@ function resolveClosure(registry, roots) {
   function visit(id, stack = new Set()) {
     if (visited.has(id)) return;
     const entry = registry[id];
-    if (!entry) throw new Error(`未知 UI 资源：${id}`);
-    if (stack.has(id)) throw new Error(`检测到循环依赖：${[...stack, id].join(' -> ')}`);
+    if (!entry) throw new Error(`Unknown UI resource: ${id}`);
+    if (stack.has(id)) throw new Error(`Cycle detected: ${[...stack, id].join(' -> ')}`);
     stack.add(id);
     for (const dependency of [...(entry.uses ?? []), ...(entry.requires ?? [])]) {
       visit(dependency, stack);
@@ -44,7 +44,7 @@ function resolveClosure(registry, roots) {
   return resolved;
 }
 
-/** 汇总 foundation、契约、实现和 Adapter 路径，供 Agent 精确加载。 */
+/** Summarize foundation, contracts, implementations, and Adapter paths for precise Agent loading. */
 function collectFiles(manifest, registry, ids) {
   const files = [
     'design-system.md',
@@ -59,7 +59,7 @@ function collectFiles(manifest, registry, ids) {
   return [...new Set(files)];
 }
 
-/** 沿闭包汇总 skill 级 vendor / runtime / assets 交付物（路径相对 skill 根）。 */
+/** Aggregate skill-level vendor / runtime / assets deliverables along closure (paths relative to skill root). */
 function collectDeliverables(registry, ids) {
   const vendor = new Set();
   const runtime = new Set();
@@ -81,7 +81,7 @@ const packId = readOption('pack', 'admin-desktop');
 const selectedIds = parseIds(readOption('select'));
 const optionalIds = parseIds(readOption('optional'));
 if (!selectedIds.length) {
-  console.error('用法：node resolve-pack.mjs --select=<id[,id...]> [--optional=<id[,id...]>] [--pack=admin-desktop]');
+  console.error('Usage: node resolve-pack.mjs --select=<id[,id...]> [--optional=<id[,id...]>] [--pack=admin-desktop]');
   process.exit(1);
 }
 

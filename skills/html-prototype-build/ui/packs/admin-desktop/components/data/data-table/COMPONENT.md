@@ -10,11 +10,10 @@ states:
 
 # Data Table
 
-表格及其数据、空态、加载态和可选的行选择。数据、空态和加载态属于同一组件生命周期，不拆成独立组件；列、数据和状态触发条件必须来自当前需求。
+Table with data, empty state, loading state, and optional row selection. Data, empty, and loading states belong to the same component lifecycle and must not be split into separate components; columns, data, and state triggers must come from the current requirements.
 
-## 状态 Adapter
+## State Adapter
 
-`state-adapter.js` 暴露 `window.PrototypeUiAdapters['data.data-table']`，局部 state 为 `{ status: 'data' | 'empty' | 'loading', selection?: { selectedKeys: string[], allSelected: boolean, indeterminate: boolean } }`，也兼容直接传入 status。最终原型负责提交业务状态；组件 Adapter 仅切换可见区域、投影既有选择列并通知连线重绘。
+`state-adapter.js` exposes `window.PrototypeUiAdapters['data.data-table']`; local state is `{ status: 'data' | 'empty' | 'loading', selection?: { selectedKeys: string[], allSelected: boolean, indeterminate: boolean } }`, and a status value may also be passed directly. The final prototype submits business state; the component Adapter only switches visible regions, projects the given selection column, and notifies connectors to redraw.
 
-<!-- ponytail: 当前选择能力仅投影页面给定的选中集合；跨页选择、全选计算、批量操作和事件绑定须由业务状态 Adapter 实现。 -->
-
+<!-- ponytail: Current selection support only projects the page-supplied selected set; cross-page selection, select-all computation, batch actions, and event binding must be implemented by the business state Adapter. -->

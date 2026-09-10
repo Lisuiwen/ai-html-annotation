@@ -1,10 +1,10 @@
-/* Tree 局部状态投影：展开集合由最终原型的业务 state 提供。 */
+/* Tree local state projection: expanded set is provided by the final prototype business state. */
 (function () {
   'use strict';
 
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
 
-  /* 归一化节点 ID 到布尔展开值的映射。 */
+  /* Normalize node ID to boolean expanded value map. */
   function normalize(value) {
     var source = value && typeof value === 'object' ? value : {};
     var expanded = source.expanded && typeof source.expanded === 'object' ? source.expanded : source;
@@ -13,7 +13,7 @@
     return { expanded: result };
   }
 
-  /* 同步普通层级列表的展开按钮、子列表可见性与按钮文案。 */
+  /* Sync plain hierarchical list expand buttons, child list visibility, and button labels. */
   function render(root, value) {
     if (!root) return;
     var state = normalize(value);
@@ -23,7 +23,7 @@
       var open = Object.prototype.hasOwnProperty.call(state.expanded, node.id) ? state.expanded[node.id] : !toggle || toggle.getAttribute('aria-expanded') !== 'false';
       if (toggle) {
         toggle.textContent = open ? '⌄' : '›';
-        toggle.setAttribute('aria-label', open ? '折叠分组' : '展开分组');
+        toggle.setAttribute('aria-label', open ? 'Collapse group' : 'Expand group');
         toggle.setAttribute('aria-expanded', String(open));
       }
       if (children) children.hidden = !open;

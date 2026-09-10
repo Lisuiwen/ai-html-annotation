@@ -3,9 +3,9 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import vm from 'node:vm';
 
-const sourceUrl = new URL('../../../examples/minimal-notes/prototype/prototype.js', import.meta.url);
+const sourceUrl = new URL('../../../examples/minimal-notes-system/prototype/prototype.js', import.meta.url);
 const handoffTemplateUrl = new URL('../../../skills/html-prototype-build/templates/AGENTS.md', import.meta.url);
-const handoffExampleUrl = new URL('../../../examples/minimal-notes/AGENTS.md', import.meta.url);
+const handoffexampleUrl = new URL('../../../examples/minimal-notes-system/AGENTS.md', import.meta.url);
 
 function classList() {
   const values = new Set();
@@ -70,8 +70,8 @@ async function boot() {
     strategyCondition: node()
   };
   const options = {
-    strategyName: [node('名称 A'), node('名称 B')],
-    strategyCondition: [node('条件 A'), node('条件 B')]
+    strategyName: [node('Name A'), node('Name B')],
+    strategyCondition: [node('items A'), node('items B')]
   };
   const documentListeners = new Map();
   const document = {
@@ -118,15 +118,15 @@ async function boot() {
   return { adapter, ids, activated, patches, focusLog };
 }
 
-test('示例交接说明与 Skill 模板一致', async () => {
+test('example handoff doc matches Skill template', async () => {
   const [template, example] = await Promise.all([
     readFile(handoffTemplateUrl, 'utf8'),
-    readFile(handoffExampleUrl, 'utf8')
+    readFile(handoffexampleUrl, 'utf8')
   ]);
   assert.equal(example, template);
 });
 
-test('示例 Adapter 规范化 page、layers 与 select 局部状态', async () => {
+test('example Adapter 规范化 page、layers 与 select 局部state', async () => {
   const { adapter } = await boot();
   const normalized = adapter.normalize({
     page: 'unknown',
@@ -140,14 +140,14 @@ test('示例 Adapter 规范化 page、layers 与 select 局部状态', async () 
   assert.equal(normalized.selects.strategyCondition.open, false);
 });
 
-test('示例浮层栈顺序变化会重新聚焦新的顶层浮层', async () => {
+test('example浮层栈顺序变化会重新聚焦新 顶层浮层', async () => {
   const { adapter, focusLog } = await boot();
   adapter.apply({ page: 'list', layers: ['create', 'edit'], selects: {} });
   adapter.apply({ page: 'list', layers: ['edit', 'create'], selects: {} });
   assert.deepEqual(focusLog, ['edit', 'create']);
 });
 
-test('示例主要业务入口通过显式 scenario 驱动', async () => {
+test('example main business entry driven by explicit scenario', async () => {
   const { ids, activated } = await boot();
   ids.createButton.dispatch('click');
   assert.deepEqual(activated, ['create']);

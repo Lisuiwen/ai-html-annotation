@@ -1,8 +1,8 @@
-/* 多行文本局部状态投影：只同步值、禁用与错误样式，不处理输入事件。 */
+/* Textarea local state projection: syncs value, disabled, and error styles only; does not handle input events. */
 (function () {
   'use strict';
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
-  /* 归一化文本域状态，未知状态回退默认展示。 */
+  /* Normalize textarea state; unknown states fall back to default display. */
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : {};
     return {
@@ -11,7 +11,7 @@
       status: state.status === 'error' ? 'error' : 'default'
     };
   }
-  /* 同步文本域的值、禁用属性及字段级错误标记。 */
+  /* Sync textarea value, disabled attribute, and field-level error markers. */
   function render(root, value) {
     if (!root) return;
     var state = normalize(value);

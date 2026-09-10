@@ -10,4 +10,4 @@ states:
 
 # navigation.steps
 
-流程当前位置。不得在未提供流程规则时实现自由跳步或可点击导航。
+Current position in a flow. Do not implement free step jumping or clickable navigation without flow rules from materials.

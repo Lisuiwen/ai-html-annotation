@@ -9,5 +9,4 @@ states:
 
 # Form Grid
 
-表单字段的两列布局容器。字段数量、列数与窄屏行为必须来自当前材料；默认窄屏规则仅为原型容错。
-
+Two-column layout container for form fields. Field count, column count, and narrow-screen behavior must come from current materials; default narrow rules are prototype tolerance only.

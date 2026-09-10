@@ -15,7 +15,7 @@ async function boot() {
   return { window, events };
 }
 
-test('PrototypeAuthor 模式切换会停用其他选择型插件', async () => {
+test('PrototypeAuthor mode switch disables other picker plugins', async () => {
   const { window, events } = await boot();
   const calls = [];
   window.PrototypeAuthor.register('mark', () => calls.push('mark-off'));
@@ -28,7 +28,7 @@ test('PrototypeAuthor 模式切换会停用其他选择型插件', async () => {
   assert.deepEqual(calls, ['mark-off', 'mark-off', 'edit-off']);
 });
 
-test('modes 重复加载保持已有协调器实例', async () => {
+test('modes reload keeps existing coordinator instance', async () => {
   const source = await readFile(sourceUrl, 'utf8');
   const existing = { register() {}, activate() {}, getMode() { return 'keep'; } };
   const window = { PrototypeAuthor: existing, dispatchEvent() {} };

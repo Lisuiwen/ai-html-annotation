@@ -1,4 +1,4 @@
-/* 正式标注作者编辑器：支持显式原位编辑、卡片增删与可预览的目标重新绑定。 */
+/* Formal annotation author editor: inline editing, card add/remove, and previewable target rebinding. */
 (function () {
   'use strict';
 
@@ -10,7 +10,7 @@
   var pickCardId = '';
   var pickTooltip = null;
 
-  /* 读取统一协调器中的活动场景。 */
+  /* Read the active scenario from the unified coordinator. */
   function getActiveScenario() {
     if (window.PrototypeViewers && typeof window.PrototypeViewers.getActiveScenario === 'function') {
       return window.PrototypeViewers.getActiveScenario() || '';
@@ -18,7 +18,7 @@
     return '';
   }
 
-  /* 刷新标注数据时保留运行时活动场景，避免 snapshot 的默认值导致编辑后回跳。 */
+  /* Preserve the runtime active scenario when refreshing annotation data to avoid jumping back after edit. */
   function renderData() {
     var activeScenario = getActiveScenario();
     window.PrototypeNotesViewer.setData(data);
@@ -58,7 +58,7 @@
       if (!response.ok) throw new Error(await response.text());
       revision = JSON.stringify(data);
     } catch (error) {
-      console.error('[prototype-author] 保存标注失败。', error);
+      console.error('[prototype-author] Failed to save notes.', error);
     } finally {
       saving = false;
     }
@@ -69,7 +69,7 @@
     return !!(event && event.ctrlKey);
   }
 
-  function startEdit(element, getter, setter, multiline) {
+  function startedit(element, getter, setter, multiline) {
     if (element.querySelector('input,textarea')) return;
     var control = document.createElement(multiline ? 'textarea' : 'input');
     control.value = getter() || '';
@@ -100,7 +100,7 @@
     });
   }
 
-  /* 新增空白卡片；数据规则由 NotesEditorModel 统一维护。 */
+  /* Add a blank card; data rules are maintained by NoteseditorModel. */
   function addCard() {
     var appState = window.PrototypeViewers && typeof window.PrototypeViewers.getState === 'function'
       ? window.PrototypeViewers.getState()
@@ -111,19 +111,19 @@
     save();
   }
 
-  function closeConfirm() {
+  function closeconfirm() {
     var pop = document.querySelector('.pn-confirm-pop');
     if (pop) pop.remove();
   }
 
-  function requestDelete(card, article, icon) {
-    closeConfirm();
+  function requestdelete(card, article, icon) {
+    closeconfirm();
     var pop = document.createElement('div');
     pop.className = 'pn-confirm-pop pn-confirm-pop--fixed';
-    pop.innerHTML = '<p>删除「' + (card.title || '未命名说明') + '」？</p><div class="pn-confirm-pop-actions"><button type="button" class="pn-cancel">取消</button><button type="button" class="pn-danger">删除</button></div>';
-    pop.querySelector('.pn-cancel').addEventListener('click', closeConfirm);
+    pop.innerHTML = '<p>delete "' + (card.title || 'Untitled note') + '"?</p><div class="pn-confirm-pop-actions"><button type="button" class="pn-cancel">cancel</button><button type="button" class="pn-danger">delete</button></div>';
+    pop.querySelector('.pn-cancel').addEventListener('click', closeconfirm);
     pop.querySelector('.pn-danger').addEventListener('click', function () {
-      closeConfirm();
+      closeconfirm();
       data.cards = window.PrototypeNotesEditorModel.removeCard(data.cards, card.id);
       renderData();
       enhance();
@@ -279,7 +279,7 @@
     if (layer) layer.remove();
   }
 
-  /* Notes 绑定目标描述统一复用 author/core/selector.js。 */
+  /* Notes target descriptions reuse author/core/selector.js. */
   function targetFor(element) {
     return window.AuthorToolsSelector.noteTarget(element);
   }
@@ -330,7 +330,7 @@
     }
   }
 
-  /* 按当前可见卡片的新顺序写回 data.cards，隐藏组卡片保持原相对位置。 */
+  /* Write visible card order back to data.cards; hidden-group cards keep their relative positions. */
   function applyVisibleOrder(visibleIds) {
     data.cards = window.PrototypeNotesEditorModel.applyVisibleOrder(data.cards, visibleIds);
     renderData();
@@ -428,8 +428,8 @@
     if (!data) return;
     var head = document.querySelector('.pn-head');
     if (head) {
-      bindEditable(head.querySelector('strong'), function () { return data.header.title; }, function (value) { data.header.title = value; }, false);
-      bindEditable(head.querySelector('span'), function () { return data.header.subtitle; }, function (value) { data.header.subtitle = value; }, false);
+      bindeditable(head.querySelector('strong'), function () { return data.header.title; }, function (value) { data.header.title = value; }, false);
+      bindeditable(head.querySelector('span'), function () { return data.header.subtitle; }, function (value) { data.header.subtitle = value; }, false);
     }
     document.querySelectorAll('.pn-card').forEach(function (article) {
       var card = data.cards.find(function (item) { return item.id === article.dataset.noteId; });
@@ -437,40 +437,40 @@
       if (!article.querySelector('.pn-card-drag-handle')) {
         var dragHandle = document.createElement('div');
         dragHandle.className = 'pn-card-drag-handle';
-        dragHandle.title = '拖动排序';
-        dragHandle.setAttribute('aria-label', '拖动排序');
+        dragHandle.title = 'Drag to reorder';
+        dragHandle.setAttribute('aria-label', 'Drag to reorder');
         dragHandle.innerHTML = dragHandleSvg();
         article.querySelector('.pn-card-title').prepend(dragHandle);
         bindCardDrag(article);
       }
       if (article.querySelector('.pn-card-actions')) return;
-      bindEditable(article.querySelector('.pn-title-text'), function () { return card.title; }, function (value) { card.title = value; }, false);
-      bindEditable(article.querySelector('p'), function () { return card.body; }, function (value) { card.body = value; }, true);
+      bindeditable(article.querySelector('.pn-title-text'), function () { return card.title; }, function (value) { card.title = value; }, false);
+      bindeditable(article.querySelector('p'), function () { return card.body; }, function (value) { card.body = value; }, true);
       var actions = document.createElement('div');
       actions.className = 'pn-card-actions';
       var edit = document.createElement('div');
       edit.className = 'pn-card-icon';
       edit.type = 'button';
-      edit.title = '编辑说明';
-      edit.setAttribute('aria-label', '编辑说明');
+      edit.title = 'edit note';
+      edit.setAttribute('aria-label', 'edit note');
       edit.innerHTML = editIconSvg();
       edit.addEventListener('click', function () {
-        startEdit(article.querySelector('p'), function () { return card.body; }, function (value) { card.body = value; }, true);
+        startedit(article.querySelector('p'), function () { return card.body; }, function (value) { card.body = value; }, true);
       });
       var bind = document.createElement('div');
       bind.className = 'pn-card-icon';
       bind.type = 'button';
-      bind.title = card.target && (card.target.anchor || card.target.selector) ? '重新绑定目标' : '绑定目标';
+      bind.title = card.target && (card.target.anchor || card.target.selector) ? 'Rebind target' : 'Bind target';
       bind.setAttribute('aria-label', bind.title);
       bind.innerHTML = bindIconSvg();
       bind.addEventListener('click', function () { startPick(card.id); });
       var remove = document.createElement('div');
       remove.className = 'pn-card-icon';
       remove.type = 'button';
-      remove.title = '删除说明';
-      remove.setAttribute('aria-label', '删除说明');
+      remove.title = 'delete note';
+      remove.setAttribute('aria-label', 'delete note');
       remove.innerHTML = deleteIconSvg();
-      remove.addEventListener('click', function () { requestDelete(card, article, remove); });
+      remove.addEventListener('click', function () { requestdelete(card, article, remove); });
       actions.appendChild(edit);
       actions.appendChild(bind);
       actions.appendChild(remove);
@@ -478,11 +478,11 @@
     });
   }
 
-  function bindEditable(element, getter, setter, multiline) {
-    if (!element || element.dataset.pnEditableBound) return;
-    element.dataset.pnEditableBound = 'true';
+  function bindeditable(element, getter, setter, multiline) {
+    if (!element || element.dataset.pneditableBound) return;
+    element.dataset.pneditableBound = 'true';
     element.classList.add('pn-editable');
-    element.addEventListener('dblclick', function () { startEdit(element, getter, setter, multiline); });
+    element.addEventListener('dblclick', function () { startedit(element, getter, setter, multiline); });
   }
 
   function buildToolbar() {
@@ -503,7 +503,7 @@
     }
     var toolbar = document.createElement('div');
     toolbar.className = 'pn-author-toolbar';
-    toolbar.innerHTML = '<div class="pn-tool-icon pn-add-card" role="button" tabindex="0" title="新增说明" aria-label="新增说明">+</div>';
+    toolbar.innerHTML = '<div class="pn-tool-icon pn-add-card" role="button" tabindex="0" title="Add note" aria-label="Add note">+</div>';
     var add = toolbar.querySelector('.pn-add-card');
     add.addEventListener('click', addCard);
     add.addEventListener('keydown', function (event) {
@@ -535,15 +535,15 @@
 
   function init() {
     if (!data) {
-      console.error('[prototype-author] Viewer 尚未初始化，无法启动标注编辑器。');
+      console.error('[prototype-author] Viewer not initialized; cannot start Notes editor.');
       return;
     }
     if (!window.AuthorToolsSelector) {
-      console.error('[prototype-author] 缺少 AuthorToolsSelector，无法启动标注编辑器。');
+      console.error('[prototype-author] Missing AuthorToolsSelector; cannot start Notes editor.');
       return;
     }
     if (!window.PrototypeNotesEditorModel) {
-      console.error('[prototype-author] 缺少 PrototypeNotesEditorModel，无法启动标注编辑器。');
+      console.error('[prototype-author] Missing PrototypeNotesEditorModel; cannot start Notes editor.');
       return;
     }
     buildToolbar();
@@ -551,7 +551,7 @@
     document.addEventListener('click', handlePick, true);
     document.addEventListener('mousemove', handlePickPreview, true);
     document.addEventListener('keydown', handlePickKeydown, true);
-    // 只跟随 Viewer 渲染事件增强卡片；不要观察 notes DOM，避免与底栏重排互相触发。
+    // Enhance cards only on Viewer render events; do not observe notes DOM to avoid mutual reflow with the bottom bar.
     window.addEventListener('prototype-notes:rendered', onNotesRendered);
     if (window.PrototypeAuthor) window.PrototypeAuthor.register('notes-target', stopPick);
     window.addEventListener('beforeunload', function (event) {

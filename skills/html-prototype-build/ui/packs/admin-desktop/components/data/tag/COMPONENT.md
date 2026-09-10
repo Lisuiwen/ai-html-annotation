@@ -9,5 +9,4 @@ states:
 
 # Tag
 
-紧凑展示状态或分类。颜色语义必须来自当前材料，不得根据文案猜测成功、警告或错误色。
-
+Compact status or category display. Color semantics must come from the current materials; do not guess success, warning, or error colors from label text.

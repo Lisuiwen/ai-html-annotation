@@ -2,7 +2,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 
-/* 给语义节点注入会话级 Inspector token，并保留 token → 原始源码行号映射。 */
+/* Inject session-level Inspector tokens on semantic nodes and keep token → original source line mapping. */
 export function injectTargets(content) {
   var cleaned = content
     .replace(/\s+data-insp-path\s*=\s*"[^"]*"/gi, '')
@@ -26,17 +26,17 @@ export function injectTargets(content) {
   return { html: html, tokens: tokens };
 }
 
-/* 解析 Inspector 请求，但不启动 IDE，便于路由和单测共享同一安全边界。 */
+/* Resolve Inspector requests without launching the IDE so routes and unit tests share the same security boundary. */
 export function resolveInspectorTarget({ root, htmlPath, filePath, targetId }) {
   var requested = filePath || String(htmlPath || '').split(/[\\/]/).pop();
   var resolvedPath = resolve(root, requested);
   if (relative(root, resolvedPath).startsWith('..')) return { ok: false, status: 403, message: 'Forbidden' };
   if (!existsSync(resolvedPath) || !statSync(resolvedPath).isFile()) {
-    return { ok: false, status: 404, message: '找不到文件：' + requested };
+    return { ok: false, status: 404, message: 'File not found: ' + requested };
   }
   var content = readFileSync(resolvedPath, 'utf8');
   var line = injectTargets(content).tokens[targetId];
-  if (!line) return { ok: false, status: 404, message: '找不到目标元素：' + targetId };
+  if (!line) return { ok: false, status: 404, message: 'Target element not found: ' + targetId };
   return { ok: true, status: 200, filePath: requested, resolvedPath: resolvedPath, line: line };
 }
 
@@ -60,7 +60,7 @@ function spawnIDE(cmd, args, onFail) {
   } catch (error) { fail(); }
 }
 
-/* 按 CODE_EDITOR → cursor → code 顺序打开源码定位。 */
+/* Open source location in order: CODE_EDITOR → cursor → code. */
 export function openIDE(filePath, line) {
   var args = ['-g', filePath + ':' + line + ':1'];
   var target = filePath + ':' + line + ':1';
@@ -69,7 +69,7 @@ export function openIDE(filePath, line) {
   var candidates = configured ? [configured].concat(fallbacks.filter(function (item) { return item !== configured; })) : fallbacks;
   function tryNext(index) {
     if (index >= candidates.length) {
-      console.error('[inspector] 无法启动 IDE，请在 <skill-root>/.env 配置 CODE_EDITOR，或手动打开：' + target);
+      console.error('[inspector] Could not launch IDE; set CODE_EDITOR in <skill-root>/.env or open manually: ' + target);
       return;
     }
     var cmd = candidates[index];

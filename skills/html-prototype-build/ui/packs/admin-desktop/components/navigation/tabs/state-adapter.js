@@ -1,17 +1,17 @@
-/* Tabs 局部状态投影：由最终原型 Adapter 调用，不自行注册点击事件。 */
+/* Tabs local state projection: invoked by final prototype Adapter; does not register click handlers itself. */
 (function () {
   'use strict';
 
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
 
-  /* 归一化选中的 Tab ID；缺省时沿用第一个声明的 Tab。 */
+  /* Normalize selected Tab ID; default to first declared Tab when missing. */
   function normalize(root, value) {
     var tabs = root ? root.querySelectorAll('[role="tab"]') : [];
     var fallback = tabs.length ? tabs[0].id : '';
     return typeof value === 'string' && value ? value : fallback;
   }
 
-  /* 同步 Tab 的选中语义与关联 Panel 的 hidden 输出。 */
+  /* Sync Tab selection semantics and associated Panel hidden output. */
   function render(root, value) {
     if (!root) return;
     var selectedId = normalize(root, value);

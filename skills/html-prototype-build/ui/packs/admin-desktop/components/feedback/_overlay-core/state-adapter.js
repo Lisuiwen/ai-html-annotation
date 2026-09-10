@@ -1,15 +1,15 @@
-/* Overlay 局部状态投影：只控制目标浮层，不持有页面或场景 state。 */
+/* Overlay local state projection: controls target overlay only; does not hold page or scene state. */
 (function () {
   'use strict';
 
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
 
-  /* 归一化 Overlay 的开关字段。 */
+  /* Normalize Overlay open/close field. */
   function normalize(value) {
     return { open: !!(value && typeof value === 'object' ? value.open : value) };
   }
 
-  /* 在产品区边界内渲染浮层可见性、尺寸和 ARIA 输出。 */
+  /* Render overlay visibility, size, and ARIA output within product area bounds. */
   function render(root, value) {
     if (!root) return;
     var state = normalize(value);

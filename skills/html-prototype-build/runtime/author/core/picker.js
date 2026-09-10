@@ -1,4 +1,4 @@
-/* 公共 DOM Picker：Ctrl+Click（macOS 为 ⌘+Click）选元素；普通点击不拦截。同一时间只有一个 owner。 */
+/* Shared DOM Picker: Ctrl+Click (⌘+Click on macOS) to pick elements; normal clicks pass through. One owner at a time. */
 (function () {
   'use strict';
 
@@ -39,7 +39,7 @@
     hoverRaf: 0
   };
 
-  /* 判断节点是否属于说明栏或作者 overlay。 */
+  /* Whether the node belongs to the notes panel or an author overlay. */
   function isBlocked(el) {
     if (!el || !el.closest) return true;
     if (el.closest(NOTES_PANEL_SELECTOR)) return true;
@@ -49,7 +49,7 @@
     return false;
   }
 
-  /* 从点击点向上找最近可操作语义单元。 */
+  /* Walk up from the click point to the nearest actionable semantic unit. */
   function resolveTarget(el) {
     if (isBlocked(el)) return null;
     var cur = el;
@@ -70,7 +70,7 @@
     return el && el.nodeType === 1 && !isBlocked(el) ? el : null;
   }
 
-  /* Selector 规则统一由 author/core/selector.js 维护；保留 Picker API 兼容既有调用方。 */
+  /* Selector rules live in author/core/selector.js; Picker API kept for existing callers. */
   function stableSelector(el) {
     return window.AuthorToolsSelector ? window.AuthorToolsSelector.stableSelector(el) : '';
   }
@@ -155,7 +155,7 @@
     event.stopPropagation();
     clearHover();
 
-    /* 先询问 owner 是否接受本次切换；拒绝时 Picker 内部状态与高亮都保持原样。 */
+    /* Ask owner whether to accept this switch; on reject, Picker state and highlight stay unchanged. */
     if (typeof state.onSelect === 'function' && state.onSelect(target, event) === false) return;
 
     if (!state.persistSelection) {
@@ -169,14 +169,14 @@
     if (state.selectedClass) target.classList.add(state.selectedClass);
   }
 
-  /* 仅在修饰键+Click 时拦截；普通点击保持页面原行为。 */
+  /* Intercept only modifier+click; normal clicks keep default page behavior. */
   function handleClick(event) {
     if (!state.owner) return;
     if (!pickerClickModifier(event)) return;
     selectFromEvent(event);
   }
 
-  /* macOS：Control+左键触发 contextmenu 而非 click。 */
+  /* macOS: Control+left click fires contextmenu instead of click. */
   function handleContextMenu(event) {
     if (!state.owner || !isMac() || !event.ctrlKey) return;
     selectFromEvent(event);

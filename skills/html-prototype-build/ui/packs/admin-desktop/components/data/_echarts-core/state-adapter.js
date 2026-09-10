@@ -1,17 +1,17 @@
-/* ECharts 核心：renderLeaf 供 chart leaf 复用；不读 PrototypeViewers。 */
+/* ECharts core: renderLeaf for chart leaf reuse; does not read PrototypeViewers. */
 (function () {
   'use strict';
 
   var core = window.PrototypeChartCore = window.PrototypeChartCore || {};
 
-  /** 归一化 chart status，与 data.list 三态口径对齐。 */
-  function normalizeChartStatus(status, allowLoading) {
+  /** Normalize chart status; aligned with data.list three-state contract. */
+  function normalizeChartstate(status, allowloading) {
     if (status === 'empty') return 'empty';
-    if (allowLoading && status === 'loading') return 'loading';
+    if (allowloading && status === 'loading') return 'loading';
     return 'data';
   }
 
-  /** 同步壳层 data-status 与 empty/data 区域可见性。 */
+  /** Sync shell data-status and empty/data region visibility. */
   function projectShell(root, status) {
     root.dataset.status = status;
     var emptyEl = root.querySelector('.ui-chart-empty');
@@ -20,19 +20,19 @@
     if (dataEl) dataEl.hidden = status === 'empty';
   }
 
-  /** 投影 ECharts option（复用已有实例）。 */
+  /** Project ECharts option (reuse existing instance). */
   function render(root, option) {
     if (!root || !option || !window.PrototypeChartBridge) return;
     window.PrototypeChartBridge.setOption(root, option, { notMerge: true });
   }
 
-  /** 销毁 root 上的图表实例。 */
+  /** Dispose chart instance on root. */
   function destroy(root) {
     if (!root || !window.PrototypeChartBridge) return;
     window.PrototypeChartBridge.dispose(root);
   }
 
-  /** leaf 通用 render：empty/loading 早退，否则调 preset 并更新 summary。 */
+  /** Leaf generic render: early return for empty/loading, otherwise call preset and update summary. */
   function renderLeaf(root, state, options) {
     if (!root || !options) return;
     projectShell(root, state.status);
@@ -57,7 +57,7 @@
     }
   }
 
-  core.normalizeChartStatus = normalizeChartStatus;
+  core.normalizeChartstate = normalizeChartstate;
   core.render = render;
   core.destroy = destroy;
   core.renderLeaf = renderLeaf;

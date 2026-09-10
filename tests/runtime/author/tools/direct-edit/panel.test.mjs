@@ -6,7 +6,7 @@ import vm from 'node:vm';
 const sourceUrl = new URL('../../../../../skills/html-prototype-build/runtime/author/tools/direct-edit/panel.js', import.meta.url);
 async function panelApi() { const source = await readFile(sourceUrl, 'utf8'); const window = {}; window.window = window; vm.runInNewContext(source, { window }, { filename: 'panel.js' }); return window.AuthorToolsEditPanel; }
 
-test('Panel 无 session 展示空态且操作按钮禁用', async () => {
+test('Panel without session shows empty state and disables actions', async () => {
   const api = await panelApi(); const container = { innerHTML: '' }; api.render(container, null, {});
   assert.match(container.innerHTML, /at-edit-body/);
   assert.match(container.innerHTML, /Ctrl/);
@@ -14,8 +14,8 @@ test('Panel 无 session 展示空态且操作按钮禁用', async () => {
   assert.match(container.innerHTML, /data-act="reset" disabled/);
 });
 
-test('Panel 对 meta/value 做 HTML 转义', async () => {
-  const api = await panelApi(); const container = { innerHTML: '' }; const session = { fields: [{ group: '内容', key: 'text', label: '文本', kind: 'text' }], rows: {}, canEditText: true, getText: () => '<img onerror=1>', isDirty: () => true };
+test('Panel escapes meta/value HTML', async () => {
+  const api = await panelApi(); const container = { innerHTML: '' }; const session = { fields: [{ group: 'content', key: 'text', label: '文本', kind: 'text' }], rows: {}, canEditText: true, getText: () => '<img onerror=1>', isDirty: () => true };
   api.render(container, session, { tag: '<div>', id: '"x"', classes: '<bad>' }); assert.doesNotMatch(container.innerHTML, /<img onerror=1>/); assert.match(container.innerHTML, /&lt;img onerror=1&gt;/); assert.match(container.innerHTML, /&lt;div&gt;/);
 });
 

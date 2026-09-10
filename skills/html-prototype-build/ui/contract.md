@@ -1,8 +1,8 @@
-# UI 包契约
+# UI Pack Contract
 
-## 包结构
+## Pack structure
 
-每个 UI 包使用以下结构：
+Each UI pack uses this structure:
 
 ```text
 packs/<pack-id>/
@@ -17,7 +17,7 @@ packs/<pack-id>/
 │   └── <category>/<component-id>/
 │       ├── COMPONENT.md
 │       ├── component.html
-│       └── state-adapter.js    # 可选：无状态投影接口
+│       └── state-adapter.js    # optional: stateless projection interface
 ├── patterns/
 │   └── <pattern-id>/
 │       ├── PATTERN.md
@@ -28,44 +28,44 @@ packs/<pack-id>/
         └── seed.html
 ```
 
-未提供的类别、Pattern 和 Preset 可以省略，但必须在 `manifest.json` 中准确声明。
+Categories, Patterns, and Presets that are not provided may be omitted, but must be declared accurately in `manifest.json`.
 
-## 资源职责
+## Asset responsibilities
 
-- `manifest.json` 是组件、Pattern、Preset、路径和依赖关系的唯一索引。
-- foundation 必须唯一且无 DOM，只负责跨组件 Token 与文档级 CSS 基线。
-- `COMPONENT.md` 与 `component.html` 分别是组件契约和静态实现的唯一来源；有状态组件可额外提供 `state-adapter.js`。
-- Pattern 只组合组件与布局槽位，不得复制组件实现。
-- Preset 只提供无业务事实的页面起点，不得携带可被误用的业务名称、字段或数据。
-- 不得保留按类别聚合的组件实现文件；AI 必须通过 manifest 读取叶子资源。
+- `manifest.json` is the sole index for components, Patterns, Presets, paths, and dependencies.
+- The foundation must be unique and DOM-free; it only provides cross-component Tokens and document-level CSS baseline.
+- `COMPONENT.md` and `component.html` are the sole sources for component contract and static implementation; stateful components may additionally provide `state-adapter.js`.
+- Patterns compose only components and layout slots; they must not duplicate component implementations.
+- Presets provide only business-fact-free page starting points; they must not carry business names, fields, or data that could be mistaken for real content.
+- Do not keep category-aggregated component implementation files; AI must read leaf resources through the manifest.
 
-## 组合约束
+## Composition constraints
 
-- foundation 必须唯一，只负责跨组件 Token 与 CSS 基线；不得包含页面壳层、组件、示例 DOM 或脚本。
-- 每个组件类别最多选择一个 provider，禁止同时加载两套同类组件。
-- provider 只能引用当前 foundation 明确提供的 Token、当前组件声明的私有 Token，或 manifest 中列出的依赖。
-- 内部组件只能被公开组件依赖，Pattern 和 Preset 不得直接选择内部组件。
-- UI 包不得引用作者服务、html-mark、Inspector、截图工具或正式说明 Viewer。
-- `state-adapter.js` 只接收外部 state 并渲染组件 DOM；不得保存业务状态、解析 URL、注册全局点击事件，或调用 `PrototypeViewers`。
-- Addon 不得覆盖产品组件视觉、Token 或组件行为。
+- The foundation must be unique and only provide cross-component Tokens and CSS baseline; it must not contain page shells, components, example DOM, or scripts.
+- At most one provider per component category; never load two component sets in the same category.
+- Providers may reference only Tokens explicitly provided by the current foundation, private Tokens declared by the current component, or dependencies listed in the manifest.
+- Internal components may be depended on only by public components; Patterns and Presets must not select internal components directly.
+- UI packs must not reference the author server, html-mark, Inspector, screenshot tools, or the formal notes Viewer.
+- `state-adapter.js` receives external state only and renders component DOM; it must not persist business state, parse URLs, register global click handlers, or call `PrototypeViewers`.
+- Addons must not override product component visuals, Tokens, or component behavior.
 
-## 包内自由度
+## Freedom within a pack
 
-- 不要求不同 UI Pack 使用相同 DOM、CSS 类名或 JS API。
-- 每个 Pack 只需满足本契约的 manifest、foundation、component 和 adapter 边界。
-- 纯 HTML、CSS、JavaScript，默认零构建和无外部 CDN。
-- 组件资源必须能按叶子组件单独读取；生成时递归展开 `requires`，`optional` 只在需求确实需要时加入。
-- 组件契约只声明局部状态形状（如 Select 的 `open/value`）；最终原型负责把业务 state 映射到该接口，并通过 `PrototypeViewers` 提交状态。
-- `component.html` 中的示例 `id` 仅表达所需锚点；复制多个实例时必须替换为页面内唯一、稳定的 id，并把对应 root 传给 state Adapter。
-- 最终原型必须由业务 Adapter 把 `PrototypeViewers` state 映射给组件 Adapter。
-- UI Pack Adapter 只消费传入 state，不得直接访问 `PrototypeViewers` 或反向读取 DOM 推断业务 state。
-- 仅实现用户材料确认的状态；有意简化使用 `ponytail:`。
-- 满足共享生成契约中的语义化、无障碍、注释和依赖要求。
+- Different UI Packs are not required to share DOM, CSS class names, or JS APIs.
+- Each Pack need only satisfy this contract's manifest, foundation, component, and adapter boundaries.
+- Plain HTML, CSS, and JavaScript; zero build and no external CDN by default.
+- Component assets must be readable per leaf component; at generation time recursively expand `requires`; add `optional` dependencies only when the need is real.
+- Component contracts declare only local state shape (e.g. Select `open/value`); the final prototype maps business state to that interface and commits state through `PrototypeViewers`.
+- example `id` values in `component.html` express required anchors only; when copying multiple instances, replace with unique, stable page ids and pass the corresponding root to the state Adapter.
+- The final prototype must map `PrototypeViewers` state to component Adapters through a business Adapter.
+- UI Pack Adapters consume passed-in state only; they must not access `PrototypeViewers` directly or infer business state from the DOM.
+- Implement only states confirmed in user materials; use `ponytail:` for intentional simplification.
+- Meet semantic, accessibility, comment, and dependency requirements in the shared generation contract.
 
-## PACK.md 最小信息
+## Minimum `PACK.md` content
 
-`PACK.md` 只保存 Agent 需要阅读的“为什么”与特殊约束（何时选用、设计意图、已知组合限制、使用注意事项）。`version`、前缀、`provides`、兼容 foundation 等机器事实全部由 `manifest.json` 决定，不得在 `PACK.md` 中重复维护。
+`PACK.md` stores only the "why" and special constraints an Agent needs (when to choose, design intent, known composition limits, usage notes). Machine facts such as `version`, prefix, `provides`, and compatible foundations are determined entirely by `manifest.json` and must not be duplicated in `PACK.md`.
 
-- 唯一 `id` 和人类可读名称。
-- 提供的 foundation 与组件类别（用于人类理解，机器以 manifest 为准）。
-- `manifest.json` 读取入口与已知组合限制。
+- Unique `id` and human-readable name.
+- Provided foundation and component categories (for human understanding; machines use the manifest).
+- `manifest.json` entry point and known composition limits.

@@ -51,9 +51,9 @@ Viewer keeps formal notes in a right-hand panel. You can add, edit, delete, and 
 
 ### 2. Author tools: edit the page or pin feedback for AI
 
-Author Tools bundles Direct Edit and Mark in one panel. Hold `Ctrl` (macOS: `⌘`) and click an element to tweak styles or copy and save changes back to source HTML, or switch to Mark to drop removable review pins. Collect notes, then use `Copy all → For AI` to export selectors plus element HTML snapshots as editable context for an agent.
+Author Tools bundles Direct edit and Mark in one panel. Hold `Ctrl` (macOS: `⌘`) and click an element to tweak styles or copy and save changes back to source HTML, or switch to Mark to drop removable review pins. Collect notes, then use `Copy all → For AI` to export selectors plus element HTML snapshots as editable context for an agent.
 
-![Author Tools: Direct Edit and Mark for on-page edits and review pins](media/mark.gif)
+![Author Tools: Direct edit and Mark for on-page edits and review pins](media/mark.gif)
 
 ### 3. Inspector: lock an element and open its source
 
@@ -73,7 +73,7 @@ Compose pages from a local UI pack with shared tokens, components, and patterns.
 
 ### Direct edits on the real DOM
 
-Direct Edit loads only in the localhost authoring session. Hold `Ctrl` (macOS: `⌘`) and select an element to preview style or copy changes in the browser, then save them back to `prototype.html` through the authoring server—without hand-editing selectors or hunting through the file tree for every tweak.
+Direct edit loads only in the localhost authoring session. Hold `Ctrl` (macOS: `⌘`) and select an element to preview style or copy changes in the browser, then save them back to `prototype.html` through the authoring server—without hand-editing selectors or hunting through the file tree for every tweak.
 
 ### Executable review context
 
@@ -81,15 +81,15 @@ Mark shares the same Author Tools panel. Review pins can be copied or cleared wi
 
 ### Jump from the page to source
 
-A localhost authoring server on `127.0.0.1` edits notes, rebinds anchors, supports Direct Edit and Mark, and opens source. Authoring chrome stays separate from the formal deliverable, so prototypes stay light and portable.
+A localhost authoring server on `127.0.0.1` edits notes, rebinds anchors, supports Direct edit and Mark, and opens source. Authoring chrome stays separate from the formal deliverable, so prototypes stay light and portable.
 
 ### One state model, many outputs
 
-`PrototypeViewers` owns product state. The same prototype supports in-page review and scenario screenshots (`scenarios`) that emit clean PNGs without annotation chrome. Create, edit, empty, linked, and other states stay explicit, reproducible, and batchable.
+`PrototypeViewers` owns product state. The same prototype supports in-page review and scenario screenshots (`scenarios`) that emit clean PNGs without annotation chrome. create, edit, empty, linked, and other states stay explicit, reproducible, and batchable.
 
 ### Clean deliverables
 
-Formal prototypes keep semantic DOM, stable anchors, the read-only Viewer, and render logic only. Mark, Direct Edit, Notes Editor, Inspector, and the local authoring server are authoring tools loaded outside the source HTML.
+Formal prototypes keep semantic DOM, stable anchors, the read-only Viewer, and render logic only. Mark, Direct edit, Notes editor, Inspector, and the local authoring server are authoring tools loaded outside the source HTML.
 
 ## What you get
 
@@ -99,7 +99,7 @@ A typical prototype task yields three coordinated outputs:
 - **Reusable state definitions** — snapshot notes and `scenarios` as a stable baseline for later edits
 - **Multi-state screenshots** — batch PNGs for create / edit / empty / linked views without the notes rail, connectors, or author tools
 
-Direct Edit and review pins stay in the authoring layer. Screenshots and formal files stay clean.
+Direct edit and review pins stay in the authoring layer. Screenshots and formal files stay clean.
 
 ## How it fits together
 
@@ -107,7 +107,7 @@ Direct Edit and review pins stay in the authoring layer. Screenshots and formal 
 Native HTML
    │
    ├── Viewer: formal notes, scenario switching, SVG connectors
-   ├── Direct Edit / Mark: in-page style edits, review pins, selectors, element snapshots, Copy for AI
+   ├── Direct edit / Mark: in-page style edits, review pins, selectors, element snapshots, Copy for AI
    ├── Inspector: lock elements, show selectors, open source
    └── Screenshot: scenario-based clean page captures
 ```
@@ -126,12 +126,12 @@ This is an AI-assisted HTML annotation and prototyping toolkit—not a productio
 
 This root README covers install and product overview only. Day-to-day usage lives with the Skill:
 
-- Skill overview and collaboration model → [`skills/html-prototype-build/README.md`](skills/html-prototype-build/README.md)
+- Skill overview and collaboration model → [`skills/html-prototype-build/README.md`](skills/html-prototype-build/README.md) (English; 中文见 [README.zh-CN.md](skills/html-prototype-build/README.zh-CN.md))
 - Agent routing and hard constraints → [`skills/html-prototype-build/SKILL.md`](skills/html-prototype-build/SKILL.md)
 - Task guides with commands (authoring, review, screenshots) → [`skills/html-prototype-build/references/`](skills/html-prototype-build/references/)
-- Walkthrough sample → [`examples/minimal-notes`](examples/minimal-notes)
+- Walkthrough sample → [`examples/minimal-notes-system`](examples/minimal-notes-system)
 
-Those Skill docs are currently Chinese—ask an agent that can read them, or follow the Skill README entry points.
+Skill references, UI pack contracts, and addon docs are in English; Chinese README pairs are available where noted above.
 
 ## Distribution layout
 
@@ -150,7 +150,7 @@ Inside the Skill, Runtime is organized by execution boundary: `client/` for fina
 
 - `runtime/server/index.mjs` binds to `127.0.0.1` only. Do not run authoring or screenshots against untrusted HTML or snapshot files.
 - Author write requests require same-origin localhost JSON; snapshot and source writes stay within the configured prototype workflow. Keep `skills/html-prototype-build/.env` local for IDE selection; never commit it.
-- Direct Edit and Mark are temporary Author Tools loaded only in the authoring session. Direct Edit writes style and copy changes back to source HTML through the localhost server; Mark stores review context in page-scoped `localStorage` and may copy it to the clipboard. Neither is injected into the source HTML or part of the formal deliverable.
+- Direct edit and Mark are temporary Author Tools loaded only in the authoring session. Direct edit writes style and copy changes back to source HTML through the localhost server; Mark stores review context in page-scoped `localStorage` and may copy it to the clipboard. Neither is injected into the source HTML or part of the formal deliverable.
 - Do not put real credentials, production data, personal information, or unauthorized brand assets in prototypes.
 
 ## Contributing

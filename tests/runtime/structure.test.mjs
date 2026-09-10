@@ -15,18 +15,18 @@ async function listScripts(directory, prefix = '') {
   return files;
 }
 
-test('Runtime 根目录只按执行边界保留四个分类目录', async () => {
+test('Runtime root keeps four boundary directories only', async () => {
   const entries = await readdir(runtimeUrl, { withFileTypes: true });
   assert.deepEqual(entries.map((entry) => entry.name).sort(), ['author', 'cli', 'client', 'server']);
   assert.equal(entries.every((entry) => entry.isDirectory()), true);
 });
 
-test('Runtime 平铺脚本已收敛到四个分类目录', async () => {
+test('Runtime flat scripts consolidated into four boundary directories', async () => {
   await assert.rejects(access(new URL('../../skills/html-prototype-build/runtime/prepare-mark.mjs', import.meta.url)), { code: 'ENOENT' });
   await assert.rejects(access(new URL('../../skills/html-prototype-build/runtime/author-tools', import.meta.url)), { code: 'ENOENT' });
 });
 
-test('每个 Runtime JS/MJS 都有同路径单元测试', async () => {
+test('each Runtime JS/MJS has matching unit test path', async () => {
   const scripts = await listScripts(runtimeUrl);
   const missing = [];
   for (const source of scripts) {
@@ -37,5 +37,5 @@ test('每个 Runtime JS/MJS 都有同路径单元测试', async () => {
       missing.push(testPath);
     }
   }
-  assert.deepEqual(missing, [], `缺少 Runtime 对应单测：${missing.join(', ')}`);
+  assert.deepEqual(missing, [], `missing Runtime unit test for：${missing.join(', ')}`);
 });

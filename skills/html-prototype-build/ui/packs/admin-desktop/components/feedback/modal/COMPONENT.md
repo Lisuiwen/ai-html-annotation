@@ -9,15 +9,14 @@ states:
 
 # Modal
 
-产品区内的模态对话框。必须关联标题并限制在 `.ui-preview` 内，不得覆盖右侧正式说明区域。
+Modal dialog within the product area. Must associate a title and stay within `.ui-preview`; it must not cover the formal notes area on the right.
 
-## 状态 Adapter
+## State Adapter
 
-通过依赖 `feedback._overlay-core` 的 `state-adapter.js` 渲染 `{ open: boolean }`。最终原型负责将场景状态映射到该接口，并为打开、关闭、取消、确认按钮绑定业务事件。
+Renders `{ open: boolean }` through the `state-adapter.js` provided by `feedback._overlay-core`. The final prototype maps scenario state to this interface and binds business events for open, close, cancel, and confirm actions.
 
-## 标注锚点
+## Annotation anchors
 
-- `.ui-overlay` 的 `id` 供浮层 Adapter、`aria-controls` 与 `role="dialog"` 使用。
-- `.ui-modal` 内层面板必须有独立稳定 `id`，推荐 `{overlayId}Panel`（如 `uiDemoModalPanel`）。
-- 说明卡片 `target.anchor` 绑定内层面板 id，不得绑定遮罩层 id（遮罩铺满产品区，连线会落在错误位置）。
-
+- The `.ui-overlay` `id` is used by the overlay Adapter, `aria-controls`, and `role="dialog"`.
+- The inner `.ui-modal` panel must have its own stable `id`, recommended as `{overlayId}Panel` (for example `uiDemoModalPanel`).
+- Note card `target.anchor` binds to the inner panel id, not the overlay id (the overlay fills the product area and connectors would land in the wrong place).

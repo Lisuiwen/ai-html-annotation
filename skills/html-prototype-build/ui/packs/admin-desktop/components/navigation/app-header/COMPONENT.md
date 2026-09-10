@@ -10,4 +10,4 @@ states:
 
 # App Header
 
-顶部品牌区、一级导航和右侧操作区。系统名、导航项、选中态和操作必须来自当前需求材料。
+Top brand area, primary navigation, and right-side actions. System name, nav items, selected state, and actions must come from current requirement materials.

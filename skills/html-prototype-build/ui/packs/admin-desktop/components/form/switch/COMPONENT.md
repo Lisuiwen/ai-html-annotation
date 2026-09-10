@@ -10,8 +10,8 @@ states:
 
 # form.switch
 
-布尔开关控件。使用 `role="switch"` 与 `aria-checked` 表达开关语义；Adapter 不绑定点击或业务校验。
+Boolean toggle control. Uses `role="switch"` and `aria-checked` for switch semantics; Adapter does not bind clicks or business validation.
 
-## 状态 Adapter
+## State Adapter
 
-`state-adapter.js` 暴露 `window.PrototypeUiAdapters['form.switch']`，局部 state 为 `{ checked: boolean, disabled?: boolean, loading?: boolean }`。最终原型负责把业务字段映射到该 state；组件 Adapter 仅同步选中、禁用与加载样式。
+`state-adapter.js` exposes `window.PrototypeUiAdapters['form.switch']`; local state is `{ checked: boolean, disabled?: boolean, loading?: boolean }`. The final prototype maps business fields to this state; the component Adapter only syncs checked, disabled, and loading styles.

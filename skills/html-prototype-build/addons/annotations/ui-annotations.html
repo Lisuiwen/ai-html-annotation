@@ -1,28 +1,28 @@
 <!--
-  UI 正式标注包：所有原型均加载，作为 Notes Viewer 与统一状态协调器的声明式示例。
-  状态协调由 runtime/client/core/state.js 提供，场景元数据与 when 匹配由 runtime/client/notes/model.js 提供，
-  右栏 DOM、样式和连线逻辑由 runtime/client/notes/viewer.js 创建；原型 HTML 不得硬编码这些运行时职责。
-  卡片只展示标题与正文；target.label 保留为结构化数据，不在卡片内重复显示。
-  作者态操作由 html-prototype-build 本地服务（runtime/server/index.mjs）动态注入。
+  Formal UI annotations pack: every prototype loads this as a declarative example for the Notes Viewer and unified state coordinator.
+  State coordination comes from runtime/client/core/state.js; scenario metadata and when matching from runtime/client/notes/model.js;
+  the right-rail DOM, styles, and connector logic are created by runtime/client/notes/viewer.js — prototype HTML must not hard-code these runtime responsibilities.
+  Cards show title and body only; target.label stays structured data and is not repeated inside the card.
+  Author-mode actions are injected dynamically by the html-prototype-build local server (runtime/server/index.mjs).
 -->
 
-<!-- 原型优先复用语义 id 作为稳定锚点；状态不存入 DOM 属性。 -->
+<!-- Prefer semantic ids as stable anchors; do not store state in DOM attributes. -->
 <button
   id="primaryAction"
   class="ui-button ui-button--primary"
   data-ui-interactive>
-  主操作
+  Primary action
 </button>
-<section id="contentArea" class="ui-component-box">内容区域</section>
+<section id="contentArea" class="ui-component-box">Content area</section>
 
 <!--
-  prototype/notes.snapshot.js：唯一标注数据源。
-  实际生成时写入独立 UTF-8 文件，不要把该脚本块内联到 prototype.html，也不要再生成 notes.json。
+  prototype/notes.snapshot.js is the sole annotation data source.
+  At generation time, write a separate UTF-8 file; do not inline this script block into prototype.html and do not generate notes.json.
 -->
 <script>
 /*
- * 为只读 Viewer、作者编辑器和 AI 提供同一份结构化标注数据。
- * 赋值右侧保持严格 JSON；顶层 state 是基础状态，scenarios 只保存可恢复差异。
+ * One structured annotation payload for the read-only Viewer, Notes Editor, and AI.
+ * Keep strict JSON on the assignment side; top-level state is the baseline, scenarios store restorable diffs only.
  */
 window.__PROTOTYPE_NOTES__ = {
   "schemaVersion": 2,
@@ -31,8 +31,8 @@ window.__PROTOTYPE_NOTES__ = {
   },
   "activeScenario": "base",
   "header": {
-    "title": "功能说明",
-    "subtitle": "按统一业务状态展示匹配说明"
+    "title": "Feature notes",
+    "subtitle": "Show matching notes by unified business state"
   },
   "scenarios": {
     "base": { "state": {} },
@@ -45,27 +45,27 @@ window.__PROTOTYPE_NOTES__ = {
     {
       "id": "primary-action",
       "when": { "product.page": "list", "product.layers": [] },
-      "title": "主操作",
-      "body": "说明该操作的业务目的。",
+      "title": "Primary action",
+      "body": "Describe the business purpose of this action.",
       "target": {
         "anchor": "primaryAction",
-        "label": "主操作"
+        "label": "Primary action"
       }
     },
     {
       "id": "content-area",
-      "title": "内容区域",
-      "body": "说明该区域的数据和状态。",
+      "title": "Content area",
+      "body": "Describe the data and state of this area.",
       "target": {
         "anchor": "contentArea",
-        "label": "内容区域"
+        "label": "Content area"
       }
     }
   ]
 };
 </script>
 
-<!-- prototype.html 末尾按 Client Runtime 固定顺序加载。 -->
+<!-- Load at the end of prototype.html in fixed Client Runtime order. -->
 <script src="./prototype/notes.snapshot.js"></script>
 <script src="./prototype/display-mode.js"></script>
 <script src="./prototype/state.js"></script>

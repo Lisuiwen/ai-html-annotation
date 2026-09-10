@@ -120,10 +120,10 @@ Direct Edit 与评审标注都留在作者层，最终截图和原型文件保�
 
 根 README 只负责安装与功能介绍。日常怎么用，请看 Skill 文档：
 
-- Skill 用途与协作方式 → [`skills/html-prototype-build/README.md`](skills/html-prototype-build/README.md)
+- Skill 用途与协作方式 → [`skills/html-prototype-build/README.zh-CN.md`](skills/html-prototype-build/README.zh-CN.md)（英文版见 [README.md](skills/html-prototype-build/README.md)）
 - Agent 任务分流与硬约束 → [`skills/html-prototype-build/SKILL.md`](skills/html-prototype-build/SKILL.md)
 - 含命令的任务说明（作者服务、评审、截图） → [`skills/html-prototype-build/references/`](skills/html-prototype-build/references/)
-- 可对照样例 → [`examples/minimal-notes`](examples/minimal-notes)
+- 可对照样例 → [`examples/minimal-notes-system`](examples/minimal-notes-system)
 
 ## 分发结构
 

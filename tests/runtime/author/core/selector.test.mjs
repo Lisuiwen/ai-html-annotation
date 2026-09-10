@@ -48,15 +48,15 @@ test('cssPath 使用 nth-of-type，并在稳定祖先 id 处截断', async () =>
   assert.equal(selector.cssPath(second), '#panel > span:nth-of-type(2)');
 });
 
-test('noteTarget 有 id 时生成 anchor，无 id 时生成 selector', async () => {
+test('noteTarget with id yields anchor; without id yields selector', async () => {
   const { selector, body } = await loadSelector();
   const anchored = element('button', body); anchored.id = 'save'; anchored.textContent = '保存';
   assert.deepEqual(JSON.parse(JSON.stringify(selector.noteTarget(anchored))), { anchor: 'save', label: '保存' });
-  const selected = element('div', body); selected.setAttribute('data-prototype-note-target', 'content'); selected.textContent = '内容';
-  assert.deepEqual(JSON.parse(JSON.stringify(selector.noteTarget(selected))), { selector: '[data-prototype-note-target="content"]', label: '内容' });
+  const selected = element('div', body); selected.setAttribute('data-prototype-note-target', 'content'); selected.textContent = 'content';
+  assert.deepEqual(JSON.parse(JSON.stringify(selector.noteTarget(selected))), { selector: '[data-prototype-note-target="content"]', label: 'content' });
 });
 
-test('noteTarget label 优先 aria-label 且最多 60 字符', async () => {
+test('noteTarget label prefers aria-label capped at 60 chars', async () => {
   const { selector, body } = await loadSelector();
   const target = element('button', body); target.setAttribute('aria-label', 'x'.repeat(80)); target.textContent = 'ignored';
   const note = selector.noteTarget(target);

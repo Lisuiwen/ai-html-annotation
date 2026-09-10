@@ -9,4 +9,4 @@ states:
 
 # Avatar
 
-单个用户或实体头像。图片地址与展示文字由业务提供，不得臆造头像资源。
+A single user or entity avatar. Image URLs and display text are supplied by business logic; do not invent avatar assets.

@@ -10,4 +10,4 @@ states:
 
 # navigation.breadcrumb
 
-页面层级路径。路径和链接目标是页面事实，不提供状态 Adapter。
+Page hierarchy path. Path segments and link targets are page facts; no state Adapter is provided.
