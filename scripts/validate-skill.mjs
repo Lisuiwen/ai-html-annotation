@@ -1,4 +1,4 @@
-/** 聚合 Skill 元数据、链接、浏览器脚本语法、UI Pack、Example和运行Hour契约验证。 */
+/** Aggregate Skill metadata, links, browser script syntax, UI pack, example, and runtime contract validation. */
 import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,7 +8,7 @@ const repositoryDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.
 const skillDirectory = path.join(repositoryDirectory, 'skills', 'html-prototype-build');
 const examplesDirectory = path.join(repositoryDirectory, 'examples');
 
-/** 递归枚举目录中 AllA件。 */
+/** Recursively list all files under a directory. */
 async function listFiles(directory) {
   const files = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -19,18 +19,18 @@ async function listFiles(directory) {
   return files;
 }
 
-/** 校验 SKILL.md  必需 frontmatter 与目录命名。 */
+/** Validate required SKILL.md frontmatter and directory naming. */
 async function validateMetadata() {
   const source = await readFile(path.join(skillDirectory, 'SKILL.md'), 'utf8');
   const match = source.match(/^---\s*\r?\n([\s\S]*?)\r?\n---/);
-  if (!match) throw new Error('SKILL.md 缺少 YAML frontmatter。');
+  if (!match) throw new Error('SKILL.md is missing YAML frontmatter.');
   const fields = [...match[1].matchAll(/^([a-z_-]+):\s*(.+)$/gm)].map((item) => item[1]);
-  if (!fields.includes('name') || !fields.includes('description')) throw new Error('SKILL.md 缺少 name 或 description。');
-  if (fields.some((field) => !['name', 'description'].includes(field))) throw new Error('SKILL.md frontmatter 只能包含 name 与 description。');
-  if (!/^html-prototype-build$/.test(path.basename(skillDirectory))) throw new Error('Skill 目录名不符合命名规则。');
+  if (!fields.includes('name') || !fields.includes('description')) throw new Error('SKILL.md is missing name or description.');
+  if (fields.some((field) => !['name', 'description'].includes(field))) throw new Error('SKILL.md frontmatter may contain only name and description.');
+  if (!/^html-prototype-build$/.test(path.basename(skillDirectory))) throw new Error('Skill directory name does not match naming rules.');
 }
 
-/** 使用 VM 编译不含 ESM import  浏览器脚本，避免依赖派生进程。 */
+/** Compile browser scripts without ESM import via VM to avoid spawning child processes. */
 async function validateBrowserScripts(files) {
   for (const file of files.filter((target) => target.endsWith('.js') && !target.includes(`${path.sep}vendor${path.sep}`))) {
     const source = await readFile(file, 'utf8');
@@ -66,7 +66,7 @@ async function markdownHeadings(file) {
   return slugs;
 }
 
-/** 校验 Markdown 中本地相对链接及 Markdown 章节锚点。 */
+/** Validate local relative Markdown links and heading anchors. */
 async function validateMarkdownLinks(files) {
   for (const file of files.filter((target) => target.endsWith('.md'))) {
     const source = await readFile(file, 'utf8');
@@ -80,13 +80,13 @@ async function validateMarkdownLinks(files) {
       try {
         await stat(resolved);
       } catch {
-        throw new Error(`Markdown 链接不存在：${path.relative(repositoryDirectory, file)} -> ${href || target}`);
+        throw new Error(`Markdown link missing: ${path.relative(repositoryDirectory, file)} -> ${href || target}`);
       }
       if (fragment && resolved.endsWith('.md')) {
         const slug = markdownSlug(decodeURIComponent(fragment));
         const headings = await markdownHeadings(resolved);
         if (!headings.has(slug)) {
-          throw new Error(`Markdown 章节不存在：${path.relative(repositoryDirectory, file)} -> ${target}`);
+          throw new Error(`Markdown heading missing: ${path.relative(repositoryDirectory, file)} -> ${target}`);
         }
       }
     }
@@ -101,10 +101,10 @@ await validateMarkdownLinks([...skillFiles, ...exampleFiles, ...rootMarkdownFile
 await validateBrowserScripts([...skillFiles, ...exampleFiles]);
 await import('../skills/html-prototype-build/ui/packs/admin-desktop/tools/validate-pack.mjs');
 if (process.exitCode) {
-  throw new Error('UI Pack 校验Failure，详见上方Error输出。');
+  throw new Error('UI Pack validation failed; see errors above.');
 }
 process.exitCode = 0;
 await import('../tests/runtime/index.test.mjs');
 await import('../tests/contracts/runtime.test.mjs');
 await import('../tests/examples/minimal-notes-system/prototype.test.mjs');
-console.log('Skill 统一验证通过。');
+console.log('Skill validation passed.');

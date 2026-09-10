@@ -142,7 +142,7 @@
   }
 
   /* Search within the actions subtree so nodes are found when render temporarily detaches them. */
-  function findActionsChild(selector) {
+  function findactionsChild(selector) {
     if (!state.actions) return null;
     return state.actions.querySelector(selector);
   }
@@ -151,9 +151,9 @@
     var start = ensureActionsStart();
     if (!start) return;
     var ordered = [
-      findActionsChild('.pn-scene-switch'),
-      findActionsChild('.pn-author-toolbar'),
-      findActionsChild('#at-launch')
+      findactionsChild('.pn-scene-switch'),
+      findactionsChild('.pn-author-toolbar'),
+      findactionsChild('#at-launch')
     ].filter(Boolean);
     ordered.forEach(function (el, index) {
       if (start.children[index] !== el) start.insertBefore(el, start.children[index] || null);
@@ -165,7 +165,7 @@
     var start = ensureActionsStart();
     if (!start || !state.actions) return;
     var ids = listScenarioIds();
-    var btn = findActionsChild('.pn-scene-switch');
+    var btn = findactionsChild('.pn-scene-switch');
     if (ids.length < 2) {
       if (btn) btn.remove();
       syncPanelActions();
@@ -195,7 +195,7 @@
     syncPanelActions();
   }
 
-  /* Create desktop collapse button and mobile full-page toggle button. */
+  /* create desktop collapse button and mobile full-page toggle button. */
   function buildControls(beforeNode) {
     ensureActionsStart();
     var toggle = document.createElement('button');

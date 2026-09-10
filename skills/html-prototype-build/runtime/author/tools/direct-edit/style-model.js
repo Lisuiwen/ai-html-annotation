@@ -1,4 +1,4 @@
-/* Direct Edit style model: computed values are display-only; only dirty fields are written inline. */
+/* Direct edit style model: computed values are display-only; only dirty fields are written inline. */
 (function () {
   'use strict';
 
@@ -15,7 +15,7 @@
     });
   }
   var FIELDS = [
-    { group: 'Content', key: 'text', label: 'Text', kind: 'text' },
+    { group: 'content', key: 'text', label: 'Text', kind: 'text' },
     { group: 'Size', key: 'width', label: 'Width', kind: 'length' },
     { group: 'Size', key: 'height', label: 'Height', kind: 'length' },
     { group: 'Spacing', key: 'padding', label: 'Padding', kind: 'box', sides: boxSides('padding') },

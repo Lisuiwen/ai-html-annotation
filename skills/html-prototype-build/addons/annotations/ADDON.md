@@ -17,7 +17,7 @@ Adds a right-hand notes rail, SVG connectors, mobile note switching, and busines
 
 - This Addon does not provide product navigation, forms, data, or feedback components.
 - Annotation-layer visuals must not be written into the selected UI pack's product Tokens.
-- Mark review pins, Notes Editor, Inspector, and the local server are not part of this Addon.
+- Mark review pins, Notes editor, Inspector, and the local server are not part of this Addon.
 - The Addon only consumes current state to decide note display; it must not add new business state sources.
 - Do not add new `data-*` for state; use `data-prototype-note-target` as an anchor fallback only when no suitable `id` exists.
 
@@ -29,4 +29,4 @@ Adds a right-hand notes rail, SVG connectors, mobile note switching, and busines
 
 ## Resources
 
-- Example and declarative interface: `ui-annotations.html`
+- example and declarative interface: `ui-annotations.html`

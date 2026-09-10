@@ -14,7 +14,7 @@
       visible = visible.filter(function (key) { return keys.indexOf(key) !== -1; });
     }
     return {
-      status: core.normalizeChartStatus(state.status, true),
+      status: core.normalizeChartstate(state.status, true),
       categories: Array.isArray(state.categories) ? state.categories : undefined,
       series: series || undefined,
       visibleSeries: visible || undefined,

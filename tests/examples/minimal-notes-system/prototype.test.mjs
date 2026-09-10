@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const sourceUrl = new URL('../../../examples/minimal-notes-system/prototype/prototype.js', import.meta.url);
 const handoffTemplateUrl = new URL('../../../skills/html-prototype-build/templates/AGENTS.md', import.meta.url);
-const handoffExampleUrl = new URL('../../../examples/minimal-notes-system/AGENTS.md', import.meta.url);
+const handoffexampleUrl = new URL('../../../examples/minimal-notes-system/AGENTS.md', import.meta.url);
 
 function classList() {
   const values = new Set();
@@ -71,7 +71,7 @@ async function boot() {
   };
   const options = {
     strategyName: [node('Name A'), node('Name B')],
-    strategyCondition: [node('items件 A'), node('items件 B')]
+    strategyCondition: [node('items A'), node('items B')]
   };
   const documentListeners = new Map();
   const document = {
@@ -118,15 +118,15 @@ async function boot() {
   return { adapter, ids, activated, patches, focusLog };
 }
 
-test('Example交接说明与 Skill 模板一致', async () => {
+test('example handoff doc matches Skill template', async () => {
   const [template, example] = await Promise.all([
     readFile(handoffTemplateUrl, 'utf8'),
-    readFile(handoffExampleUrl, 'utf8')
+    readFile(handoffexampleUrl, 'utf8')
   ]);
   assert.equal(example, template);
 });
 
-test('Example Adapter 规范化 page、layers 与 select 局部Status', async () => {
+test('example Adapter 规范化 page、layers 与 select 局部state', async () => {
   const { adapter } = await boot();
   const normalized = adapter.normalize({
     page: 'unknown',
@@ -140,14 +140,14 @@ test('Example Adapter 规范化 page、layers 与 select 局部Status', async ()
   assert.equal(normalized.selects.strategyCondition.open, false);
 });
 
-test('Example浮层栈顺序变化会重新聚焦新 顶层浮层', async () => {
+test('example浮层栈顺序变化会重新聚焦新 顶层浮层', async () => {
   const { adapter, focusLog } = await boot();
   adapter.apply({ page: 'list', layers: ['create', 'edit'], selects: {} });
   adapter.apply({ page: 'list', layers: ['edit', 'create'], selects: {} });
   assert.deepEqual(focusLog, ['edit', 'create']);
 });
 
-test('Example主要业务入口通过显式 scenario 驱动', async () => {
+test('example main business entry driven by explicit scenario', async () => {
   const { ids, activated } = await boot();
   ids.createButton.dispatch('click');
   assert.deepEqual(activated, ['create']);

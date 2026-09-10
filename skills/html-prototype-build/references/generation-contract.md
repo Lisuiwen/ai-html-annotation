@@ -23,7 +23,7 @@ This file only keeps the hard constraints shared by every generation path. The o
 ## 2. Visuals
 
 - Define and use Tokens in `prototype/prototype.css` consistent with the current foundation's `design-system.md` and `foundation/tokens.css`.
-- Foundation and Case colors must use named tokens; layout dimensions may stay in the page CSS as long as they come from the current materials.
+- Foundation and project materials must use named tokens; layout dimensions may stay in the page CSS as long as they come from the current materials.
 - If a requirement adds visual values without sufficient evidence, do not invent tokens; omit the visual or use `ponytail:` to mark the current ceiling and the evidence required to upgrade.
 - Tailwind, if used, may only handle layout, e.g. flex/grid, positioning, width/height, overflow, and responsive visibility; it must not use Tailwind color, border, radius, shadow, font, font-size, line-height, spacing, or interaction-state classes to override `ui-*` visual tokens.
 
@@ -102,19 +102,19 @@ Every prototype generates the same structure:
 - When a chart component depending on `data._echarts-core` is selected, copy `vendor/echarts/echarts.min.js` to `assets/echarts.min.js`, and copy `runtime/client/charts/bridge.js` and `runtime/client/charts/presets.js` into `prototype/`; load ECharts and the chart runtime before `notes.snapshot.js`.
 - When `data.chart-map` is selected, also copy the corresponding geo json/js to `assets/maps/`; under `file://`, fetching JSON is blocked, so the geo must be pre-registered into `window.PrototypeMapRegistry` by a script. Map geo must not reference a CDN or be written into `component.html`.
 - Screenshots are stored only under the root `screenshots/` and are not a page runtime dependency; `assets/` must not be an empty directory.
-- `runtime/author/`, `runtime/server/`, and `runtime/cli/` are not formal page runtime dependencies; Author Bootstrap, Direct Edit, Notes Editor, Inspector, the local service, and source-locating information must not enter the formal deliverable.
-- Direct Edit is loaded dynamically only in the authoring service session; style and copy changes are written back to the source HTML via `/__prototype-author/edit` and do not enter the formal HTML load structure.
+- `runtime/author/`, `runtime/server/`, and `runtime/cli/` are not formal page runtime dependencies; Author Bootstrap, Direct edit, Notes editor, Inspector, the local service, and source-locating information must not enter the formal deliverable.
+- Direct edit is loaded dynamically only in the authoring service session; style and copy changes are written back to the source HTML via `/__prototype-author/edit` and do not enter the formal HTML load structure.
 - Mark is loaded dynamically only in the authoring service session; pins write only to localStorage and never inject any runtime into the source HTML, so the formal delivery needs no "strip Mark injection" step.
 - Forbid inlining any annotation editing logic in `prototype.html` (including `file://`-specific scripts, `prompt()`-based note edits, or writing card overrides/custom notes to localStorage); `file://` only displays the snapshot read-only, and editing must go through `runtime/server/index.mjs` as described in [local-authoring.md](local-authoring.md).
 
 ## 8. Dependencies
 
-- Default to native HTML, CSS, and JavaScript, with no external CDN dependency.
+- default to native HTML, CSS, and JavaScript, with no external CDN dependency.
 - External CDNs may be introduced only when the user explicitly asks, or when the prototype goal cannot be reasonably achieved with existing local resources and platform-native capabilities.
-- Confirm necessity before introducing anything; do not pull in Tailwind, Font Awesome, React, or external component library resources for icons, layout, basic components, or light interactions.
+- confirm necessity before introducing anything; do not pull in Tailwind, Font Awesome, React, or external component library resources for icons, layout, basic components, or light interactions.
 - Prefer text symbols, inline SVG, or existing legal local resources for icons, and provide an accessible name.
 
-## 9. Content & data
+## 9. content & data
 
 - Forbid carrying any example business names, system names, menu names, field names, codes, people, departments, channels, dates, or data over from historical prototypes or other tasks.
 - Forbid mistaking structural examples in components, Patterns, or Presets for the user's business content; after copying, replace them with the current requirements or neutral placeholders.

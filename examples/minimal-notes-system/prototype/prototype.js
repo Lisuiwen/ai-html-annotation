@@ -164,11 +164,11 @@
 
     const action = actionTarget.dataset.action;
     if (action === 'edit') activateLayerScenario('edit');
-    if (action === 'delete' && window.confirm('Delete this configuration item?')) showToast('Deleted');
+    if (action === 'delete' && window.confirm('delete this configuration item?')) showToast('deleted');
     if (action === 'close') activateLayerScenario('base');
     if (action === 'save') {
       activateLayerScenario('base');
-      showToast('Saved');
+      showToast('saved');
     }
     if (action === 'select-toggle') {
       const id = findSelectId(actionTarget);

@@ -8,7 +8,7 @@
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : {};
     return {
-      status: core.normalizeChartStatus(state.status, true),
+      status: core.normalizeChartstate(state.status, true),
       mapId: typeof state.mapId === 'string' ? state.mapId : undefined,
       data: Array.isArray(state.data) ? state.data : undefined,
       visualMap: state.visualMap && typeof state.visualMap === 'object' ? state.visualMap : undefined,
@@ -30,7 +30,7 @@
     root.__chartMapGen = gen;
     core.projectShell(root, 'loading');
     var summary = root.querySelector('.ui-chart-summary');
-    if (summary) summary.textContent = 'Loading map…';
+    if (summary) summary.textContent = 'loading map…';
     bridge.loadMapJson(state.mapId || 'china').then(function () {
       if (root.__chartMapGen !== gen || root.dataset.status === 'empty') return;
       core.renderLeaf(root, { status: 'data', mapId: state.mapId, data: state.data, visualMap: state.visualMap, roam: state.roam }, {

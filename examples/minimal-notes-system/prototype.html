@@ -78,9 +78,9 @@
                       <th>Name</th>
                       <th>Code</th>
                       <th>Description</th>
-                      <th>Created By</th>
-                      <th>Created At</th>
-                      <th>Actions</th>
+                      <th>created By</th>
+                      <th>created At</th>
+                      <th>actions</th>
                     </tr>
                   </thead>
                   <tbody id="preconditionRows">
@@ -92,17 +92,17 @@
                       <td>2026-01-15 09:30:00</td>
                       <td>
                         <div class="ui-table-actions">
-                          <button class="ui-button ui-button--text" type="button" data-action="edit" data-ui-interactive>Edit</button>
-                          <button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button>
+                          <button class="ui-button ui-button--text" type="button" data-action="edit" data-ui-interactive>edit</button>
+                          <button class="ui-button ui-button--text" type="button" data-action="delete">delete</button>
                         </div>
                       </td>
                     </tr>
-                    <tr><td>Default Timeout</td><td>default_timeout</td><td>Default task timeout, in minutes</td><td>maintainer-b</td><td>2026-01-16 10:15:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">Edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button></td></tr>
-                    <tr><td>Display Name</td><td>display_name</td><td>Configuration item name shown in lists</td><td>maintainer-a</td><td style="width: 210px">2026-01-16 14:20:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">Edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button></td></tr>
-                    <tr><td>Auto Archive</td><td>auto_archive</td><td>Whether to auto-archive completed records; 0 means off, 1 means on</td><td>maintainer-c</td><td>2026-01-17 09:00:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">Edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button></td></tr>
-                    <tr><td>Max Retry Count</td><td>max_retry_count</td><td>Maximum retry count after a task failure</td><td>maintainer-b</td><td>2026-01-17 11:45:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">Edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button></td></tr>
-                    <tr><td>Language Preference</td><td>locale</td><td>Default interface language setting</td><td>maintainer-a</td><td>2026-01-18 16:30:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">Edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button></td></tr>
-                    <tr><td>Page Theme</td><td>theme_mode</td><td>Interface theme; choose light or dark</td><td>maintainer-c</td><td>2026-01-19 08:40:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">Edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">Delete</button></td></tr>
+                    <tr><td>default Timeout</td><td>default_timeout</td><td>default task timeout, in minutes</td><td>maintainer-b</td><td>2026-01-16 10:15:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">delete</button></td></tr>
+                    <tr><td>Display Name</td><td>display_name</td><td>Configuration item name shown in lists</td><td>maintainer-a</td><td style="width: 210px">2026-01-16 14:20:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">delete</button></td></tr>
+                    <tr><td>Auto Archive</td><td>auto_archive</td><td>Whether to auto-archive completed records; 0 means off, 1 means on</td><td>maintainer-c</td><td>2026-01-17 09:00:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">delete</button></td></tr>
+                    <tr><td>Max Retry Count</td><td>max_retry_count</td><td>Maximum retry count after a task failure</td><td>maintainer-b</td><td>2026-01-17 11:45:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">delete</button></td></tr>
+                    <tr><td>Language Preference</td><td>locale</td><td>default interface language setting</td><td>maintainer-a</td><td>2026-01-18 16:30:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">delete</button></td></tr>
+                    <tr><td>Page Theme</td><td>theme_mode</td><td>Interface theme; choose light or dark</td><td>maintainer-c</td><td>2026-01-19 08:40:00</td><td><button class="ui-button ui-button--text" type="button" data-action="edit">edit</button>　<button class="ui-button ui-button--text" type="button" data-action="delete">delete</button></td></tr>
                   </tbody>
                 </table>
               </div>
@@ -124,20 +124,20 @@
           <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> Code:</span><input class="ui-input" id="createCode" maxlength="36" placeholder="Up to 36 characters"></label>
           <label class="ui-field"><span class="ui-field-label">Description:</span><textarea class="ui-input" id="createDescription" placeholder="Enter a description"></textarea></label>
         </div>
-        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">Cancel</button><button class="ui-button ui-button--primary" type="button" data-action="save">OK</button></div>
+        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">cancel</button><button class="ui-button ui-button--primary" type="button" data-action="save">OK</button></div>
       </div>
     </div>
 
-    <!-- Edit configuration item modal. -->
+    <!-- edit configuration item modal. -->
     <div class="ui-overlay" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editTitle" aria-hidden="true" hidden>
       <div class="ui-modal">
-        <div class="ui-layer-head"><strong id="editTitle">Edit</strong><button class="ui-close" type="button" data-action="close" aria-label="Close">×</button></div>
+        <div class="ui-layer-head"><strong id="editTitle">edit</strong><button class="ui-close" type="button" data-action="close" aria-label="Close">×</button></div>
         <div class="ui-layer-body" id="editForm">
           <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> Name:</span><input class="ui-input" value="Notification Switch"></label>
           <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> Code:</span><input class="ui-input" value="notification_enabled"></label>
           <label class="ui-field"><span class="ui-field-label">Description:</span><textarea class="ui-input">Whether notifications are enabled; 0 means off, 1 means on</textarea></label>
         </div>
-        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">Cancel</button><button class="ui-button ui-button--primary" type="button" data-action="save">OK</button></div>
+        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">cancel</button><button class="ui-button ui-button--primary" type="button" data-action="save">OK</button></div>
       </div>
     </div>
 
@@ -152,16 +152,16 @@
               <button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-controls="strategyNameOptions" aria-expanded="false" data-action="select-toggle" data-ui-interactive><span id="strategyNameValue">Please select</span><span aria-hidden="true">⌄</span></button>
               <div class="ui-select-menu" id="strategyNameOptions" role="listbox">
                 <button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">Notification Switch</button>
-                <button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">Default Timeout</button>
+                <button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">default Timeout</button>
                 <button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">Display Name</button>
               </div>
             </div>
           </div>
           <label class="ui-field"><span class="ui-field-label">Code:</span><input class="ui-input" placeholder="Enter here"></label>
           <div class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> Condition:</span><div class="ui-select" id="strategyConditionSelect"><button class="ui-select-trigger" type="button" aria-haspopup="listbox" aria-controls="strategyConditionOptions" aria-expanded="false" data-action="select-toggle"><span id="strategyConditionValue">Please select</span><span aria-hidden="true">⌄</span></button><div class="ui-select-menu" id="strategyConditionOptions" role="listbox"><button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">Equals</button><button class="ui-select-option" type="button" role="option" aria-selected="false" data-action="select-option">Greater than</button></div></div></div>
-          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> Status:</span><input class="ui-input" placeholder="Enter here"></label>
+          <label class="ui-field"><span class="ui-field-label"><span class="ui-required" aria-hidden="true">*</span> state:</span><input class="ui-input" placeholder="Enter here"></label>
         </div>
-        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">Cancel</button><button class="ui-button ui-button--primary" type="button" data-action="save">OK</button></div>
+        <div class="ui-layer-foot"><button class="ui-button" type="button" data-action="close">cancel</button><button class="ui-button ui-button--primary" type="button" data-action="save">OK</button></div>
       </div>
     </div>
   </div>

@@ -5,9 +5,9 @@
   var core = window.PrototypeChartCore = window.PrototypeChartCore || {};
 
   /** Normalize chart status; aligned with data.list three-state contract. */
-  function normalizeChartStatus(status, allowLoading) {
+  function normalizeChartstate(status, allowloading) {
     if (status === 'empty') return 'empty';
-    if (allowLoading && status === 'loading') return 'loading';
+    if (allowloading && status === 'loading') return 'loading';
     return 'data';
   }
 
@@ -57,7 +57,7 @@
     }
   }
 
-  core.normalizeChartStatus = normalizeChartStatus;
+  core.normalizeChartstate = normalizeChartstate;
   core.render = render;
   core.destroy = destroy;
   core.renderLeaf = renderLeaf;

@@ -55,7 +55,7 @@ function readJson(request) {
       if (size > limit) {
         settled = true;
         body = '';
-        reject(new Error('Annotation payload exceeds 2MB limit.'));
+        reject(new error('Annotation payload exceeds 2MB limit.'));
         return;
       }
       body += chunk;
@@ -63,7 +63,7 @@ function readJson(request) {
     request.on('end', () => {
       if (settled) return;
       settled = true;
-      try { resolveBody(JSON.parse(body)); } catch { reject(new Error('Request body is not valid JSON.')); }
+      try { resolveBody(JSON.parse(body)); } catch { reject(new error('Request body is not valid JSON.')); }
     });
     request.on('error', (error) => {
       if (settled) return;

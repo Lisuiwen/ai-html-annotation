@@ -14,11 +14,11 @@ async function boot() {
   return { window, document, listeners, registered, get mode() { return mode; } };
 }
 
-test('Inspector 初始化Sign up全局事件和 PrototypeAuthor 插件', async () => {
+test('Inspector init registers globals and PrototypeAuthor plugin', async () => {
   const env = await boot(); assert.equal(env.window.__PROTOTYPE_INSPECTOR_LOADED__, true); assert.equal(typeof env.listeners.get('keydown'), 'function'); assert.equal(typeof env.listeners.get('mousemove'), 'function'); assert.equal(typeof env.listeners.get('click'), 'function'); assert.equal(env.registered[0][0], 'inspector');
 });
 
-test('Alt+Shift 进入 inspector，松键退出', async () => {
+test('Alt+Shift enters inspector; release exits', async () => {
   const env = await boot(); env.listeners.get('keydown')({ altKey: true, shiftKey: true, metaKey: false, ctrlKey: false }); assert.equal(env.mode, 'inspector'); assert.equal(env.document.body.classList.contains('pi-inspecting'), true);
   env.listeners.get('keyup')({ altKey: false, shiftKey: true, metaKey: false, ctrlKey: false }); assert.equal(env.mode, ''); assert.equal(env.document.body.classList.contains('pi-inspecting'), false);
 });

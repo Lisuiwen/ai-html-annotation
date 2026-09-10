@@ -17,14 +17,14 @@ function validSnapshot() {
   };
 }
 
-test('validateSnapshot 接受对象式和数组式 scenarios', () => {
+test('validateSnapshot accepts object and array scenarios', () => {
   assert.equal(validateSnapshot(validSnapshot()), true);
   const array = validSnapshot();
   array.scenarios = [{ id: 'base', state: {} }, { id: 'modal' }];
   assert.equal(validateSnapshot(array), true);
 });
 
-test('validateSnapshot 拒绝Error schema/header/cards/scenarios/when', () => {
+test('validateSnapshot rejects bad schema/header/cards/scenarios/when', () => {
   assert.equal(validateSnapshot(null), false);
   assert.equal(validateSnapshot({ ...validSnapshot(), schemaVersion: 1 }), false);
   assert.equal(validateSnapshot({ ...validSnapshot(), header: {} }), false);
@@ -36,7 +36,7 @@ test('validateSnapshot 拒绝Error schema/header/cards/scenarios/when', () => {
   assert.equal(validateSnapshot(badWhen), false);
 });
 
-test('serializeSnapshot 保持单一 window 赋值格式', () => {
+test('serializeSnapshot keeps single window assignment format', () => {
   const data = validSnapshot();
   const source = serializeSnapshot(data);
   assert.match(source, /^\/\* Canonical prototype annotation data source/);
@@ -45,7 +45,7 @@ test('serializeSnapshot 保持单一 window 赋值格式', () => {
   assert.equal(JSON.parse(source.match(/window\.__PROTOTYPE_NOTES__ = ([\s\S]*);\n$/)[1]).schemaVersion, 2);
 });
 
-test('writeSnapshot 使用临HourA件后原子替换', () => {
+test('writeSnapshot uses temp file then atomic replace', () => {
   const dir = mkdtempSync(join(tmpdir(), 'prototype-snapshot-'));
   try {
     const target = join(dir, 'notes.snapshot.js');

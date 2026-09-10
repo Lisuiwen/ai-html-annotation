@@ -1,4 +1,4 @@
-/* Upload control local state projection: syncs variant, disabled, and file list only; does not handle selection or upload requests. */
+/* upload control local state projection: syncs variant, disabled, and file list only; does not handle selection or upload requests. */
 (function () {
   'use strict';
   var adapters = window.PrototypeUiAdapters = window.PrototypeUiAdapters || {};
@@ -22,7 +22,7 @@
       files: Array.isArray(state.files) ? state.files.map(normalizeFile).filter(function (file) { return file.uid && file.name; }) : []
     };
   }
-  /* Create list item DOM from file state. */
+  /* create list item DOM from file state. */
   function createFileItem(file) {
     var item = document.createElement('li');
     item.className = 'ui-upload-list-item is-' + file.status;
@@ -42,7 +42,7 @@
     if (file.status === 'error') {
       var status = document.createElement('span');
       status.className = 'ui-upload-list-item-status';
-      status.textContent = 'Upload failed';
+      status.textContent = 'upload failed';
       item.appendChild(status);
     }
     return item;

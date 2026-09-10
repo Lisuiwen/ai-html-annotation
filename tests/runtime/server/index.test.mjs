@@ -24,7 +24,7 @@ async function freePort() {
 async function waitForServer(child) {
   return new Promise((resolve, reject) => {
     let stderr = '';
-    const timer = setTimeout(() => reject(new Error(`Author server startup timeout: ${stderr}`)), 5000);
+    const timer = setTimeout(() => reject(new Error(`Author server startup timed out: ${stderr}`)), 5000);
     child.stderr.on('data', (chunk) => { stderr += String(chunk); });
     child.stdout.on('data', (chunk) => {
       if (!String(chunk).includes('Author server: http://127.0.0.1:')) return;
@@ -38,7 +38,7 @@ async function waitForServer(child) {
   });
 }
 
-test('Server 入口只装配 HTTP 路由，Snapshot 与 Inspector 逻辑由独立模块提供', async () => {
+test('Server entry wires HTTP routes only; Snapshot and Inspector from separate modules', async () => {
   const source = await readFile(serverUrl, 'utf8');
   assert.match(source, /from '\.\/snapshot\.mjs'/);
   assert.match(source, /from '\.\/inspector\.mjs'/);
@@ -50,7 +50,7 @@ test('Server 入口只装配 HTTP 路由，Snapshot 与 Inspector 逻辑由独�
   assert.match(source, /loadEnvFile\(join\(skillRoot, '\.env'\)\)/);
 });
 
-test('Server HTTP 集成守住资源边界并可写回 HTML / snapshot', async (t) => {
+test('Server HTTP integration guards resource boundaries and writes HTML / snapshot', async (t) => {
   const directory = await mkdtemp(join(tmpdir(), 'ai-html-author-'));
   const htmlPath = join(directory, 'prototype.html');
   const snapshotPath = join(directory, 'notes.snapshot.js');

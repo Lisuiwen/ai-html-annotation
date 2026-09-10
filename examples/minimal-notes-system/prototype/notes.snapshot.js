@@ -24,7 +24,7 @@ window.__PROTOTYPE_NOTES__ = {
       "state": {}
     },
     "create": {
-      "label": "Create",
+      "label": "create",
       "extends": "base",
       "state": {
         "product": {
@@ -35,7 +35,7 @@ window.__PROTOTYPE_NOTES__ = {
       }
     },
     "edit": {
-      "label": "Edit",
+      "label": "edit",
       "extends": "base",
       "state": {
         "product": {
@@ -109,7 +109,7 @@ window.__PROTOTYPE_NOTES__ = {
           "create"
         ]
       },
-      "title": "Create fields",
+      "title": "create fields",
       "body": "Name and code are limited to 36 characters; submitting creates a new configuration item.",
       "target": {
         "anchor": "createForm",
@@ -124,11 +124,11 @@ window.__PROTOTYPE_NOTES__ = {
           "edit"
         ]
       },
-      "title": "Edit fields",
-      "body": "Editing pre-fills the existing name, code and description; confirm to save the changes.",
+      "title": "edit fields",
+      "body": "editing pre-fills the existing name, code and description; confirm to save the changes.",
       "target": {
         "anchor": "editForm",
-        "label": "Edit configuration item form"
+        "label": "edit configuration item form"
       }
     },
     {

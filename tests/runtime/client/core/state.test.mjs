@@ -11,7 +11,7 @@ async function bootCoordinator() {
   return window.PrototypeViewers;
 }
 
-test('PrototypeViewers 按 normalize → apply → render Submit', async () => {
+test('PrototypeViewers commits in normalize → apply → render order', async () => {
   const api = await bootCoordinator();
   const order = [];
   api.registerState('product', { normalize(value) { order.push('normalize'); return { ...(value || {}), normalized: true }; }, apply(value) { order.push('apply'); assert.equal(value.normalized, true); } });
@@ -20,7 +20,7 @@ test('PrototypeViewers 按 normalize → apply → render Submit', async () => {
   assert.deepEqual(order, ['normalize', 'apply', 'render']);
 });
 
-test('getState Back深副本，外部修改不污染唯一Status', async () => {
+test('getState returns deep copy; external edits do not mutate source of truth', async () => {
   const api = await bootCoordinator();
   api.setState({ product: { page: 'list', filters: ['a'] } });
   const state = api.getState(); state.product.page = 'bad'; state.product.filters.push('b');
@@ -28,7 +28,7 @@ test('getState Back深副本，外部修改不污染唯一Status', async () => {
   assert.deepEqual(Array.from(api.getState().product.filters), ['a']);
 });
 
-test('场景继承基于 baseline，patchState Default退出场景', async () => {
+test('scenario inheritance uses baseline; patchState exits scenario by default', async () => {
   const api = await bootCoordinator();
   api.setState({ product: { page: 'base', layer: '' } }, { baseline: true });
   api.registerScenario('parent', { state: { product: { page: 'detail' } } });
@@ -40,7 +40,7 @@ test('场景继承基于 baseline，patchState Default退出场景', async () =>
   assert.equal(api.getActiveScenario(), '');
 });
 
-test('循环场景继承Back false', async () => {
+test('cyclic scenario inheritance returns false', async () => {
   const api = await bootCoordinator();
   api.registerScenario('a', { extends: 'b', state: {} });
   api.registerScenario('b', { extends: 'a', state: {} });

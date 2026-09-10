@@ -12,29 +12,29 @@ The authoring service binds only to `127.0.0.1`, dynamically injects the `runtim
 node <skill-root>/runtime/server/index.mjs <prototype.html> --snapshot=prototype/notes.snapshot.js
 ```
 
-Open the `http://127.0.0.1:4178/...` URL printed by the terminal. Without `--snapshot`, Direct Edit, Mark, and Inspector still work, but formal annotation cards cannot be saved.
+Open the `http://127.0.0.1:4178/...` URL printed by the terminal. Without `--snapshot`, Direct edit, Mark, and Inspector still work, but formal annotation cards cannot be saved.
 
 The IDE jump configuration lives in `<skill-root>/.env`, with the template at [.env.example](../.env.example).
 
 ## In-page authoring tools
 
-In the Author Tools overlay, `Edit` and `Mark` are two tabs of the same panel; the right-rail formal annotations and the Inspector are each independent.
+In the Author Tools overlay, `edit` and `Mark` are two tabs of the same panel; the right-rail formal annotations and the Inspector are each independent.
 
 | Goal | Page operation |
 |---|---|
-| Direct Edit | Open Author Tools → `Edit`, hold `Ctrl` (macOS: `⌘`) and click a page element; save after modifying to write back to the source HTML. |
+| Direct edit | Open Author Tools → `edit`, hold `Ctrl` (macOS: `⌘`) and click a page element; save after modifying to write back to the source HTML. |
 | Mark review | Open Author Tools → `Mark`, or press `M`; hold `Ctrl` (macOS: `⌘`) and click an element to add a pin. |
-| Edit formal annotations | Double-click an annotation title, body, or header copy; press `Enter` to save title/header, `Ctrl + Enter` (macOS: `⌘ + Enter`) to save body, `Esc` to cancel. |
+| edit formal annotations | Double-click an annotation title, body, or header copy; press `Enter` to save title/header, `Ctrl + Enter` (macOS: `⌘ + Enter`) to save body, `Esc` to cancel. |
 | Manage formal annotations | Use `+`, edit, target binding, delete, and drag-to-reorder. |
 | Inspector | Hold `Alt + Shift`, hover and click a target to jump to the IDE source location. |
 | Switch page scenario | Use the right-side scenario buttons, or `?scene=<scenario-id>`. |
 
 ## Platform differences
 
-Direct Edit and Mark share the element-picking logic in `author/core/picker.js`:
+Direct edit and Mark share the element-picking logic in `author/core/picker.js`:
 
 - **Windows / Linux**: hold `Ctrl` + left-click to select an element; a normal click does not intercept the page.
-- **macOS**: prefer `⌘` + left-click; a `Control` + left-click that triggers the context menu also selects (applies to both Edit and Mark).
+- **macOS**: prefer `⌘` + left-click; a `Control` + left-click that triggers the context menu also selects (applies to both edit and Mark).
 
 Formal annotation body save shortcuts:
 

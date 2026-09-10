@@ -4,12 +4,12 @@ Thank you for contributing to HTML Prototype Build. The project is in experiment
 
 ## Before you submit
 
-- Save files as UTF-8.
+- save files as UTF-8.
 - Prefer Node.js built-in modules; do not add dependencies for small features.
 - Use neutral or clearly fictional data in new prototype content.
 - Prefer English comments for new code in runtime scripts, functions, and major code blocks (legacy Chinese may remain in untouched blocks).
 - Use `ponytail:` comments for intentionally simplified interactions, uncollected states, and static placeholders, stating limits and upgrade paths.
-- Formal deliverables must not include html-mark, Author Loader, Editor, Inspector, or temporary tokens.
+- Formal deliverables must not include html-mark, Author Loader, editor, Inspector, or temporary tokens.
 
 ## How to submit
 

@@ -9,36 +9,36 @@ const manifestPath = path.join(packDirectory, 'manifest.json');
 const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
 const errors = [];
 
-/** 检查 manifest 中引用 相对A件YesNo存在。 */
+/** Ensure a relative path referenced by the manifest exists. */
 async function requireFile(relativePath, label, rootDirectory = packDirectory) {
   try {
     const entry = await stat(path.join(rootDirectory, relativePath));
-    if (!entry.isFile()) errors.push(`${label} 不YesA件: ${relativePath}`);
+    if (!entry.isFile()) errors.push(`${label} is not a file: ${relativePath}`);
   } catch (err) {
     if (err && err.code === 'ENOENT') {
-      errors.push(`${label} 不存在: ${relativePath}`);
+      errors.push(`${label} missing: ${relativePath}`);
     } else {
-      errors.push(`${label} 无法Visit: ${relativePath} (${err.message})`);
+      errors.push(`${label} inaccessible: ${relativePath} (${err.message})`);
     }
   }
 }
 
-/** 检查A本资源使用 UTF-8、无 BOM，且实现A件不引入外部 URL。 */
+/** Text assets must be UTF-8 without BOM; implementation files must not reference external URLs. */
 async function validateTextFile(relativePath) {
   const buffer = await readFile(path.join(packDirectory, relativePath));
   if (buffer[0] === 0xef && buffer[1] === 0xbb && buffer[2] === 0xbf) {
-    errors.push(`A件不得包含 UTF-8 BOM: ${relativePath}`);
+    errors.push(`File must not contain a UTF-8 BOM: ${relativePath}`);
   }
   const content = new TextDecoder('utf-8', { fatal: true }).decode(buffer);
-  if (/https?:\/\//i.test(content)) errors.push(`实现A件不得引用外部 URL: ${relativePath}`);
+  if (/https?:\/\//i.test(content)) errors.push(`Implementation file must not reference external URLs: ${relativePath}`);
 }
 
-/** 读取契约 frontmatter 中  id，验证索引和叶子契约没有漂移。 */
+/** Read contract frontmatter id and verify index and leaf contracts stay aligned. */
 async function validateContractId(id, relativePath) {
   const content = await readFile(path.join(packDirectory, relativePath), 'utf8');
   const match = content.match(/^---\s*[\s\S]*?^id:\s*([^\r\n]+)[\s\S]*?^---/m);
   if (!match || match[1].trim() !== id) {
-    errors.push(`契约 id 不匹配: ${id} -> ${relativePath}`);
+    errors.push(`Contract id mismatch: ${id} -> ${relativePath}`);
   }
 }
 
@@ -48,32 +48,32 @@ const registries = {
   ...manifest.presets
 };
 
-await requireFile(manifest.foundation.contract, 'Foundation 契约');
+await requireFile(manifest.foundation.contract, 'Foundation contract');
 for (const source of manifest.foundation.sources) {
-  await requireFile(source, 'Foundation 源');
+  await requireFile(source, 'Foundation source');
   await validateTextFile(source);
 }
 
 const componentRootEntries = await readdir(path.join(packDirectory, 'components'), { withFileTypes: true });
 for (const entry of componentRootEntries) {
   if (entry.isFile() && entry.name.endsWith('.html')) {
-    errors.push(`不得保留类别聚合A件: components/${entry.name}`);
+    errors.push(`Category aggregate files must not remain: components/${entry.name}`);
   }
 }
 
 for (const [id, entry] of Object.entries(registries)) {
-  await requireFile(entry.contract, `${id} 契约`);
-  await requireFile(entry.source, `${id} 实现`);
+  await requireFile(entry.contract, `${id} contract`);
+  await requireFile(entry.source, `${id} implementation`);
   await validateTextFile(entry.contract);
   await validateTextFile(entry.source);
   if (entry.adapter) {
-    await requireFile(entry.adapter, `${id} Status Adapter`);
+    await requireFile(entry.adapter, `${id} state adapter`);
     await validateTextFile(entry.adapter);
   }
   await validateContractId(id, entry.contract);
 
   for (const dependency of [...(entry.requires ?? []), ...(entry.optional ?? []), ...(entry.uses ?? [])]) {
-    if (!registries[dependency]) errors.push(`${id} 引用了未知依赖: ${dependency}`);
+    if (!registries[dependency]) errors.push(`${id} references unknown dependency: ${dependency}`);
   }
 
   for (const vendorPath of entry.vendor ?? []) {
@@ -90,16 +90,16 @@ for (const [id, entry] of Object.entries(registries)) {
 for (const [id, entry] of Object.entries({ ...manifest.patterns, ...manifest.presets })) {
   for (const dependency of [...(entry.requires ?? []), ...(entry.optional ?? []), ...(entry.uses ?? [])]) {
     if (manifest.components[dependency]?.visibility === 'internal') {
-      errors.push(`${id} 不得直接引用私有组件: ${dependency}`);
+      errors.push(`${id} must not reference private component directly: ${dependency}`);
     }
   }
 }
 
-/** 深度优先检查强依赖和 uses  循环。 */
+/** Depth-first cycle check for requires and uses. */
 function visit(id, visiting = new Set(), visited = new Set()) {
   if (visited.has(id)) return;
   if (visiting.has(id)) {
-    errors.push(`检测To循环依赖: ${[...visiting, id].join(' -> ')}`);
+    errors.push(`Cycle detected: ${[...visiting, id].join(' -> ')}`);
     return;
   }
   visiting.add(id);
@@ -117,5 +117,5 @@ if (errors.length) {
   console.error(errors.join('\n'));
   process.exitCode = 1;
 } else {
-  console.log(`UI Pack 有效：${Object.keys(manifest.components).length} 组件，${Object.keys(manifest.patterns).length}  Pattern，${Object.keys(manifest.presets).length}  Preset。`);
+  console.log(`UI Pack valid: ${Object.keys(manifest.components).length} components, ${Object.keys(manifest.patterns).length} patterns, ${Object.keys(manifest.presets).length} presets.`);
 }

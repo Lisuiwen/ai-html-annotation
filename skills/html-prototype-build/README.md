@@ -1,6 +1,6 @@
 # HTML Prototype Build
 
-[中A](README.zh-CN.md)
+[中文](README.zh-CN.md)
 
 An HTML product-prototype Skill for AI agents: generate pages from UI packs, maintain formal notes on the real DOM, review and jump to source, and output scenario screenshots for delivery.
 
@@ -24,16 +24,16 @@ A complete task typically yields three outputs:
 | `notes.snapshot.js` | Single source of truth for formal notes, scenario states, and the screenshot manifest |
 | Per-scenario PNGs | Clean page screenshots without the notes rail, connectors, or author tools |
 
-Formal prototypes keep only semantic DOM, stable anchors, and the read-only Viewer; Mark, Direct Edit, Notes Editor, Inspector, and the local authoring server all belong to the **authoring layer** and never enter the delivered HTML.
+Formal prototypes keep only semantic DOM, stable anchors, and the read-only Viewer; Mark, Direct edit, Notes editor, Inspector, and the local authoring server all belong to the **authoring layer** and never enter the delivered HTML.
 
 ## Typical usage
 
 No need to memorize commands — work by intent:
 
-1. **Create or heavily change a page**
+1. **create or heavily change a page**
    Enable this Skill in Cursor, Claude Code, Codex, or other clients, describe the requirement in natural language or attach materials, and let the agent generate `prototype.html` and `prototype/`. Constraints and task routing: [SKILL.md](SKILL.md).
 2. **Keep working on the page**
-   To change styles or notes, drop review pins, or jump from an element back to source, operate through the local authoring server in the browser. Direct Edit and Mark share the Author Tools panel; capabilities are described in [Local authoring](references/local-authoring.md) and [Review mark](references/review-mark.md).
+   To change styles or notes, drop review pins, or jump from an element back to source, operate through the local authoring server in the browser. Direct edit and Mark share the Author Tools panel; capabilities are described in [Local authoring](references/local-authoring.md) and [Review mark](references/review-mark.md).
 3. **Capture scenarios or deliver**
    For batch clean-page screenshots or final file assembly, see [Scenario screenshots](references/screenshots.md) and [Delivery & iteration](references/delivery.md).
 
@@ -45,8 +45,8 @@ The [`examples/minimal-notes-system`](../../examples/minimal-notes-system) sampl
 Native HTML prototype
    │
    ├── Viewer: formal notes on the right, scenario switching, SVG connectors
-   ├── Direct Edit / Mark: tweak page styles or drop review pins, export selectors and element snapshots for AI
-   ├── Notes Editor: edit formal note cards
+   ├── Direct edit / Mark: tweak page styles or drop review pins, export selectors and element snapshots for AI
+   ├── Notes editor: edit formal note cards
    ├── Inspector: jump from a page element to local IDE source
    └── Screenshot: output clean page PNGs per snapshot scenario
 ```

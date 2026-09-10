@@ -5,8 +5,8 @@ import { join } from 'node:path';
 import test from 'node:test';
 import { injectTargets, resolveInspectorTarget } from '../../../skills/html-prototype-build/runtime/server/inspector.mjs';
 
-test('injectTargets 清理旧 token 并为语义节点生成稳定行号映射', () => {
-  const source = '<main data-insp-target="old">\n  <button id="save">Save</button>\n</main>\n';
+test('injectTargets clears old tokens and maps semantic nodes to stable line numbers', () => {
+  const source = '<main data-insp-target="old">\n  <button id="save">保存</button>\n</main>\n';
   const result = injectTargets(source);
   assert.doesNotMatch(result.html, /data-insp-target="old"/);
   assert.match(result.html, /<main data-insp-target="i01">/);
@@ -15,17 +15,17 @@ test('injectTargets 清理旧 token 并为语义节点生成稳定行号映射',
   assert.equal(result.tokens.i02, 2);
 });
 
-test('injectTargets 不给自闭合节点Minute配 token', () => {
-  const result = injectTargets('<div />\n<section>Content</section>');
+test('injectTargets does not assign tokens to self-closing nodes', () => {
+  const result = injectTargets('<div />\n<section>content</section>');
   assert.doesNotMatch(result.html, /<div [^>]*data-insp-target/);
   assert.equal(result.tokens.i01, 2);
 });
 
-test('resolveInspectorTarget 限制在原型目录并Back目标源码行', () => {
+test('resolveInspectorTarget stays in prototype dir and returns target source line', () => {
   const root = mkdtempSync(join(tmpdir(), 'prototype-inspector-'));
   try {
     const htmlPath = join(root, 'prototype.html');
-    writeFileSync(htmlPath, '<main>\n<button>Save</button>\n</main>', 'utf8');
+    writeFileSync(htmlPath, '<main>\n<button>保存</button>\n</main>', 'utf8');
     const hit = resolveInspectorTarget({ root, htmlPath, filePath: '', targetId: 'i02' });
     assert.equal(hit.ok, true);
     assert.equal(hit.filePath, 'prototype.html');

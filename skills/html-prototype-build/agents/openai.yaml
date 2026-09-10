@@ -1,4 +1,4 @@
 interface:
-  display_name: "HTML 原型生成与评审"
-  short_description: "生成、标注、评审和交付可组合 纯 HTML 产品原型"
-  default_prompt: "使用 $html-prototype-build 根据当前材料生成并验证一可评审 纯 HTML 产品原型。"
+  display_name: "HTML Prototype Build & Review"
+  short_description: "Generate, annotate, review, and deliver composable native HTML product prototypes"
+  default_prompt: "Use $html-prototype-build to generate and validate a reviewable native HTML product prototype from the current materials."

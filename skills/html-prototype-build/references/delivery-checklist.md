@@ -59,7 +59,7 @@ Rules are defined in [generation-contract.md §5](generation-contract.md#5-annot
 
 ### 8. Author tools & data boundaries
 
-- [ ] The formal HTML contains no Author Bootstrap, Direct Edit, Notes Editor, Inspector, source-locating tokens, or inline annotation editing logic
+- [ ] The formal HTML contains no Author Bootstrap, Direct edit, Notes editor, Inspector, source-locating tokens, or inline annotation editing logic
 - [ ] Formal annotations exist only in `notes.snapshot.js`; there is no `notes.json`, inline HTML copy, or formal-annotation localStorage copy; only Mark pins may write to localStorage
 - [ ] System names, menus, fields, states, and business data come from the current task materials, with nothing fabricated; no real credentials, tokens, API addresses, production data, or unauthorized brand assets
 

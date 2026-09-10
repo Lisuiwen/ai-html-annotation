@@ -1,4 +1,4 @@
-/* Direct Edit tool: pick DOM, runtime preview, structured write-back to prototype.html. */
+/* Direct edit tool: pick DOM, runtime preview, structured write-back to prototype.html. */
 (function () {
   'use strict';
 
@@ -99,7 +99,7 @@
 
   function selectElement(el) {
     if (session && session.isDirty() && el !== selected) {
-      if (context && context.toast) context.toast('Save or cancel current edits first');
+      if (context && context.toast) context.toast('save or cancel current edits first');
       return false;
     }
     selected = el;
@@ -131,7 +131,7 @@
       render();
       if (context && context.toast) context.toast('Written to prototype.html');
     }).catch(function (error) {
-      if (context && context.toast) context.toast('Save failed: ' + error.message);
+      if (context && context.toast) context.toast('save failed: ' + error.message);
     });
   }
 

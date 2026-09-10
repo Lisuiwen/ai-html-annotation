@@ -32,12 +32,17 @@ For visual tasks, pick a foundation and providers via the [UI pack catalog](ui/c
 
 `scripts/` holds the agent's deterministic tools. `runtime/` is split by execution boundary: `client/` formal browser runtime, `author/` browser authoring tools, `server/` local Node authoring service, `cli/` standalone command-line tools.
 
+## Terminology
+
+- **`ponytail:`** — in-place comment marking an intentional prototype shortcut or uncollected state; replace it after you have real screenshots, computed styles, or interaction evidence.
+- **Project materials** — screenshots, requirements, and confirmed facts for the current task (not generic framework defaults).
+
 ## Core boundaries
 
 - Every prototype must use the distributed copies of `runtime/client/core/display-mode.js`, `runtime/client/core/state.js`, `runtime/client/notes/model.js`, `runtime/client/notes/viewer.js` in order; `state.js` provides the single `PrototypeViewers` state source, `model.js` handles only note scenario metadata and pure `when` matching, and Notes Viewer handles only DOM/connector rendering. Do not fold these responsibilities back into the Viewer.
-- Formal notes are written back to `prototype/notes.snapshot.js` only through `runtime/server/index.mjs` + Notes Editor; do not inline a notes editor in `prototype.html` and do not store formal notes in localStorage.
-- Mark is a temporary review tool in the Author Tools panel alongside Direct Edit; its data goes to page-path-scoped localStorage, is never written to the snapshot, and is not injected into the source HTML.
-- Direct Edit previews in the authoring session only and writes back to the source HTML safely through the server.
+- Formal notes are written back to `prototype/notes.snapshot.js` only through `runtime/server/index.mjs` + Notes editor; do not inline a notes editor in `prototype.html` and do not store formal notes in localStorage.
+- Mark is a temporary review tool in the Author Tools panel alongside Direct edit; its data goes to page-path-scoped localStorage, is never written to the snapshot, and is not injected into the source HTML.
+- Direct edit previews in the authoring session only and writes back to the source HTML safely through the server.
 - The authoring service only handles local editing and in-prototype source lookup; it never enters the source HTML or the final deliverable.
 - Screenshots consume only the URL scene and formal annotation data; they do not generate business state.
 - System names, menus, fields, states, and business data must come from the user's materials; ask when information is unclear, never guess.

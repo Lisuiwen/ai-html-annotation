@@ -123,10 +123,10 @@
   /** Funnel preset. */
   presets.funnel = function (state) {
     var steps = state.steps || [
-      { key: 'visit', name: 'Visit', value: 100 },
+      { key: 'visit', name: 'access', value: 100 },
       { key: 'intent', name: 'Intent', value: 80 },
       { key: 'submit', name: 'Submit', value: 60 },
-      { key: 'approve', name: 'Approve', value: 40 },
+      { key: 'approve', name: 'approval', value: 40 },
       { key: 'done', name: 'Completed', value: 25 }
     ];
     return Object.assign(shared({ tooltip: { trigger: 'item' } }), {

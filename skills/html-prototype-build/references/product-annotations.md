@@ -4,7 +4,7 @@
 
 Every prototype maintains its Viewer through this entry; feature descriptions, right-rail annotations, SVG connectors, interaction intent, open questions, and business interaction lightnings are all defined here.
 
-Product annotations are formal prototype documentation; they are not the same as the temporary authoring operations of Direct Edit or Mark in Author Tools.
+Product annotations are formal prototype documentation; they are not the same as the temporary authoring operations of Direct edit or Mark in Author Tools.
 
 ## Required reading
 
@@ -22,7 +22,7 @@ This entry only explains how to do the work; the concrete formats and prohibitio
 
 ## Next steps
 
-- Edit styles/copy directly in the browser, edit cards, or re-bind targets: [local-authoring.md](local-authoring.md).
+- edit styles/copy directly in the browser, edit cards, or re-bind targets: [local-authoring.md](local-authoring.md).
 - Page review feedback or export For AI: [review-mark.md](review-mark.md).
 - Screenshots by scenario: [screenshots.md](screenshots.md).
 - Final check before delivery: [delivery-checklist.md](delivery-checklist.md).

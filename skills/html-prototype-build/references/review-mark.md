@@ -4,7 +4,7 @@
 
 Use this entry when you need to write change feedback on existing HTML, hand off feedback via pins, or export For AI locating information.
 
-Mark is a temporary review tool in `runtime/author/tools/mark/`, in the `Mark` tab of the Author Tools panel alongside Direct Edit; it is not the formal product annotations on the right rail, and it never writes to the snapshot or the source HTML. It is dynamically loaded through the local authoring service.
+Mark is a temporary review tool in `runtime/author/tools/mark/`, in the `Mark` tab of the Author Tools panel alongside Direct edit; it is not the formal product annotations on the right rail, and it never writes to the snapshot or the source HTML. It is dynamically loaded through the local authoring service.
 
 ## Steps
 
@@ -24,14 +24,14 @@ Mark data is only kept in the browser localStorage scoped to the current page pa
 
 ## Platform differences
 
-Direct Edit and Mark share the element-picking logic in `author/core/picker.js`:
+Direct edit and Mark share the element-picking logic in `author/core/picker.js`:
 
 - **Windows / Linux**: hold `Ctrl` + left-click to pin or select; a normal click does not intercept the page.
-- **macOS**: prefer `⌘` + left-click; a `Control` + left-click that triggers the context menu also handles the gesture (applies to both Edit and Mark).
+- **macOS**: prefer `⌘` + left-click; a `Control` + left-click that triggers the context menu also handles the gesture (applies to both edit and Mark).
 
 ## Boundaries with other tools
 
 - Write text feedback for an agent to modify the source: Mark.
-- Change styles or plain text directly in the browser and write back to the source file: Direct Edit.
-- Edit formal annotation cards on the right rail: Notes Editor.
+- Change styles or plain text directly in the browser and write back to the source file: Direct edit.
+- edit formal annotation cards on the right rail: Notes editor.
 - Inspect and jump to an element's source: Inspector.

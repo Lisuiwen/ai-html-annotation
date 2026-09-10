@@ -10,4 +10,4 @@ states:
 
 # data.empty
 
-Content-area empty state. Create actions, permissions, and specific guidance copy are supplied by the page.
+content-area empty state. create actions, permissions, and specific guidance copy are supplied by the page.

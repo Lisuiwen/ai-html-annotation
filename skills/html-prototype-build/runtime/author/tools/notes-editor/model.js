@@ -1,4 +1,4 @@
-/* Notes Editor pure data model: card creation, layer when rules, and visible-card ordering; no DOM I/O. */
+/* Notes editor pure data model: card creation, layer when rules, and visible-card ordering; no DOM I/O. */
 (function () {
   'use strict';
 
@@ -33,7 +33,7 @@
     var card = {
       id: createCardId(cards),
       title: 'New note',
-      body: '双击Edit noteContent。',
+      body: 'Double-click to edit note content.',
       target: { selector: '', label: '' }
     };
     var when = whenForCurrentLayer(appState);

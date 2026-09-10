@@ -52,7 +52,7 @@
     document.head.appendChild(style);
   }
 
-  /* Create singleton tooltip overlay. */
+  /* create singleton tooltip overlay. */
   function getTooltip() {
     if (tooltip) return tooltip;
     tooltip = document.createElement('div');

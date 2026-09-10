@@ -1,4 +1,4 @@
-/* Direct Edit panel: shows computed / inline / dirty; only changes fields the user edited. */
+/* Direct edit panel: shows computed / inline / dirty; only changes fields the user edited. */
 (function () {
   'use strict';
 
@@ -77,7 +77,7 @@
     if (field.kind === 'align') {
       return '<select data-prop="' + field.key + '">' +
         ['', 'left', 'center', 'right', 'justify'].map(function (opt) {
-          return '<option value="' + opt + '"' + (value === opt ? ' selected' : '') + '>' + (opt || 'Default') + '</option>';
+          return '<option value="' + opt + '"' + (value === opt ? ' selected' : '') + '>' + (opt || 'default') + '</option>';
         }).join('') +
         '</select>';
     }
@@ -113,9 +113,9 @@
         '  <div class="at-edit-empty">Hold <kbd>' + esc(clickModifierLabel()) + '</kbd> and click a page element to select it.<br>Normal clicks keep the page interactive.</div>' +
         '</div>' +
         '<div class="at-edit-foot">' +
-        '  <button type="button" class="at-btn" data-act="cancel" disabled>Cancel</button>' +
+        '  <button type="button" class="at-btn" data-act="cancel" disabled>cancel</button>' +
         '  <button type="button" class="at-btn" data-act="reset" disabled>Reset element</button>' +
-        '  <button type="button" class="at-btn primary" data-act="save" disabled>Save</button>' +
+        '  <button type="button" class="at-btn primary" data-act="save" disabled>save</button>' +
         '</div>';
       return;
     }
@@ -170,9 +170,9 @@
     container.innerHTML =
       '<div class="at-edit-body">' + identity + fieldsHtml + '</div>' +
       '<div class="at-edit-foot">' +
-      '  <button type="button" class="at-btn" data-act="cancel"' + (dirty ? '' : ' disabled') + '>Cancel</button>' +
+      '  <button type="button" class="at-btn" data-act="cancel"' + (dirty ? '' : ' disabled') + '>cancel</button>' +
       '  <button type="button" class="at-btn" data-act="reset">Reset element</button>' +
-      '  <button type="button" class="at-btn primary" data-act="save"' + (dirty ? '' : ' disabled') + '>Save</button>' +
+      '  <button type="button" class="at-btn primary" data-act="save"' + (dirty ? '' : ' disabled') + '>save</button>' +
       '</div>';
   }
 

@@ -12,7 +12,7 @@ async function boot() {
   return window.PrototypeNotesModel;
 }
 
-test('场景 id 与 label 同Hour兼容对象式和数组式定义', async () => {
+test('scenario id and label support object and array definitions', async () => {
   const model = await boot();
   const objectDefs = { base: { label: '基础' }, modal: {} };
   assert.deepEqual(Array.from(model.listScenarioIds(objectDefs)), ['base', 'modal']);
@@ -23,7 +23,7 @@ test('场景 id 与 label 同Hour兼容对象式和数组式定义', async () =>
   assert.equal(model.scenarioLabel(arrayDefs, 'base'), '基础');
 });
 
-test('when 支持点路径、深对象和数组精确匹配', async () => {
+test('when supports dot paths, nested objects, and exact array match', async () => {
   const model = await boot();
   const state = { product: { page: 'list', filters: { status: 'open' }, layers: ['create'] } };
   assert.equal(model.matchesWhen({ 'product.page': 'list' }, state), true);
@@ -32,7 +32,7 @@ test('when 支持点路径、深对象和数组精确匹配', async () => {
   assert.equal(model.matchesWhen({ 'product.layers': [] }, state), false);
 });
 
-test('when .includes 只对数组包含生效且多items件为 AND', async () => {
+test('when .includes applies to array membership with AND across conditions', async () => {
   const model = await boot();
   const state = { product: { page: 'list', layers: ['create', 'help'] } };
   assert.equal(model.matchesWhen({ 'product.layers.includes': 'create' }, state), true);
@@ -41,7 +41,7 @@ test('when .includes 只对数组包含生效且多items件为 AND', async () =>
   assert.equal(model.matchesWhen({ 'product.page': 'detail', 'product.layers.includes': 'help' }, state), false);
 });
 
-test('visibleCards 保留无 when Card并过滤不匹配Card', async () => {
+test('visibleCards keeps cards without when and filters mismatches', async () => {
   const model = await boot();
   const cards = [
     { id: 'always' },

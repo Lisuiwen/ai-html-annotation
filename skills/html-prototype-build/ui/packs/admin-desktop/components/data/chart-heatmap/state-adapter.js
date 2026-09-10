@@ -8,7 +8,7 @@
   function normalize(value) {
     var state = value && typeof value === 'object' ? value : {};
     return {
-      status: core.normalizeChartStatus(state.status, false),
+      status: core.normalizeChartstate(state.status, false),
       xCategories: Array.isArray(state.xCategories) ? state.xCategories : undefined,
       yCategories: Array.isArray(state.yCategories) ? state.yCategories : undefined,
       data: Array.isArray(state.data) ? state.data : undefined,

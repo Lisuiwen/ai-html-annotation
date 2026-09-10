@@ -9,7 +9,7 @@
     var state = value && typeof value === 'object' ? value : {};
     var num = Number(state.value);
     return {
-      status: core.normalizeChartStatus(state.status, false),
+      status: core.normalizeChartstate(state.status, false),
       value: Number.isFinite(num) ? num : undefined,
       min: typeof state.min === 'number' ? state.min : undefined,
       max: typeof state.max === 'number' ? state.max : undefined,

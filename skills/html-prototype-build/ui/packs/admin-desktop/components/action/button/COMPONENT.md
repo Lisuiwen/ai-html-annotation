@@ -7,7 +7,7 @@ states:
   provisional: [hover, focus]
 ---
 
-# Button
+# button
 
 For page actions, form submission, toolbar actions, and overlay operations. Icon-only buttons must provide an `aria-label`.
 

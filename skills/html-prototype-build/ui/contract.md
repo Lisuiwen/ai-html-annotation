@@ -56,7 +56,7 @@ Categories, Patterns, and Presets that are not provided may be omitted, but must
 - Plain HTML, CSS, and JavaScript; zero build and no external CDN by default.
 - Component assets must be readable per leaf component; at generation time recursively expand `requires`; add `optional` dependencies only when the need is real.
 - Component contracts declare only local state shape (e.g. Select `open/value`); the final prototype maps business state to that interface and commits state through `PrototypeViewers`.
-- Example `id` values in `component.html` express required anchors only; when copying multiple instances, replace with unique, stable page ids and pass the corresponding root to the state Adapter.
+- example `id` values in `component.html` express required anchors only; when copying multiple instances, replace with unique, stable page ids and pass the corresponding root to the state Adapter.
 - The final prototype must map `PrototypeViewers` state to component Adapters through a business Adapter.
 - UI Pack Adapters consume passed-in state only; they must not access `PrototypeViewers` directly or infer business state from the DOM.
 - Implement only states confirmed in user materials; use `ponytail:` for intentional simplification.

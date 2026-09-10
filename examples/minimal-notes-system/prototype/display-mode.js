@@ -1,4 +1,4 @@
-/* Shared author-chrome contract: product-only screenshot mode hides overlays; Inspector/Mark/Editor share one rule set. */
+/* Shared author-chrome contract: product-only screenshot mode hides overlays; Inspector/Mark/editor share one rule set. */
 (function () {
   'use strict';
 

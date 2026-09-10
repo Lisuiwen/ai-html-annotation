@@ -97,8 +97,8 @@
       '<div class="mm-note-pop-head"><span><b>#' + ann.id + '</b> · ' + esc(ann.label) + '</span>' +
       '<span class="mm-np-text">' + (ann.text ? esc(ann.text) : '') + '</span></div>' +
       '<textarea placeholder="What needs to change here? (optional)"></textarea>' +
-      '<div class="mm-note-pop-hint"><span><kbd>↵</kbd> Save · <kbd>⇧↵</kbd> New line · <kbd>Esc</kbd> Close</span>' +
-      '<span>' + (ann.note ? 'Editing' : 'New') + '</span></div>';
+      '<div class="mm-note-pop-hint"><span><kbd>↵</kbd> save · <kbd>⇧↵</kbd> New line · <kbd>Esc</kbd> Close</span>' +
+      '<span>' + (ann.note ? 'editing' : 'New') + '</span></div>';
     document.body.appendChild(notePop);
 
     var pinRect = ann.pinEl.getBoundingClientRect();
@@ -232,7 +232,7 @@
         (hasNote ? '<div class="mm-item-note">' + esc(ann.note) + '</div>' : '<div class="mm-item-note-empty">No feedback yet · click to add</div>') +
         '<div class="mm-item-meta"><b>' + esc(ann.label) + '</b>' + (ann.text ? ' · ' + esc(ann.text).slice(0, 50) : '') + '</div>' +
         '</div>' +
-        '<button class="mm-item-del" data-del="' + ann.id + '" title="Delete">×</button>' +
+        '<button class="mm-item-del" data-del="' + ann.id + '" title="delete">×</button>' +
         '</div>';
     }).join('');
     list.querySelectorAll('.mm-item').forEach(function (item) {

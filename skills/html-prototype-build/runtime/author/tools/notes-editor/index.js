@@ -69,7 +69,7 @@
     return !!(event && event.ctrlKey);
   }
 
-  function startEdit(element, getter, setter, multiline) {
+  function startedit(element, getter, setter, multiline) {
     if (element.querySelector('input,textarea')) return;
     var control = document.createElement(multiline ? 'textarea' : 'input');
     control.value = getter() || '';
@@ -100,7 +100,7 @@
     });
   }
 
-  /* Add a blank card; data rules are maintained by NotesEditorModel. */
+  /* Add a blank card; data rules are maintained by NoteseditorModel. */
   function addCard() {
     var appState = window.PrototypeViewers && typeof window.PrototypeViewers.getState === 'function'
       ? window.PrototypeViewers.getState()
@@ -111,19 +111,19 @@
     save();
   }
 
-  function closeConfirm() {
+  function closeconfirm() {
     var pop = document.querySelector('.pn-confirm-pop');
     if (pop) pop.remove();
   }
 
-  function requestDelete(card, article, icon) {
-    closeConfirm();
+  function requestdelete(card, article, icon) {
+    closeconfirm();
     var pop = document.createElement('div');
     pop.className = 'pn-confirm-pop pn-confirm-pop--fixed';
-    pop.innerHTML = '<p>Delete "' + (card.title || 'Untitled note') + '"?</p><div class="pn-confirm-pop-actions"><button type="button" class="pn-cancel">Cancel</button><button type="button" class="pn-danger">Delete</button></div>';
-    pop.querySelector('.pn-cancel').addEventListener('click', closeConfirm);
+    pop.innerHTML = '<p>delete "' + (card.title || 'Untitled note') + '"?</p><div class="pn-confirm-pop-actions"><button type="button" class="pn-cancel">cancel</button><button type="button" class="pn-danger">delete</button></div>';
+    pop.querySelector('.pn-cancel').addEventListener('click', closeconfirm);
     pop.querySelector('.pn-danger').addEventListener('click', function () {
-      closeConfirm();
+      closeconfirm();
       data.cards = window.PrototypeNotesEditorModel.removeCard(data.cards, card.id);
       renderData();
       enhance();
@@ -428,8 +428,8 @@
     if (!data) return;
     var head = document.querySelector('.pn-head');
     if (head) {
-      bindEditable(head.querySelector('strong'), function () { return data.header.title; }, function (value) { data.header.title = value; }, false);
-      bindEditable(head.querySelector('span'), function () { return data.header.subtitle; }, function (value) { data.header.subtitle = value; }, false);
+      bindeditable(head.querySelector('strong'), function () { return data.header.title; }, function (value) { data.header.title = value; }, false);
+      bindeditable(head.querySelector('span'), function () { return data.header.subtitle; }, function (value) { data.header.subtitle = value; }, false);
     }
     document.querySelectorAll('.pn-card').forEach(function (article) {
       var card = data.cards.find(function (item) { return item.id === article.dataset.noteId; });
@@ -444,18 +444,18 @@
         bindCardDrag(article);
       }
       if (article.querySelector('.pn-card-actions')) return;
-      bindEditable(article.querySelector('.pn-title-text'), function () { return card.title; }, function (value) { card.title = value; }, false);
-      bindEditable(article.querySelector('p'), function () { return card.body; }, function (value) { card.body = value; }, true);
+      bindeditable(article.querySelector('.pn-title-text'), function () { return card.title; }, function (value) { card.title = value; }, false);
+      bindeditable(article.querySelector('p'), function () { return card.body; }, function (value) { card.body = value; }, true);
       var actions = document.createElement('div');
       actions.className = 'pn-card-actions';
       var edit = document.createElement('div');
       edit.className = 'pn-card-icon';
       edit.type = 'button';
-      edit.title = 'Edit note';
-      edit.setAttribute('aria-label', 'Edit note');
+      edit.title = 'edit note';
+      edit.setAttribute('aria-label', 'edit note');
       edit.innerHTML = editIconSvg();
       edit.addEventListener('click', function () {
-        startEdit(article.querySelector('p'), function () { return card.body; }, function (value) { card.body = value; }, true);
+        startedit(article.querySelector('p'), function () { return card.body; }, function (value) { card.body = value; }, true);
       });
       var bind = document.createElement('div');
       bind.className = 'pn-card-icon';
@@ -467,10 +467,10 @@
       var remove = document.createElement('div');
       remove.className = 'pn-card-icon';
       remove.type = 'button';
-      remove.title = 'Delete note';
-      remove.setAttribute('aria-label', 'Delete note');
+      remove.title = 'delete note';
+      remove.setAttribute('aria-label', 'delete note');
       remove.innerHTML = deleteIconSvg();
-      remove.addEventListener('click', function () { requestDelete(card, article, remove); });
+      remove.addEventListener('click', function () { requestdelete(card, article, remove); });
       actions.appendChild(edit);
       actions.appendChild(bind);
       actions.appendChild(remove);
@@ -478,11 +478,11 @@
     });
   }
 
-  function bindEditable(element, getter, setter, multiline) {
-    if (!element || element.dataset.pnEditableBound) return;
-    element.dataset.pnEditableBound = 'true';
+  function bindeditable(element, getter, setter, multiline) {
+    if (!element || element.dataset.pneditableBound) return;
+    element.dataset.pneditableBound = 'true';
     element.classList.add('pn-editable');
-    element.addEventListener('dblclick', function () { startEdit(element, getter, setter, multiline); });
+    element.addEventListener('dblclick', function () { startedit(element, getter, setter, multiline); });
   }
 
   function buildToolbar() {
@@ -535,15 +535,15 @@
 
   function init() {
     if (!data) {
-      console.error('[prototype-author] Viewer not initialized; cannot start Notes Editor.');
+      console.error('[prototype-author] Viewer not initialized; cannot start Notes editor.');
       return;
     }
     if (!window.AuthorToolsSelector) {
-      console.error('[prototype-author] Missing AuthorToolsSelector; cannot start Notes Editor.');
+      console.error('[prototype-author] Missing AuthorToolsSelector; cannot start Notes editor.');
       return;
     }
     if (!window.PrototypeNotesEditorModel) {
-      console.error('[prototype-author] Missing PrototypeNotesEditorModel; cannot start Notes Editor.');
+      console.error('[prototype-author] Missing PrototypeNotesEditorModel; cannot start Notes editor.');
       return;
     }
     buildToolbar();

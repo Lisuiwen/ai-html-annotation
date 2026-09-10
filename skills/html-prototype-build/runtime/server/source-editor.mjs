@@ -1,4 +1,4 @@
-/* Direct Edit source patch: locate elements by source position; only mutates style/plain text, not DOM outerHTML. */
+/* Direct edit source patch: locate elements by source position; only mutates style/plain text, not DOM outerHTML. */
 
 const VOID_TAGS = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']);
 const RAW_TEXT_TAGS = new Set(['script', 'style', 'textarea', 'title']);

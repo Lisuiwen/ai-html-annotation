@@ -26,7 +26,7 @@
     var status = state.status;
     var table = root.querySelector('.ui-table-data');
     var empty = root.querySelector('.ui-table-state:not([aria-label])');
-    var loading = root.querySelector('.ui-table-state[aria-label="Loading..."]');
+    var loading = root.querySelector('.ui-table-state[aria-label="loading..."]');
     if (table) table.hidden = status !== 'data';
     if (empty) empty.hidden = status !== 'empty';
     if (loading) loading.hidden = status !== 'loading';

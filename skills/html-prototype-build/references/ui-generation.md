@@ -16,7 +16,7 @@ The current complete UI pack is `../ui/packs/admin-desktop/`, which provides a f
 
 1. When the business materials are incomplete, confirm first; do not fabricate business rules.
 2. The UI pack only provides components and local adapters; the business Adapter maps `PrototypeViewers` state to the components.
-3. Declare foundation and Case colors as tokens up front; describe unconfirmed visuals and behaviors in place with `ponytail:`.
+3. Declare foundation and project materials as tokens up front; describe unconfirmed visuals and behaviors in place with `ponytail:`.
 
 ## After completion
 

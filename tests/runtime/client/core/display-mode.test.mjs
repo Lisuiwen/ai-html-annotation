@@ -24,7 +24,7 @@ async function boot(search = '') {
   return { window, document, headChildren };
 }
 
-test('DisplayMode 安装一次样式并识别 overlay', async () => {
+test('DisplayMode installs styles once and detects overlay', async () => {
   const { window, headChildren } = await boot();
   assert.equal(headChildren.filter((node) => node.id === 'prototype-author-chrome-style').length, 1);
   window.PrototypeAuthorChrome.installStyles();
@@ -33,7 +33,7 @@ test('DisplayMode 安装一次样式并识别 overlay', async () => {
   assert.equal(window.PrototypeAuthorChrome.isOverlay(null), false);
 });
 
-test('product-only=1 自动进入纯page面态', async () => {
+test('product-only=1 enters pure page mode automatically', async () => {
   const { window, document } = await boot('?product-only=1');
   assert.equal(window.PrototypeAuthorChrome.isProductOnly(), true);
   assert.equal(document.body.classList.contains('pa-product-only'), true);

@@ -188,7 +188,7 @@
       '    <button type="button" class="at-iconbtn" id="at-close" title="Close">×</button>' +
       '  </div>' +
       '  <div class="at-tabs">' +
-      '    <button type="button" class="at-tab is-active" data-tab="edit">Edit</button>' +
+      '    <button type="button" class="at-tab is-active" data-tab="edit">edit</button>' +
       '    <button type="button" class="at-tab" data-tab="mark">Mark</button>' +
       '  </div>' +
       '  <div class="at-panel-body">' +
