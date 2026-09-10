@@ -172,8 +172,8 @@
     launch.type = 'button';
     launch.id = 'at-launch';
     launch.className = 'at-launch at-ui';
-    launch.title = '原型工具';
-    launch.setAttribute('aria-label', '原型工具');
+    launch.title = 'Prototype Tools';
+    launch.setAttribute('aria-label', 'Prototype Tools');
     launch.innerHTML =
       '<svg class="at-launch-icon" viewBox="0 0 16 16" aria-hidden="true">' +
       '<path d="M11.2 2.2a2.4 2.4 0 0 0-2.2 3.8L4.2 10.8a1.5 1.5 0 1 0 2.1 2.1l4.8-4.8a2.4 2.4 0 0 0 3.8-2.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -184,8 +184,8 @@
     panel.innerHTML =
       '<div class="at-panel-open">' +
       '  <div class="at-panel-head" id="at-head">' +
-      '    <span class="at-panel-title">原型工具</span>' +
-      '    <button type="button" class="at-iconbtn" id="at-close" title="关闭">×</button>' +
+      '    <span class="at-panel-title">Prototype Tools</span>' +
+      '    <button type="button" class="at-iconbtn" id="at-close" title="Close">×</button>' +
       '  </div>' +
       '  <div class="at-tabs">' +
       '    <button type="button" class="at-tab is-active" data-tab="edit">Edit</button>' +
@@ -196,9 +196,9 @@
       '    <div class="at-tool-pane" data-pane="mark"></div>' +
       '  </div>' +
       '  <div class="at-dirty-bar" id="at-dirty">' +
-      '    <span>当前有未保存的修改</span>' +
-      '    <button type="button" class="at-btn" id="at-dirty-keep">继续编辑</button>' +
-      '    <button type="button" class="at-btn primary" id="at-dirty-drop">放弃修改</button>' +
+      '    <span>You have unsaved changes</span>' +
+      '    <button type="button" class="at-btn" id="at-dirty-keep">Keep editing</button>' +
+      '    <button type="button" class="at-btn primary" id="at-dirty-drop">Discard changes</button>' +
       '  </div>' +
       '</div>';
 

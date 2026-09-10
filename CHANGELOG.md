@@ -2,6 +2,23 @@
 
 All notable changes to AI HTML Annotation will be documented in this file.
 
+## v0.3.1 — 2026-09-10
+
+### Changed
+
+- Localized Viewer, Author Tools, and the minimal example UI copy to English (`lang="en"`): scenario switching, note rails, Direct Edit, and Mark labels, hints, toasts, and error messages.
+- The minimal example annotations and scenario labels now use English copy, staying synchronized with the Skill template.
+
+### Fixed
+
+- Synced the Viewer contract test with the localized runtime error messages.
+
+### Install / update
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+```
+
 ## v0.3.0 — 2026-09-09
 
 ### Added

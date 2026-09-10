@@ -96,9 +96,9 @@
     notePop.innerHTML =
       '<div class="mm-note-pop-head"><span><b>#' + ann.id + '</b> · ' + esc(ann.label) + '</span>' +
       '<span class="mm-np-text">' + (ann.text ? esc(ann.text) : '') + '</span></div>' +
-      '<textarea placeholder="这里需要改什么？（可选）"></textarea>' +
-      '<div class="mm-note-pop-hint"><span><kbd>↵</kbd> 保存 · <kbd>⇧↵</kbd> 换行 · <kbd>Esc</kbd> 关闭</span>' +
-      '<span>' + (ann.note ? '编辑中' : '新建') + '</span></div>';
+      '<textarea placeholder="What needs to change here? (optional)"></textarea>' +
+      '<div class="mm-note-pop-hint"><span><kbd>↵</kbd> Save · <kbd>⇧↵</kbd> New line · <kbd>Esc</kbd> Close</span>' +
+      '<span>' + (ann.note ? 'Editing' : 'New') + '</span></div>';
     document.body.appendChild(notePop);
 
     var pinRect = ann.pinEl.getBoundingClientRect();
@@ -213,7 +213,7 @@
     nextId = 1;
     render();
     persist();
-    toast('已清空 ' + clearedCount + ' 条标注');
+    toast('Cleared ' + clearedCount + ' annotation' + (clearedCount > 1 ? 's' : ''));
   }
 
   function render() {
@@ -221,7 +221,7 @@
     var list = container.querySelector('#mm-list');
     if (!list) return;
     if (!annotations.length) {
-      list.innerHTML = '<div class="mm-empty">按住 <kbd>' + esc(clickModifierLabel()) + '</kbd> 点击页面元素即可落下 pin。<br><kbd>M</kbd> 打开本 Tab · <kbd>⌫</kbd> 删除上一条</div>';
+      list.innerHTML = '<div class="mm-empty">Hold <kbd>' + esc(clickModifierLabel()) + '</kbd> and click a page element to drop a pin.<br><kbd>M</kbd> opens this tab · <kbd>⌫</kbd> deletes the last one</div>';
       return;
     }
     list.innerHTML = annotations.map(function (ann, index) {
@@ -229,10 +229,10 @@
       return '<div class="mm-item ' + (hasNote ? 'has-note' : '') + '" data-id="' + ann.id + '">' +
         '<div class="mm-item-num">' + (index + 1) + '</div>' +
         '<div class="mm-item-body">' +
-        (hasNote ? '<div class="mm-item-note">' + esc(ann.note) + '</div>' : '<div class="mm-item-note-empty">暂无反馈 · 点击补充</div>') +
+        (hasNote ? '<div class="mm-item-note">' + esc(ann.note) + '</div>' : '<div class="mm-item-note-empty">No feedback yet · click to add</div>') +
         '<div class="mm-item-meta"><b>' + esc(ann.label) + '</b>' + (ann.text ? ' · ' + esc(ann.text).slice(0, 50) : '') + '</div>' +
         '</div>' +
-        '<button class="mm-item-del" data-del="' + ann.id + '" title="删除">×</button>' +
+        '<button class="mm-item-del" data-del="' + ann.id + '" title="Delete">×</button>' +
         '</div>';
     }).join('');
     list.querySelectorAll('.mm-item').forEach(function (item) {
@@ -269,7 +269,7 @@
 
   function copyAll() {
     if (!annotations.length) {
-      toast('还没有标注 — 先按住 ' + clickModifierLabel() + ' 点击打一个 pin。');
+      toast('No annotations yet — hold ' + clickModifierLabel() + ' and click to drop a pin.');
       return;
     }
     var fmt = container.querySelector('#mm-fmt').value;
@@ -305,9 +305,9 @@
       }).join('\n') + '\n\n@ ' + ctx;
     }
     navigator.clipboard.writeText(txt).then(function () {
-      toast('✓ 已复制 ' + annotations.length + ' 条标注（' + fmt.toUpperCase() + '）');
+      toast('✓ Copied ' + annotations.length + ' annotation' + (annotations.length > 1 ? 's' : '') + ' (' + fmt.toUpperCase() + ')');
     }).catch(function () {
-      toast('复制失败 — 请检查剪贴板权限。');
+      toast('Copy failed — check clipboard permissions.');
     });
   }
 
@@ -344,7 +344,7 @@
     });
     nextId = annotations.reduce(function (max, item) { return Math.max(max, item.id); }, 0) + 1;
     render();
-    if (annotations.length) toast('已从上次会话恢复 ' + annotations.length + ' 条标注');
+    if (annotations.length) toast('Restored ' + annotations.length + ' annotation' + (annotations.length > 1 ? 's' : '') + ' from the previous session');
   }
 
   function handleKey(event) {
@@ -392,12 +392,12 @@
         '<div class="mm-panel-foot mm-ui">' +
         '  <select class="mm-fmt-select" id="mm-fmt">' +
         '    <option value="md">Markdown</option>' +
-        '    <option value="txt">纯文本</option>' +
+        '    <option value="txt">Plain text</option>' +
         '    <option value="json">JSON</option>' +
-        '    <option value="ai">AI 定位</option>' +
+        '    <option value="ai">For AI</option>' +
         '  </select>' +
-        '  <button type="button" class="mm-btn" id="mm-clear">清空</button>' +
-        '  <button type="button" class="mm-btn primary" id="mm-copy">复制全部</button>' +
+        '  <button type="button" class="mm-btn" id="mm-clear">Clear</button>' +
+        '  <button type="button" class="mm-btn primary" id="mm-copy">Copy all</button>' +
         '</div>';
       container.querySelector('#mm-clear').addEventListener('click', clearAll);
       container.querySelector('#mm-copy').addEventListener('click', copyAll);
