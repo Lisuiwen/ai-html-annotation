@@ -17,8 +17,10 @@
 4. Add only components supported by the intended Pack capability and available evidence.
 5. Register provider categories and compatible foundations.
 6. Add Patterns and Presets only after reusable composition exists.
-7. Register the Pack in the consumer skill's `ui/catalog.md`.
-8. Run strict validation and resolver smoke tests before rendering examples.
+7. Run strict validation and resolver smoke tests before rendering examples.
+   Registration in a consumer catalog is a separate, consumer-side step: see
+   `references/catalog-format.md`. This skill does not write a consumer catalog
+   during Pack creation.
 
 ## Add or update a Component
 
@@ -38,9 +40,19 @@ Keep data, empty, loading, selection, and similar states together when they belo
 - Let Patterns reference component IDs. Let Presets reference Patterns through `uses` and direct required Components through `requires`.
 - Never duplicate leaf implementation code.
 
-## Consumer smoke test
+## Resolver smoke test
 
-After changing public entries, run the consumer skill's resolver for every changed Component, Pattern, and Preset. Check the required closure and at least one representative optional selection. A new Pack is incomplete until it is registered in `ui/catalog.md` and the consumer can resolve it.
+After changing public entries, run the self-contained resolver for every changed
+Component, Pattern, and Preset:
+
+```bash
+node scripts/resolve-pack.mjs --pack=<pack-directory> --entry=<id>[,<id>...] [--optional=<id>[,<id>...]]
+```
+
+Check the required closure and at least one representative optional selection. A
+new Pack is complete once it validates with `--strict` and the resolver can resolve
+every public entry. Cross-pack references are out of scope for the resolver; report
+them as a `ponytail:` evidence gap until a consumer defines cross-pack wiring.
 
 ## Evidence gaps
 

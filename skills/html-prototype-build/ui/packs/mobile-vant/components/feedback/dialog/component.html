@@ -1,0 +1,62 @@
+<!-- feedback.dialog: modal overlay, hidden by default -->
+<style>
+  .mv-dialog {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .mv-dialog__mask {
+    position: absolute;
+    inset: 0;
+    background: var(--mv-overlay-color);
+  }
+  .mv-dialog__surface {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    border-radius: var(--mv-radius-lg);
+    background: var(--mv-white);
+    overflow: hidden;
+  }
+  .mv-dialog__title {
+    padding: 20px 16px 0;
+    text-align: center;
+    font-size: var(--mv-font-size-lg);
+    font-weight: var(--mv-title-font-weight);
+  }
+  .mv-dialog__message {
+    padding: 16px;
+    text-align: center;
+    font-size: var(--mv-font-size);
+    color: var(--mv-text-secondary);
+  }
+  .mv-dialog__actions {
+    display: flex;
+    border-top: 1px solid var(--mv-border-color);
+  }
+  .mv-dialog__button {
+    flex: 1;
+    height: 48px;
+    border: none;
+    background: transparent;
+    font-size: var(--mv-font-size);
+    cursor: pointer;
+  }
+  .mv-dialog__button--cancel { color: var(--mv-text-color); }
+  .mv-dialog__button--confirm { color: var(--mv-primary); }
+</style>
+<div class="mv-dialog" data-mv-key="dialog" hidden>
+  <div class="mv-dialog__mask" data-mv-key="mask"></div>
+  <div class="mv-dialog__surface" role="dialog" aria-modal="true" aria-labelledby="mv-dialog-title">
+    <h2 class="mv-dialog__title" id="mv-dialog-title" data-mv-key="title">提示</h2>
+    <p class="mv-dialog__message" data-mv-key="message">这是一条提示信息</p>
+    <div class="mv-dialog__actions">
+      <button type="button" class="mv-dialog__button mv-dialog__button--cancel" data-mv-key="cancel">取消</button>
+      <button type="button" class="mv-dialog__button mv-dialog__button--confirm" data-mv-key="confirm">确认</button>
+    </div>
+  </div>
+</div>

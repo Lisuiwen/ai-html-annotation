@@ -1,0 +1,17 @@
+<!-- data.empty: empty-state placeholder -->
+<style>
+  .mv-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 16px;
+    color: var(--mv-text-3);
+  }
+  .mv-empty__image { font-size: 64px; line-height: 1; }
+  .mv-empty__description { margin-top: 12px; font-size: var(--mv-font-size); color: var(--mv-text-secondary); }
+</style>
+<div class="mv-empty" data-mv-key="empty">
+  <div class="mv-empty__image" data-mv-key="image" aria-hidden="true">∅</div>
+  <p class="mv-empty__description" data-mv-key="description">暂无数据</p>
+</div>

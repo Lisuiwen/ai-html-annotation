@@ -9,7 +9,7 @@ Start the reviewer without inherited conversation history when the client suppor
 Give the reviewer only:
 
 - complete changed Pack files
-- the target `ui/contract.md`
+- `references/contract.md` from this skill
 - the current `PACK.md`, `manifest.json`, and relevant sections of `design-system.md`
 - the minimum unchanged dependency and dependent closure needed to evaluate the change
 - relevant screenshots, source evidence, or computed styles

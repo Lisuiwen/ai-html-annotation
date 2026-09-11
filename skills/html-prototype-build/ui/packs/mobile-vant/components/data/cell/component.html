@@ -1,0 +1,37 @@
+<!-- data.cell: static list row -->
+<style>
+  .mv-cell {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 10px 16px;
+    background: var(--mv-white);
+  }
+  .mv-cell__content { flex: 1; min-width: 0; }
+  .mv-cell__title { font-size: var(--mv-font-size); color: var(--mv-text-color); }
+  .mv-cell__label { margin-top: 2px; font-size: var(--mv-font-size-sm); color: var(--mv-text-secondary); }
+  .mv-cell__value {
+    flex-shrink: 0;
+    margin-left: 8px;
+    font-size: var(--mv-font-size);
+    color: var(--mv-text-secondary);
+    text-align: right;
+  }
+  .mv-cell__arrow { flex-shrink: 0; margin-left: 4px; color: var(--mv-text-3); font-size: 16px; }
+  .mv-cell--is-link { cursor: pointer; }
+  .mv-cell--center { align-items: center; }
+  .mv-cell--center .mv-cell__title,
+  .mv-cell--center .mv-cell__label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+</style>
+<div class="mv-cell mv-cell--is-link" data-mv-key="cell">
+  <div class="mv-cell__content">
+    <div class="mv-cell__title" data-mv-key="title">标题</div>
+    <div class="mv-cell__label" data-mv-key="label">描述信息</div>
+  </div>
+  <div class="mv-cell__value" data-mv-key="value">右侧内容</div>
+  <span class="mv-cell__arrow" aria-hidden="true">›</span>
+</div>

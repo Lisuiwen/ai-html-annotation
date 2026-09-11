@@ -1,0 +1,46 @@
+<!-- navigation.tab-bar: bottom tab bar -->
+<style>
+  .mv-tab-bar {
+    position: fixed;
+    left: 50%;
+    width: min(100%, var(--mv-viewport-width));
+    bottom: 0;
+    z-index: 10;
+    display: flex;
+    min-height: calc(var(--mv-tab-bar-height) + var(--mv-safe-area-bottom));
+    padding-bottom: var(--mv-safe-area-bottom);
+    background: var(--mv-white);
+    border-top: 1px solid var(--mv-border-color);
+    border-radius: 0 0 var(--mv-frame-radius) var(--mv-frame-radius);
+    transform: translateX(-50%);
+  }
+  .mv-tab-bar__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    border: none;
+    background: transparent;
+    color: var(--mv-text-secondary);
+    cursor: pointer;
+  }
+  .mv-tab-bar__icon { font-size: 20px; line-height: 1; }
+  .mv-tab-bar__label { font-size: var(--mv-font-size-sm); }
+  .mv-tab-bar__item--active { color: var(--mv-primary); }
+</style>
+<nav class="mv-tab-bar" data-mv-key="tab-bar" role="tablist" aria-label="主导航">
+  <button type="button" class="mv-tab-bar__item" data-mv-key="home" role="tab">
+    <span class="mv-tab-bar__icon" aria-hidden="true">🏠</span>
+    <span class="mv-tab-bar__label">首页</span>
+  </button>
+  <button type="button" class="mv-tab-bar__item" data-mv-key="list" role="tab">
+    <span class="mv-tab-bar__icon" aria-hidden="true">📋</span>
+    <span class="mv-tab-bar__label">列表</span>
+  </button>
+  <button type="button" class="mv-tab-bar__item" data-mv-key="mine" role="tab">
+    <span class="mv-tab-bar__icon" aria-hidden="true">👤</span>
+    <span class="mv-tab-bar__label">我的</span>
+  </button>
+</nav>

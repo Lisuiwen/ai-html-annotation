@@ -1,0 +1,36 @@
+<!-- feedback.toast: transient toast, hidden by default -->
+<style>
+  .mv-toast {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    max-width: 70vw;
+    padding: 16px 20px;
+    border-radius: var(--mv-radius-lg);
+    background: var(--mv-overlay-color);
+    color: var(--mv-white);
+    transform: translate(-50%, -50%);
+  }
+  .mv-toast__icon { font-size: 28px; line-height: 1; }
+  .mv-toast__icon--spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--mv-white);
+    border-radius: 50%;
+    animation: mv-toast-spin 0.8s linear infinite;
+  }
+  .mv-toast__message { font-size: var(--mv-font-size); }
+  @keyframes mv-toast-spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+<div class="mv-toast" data-mv-key="toast" role="status" hidden>
+  <span class="mv-toast__icon" data-mv-key="icon" aria-hidden="true"></span>
+  <p class="mv-toast__message" data-mv-key="message">加载中...</p>
+</div>

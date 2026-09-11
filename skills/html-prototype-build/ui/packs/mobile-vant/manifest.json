@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "id": "mobile-vant",
+  "version": 1,
+  "classPrefix": "mv-",
+  "tokenPrefix": "mv-",
+  "foundation": {
+    "id": "mobile-vant.default",
+    "contract": "foundation/FOUNDATION.md",
+    "sources": ["foundation/tokens.css", "foundation/base.css"]
+  },
+  "providers": {
+    "action": { "compatibleFoundations": ["mobile-vant.default"] },
+    "navigation": { "compatibleFoundations": ["mobile-vant.default"] },
+    "form": { "compatibleFoundations": ["mobile-vant.default"] },
+    "data": { "compatibleFoundations": ["mobile-vant.default"] },
+    "feedback": { "compatibleFoundations": ["mobile-vant.default"] }
+  },
+  "components": {
+    "action.button": {
+      "category": "action",
+      "contract": "components/action/button/COMPONENT.md",
+      "source": "components/action/button/component.html",
+      "adapter": "components/action/button/state-adapter.js"
+    },
+    "navigation.nav-bar": {
+      "category": "navigation",
+      "contract": "components/navigation/nav-bar/COMPONENT.md",
+      "source": "components/navigation/nav-bar/component.html"
+    },
+    "navigation.tab-bar": {
+      "category": "navigation",
+      "contract": "components/navigation/tab-bar/COMPONENT.md",
+      "source": "components/navigation/tab-bar/component.html",
+      "adapter": "components/navigation/tab-bar/state-adapter.js"
+    },
+    "form.field": {
+      "category": "form",
+      "contract": "components/form/field/COMPONENT.md",
+      "source": "components/form/field/component.html",
+      "adapter": "components/form/field/state-adapter.js"
+    },
+    "form.switch": {
+      "category": "form",
+      "contract": "components/form/switch/COMPONENT.md",
+      "source": "components/form/switch/component.html",
+      "adapter": "components/form/switch/state-adapter.js"
+    },
+    "form.radio-group": {
+      "category": "form",
+      "contract": "components/form/radio-group/COMPONENT.md",
+      "source": "components/form/radio-group/component.html",
+      "adapter": "components/form/radio-group/state-adapter.js"
+    },
+    "form.checkbox-group": {
+      "category": "form",
+      "contract": "components/form/checkbox-group/COMPONENT.md",
+      "source": "components/form/checkbox-group/component.html",
+      "adapter": "components/form/checkbox-group/state-adapter.js"
+    },
+    "data.cell": {
+      "category": "data",
+      "contract": "components/data/cell/COMPONENT.md",
+      "source": "components/data/cell/component.html"
+    },
+    "data.tag": {
+      "category": "data",
+      "contract": "components/data/tag/COMPONENT.md",
+      "source": "components/data/tag/component.html"
+    },
+    "data.empty": {
+      "category": "data",
+      "contract": "components/data/empty/COMPONENT.md",
+      "source": "components/data/empty/component.html"
+    },
+    "feedback.dialog": {
+      "category": "feedback",
+      "contract": "components/feedback/dialog/COMPONENT.md",
+      "source": "components/feedback/dialog/component.html",
+      "adapter": "components/feedback/dialog/state-adapter.js"
+    },
+    "feedback.toast": {
+      "category": "feedback",
+      "contract": "components/feedback/toast/COMPONENT.md",
+      "source": "components/feedback/toast/component.html",
+      "adapter": "components/feedback/toast/state-adapter.js"
+    }
+  },
+  "patterns": {
+    "pattern.form-page": {
+      "contract": "patterns/form-page/PATTERN.md",
+      "source": "patterns/form-page/pattern.html",
+      "requires": ["navigation.nav-bar", "form.field", "form.switch", "action.button"]
+    },
+    "pattern.list-page": {
+      "contract": "patterns/list-page/PATTERN.md",
+      "source": "patterns/list-page/pattern.html",
+      "requires": ["navigation.nav-bar", "data.cell", "data.empty", "navigation.tab-bar"]
+    }
+  },
+  "presets": {
+    "preset.mobile-form": {
+      "contract": "presets/mobile-form/PRESET.md",
+      "source": "presets/mobile-form/seed.html",
+      "uses": ["pattern.form-page"],
+      "requires": ["form.field", "form.switch", "action.button"]
+    },
+    "preset.mobile-list": {
+      "contract": "presets/mobile-list/PRESET.md",
+      "source": "presets/mobile-list/seed.html",
+      "uses": ["pattern.list-page"],
+      "requires": ["data.cell", "data.empty"]
+    }
+  }
+}

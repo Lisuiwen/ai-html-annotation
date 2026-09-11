@@ -1,0 +1,47 @@
+<!-- form.field: labeled cell input -->
+<style>
+  .mv-field {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 16px;
+    background: var(--mv-white);
+  }
+  .mv-field__label {
+    flex-shrink: 0;
+    width: 96px;
+    padding-top: 4px;
+    font-size: var(--mv-font-size);
+    color: var(--mv-text-color);
+  }
+  .mv-field__required { color: var(--mv-danger); margin-right: 4px; }
+  .mv-field__body { flex: 1; }
+  .mv-field__input {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 4px 0;
+    font-size: var(--mv-font-size);
+    color: var(--mv-text-color);
+    background: transparent;
+  }
+  .mv-field__input::placeholder { color: var(--mv-text-3); }
+  .mv-field__error { margin: 4px 0 0; font-size: var(--mv-font-size-sm); color: var(--mv-danger); }
+  .mv-field--error .mv-field__input { color: var(--mv-danger); }
+  .mv-field--disabled { opacity: 0.5; }
+</style>
+<div class="mv-field" data-mv-key="field">
+  <label class="mv-field__label" data-mv-key="label">
+    <span class="mv-field__required" aria-hidden="true">*</span>
+    姓名
+  </label>
+  <div class="mv-field__body">
+    <input
+      class="mv-field__input"
+      data-mv-key="input"
+      type="text"
+      placeholder="请输入姓名"
+      value=""
+    />
+  </div>
+  <p class="mv-field__error" data-mv-key="error"></p>
+</div>

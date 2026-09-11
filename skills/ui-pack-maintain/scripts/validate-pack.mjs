@@ -12,9 +12,12 @@ if (!packArg || !packArg.slice('--pack='.length)) {
 }
 
 const packDirectory = path.resolve(packArg.slice('--pack='.length));
+// Self-contained default: skill-level resources (assets/vendor/runtime) resolve
+// relative to the Pack itself. A consumer may override with --skill-root= when
+// it supplies skill-level shared resources of its own.
 const skillDirectory = skillRootArg
   ? path.resolve(skillRootArg.slice('--skill-root='.length))
-  : path.resolve(packDirectory, '../../..');
+  : packDirectory;
 const errors = [];
 const warnings = [];
 const referencedFiles = new Set(['PACK.md', 'manifest.json', 'design-system.md']);

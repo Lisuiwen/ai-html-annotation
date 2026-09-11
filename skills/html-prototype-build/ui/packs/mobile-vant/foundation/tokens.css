@@ -1,0 +1,41 @@
+/* Mobile Vant foundation tokens. DOM-free; no component classes. */
+
+:root {
+  /* Color roles */
+  --mv-primary: #1989fa;
+  --mv-success: #07c160;
+  --mv-danger: #ee0a24;
+  --mv-warning: #ff976a;
+  --mv-text-color: #323233;
+  --mv-text-secondary: #969799;
+  --mv-text-3: #c8c9cc;
+  --mv-border-color: #ebedf0;
+  --mv-background: #f7f8fa;
+  --mv-white: #ffffff;
+
+  /* Shape and motion */
+  --mv-radius: 4px;
+  --mv-radius-lg: 8px;
+  --mv-duration: 0.2s;
+  --mv-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Type */
+  --mv-font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
+    "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  --mv-font-size: 14px;
+  --mv-font-size-sm: 12px;
+  --mv-font-size-lg: 16px;
+  --mv-title-font-weight: 600;
+
+  /* Layout */
+  --mv-viewport-width: 375px;
+  --mv-frame-radius: 16px;
+  --mv-nav-bar-height: 46px;
+  --mv-tab-bar-height: 50px;
+  --mv-safe-area-top: env(safe-area-inset-top, 0px);
+  --mv-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --mv-overlay-color: rgba(0, 0, 0, 0.7);
+
+  /* Touch */
+  --mv-touch-target: 44px;
+}

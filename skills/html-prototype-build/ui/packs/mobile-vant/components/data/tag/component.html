@@ -1,0 +1,26 @@
+<!-- data.tag: status label -->
+<style>
+  .mv-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 6px;
+    height: 20px;
+    border-radius: var(--mv-radius);
+    font-size: var(--mv-font-size-sm);
+    line-height: 1;
+  }
+  .mv-tag--default { background: var(--mv-border-color); color: var(--mv-text-color); }
+  .mv-tag--primary { background: var(--mv-primary); color: var(--mv-white); }
+  .mv-tag--success { background: var(--mv-success); color: var(--mv-white); }
+  .mv-tag--danger { background: var(--mv-danger); color: var(--mv-white); }
+  .mv-tag--warning { background: var(--mv-warning); color: var(--mv-white); }
+  .mv-tag--round { border-radius: 999px; }
+  .mv-tag--plain { background: transparent; }
+  .mv-tag--plain.mv-tag--default { color: var(--mv-text-color); border: 1px solid var(--mv-text-3); }
+  .mv-tag--plain.mv-tag--primary { color: var(--mv-primary); border: 1px solid var(--mv-primary); }
+  .mv-tag--plain.mv-tag--success { color: var(--mv-success); border: 1px solid var(--mv-success); }
+  .mv-tag--plain.mv-tag--danger { color: var(--mv-danger); border: 1px solid var(--mv-danger); }
+  .mv-tag--plain.mv-tag--warning { color: var(--mv-warning); border: 1px solid var(--mv-warning); }
+  .mv-tag--small { height: 16px; padding: 0 4px; font-size: 10px; }
+</style>
+<span class="mv-tag mv-tag--primary" data-mv-key="tag">标签</span>

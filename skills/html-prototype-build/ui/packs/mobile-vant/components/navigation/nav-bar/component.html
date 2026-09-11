@@ -1,0 +1,53 @@
+<!-- navigation.nav-bar: static top bar -->
+<style>
+  .mv-nav-bar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    min-height: calc(var(--mv-nav-bar-height) + var(--mv-safe-area-top));
+    padding: var(--mv-safe-area-top) 8px 0;
+    background: var(--mv-white);
+    border-bottom: 1px solid var(--mv-border-color);
+  }
+  .mv-nav-bar__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--mv-touch-target);
+    height: var(--mv-touch-target);
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    color: var(--mv-text-color);
+    cursor: pointer;
+  }
+  .mv-nav-bar__back-icon { line-height: 1; }
+  .mv-nav-bar__title {
+    flex: 1;
+    margin: 0;
+    text-align: center;
+    font-size: var(--mv-font-size-lg);
+    font-weight: var(--mv-title-font-weight);
+  }
+  .mv-nav-bar__right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--mv-touch-target);
+    height: var(--mv-touch-target);
+    border: none;
+    background: transparent;
+    font-size: var(--mv-font-size);
+    color: var(--mv-primary);
+    cursor: pointer;
+  }
+</style>
+<header class="mv-nav-bar" data-mv-key="nav-bar">
+  <button type="button" class="mv-nav-bar__back" data-mv-key="back" aria-label="返回">
+    <span class="mv-nav-bar__back-icon" aria-hidden="true">‹</span>
+  </button>
+  <h1 class="mv-nav-bar__title" data-mv-key="title">页面标题</h1>
+  <button type="button" class="mv-nav-bar__right" data-mv-key="right">保存</button>
+</header>

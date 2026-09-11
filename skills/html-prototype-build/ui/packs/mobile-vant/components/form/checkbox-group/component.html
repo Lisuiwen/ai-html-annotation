@@ -1,0 +1,46 @@
+<!-- form.checkbox-group: stacked checkbox rows -->
+<style>
+  .mv-checkbox-group { background: var(--mv-white); }
+  .mv-checkbox-group__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 48px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--mv-border-color);
+  }
+  .mv-checkbox-group__item:last-child { border-bottom: none; }
+  .mv-checkbox-group__label { font-size: var(--mv-font-size); color: var(--mv-text-color); }
+  .mv-checkbox-group__icon {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--mv-text-3);
+    border-radius: var(--mv-radius);
+  }
+  .mv-checkbox-group__item--checked .mv-checkbox-group__icon {
+    border-color: var(--mv-primary);
+    background: var(--mv-primary);
+    position: relative;
+  }
+  .mv-checkbox-group__item--checked .mv-checkbox-group__icon::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 9px;
+    border: solid var(--mv-white);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+</style>
+<div class="mv-checkbox-group" data-mv-key="checkbox-group">
+  <div class="mv-checkbox-group__item" data-mv-key="option-a" role="checkbox" aria-checked="false">
+    <span class="mv-checkbox-group__label">选项一</span>
+    <span class="mv-checkbox-group__icon" aria-hidden="true"></span>
+  </div>
+  <div class="mv-checkbox-group__item" data-mv-key="option-b" role="checkbox" aria-checked="false">
+    <span class="mv-checkbox-group__label">选项二</span>
+    <span class="mv-checkbox-group__icon" aria-hidden="true"></span>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<!-- List Page defines composition order and layout only; component implementations are loaded via the manifest dependency closure. -->
+<style>
+  .mv-list-page {
+    width: min(100%, var(--mv-viewport-width));
+    min-height: 100vh;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    background: var(--mv-background);
+    border-radius: var(--mv-frame-radius);
+    overflow: hidden;
+    padding-bottom: calc(var(--mv-tab-bar-height) + var(--mv-safe-area-bottom));
+  }
+  .mv-list-page__nav {
+    flex-shrink: 0;
+  }
+  .mv-list-page__body {
+    flex: 1;
+    padding: 12px;
+  }
+  .mv-list-page__row {
+    border-radius: var(--mv-radius-lg);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .mv-list-page__row:last-child {
+    margin-bottom: 0;
+  }
+</style>
+<div class="mv-list-page" data-mv-key="list-page">
+  <!-- slot: navigation.nav-bar -->
+  <div class="mv-list-page__body">
+    <!-- slot: body -->
+  </div>
+  <!-- slot: navigation.tab-bar -->
+</div>

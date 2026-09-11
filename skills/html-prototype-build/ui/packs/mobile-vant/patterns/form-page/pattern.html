@@ -1,0 +1,35 @@
+<!-- Form Page defines composition order and layout only; component implementations are loaded via the manifest dependency closure. -->
+<style>
+  .mv-form-page {
+    width: min(100%, var(--mv-viewport-width));
+    min-height: 100vh;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    background: var(--mv-background);
+    border-radius: var(--mv-frame-radius);
+    overflow: hidden;
+    padding-bottom: var(--mv-safe-area-bottom);
+  }
+  .mv-form-page__nav {
+    flex-shrink: 0;
+  }
+  .mv-form-page__group {
+    margin: 12px;
+    border-radius: var(--mv-radius-lg);
+    overflow: hidden;
+    background: var(--mv-white);
+  }
+  .mv-form-page__submit {
+    margin: 24px 12px;
+  }
+</style>
+<div class="mv-form-page" data-mv-key="form-page">
+  <!-- slot: navigation.nav-bar -->
+  <div class="mv-form-page__group">
+    <!-- slot: group -->
+  </div>
+  <div class="mv-form-page__submit">
+    <!-- slot: action -->
+  </div>
+</div>

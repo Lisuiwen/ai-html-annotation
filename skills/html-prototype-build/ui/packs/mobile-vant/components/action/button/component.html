@@ -1,0 +1,51 @@
+<!-- action.button: default primary block button -->
+<style>
+  .mv-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--mv-touch-target);
+    padding: 0 16px;
+    border: 1px solid transparent;
+    border-radius: var(--mv-radius);
+    font-size: var(--mv-font-size);
+    cursor: pointer;
+    transition: opacity var(--mv-duration) var(--mv-easing);
+  }
+  .mv-button--default { background: var(--mv-white); border-color: var(--mv-border-color); color: var(--mv-text-color); }
+  .mv-button--primary { background: var(--mv-primary); color: var(--mv-white); }
+  .mv-button--success { background: var(--mv-success); color: var(--mv-white); }
+  .mv-button--danger { background: var(--mv-danger); color: var(--mv-white); }
+  .mv-button--warning { background: var(--mv-warning); color: var(--mv-white); }
+  .mv-button--block { display: flex; width: 100%; }
+  .mv-button--round { border-radius: 999px; }
+  .mv-button--plain { background: transparent; }
+  .mv-button--plain.mv-button--primary { color: var(--mv-primary); border-color: var(--mv-primary); }
+  .mv-button--plain.mv-button--success { color: var(--mv-success); border-color: var(--mv-success); }
+  .mv-button--plain.mv-button--danger { color: var(--mv-danger); border-color: var(--mv-danger); }
+  .mv-button--plain.mv-button--warning { color: var(--mv-warning); border-color: var(--mv-warning); }
+  .mv-button--plain.mv-button--default { color: var(--mv-text-secondary); border-color: var(--mv-text-3); }
+  .mv-button--small { min-height: 32px; padding: 0 12px; font-size: var(--mv-font-size-sm); }
+  .mv-button--large { min-height: 50px; font-size: var(--mv-font-size-lg); }
+  .mv-button--disabled { opacity: 0.5; cursor: not-allowed; }
+  .mv-button--loading { opacity: 0.7; pointer-events: none; }
+  .mv-button--loading .mv-button__content::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    vertical-align: -2px;
+    animation: mv-button-spin 0.8s linear infinite;
+  }
+  @keyframes mv-button-spin {
+    to { transform: rotate(360deg); }
+  }
+  .mv-button__content { pointer-events: none; }
+</style>
+<button type="button" class="mv-button mv-button--primary mv-button--block" data-mv-key="button">
+  <span class="mv-button__content">确认</span>
+</button>
