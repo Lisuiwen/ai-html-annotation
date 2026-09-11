@@ -31,10 +31,12 @@
   /* Layout */
   --mv-viewport-width: 375px;
   --mv-frame-radius: 16px;
+  --mv-preview-frame-radius: 36px;
   --mv-nav-bar-height: 46px;
   --mv-tab-bar-height: 50px;
-  --mv-safe-area-top: env(safe-area-inset-top, 20px);
+  --mv-safe-area-top: env(safe-area-inset-top, 0px);
   --mv-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --mv-preview-safe-area-top: 22px;
   --mv-overlay-color: rgba(0, 0, 0, 0.7);
 
   /* Touch */
@@ -80,62 +82,103 @@ ul, ol {
 }
 
 /* ---- page switching (example-owned layout) ---- */
-.pn-preview {
-  background: #e8e8ed;
-}
-
-#uiPreview {
-  position: relative;
-  width: min(100%, var(--mv-viewport-width));
-  max-width: var(--mv-viewport-width);
-  margin: 24px auto;
-  min-height: calc(100vh - 48px);
-}
-
 .mv-list-page,
 .mv-form-page {
   display: none;
 }
 
-.mv-list-page.is-active {
+.mv-list-page.is-active,
+.mv-form-page.is-active {
   position: relative;
-  width: min(100%, var(--mv-viewport-width));
-  min-height: 812px;
-  margin: 0 auto;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
   display: flex;
   flex-direction: column;
   background: var(--mv-background);
-  border-radius: var(--mv-frame-radius);
   overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+.mv-list-page.is-active {
   padding-bottom: calc(var(--mv-tab-bar-height) + var(--mv-safe-area-bottom));
 }
 
 .mv-form-page.is-active {
-  position: relative;
-  width: min(100%, var(--mv-viewport-width));
-  min-height: 812px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  background: var(--mv-background);
-  border-radius: var(--mv-frame-radius);
-  overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
   padding-bottom: var(--mv-safe-area-bottom);
 }
 
-/* ---- example-only device status bar (prototype preview chrome) ---- */
+/* Desktop preview: show a centered phone frame with status-bar chrome. */
+@media (min-width: 420px) {
+  :root {
+    /* Status bar is a flex row inside the frame; nav bar should not add safe-area again. */
+    --mv-safe-area-top: 0px;
+  }
+
+  .pn-preview {
+    background: #e8e8ed;
+  }
+
+  #uiPreview {
+    position: relative;
+    width: min(100%, var(--mv-viewport-width));
+    max-width: var(--mv-viewport-width);
+    margin: 24px auto;
+    min-height: calc(100vh - 48px);
+  }
+
+  .mv-list-page.is-active,
+  .mv-form-page.is-active {
+    width: min(100%, var(--mv-viewport-width));
+    min-height: 812px;
+    margin: 0 auto;
+    border-radius: var(--mv-preview-frame-radius);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  }
+
+  .mv-device-status {
+    display: flex;
+    border-radius: var(--mv-preview-frame-radius) var(--mv-preview-frame-radius) 0 0;
+  }
+
+  .mv-nav-bar {
+    min-height: var(--mv-nav-bar-height);
+    padding-top: 0;
+  }
+
+  .mv-tab-bar {
+    border-radius: 0 0 var(--mv-preview-frame-radius) var(--mv-preview-frame-radius);
+  }
+}
+
+/* Real mobile: full-bleed app shell; rely on the OS status bar and safe area. */
+@media (max-width: 419px) {
+  .pn-preview,
+  body {
+    background: var(--mv-background);
+  }
+
+  #uiPreview {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  .mv-device-status {
+    display: none;
+  }
+
+  .mv-tab-bar {
+    border-radius: 0;
+  }
+}
+
+/* ---- example-only device status bar (desktop prototype preview chrome) ---- */
 .mv-device-status {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 12;
-  display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
-  height: var(--mv-safe-area-top);
+  min-height: var(--mv-preview-safe-area-top);
   padding: 0 16px;
   background: var(--mv-white);
   pointer-events: none;
