@@ -36,7 +36,9 @@
   --mv-tab-bar-height: 50px;
   --mv-safe-area-top: env(safe-area-inset-top, 0px);
   --mv-safe-area-bottom: env(safe-area-inset-bottom, 0px);
-  --mv-preview-safe-area-top: 22px;
+  --mv-preview-safe-area-top: 44px;
+  --mv-preview-status-inset-x: 24px;
+  --mv-preview-status-inset-top: 14px;
   --mv-overlay-color: rgba(0, 0, 0, 0.7);
 
   /* Touch */
@@ -176,16 +178,21 @@ ul, ol {
 /* ---- example-only device status bar (desktop prototype preview chrome) ---- */
 .mv-device-status {
   flex-shrink: 0;
+  box-sizing: border-box;
   align-items: center;
   justify-content: space-between;
   min-height: var(--mv-preview-safe-area-top);
-  padding: 0 16px;
+  padding:
+    var(--mv-preview-status-inset-top)
+    var(--mv-preview-status-inset-x)
+    8px;
   background: var(--mv-white);
   pointer-events: none;
 }
 .mv-device-status__time {
   font-size: 12px;
   font-weight: 600;
+  line-height: 1;
   letter-spacing: 0.02em;
 }
 .mv-device-status__icons {
