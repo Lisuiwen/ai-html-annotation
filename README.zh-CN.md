@@ -14,7 +14,7 @@
 
 AI HTML Annotation 用原生 HTML 把这条链路接起来：用 UI 包稳定搭建页面，在真实 DOM 上完成标注和评审，把意见复制给 AI，并从锁定的元素直接跳到源码。**页面本身就是可操作的交付物，不只是一张效果图。**
 
-实验性 0.x · 零 npm 依赖 · MIT · [Changelog](CHANGELOG.md)
+实验性 0.x · 零 npm 依赖 · MIT · [更新日志](CHANGELOG.zh-CN.md)
 
 ## 安装
 

@@ -1,21 +1,19 @@
 ---
 name: ui-pack-maintain
-description: Create, extend, repair, and validate reusable UI Packs for html-prototype-build. Use when adding or changing UI Pack foundations, design tokens, components, patterns, presets, state adapters, manifests, or when extracting a reusable visual system from screenshots, existing pages, or computed styles. Do not use for generating business prototypes, editing production frontend code, or ordinary page styling.
+description: Create, extend, repair, and validate reusable UI Packs for html-prototype-build. Use when adding or changing UI Pack Foundations, Components, Patterns, Presets, design tokens, state adapters, or manifests, or when extracting a reusable visual system from screenshots, existing pages, or computed styles. Do not use for generating business prototypes, editing production frontend code, or ordinary page styling.
 ---
 
 # UI Pack Maintain
 
-## Start here
+## Workflow
 
 1. Locate the target `html-prototype-build` skill and its `ui/contract.md`.
-2. Read the target Pack's `PACK.md`, `manifest.json`, and only the entries affected by the task.
-3. Classify the change as Pack creation, foundation, component, Pattern, Preset, or repair.
+2. Read the target Pack's `PACK.md` and `manifest.json`, plus only the resource entries this task touches.
+3. Classify the change as Pack creation, Foundation, Component, Pattern, Preset, or repair.
 4. Read [Pack authoring](references/pack-authoring.md) and implement the smallest reusable change.
 5. Update `manifest.json`, then run deterministic validation.
-6. For a new Pack or substantial semantic change, run the isolated review in [Semantic review](references/semantic-review.md).
+6. For a new Pack or substantial semantic change, run the isolated review in [Isolated semantic review](references/semantic-review.md).
 7. Apply only verified findings, then rerun validation and the target repository tests.
-
-Keep UI Packs inside the consumer skill's `ui/packs/` directory. This maintenance skill owns the workflow and tools, not the Pack assets.
 
 ## Evidence authority
 
@@ -31,14 +29,15 @@ Do not infer exact framework versions, tokens, dimensions, states, or behavior f
 
 ## Hard boundaries
 
-- Keep the foundation DOM-free; include only shared tokens and document-level CSS baseline.
+- Keep UI Packs inside the consumer skill's `ui/packs/` directory; this skill owns only the workflow and tools.
+- Keep the Foundation DOM-free; include only shared tokens and a document-level CSS baseline.
 - Keep each Component as one leaf implementation with a local contract.
-- Let Patterns compose components without copying their implementations.
+- Compose Components through Patterns without copying their implementations.
 - Keep Presets business-fact-free.
-- Let state adapters project passed local state only. Do not access `PrototypeViewers`, persist state, parse URLs, or register global event handlers.
+- Keep state adapters to projecting passed local state only; never access `PrototypeViewers`, persist state, parse URLs, or register global event handlers.
 - Treat `manifest.json` as the only machine-readable index and dependency source.
 - Declare only required dependencies in `requires`; keep conditional capabilities in `optional`.
-- Do not let Patterns or Presets select internal components directly.
+- Patterns and Presets must not select internal components directly.
 
 ## Deterministic validation
 
@@ -50,7 +49,16 @@ node <skill-root>/scripts/validate-pack.mjs --pack=<pack-directory> --strict
 
 Fix every error before semantic review. Warnings must be resolved or explicitly reported as evidence gaps.
 
-The validator checks required documents, manifest shape, provider compatibility, conventional paths, frontmatter alignment, referenced and orphan files, dependency validity and cycles, offline resources, common prefix violations, foundation boundaries, and forbidden adapter behavior. It cannot judge whether a component boundary is useful or whether visual evidence is sufficient; delegate those questions to the semantic reviewer.
+The validator checks:
+
+- required documents and manifest shape
+- provider compatibility and conventional paths
+- frontmatter alignment, referenced and orphan files
+- dependency validity and cycles, offline resources
+- common prefix violations and Foundation boundaries
+- forbidden adapter behavior
+
+It cannot judge whether a component boundary is useful or whether visual evidence is sufficient; delegate those questions to the semantic reviewer.
 
 ## Completion report
 

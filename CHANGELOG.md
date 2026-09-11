@@ -1,20 +1,20 @@
 # Changelog
 
-All notable changes to AI HTML Annotation are documented here. Each section includes an English summary followed by a Chinese summary.
+All notable changes to AI HTML Annotation are documented here.
+
+[中文](CHANGELOG.zh-CN.md)
 
 ## v0.3.2 — 2026-09-10
 
 ### Changed
 
-Completed English localization for Skill references, UI pack contracts, component templates, runtime messages, and validation scripts. Chinese README pairs remain for navigation; `CHANGELOG.md` keeps bilingual release notes.
-
-完成 Skill 参考资料、UI 包契约、组件模板、运行时消息与校验脚本的英文本地化。导航仍保留中文 README 配对；`CHANGELOG.md` 继续采用中英双语发布说明。
+- Completed English localization for Skill references, UI pack contracts, component templates, runtime messages, and validation scripts.
+- Chinese README pairs remain for navigation; `CHANGELOG.md` keeps English release notes.
 
 ### Fixed
 
-Repaired corrupted mixed-language strings introduced during bulk translation (manifest keywords, README links, addon example, validate scripts, and test descriptions). Added a `ponytail:` glossary to `SKILL.md` and replaced ambiguous “Case” wording with “project materials”.
-
-修复批量翻译过程中产生的中英混杂乱码（manifest 关键词、README 链接、addon 示例、校验脚本与测试描述）。在 `SKILL.md` 中补充 `ponytail:` 术语说明，并将易混淆的 “Case” 统一改为 “project materials”。
+- Repaired corrupted mixed-language strings introduced during bulk translation (manifest keywords, README links, addon example, validate scripts, and test descriptions).
+- Added a `ponytail:` glossary to `SKILL.md` and replaced ambiguous “Case” wording with “project materials”.
 
 ### Install / update
 
@@ -26,15 +26,12 @@ npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-proto
 
 ### Changed
 
-Localized Viewer, Author Tools, and the minimal example UI to English (`lang="en"`), including scenario switching, the notes rail, Direct Edit, and Mark labels, hints, toasts, and error messages. Minimal example annotations and scenario labels now match the Skill template.
-
-将 Viewer、Author Tools 与最小示例界面本地化为英文（`lang="en"`），涵盖场景切换、说明栏、Direct Edit 与 Mark 的标签、提示、Toast 及错误消息；最小示例的说明与场景标签已与 Skill 模板对齐。
+- Localized Viewer, Author Tools, and the minimal example UI to English (`lang="en"`), including scenario switching, the notes rail, Direct Edit, and Mark labels, hints, toasts, and error messages.
+- Minimal example annotations and scenario labels now match the Skill template.
 
 ### Fixed
 
-Synced the Viewer contract test with localized runtime error messages.
-
-同步 Viewer 契约测试与本地化后的运行时错误消息。
+- Synced the Viewer contract test with localized runtime error messages.
 
 ### Install / update
 
@@ -46,15 +43,13 @@ npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-proto
 
 ### Added
 
-Final prototype deliveries now use a self-contained named parent directory with `AGENTS.md`, runnable HTML, supporting files, and scenario screenshots. A concise Coding Agent handoff template directs implementation work to product annotations and screenshots, with anchor-scoped HTML lookup only when necessary.
-
-最终原型交付采用自包含的命名上级目录，内含 `AGENTS.md`、可运行 HTML、配套文件与场景截图；新增简明 Coding Agent 交接模板，将实现工作导向产品说明与截图，仅在必要时按锚点定位 HTML。
+- Final prototype deliveries now use a self-contained named parent directory with `AGENTS.md`, runnable HTML, supporting files, and scenario screenshots.
+- A concise Coding Agent handoff template directs implementation work to product annotations and screenshots, with anchor-scoped HTML lookup only when necessary.
 
 ### Changed
 
-The delivery contract and checklist require copying the handoff template into every final prototype package. The minimal example includes the same handoff file and verifies it stays synchronized with the Skill template.
-
-交付契约与复检清单要求将交接模板复制到每个最终原型包；最小示例包含同一交接文件，并校验其与 Skill 模板保持同步。
+- The delivery contract and checklist require copying the handoff template into every final prototype package.
+- The minimal example includes the same handoff file and verifies it stays synchronized with the Skill template.
 
 ### Install / update
 
@@ -66,15 +61,13 @@ npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-proto
 
 ### Fixed
 
-macOS shortcut compatibility across Author Tools via shared `author/core/platform.js` for `⌘` vs `Ctrl` labels and modifier detection. Notes Editor multiline save accepts `⌘ + Enter` (and `Control + Enter`) on macOS, not only `Ctrl + Enter`.
-
-Author Tools 在 macOS 上通过共用 `author/core/platform.js` 统一 `⌘` 与 `Ctrl` 标签及修饰键识别；Notes Editor 多行保存支持 `⌘ + Enter`（及 `Control + Enter`），不再仅限 `Ctrl + Enter`。
+- macOS shortcut compatibility across Author Tools via shared `author/core/platform.js` for `⌘` vs `Ctrl` labels and modifier detection.
+- Notes Editor multiline save accepts `⌘ + Enter` (and `Control + Enter`) on macOS, not only `Ctrl + Enter`.
 
 ### Changed
 
-Direct Edit and Mark empty-state hints show `⌘` on macOS instead of always `Ctrl`. Root README and Skill references document macOS shortcuts for Edit, Mark, and Notes Editor.
-
-Direct Edit 与 Mark 的空态提示在 macOS 上显示 `⌘`；根 README 与 Skill references 记录了 Edit、Mark 与 Notes Editor 的 macOS 快捷键。
+- Direct Edit and Mark empty-state hints show `⌘` on macOS instead of always `Ctrl`.
+- Root README and Skill references document macOS shortcuts for Edit, Mark, and Notes Editor.
 
 ### Install / update
 
@@ -86,27 +79,33 @@ npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-proto
 
 ### Added
 
-Author Tools shell with `Edit` and `Mark` tabs; Direct Edit for in-browser style and copy changes saved through the localhost authoring server; Mark review pins with macOS `⌘`+click and `Copy all → For AI` export; Claude Code plugin marketplace entry; `skills.sh` and Claude Code install paths; GitHub Pages landing page; Chinese README pair; runtime unit and contract tests across `client/`, `author/`, `server/`, and `cli/`.
-
-Author Tools 外壳（Edit / Mark 双 Tab）、Direct Edit 浏览器内改样式与文案并经 localhost 作者服务写回、Mark 评审 pin（macOS `⌘`+点击与 `Copy all → For AI`）、Claude Code 插件市场入口、`skills.sh` 与 Claude Code 安装路径、GitHub Pages 落地页、中文 README 配对，以及覆盖 `client/`、`author/`、`server/`、`cli/` 的运行时单元与契约测试。
+- Author Tools shell with `Edit` and `Mark` tabs.
+- Direct Edit for in-browser style and copy changes saved through the localhost authoring server.
+- Mark review pins with macOS `⌘`+click and `Copy all → For AI` export.
+- Claude Code plugin marketplace entry.
+- `skills.sh` and Claude Code install paths.
+- GitHub Pages landing page.
+- Chinese README pair.
+- Runtime unit and contract tests across `client/`, `author/`, `server/`, and `cli/`.
 
 ### Changed
 
-Runtime reorganized by execution boundary; `PrototypeViewers` state model v2 split across `display-mode.js`, `state.js`, `model.js`, and `viewer.js`; authoring server and screenshot CLI moved to dedicated paths; IDE config moved to Skill-root `.env`; Skill references split by task; Viewer action area and README demo GIFs updated.
-
-运行时按执行边界重组；`PrototypeViewers` v2 拆分为 `display-mode.js`、`state.js`、`model.js`、`viewer.js`；作者服务与截图 CLI 迁至专用路径；IDE 配置迁至 Skill 根目录 `.env`；Skill references 按任务拆分；Viewer 操作区与 README 演示 GIF 已更新。
+- Runtime reorganized by execution boundary.
+- `PrototypeViewers` state model v2 split across `display-mode.js`, `state.js`, `model.js`, and `viewer.js`.
+- Authoring server and screenshot CLI moved to dedicated paths.
+- IDE config moved to Skill-root `.env`.
+- Skill references split by task.
+- Viewer action area and README demo GIFs updated.
 
 ### Fixed
 
-Direct Edit source writes hardened; Notes Editor toolbar pinned left; example snapshot anchors aligned with DOM ids.
-
-加固 Direct Edit 源码写入；Notes Editor 工具栏固定至左侧；示例快照锚点与 DOM id 对齐。
+- Direct Edit source writes hardened.
+- Notes Editor toolbar pinned left.
+- Example snapshot anchors aligned with DOM ids.
 
 ### Migration
 
-Update local Skill copies or reinstall, and replace legacy runtime paths (`serve.mjs` → `server/index.mjs`, `shoot.mjs` → `cli/screenshot.mjs`, `html-mark.js` → `author/tools/mark/`).
-
-更新本地 Skill 副本或重新安装，并替换旧运行时路径（`serve.mjs` → `server/index.mjs`，`shoot.mjs` → `cli/screenshot.mjs`，`html-mark.js` → `author/tools/mark/`）。
+- Update local Skill copies or reinstall, and replace legacy runtime paths (`serve.mjs` → `server/index.mjs`, `shoot.mjs` → `cli/screenshot.mjs`, `html-mark.js` → `author/tools/mark/`).
 
 ```bash
 npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
@@ -114,15 +113,18 @@ npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-proto
 
 ## v0.1.0 — Initial public release
 
-AI HTML Annotation introduces a native-HTML workflow for building, reviewing, annotating, and iterating UI prototypes with coding agents: reusable UI packs, DOM-bound annotations, review pins with AI-ready context, Inspector source jump, `PrototypeViewers` state, scenario screenshots, and authoring tools kept separate from deliverables.
-
-AI HTML Annotation 引入原生 HTML 工作流，与编码 Agent 协作构建、评审、标注并迭代 UI 原型：可复用 UI 包、DOM 绑定说明、可导出 AI 上下文的评审 pin、Inspector 源码跳转、`PrototypeViewers` 状态、场景截图，以及与生成交付物隔离的作者工具。
+AI HTML Annotation introduces a native-HTML workflow for building, reviewing, annotating, and iterating UI prototypes with coding agents.
 
 ### Highlights
 
-Reusable UI packs; DOM-bound product annotations with SVG connectors; review pins exporting selectors and element snapshots; local Inspector workflow; explicit `PrototypeViewers` state; scenario-based clean screenshots; Agent Skill packaging under `skills/html-prototype-build/`; zero npm runtime dependencies.
-
-可复用 UI 包；带 SVG 连线的 DOM 绑定产品说明；导出选择器与元素快照的评审 pin；本地 Inspector 工作流；显式 `PrototypeViewers` 状态；基于场景的纯净截图；`skills/html-prototype-build/` 下的 Agent Skill 打包；零 npm 运行时依赖。
+- Reusable UI packs.
+- DOM-bound product annotations with SVG connectors.
+- Review pins exporting selectors and element snapshots.
+- Local Inspector workflow.
+- Explicit `PrototypeViewers` state.
+- Scenario-based clean screenshots.
+- Agent Skill packaging under `skills/html-prototype-build/`.
+- Zero npm runtime dependencies.
 
 ### Install the Agent Skill
 
@@ -132,6 +134,4 @@ npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-proto
 
 ### Status
 
-Experimental 0.x — APIs, file layout, and authoring workflows may change as the project evolves.
-
-实验性 0.x — API、文件布局与作者工作流可能随项目演进调整。
+- Experimental 0.x — APIs, file layout, and authoring workflows may change as the project evolves.
