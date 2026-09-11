@@ -29,8 +29,12 @@
   --mv-title-font-weight: 600;
 
   /* Layout */
+  --mv-viewport-width: 375px;
+  --mv-frame-radius: 16px;
   --mv-nav-bar-height: 46px;
   --mv-tab-bar-height: 50px;
+  --mv-safe-area-top: env(safe-area-inset-top, 20px);
+  --mv-safe-area-bottom: env(safe-area-inset-bottom, 0px);
   --mv-overlay-color: rgba(0, 0, 0, 0.7);
 
   /* Touch */
@@ -76,21 +80,114 @@ ul, ol {
 }
 
 /* ---- page switching (example-owned layout) ---- */
+.pn-preview {
+  background: #e8e8ed;
+}
+
 #uiPreview {
   position: relative;
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: var(--mv-background);
+  width: min(100%, var(--mv-viewport-width));
+  max-width: var(--mv-viewport-width);
+  margin: 24px auto;
+  min-height: calc(100vh - 48px);
 }
-.mv-page {
+
+.mv-list-page,
+.mv-form-page {
   display: none;
 }
-.mv-page.is-active {
+
+.mv-list-page.is-active {
   position: relative;
-  display: block;
-  min-height: 100vh;
+  width: min(100%, var(--mv-viewport-width));
+  min-height: 812px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
   background: var(--mv-background);
+  border-radius: var(--mv-frame-radius);
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  padding-bottom: calc(var(--mv-tab-bar-height) + var(--mv-safe-area-bottom));
+}
+
+.mv-form-page.is-active {
+  position: relative;
+  width: min(100%, var(--mv-viewport-width));
+  min-height: 812px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--mv-background);
+  border-radius: var(--mv-frame-radius);
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  padding-bottom: var(--mv-safe-area-bottom);
+}
+
+/* ---- example-only device status bar (prototype preview chrome) ---- */
+.mv-device-status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--mv-safe-area-top);
+  padding: 0 16px;
+  background: var(--mv-white);
+  pointer-events: none;
+}
+.mv-device-status__time {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.mv-device-status__icons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.mv-device-status__signal,
+.mv-device-status__wifi,
+.mv-device-status__battery {
+  display: inline-block;
+  background: var(--mv-text-color);
+  opacity: 0.85;
+}
+.mv-device-status__signal {
+  width: 14px;
+  height: 10px;
+  clip-path: polygon(0 100%, 25% 60%, 50% 80%, 75% 40%, 100% 60%, 100% 100%);
+}
+.mv-device-status__wifi {
+  width: 12px;
+  height: 9px;
+  border: 2px solid currentColor;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  background: transparent;
+  opacity: 0.7;
+}
+.mv-device-status__battery {
+  width: 18px;
+  height: 9px;
+  border: 1.5px solid currentColor;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--mv-text-color) 72%, transparent 72%);
+  position: relative;
+}
+.mv-device-status__battery::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: 2px;
+  width: 2px;
+  height: 4px;
+  border-radius: 0 1px 1px 0;
+  background: var(--mv-text-color);
 }
 
 /* ---- navigation.nav-bar ---- */
@@ -100,8 +197,8 @@ ul, ol {
   z-index: 10;
   display: flex;
   align-items: center;
-  height: var(--mv-nav-bar-height);
-  padding: 0 8px;
+  min-height: calc(var(--mv-nav-bar-height) + var(--mv-safe-area-top));
+  padding: var(--mv-safe-area-top) 8px 0;
   background: var(--mv-white);
   border-bottom: 1px solid var(--mv-border-color);
 }
@@ -146,10 +243,11 @@ ul, ol {
   bottom: 0;
   z-index: 10;
   display: flex;
-  height: var(--mv-tab-bar-height);
-  padding-bottom: env(safe-area-inset-bottom, 0);
+  min-height: calc(var(--mv-tab-bar-height) + var(--mv-safe-area-bottom));
+  padding-bottom: var(--mv-safe-area-bottom);
   background: var(--mv-white);
   border-top: 1px solid var(--mv-border-color);
+  border-radius: 0 0 var(--mv-frame-radius) var(--mv-frame-radius);
 }
 .mv-tab-bar__item {
   flex: 1;
@@ -169,8 +267,8 @@ ul, ol {
 
 /* ---- pattern.list-page ---- */
 .mv-list-page__body {
+  flex: 1;
   padding: 12px;
-  padding-bottom: calc(var(--mv-tab-bar-height) + env(safe-area-inset-bottom, 0));
 }
 .mv-list-page__row {
   border-radius: var(--mv-radius-lg);
