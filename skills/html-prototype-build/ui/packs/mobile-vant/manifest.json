@@ -87,6 +87,10 @@
     }
   },
   "patterns": {
+    "pattern.device-frame": {
+      "contract": "patterns/device-frame/PATTERN.md",
+      "source": "patterns/device-frame/pattern.html"
+    },
     "pattern.form-page": {
       "contract": "patterns/form-page/PATTERN.md",
       "source": "patterns/form-page/pattern.html",
@@ -102,13 +106,13 @@
     "preset.mobile-form": {
       "contract": "presets/mobile-form/PRESET.md",
       "source": "presets/mobile-form/seed.html",
-      "uses": ["pattern.form-page"],
+      "uses": ["pattern.device-frame", "pattern.form-page"],
       "requires": ["form.field", "form.switch", "action.button"]
     },
     "preset.mobile-list": {
       "contract": "presets/mobile-list/PRESET.md",
       "source": "presets/mobile-list/seed.html",
-      "uses": ["pattern.list-page"],
+      "uses": ["pattern.device-frame", "pattern.list-page"],
       "requires": ["data.cell", "data.empty"]
     }
   }

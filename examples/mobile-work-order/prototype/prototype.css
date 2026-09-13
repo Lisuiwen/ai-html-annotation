@@ -31,14 +31,10 @@
   /* Layout */
   --mv-viewport-width: 375px;
   --mv-frame-radius: 16px;
-  --mv-preview-frame-radius: 36px;
   --mv-nav-bar-height: 46px;
   --mv-tab-bar-height: 50px;
   --mv-safe-area-top: env(safe-area-inset-top, 0px);
   --mv-safe-area-bottom: env(safe-area-inset-bottom, 0px);
-  --mv-preview-safe-area-top: 44px;
-  --mv-preview-status-inset-x: 24px;
-  --mv-preview-status-inset-top: 14px;
   --mv-overlay-color: rgba(0, 0, 0, 0.7);
 
   /* Touch */
@@ -93,10 +89,11 @@ ul, ol {
 .mv-form-page.is-active {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100%;
   margin: 0;
   display: flex;
   flex-direction: column;
+  flex: 1;
   background: var(--mv-background);
   overflow: hidden;
 }
@@ -109,74 +106,35 @@ ul, ol {
   padding-bottom: var(--mv-safe-area-bottom);
 }
 
-/* Desktop preview: show a centered phone frame with status-bar chrome. */
-@media (min-width: 420px) {
-  :root {
-    /* Status bar is a flex row inside the frame; nav bar should not add safe-area again. */
-    --mv-safe-area-top: 0px;
-  }
-
-  .pn-preview {
-    background: #e8e8ed;
-  }
-
-  #uiPreview {
-    position: relative;
-    width: min(100%, var(--mv-viewport-width));
-    max-width: var(--mv-viewport-width);
-    margin: 24px auto;
-    min-height: calc(100vh - 48px);
-  }
-
-  .mv-list-page.is-active,
-  .mv-form-page.is-active {
-    width: min(100%, var(--mv-viewport-width));
-    min-height: 812px;
-    margin: 0 auto;
-    border-radius: var(--mv-preview-frame-radius);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
-  }
-
-  .mv-device-status {
-    display: flex;
-    border-radius: var(--mv-preview-frame-radius) var(--mv-preview-frame-radius) 0 0;
-  }
-
-  .mv-nav-bar {
-    min-height: var(--mv-nav-bar-height);
-    padding-top: 0;
-  }
-
-  .mv-tab-bar {
-    border-radius: 0 0 var(--mv-preview-frame-radius) var(--mv-preview-frame-radius);
-  }
+/* ---- pattern.device-frame (from mobile-vant pack) ---- */
+.mv-device-frame {
+  --mv-preview-frame-radius: 36px;
+  --mv-preview-safe-area-top: 44px;
+  --mv-preview-status-inset-x: 28px;
+  --mv-preview-status-inset-top: 14px;
 }
 
-/* Real mobile: full-bleed app shell; rely on the OS status bar and safe area. */
-@media (max-width: 419px) {
-  .pn-preview,
-  body {
-    background: var(--mv-background);
-  }
-
-  #uiPreview {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    min-height: 100vh;
-  }
-
-  .mv-device-status {
-    display: none;
-  }
-
-  .mv-tab-bar {
-    border-radius: 0;
-  }
+.mv-device-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--mv-background);
+  overflow: hidden;
 }
 
-/* ---- example-only device status bar (desktop prototype preview chrome) ---- */
+.mv-device-frame__body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .mv-device-status {
+  display: none;
   flex-shrink: 0;
   box-sizing: border-box;
   align-items: center;
@@ -187,6 +145,7 @@ ul, ol {
     var(--mv-preview-status-inset-x)
     8px;
   background: var(--mv-white);
+  color: var(--mv-text-color);
   pointer-events: none;
 }
 .mv-device-status__time {
@@ -198,46 +157,57 @@ ul, ol {
 .mv-device-status__icons {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
 }
-.mv-device-status__signal,
-.mv-device-status__wifi,
-.mv-device-status__battery {
-  display: inline-block;
-  background: var(--mv-text-color);
-  opacity: 0.85;
+.mv-device-status__icon {
+  display: block;
+  flex-shrink: 0;
+  color: var(--mv-text-color);
 }
-.mv-device-status__signal {
-  width: 14px;
-  height: 10px;
-  clip-path: polygon(0 100%, 25% 60%, 50% 80%, 75% 40%, 100% 60%, 100% 100%);
+
+@media (min-width: 420px) {
+  .mv-device-frame {
+    --mv-safe-area-top: 0px;
+    width: min(100%, var(--mv-viewport-width));
+    max-width: var(--mv-viewport-width);
+    min-height: 812px;
+    margin: 24px auto;
+    border-radius: var(--mv-preview-frame-radius);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  }
+
+  .pn-preview {
+    background: #e8e8ed;
+  }
+
+  .mv-device-status {
+    display: flex;
+    border-radius: var(--mv-preview-frame-radius) var(--mv-preview-frame-radius) 0 0;
+  }
+
+  .mv-device-frame .mv-nav-bar {
+    min-height: var(--mv-nav-bar-height);
+    padding-top: 0;
+  }
+
+  .mv-device-frame .mv-tab-bar {
+    border-radius: 0 0 var(--mv-preview-frame-radius) var(--mv-preview-frame-radius);
+  }
 }
-.mv-device-status__wifi {
-  width: 12px;
-  height: 9px;
-  border: 2px solid currentColor;
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-  background: transparent;
-  opacity: 0.7;
-}
-.mv-device-status__battery {
-  width: 18px;
-  height: 9px;
-  border: 1.5px solid currentColor;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--mv-text-color) 72%, transparent 72%);
-  position: relative;
-}
-.mv-device-status__battery::after {
-  content: '';
-  position: absolute;
-  right: -3px;
-  top: 2px;
-  width: 2px;
-  height: 4px;
-  border-radius: 0 1px 1px 0;
-  background: var(--mv-text-color);
+
+@media (max-width: 419px) {
+  .pn-preview,
+  body {
+    background: var(--mv-background);
+  }
+
+  .mv-device-status {
+    display: none;
+  }
+
+  .mv-device-frame .mv-tab-bar {
+    border-radius: 0;
+  }
 }
 
 /* ---- navigation.nav-bar ---- */

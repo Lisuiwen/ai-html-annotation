@@ -41,6 +41,9 @@ components may declare private tokens in their own `<style>`.
 - `--mv-safe-area-top` and `--mv-safe-area-bottom` project the device safe
   areas through `env(safe-area-inset-*, 0px)`.
 - `--mv-overlay-color` rgba(0, 0, 0, 0.7) for overlay dim.
+- Desktop preview chrome (`pattern.device-frame`) declares private preview
+  tokens for phone frame radius and fake status-bar insets; those are not
+  foundation tokens.
 - Inline spacing (16px cell padding, 12px page gaps) is kept per-component
   pending token consolidation (`ponytail:`).
 
@@ -51,7 +54,8 @@ library's public design tokens; no screenshots or computed styles were provided
 for this Pack.
 
 - confirmed limit: generic Vant-style palette, 44px touch targets, 375px
-  reference canvas, rounded page frame, safe-area-aware top/bottom navigation.
+  reference canvas, rounded page frame, safe-area-aware top/bottom navigation,
+  and `pattern.device-frame` for desktop phone preview chrome.
 - evidence required: screenshots or computed styles of the actual target mobile
   UI before the exact canvas width, frame radius, or spacing is promoted to a
   confirmed product fact.

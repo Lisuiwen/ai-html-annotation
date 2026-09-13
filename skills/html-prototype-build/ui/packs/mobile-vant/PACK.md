@@ -32,6 +32,9 @@ another pack; for non-mobile visual systems ask first.
 - Tab bar items are keyed by `data-mv-key`; the adapter projects only `active`.
 - Copy in components and presets is generic placeholder text; replace it with
   business copy from user materials.
+- Desktop phone chrome lives in `pattern.device-frame` (fake status bar +
+  rounded frame). Presets wrap page Patterns in that shell; real phone widths
+  hide the chrome and use the OS status bar.
 - All visual tokens are provisional (no screenshot evidence was provided); see
   `design-system.md` for the `ponytail:` notes.
 

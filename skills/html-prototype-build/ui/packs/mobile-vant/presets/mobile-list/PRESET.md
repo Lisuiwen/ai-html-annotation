@@ -10,9 +10,11 @@ closure.
 
 ## Composition
 
-- `uses`: `pattern.list-page` (nav bar, list body, tab bar).
+- `uses`: `pattern.device-frame` wrapping `pattern.list-page` (nav bar, list
+  body, tab bar).
 - `requires`: `data.cell`, `data.empty`.
-- Slot fill: two `data.cell` rows and one `data.empty` placeholder into `body`.
+- Slot fill: two `data.cell` rows and one `data.empty` placeholder into
+  list-page `body`.
 
 ## Boundaries
 

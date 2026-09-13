@@ -18,7 +18,8 @@ on.
   tokens.
 - Shared mobile viewport tokens include a 375px reference width, page-frame
   radius, and top/bottom safe-area insets. Page Patterns consume these tokens
-  for the rounded frame and status-bar/navigation spacing.
+  for navigation spacing; desktop phone chrome (preview frame radius, fake
+  status bar) is owned by `pattern.device-frame`, not this foundation.
 - Components may declare private tokens in their own leaf `<style>` using the
   same `--mv-` prefix; shared values must live here, not in a component.
 

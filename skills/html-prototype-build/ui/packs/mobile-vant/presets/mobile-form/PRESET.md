@@ -10,7 +10,8 @@ closure.
 
 ## Composition
 
-- `uses`: `pattern.form-page` (nav bar, group card, submit area).
+- `uses`: `pattern.device-frame` wrapping `pattern.form-page` (nav bar, group
+  card, submit area).
 - `requires`: `form.field`, `form.switch`, `action.button`.
 - Slot fill: two `form.field` rows and one `form.switch` row into `group`; one
   block `action.button` into `action`.

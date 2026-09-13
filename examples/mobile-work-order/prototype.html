@@ -8,17 +8,33 @@
 </head>
 <body>
   <div class="ui-preview" id="uiPreview">
-
-    <!-- ===== 工单列表页 (list) ===== -->
-    <section class="mv-list-page" id="listPage" data-page="list" hidden>
+    <!-- pattern.device-frame: desktop phone chrome; full-bleed on real mobile -->
+    <div class="mv-device-frame" data-mv-key="device-frame">
       <div class="mv-device-status" aria-hidden="true">
         <span class="mv-device-status__time">9:41</span>
         <span class="mv-device-status__icons">
-          <span class="mv-device-status__signal"></span>
-          <span class="mv-device-status__wifi"></span>
-          <span class="mv-device-status__battery"></span>
+          <svg class="mv-device-status__icon" width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true">
+            <rect x="0" y="9" width="3" height="3" rx="0.5" />
+            <rect x="4.3" y="6" width="3" height="6" rx="0.5" />
+            <rect x="8.6" y="3" width="3" height="9" rx="0.5" />
+            <rect x="12.9" y="0" width="3" height="12" rx="0.5" />
+          </svg>
+          <svg class="mv-device-status__icon" width="15" height="12" viewBox="0 0 15 12" fill="none" aria-hidden="true">
+            <path d="M7.5 9.6a1.35 1.35 0 1 0 0 2.7 1.35 1.35 0 0 0 0-2.7Z" fill="currentColor" />
+            <path d="M3.4 7.15a5.9 5.9 0 0 1 8.2 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            <path d="M1.15 4.55a9.2 9.2 0 0 1 12.7 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+          <svg class="mv-device-status__icon" width="24" height="12" viewBox="0 0 24 12" fill="none" aria-hidden="true">
+            <rect x="0.75" y="0.75" width="19.5" height="10.5" rx="2.2" stroke="currentColor" stroke-width="1.5" />
+            <rect x="2.5" y="2.5" width="13.5" height="7" rx="1.2" fill="currentColor" />
+            <path d="M21.5 3.75h1.1A1.15 1.15 0 0 1 23.75 4.9v2.2a1.15 1.15 0 0 1-1.15 1.15h-1.1" fill="currentColor" />
+          </svg>
         </span>
       </div>
+      <div class="mv-device-frame__body">
+
+    <!-- ===== 工单列表页 (list) ===== -->
+    <section class="mv-list-page" id="listPage" data-page="list" hidden>
       <header class="mv-nav-bar" data-mv-key="nav-bar">
         <button type="button" class="mv-nav-bar__back" data-mv-key="back" aria-label="返回">
           <span class="mv-nav-bar__back-icon" aria-hidden="true">‹</span>
@@ -78,14 +94,6 @@
 
     <!-- ===== 新建工单页 (form) ===== -->
     <section class="mv-form-page" id="formPage" data-page="form" hidden>
-      <div class="mv-device-status" aria-hidden="true">
-        <span class="mv-device-status__time">9:41</span>
-        <span class="mv-device-status__icons">
-          <span class="mv-device-status__signal"></span>
-          <span class="mv-device-status__wifi"></span>
-          <span class="mv-device-status__battery"></span>
-        </span>
-      </div>
       <header class="mv-nav-bar" data-mv-key="nav-bar">
         <button type="button" class="mv-nav-bar__back" data-mv-key="back" aria-label="返回">
           <span class="mv-nav-bar__back-icon" aria-hidden="true">‹</span>
@@ -181,6 +189,9 @@
     <div class="mv-toast" id="toast" data-mv-key="toast" role="status" hidden>
       <span class="mv-toast__icon" data-mv-key="icon" aria-hidden="true"></span>
       <p class="mv-toast__message" data-mv-key="message">加载中...</p>
+    </div>
+
+      </div>
     </div>
   </div>
 
