@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "admin-desktop",
-  "version": 4,
+  "version": 5,
   "classPrefix": "ui-",
   "tokenPrefix": "ui-",
   "foundation": {
@@ -38,6 +38,13 @@
         "admin-desktop.default"
       ]
     }
+  },
+  "delivery": {
+    "vendor/echarts/echarts.min.js": "assets/echarts.min.js",
+    "runtime/charts/bridge.js": "prototype/bridge.js",
+    "runtime/charts/presets.js": "prototype/presets.js",
+    "vendor/echarts/maps/china.json": "assets/maps/china.json",
+    "vendor/echarts/maps/china.js": "assets/maps/china.js"
   },
   "components": {
     "action.button": {
@@ -498,8 +505,8 @@
         "vendor/echarts/echarts.min.js"
       ],
       "runtime": [
-        "runtime/client/charts/bridge.js",
-        "runtime/client/charts/presets.js"
+        "runtime/charts/bridge.js",
+        "runtime/charts/presets.js"
       ]
     },
     "data.chart-line": {

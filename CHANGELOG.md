@@ -2,6 +2,44 @@
 
 All notable changes to AI HTML Annotation are documented here.
 
+## v0.4.1 — 2026-09-14
+
+### English
+
+#### Changed
+
+- Official UI packs moved to `.html-prototype/packs/`; `html-prototype-build` shrinks to 50 skill files.
+- Pack install registry pins `ref: v0.4.1`; `install-pack.mjs` downloads from the tagged layout.
+- `admin-desktop` v5 is self-contained (ECharts vendor + chart runtime live inside the pack).
+- `resolve-pack.mjs` outputs `deliver[]` as `{ from, to }` pairs from `manifest.delivery`.
+
+#### Install / update
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill ui-pack-maintain
+node <skill-root>/scripts/install-pack.mjs --list-remote
+node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
+```
+
+### 中文
+
+#### 变更
+
+- 官方 UI pack 迁至 `.html-prototype/packs/`；`html-prototype-build` 缩减至 50 个 skill 文件。
+- 安装 registry 固定 `ref: v0.4.1`；`install-pack.mjs` 从该 tag 的布局下载。
+- `admin-desktop` v5 自包含（ECharts vendor 与 chart runtime 在 pack 内）。
+- `resolve-pack.mjs` 通过 `manifest.delivery` 输出 `deliver[]`（`{ from, to }`）。
+
+#### 安装 / 更新
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill ui-pack-maintain
+node <skill-root>/scripts/install-pack.mjs --list-remote
+node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
+```
+
 ## v0.4.0 — 2026-09-14
 
 ### English

@@ -1,4 +1,4 @@
-/* ECharts core: renderLeaf for chart leaf reuse; does not read PrototypeViewers. */
+/* ECharts core: renderLeaf for chart leaf reuse; does not read viewer state. */
 (function () {
   'use strict';
 

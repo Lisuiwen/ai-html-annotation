@@ -17,11 +17,21 @@
     });
   }
 
-  /** Aggregate admin-desktop tokens into ECharts palette and axis styles. */
+  /** Read token prefix from the document root; foundation CSS should define semantic chart tokens. */
+  function getTokenPrefix() {
+    var root = document.documentElement;
+    if (!root || typeof root.getAttribute !== 'function') return 'ui-';
+    return root.getAttribute('data-token-prefix') || 'ui-';
+  }
+
+  /** Aggregate foundation tokens into ECharts palette and axis styles. */
   function getThemeFromTokens() {
     if (themeCache) return themeCache;
+    var prefix = getTokenPrefix();
+    var names = ['primary', 'success', 'warning', 'error', 'info', 'font', 'text-secondary', 'border', 'border-soft']
+      .map(function (suffix) { return '--' + prefix + suffix; });
     var values = readTokens(
-      ['--ui-primary', '--ui-success', '--ui-warning', '--ui-error', '--ui-info', '--ui-font', '--ui-text-secondary', '--ui-border', '--ui-border-soft'],
+      names,
       ['#1677ff', '#52c41a', '#faad14', '#ff4d4f', '#1677ff', 'sans-serif', 'rgba(0,0,0,0.65)', '#d9d9d9', '#f0f0f0']
     );
     themeCache = {

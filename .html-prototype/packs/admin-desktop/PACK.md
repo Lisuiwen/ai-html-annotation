@@ -1,6 +1,7 @@
 ---
 id: admin-desktop
 name: Admin Desktop UI
+summary: Admin desktop-style UI for forms, tables, navigation, and dashboard charts.
 ---
 
 # Admin Desktop UI Pack

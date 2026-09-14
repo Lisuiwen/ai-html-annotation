@@ -1,6 +1,7 @@
 ---
 id: mobile-vant
 name: Mobile Vant
+summary: Mobile Vant-style H5 UI for phone-width apps with touch-friendly controls and overlays.
 ---
 
 # Mobile Vant

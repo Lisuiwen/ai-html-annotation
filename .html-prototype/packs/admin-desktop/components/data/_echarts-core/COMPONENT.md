@@ -14,10 +14,11 @@ Shared ECharts instance pool and setOption entry for chart leaf components. May 
 
 ## Runtime dependencies
 
-When generating a prototype, copy:
+When generating a prototype, copy the files listed in `resolve-pack` `deliver[]` output
+(`from` → `to`). Typical targets:
 
-- `assets/echarts.min.js` (from the skill vendor)
-- `prototype/bridge.js` and `prototype/presets.js` (from `runtime/client/charts/`)
+- `assets/echarts.min.js`
+- `prototype/bridge.js` and `prototype/presets.js`
 
 ## State Adapter
 

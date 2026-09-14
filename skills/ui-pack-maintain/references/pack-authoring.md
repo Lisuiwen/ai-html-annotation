@@ -1,7 +1,24 @@
 # Pack Authoring
 
-## Resource placement
+## Pack landing paths
 
+`--pack=<dir>` stays required. Choose the landing path by role:
+
+| Role | Recommended location | Synced to remote |
+|---|---|---|
+| End user download or self-created pack | `~/.html-prototype/packs/<pack-id>/` | No, local only |
+| Project developer maintaining official packs | `<repo>/.html-prototype/packs/<pack-id>/` | Yes, via git |
+
+End-user packs should stay in the home cache. Only project developers commit packs under
+`<repo>/.html-prototype/packs/`. That directory is the source of truth for `registry.json`.
+
+## Pack id naming
+
+- Official packs use unprefixed ids such as `admin-desktop` and `mobile-vant`.
+- User-created packs should use a distinguishing prefix or namespace, for example
+  `mycompany-admin`, to avoid shadowing an official pack with the same id.
+
+## Resource placement
 | Change | Destination | Must not contain |
 |---|---|---|
 | Cross-component token or document baseline | `foundation/` | Component classes, page shells, DOM, scripts |
@@ -18,9 +35,10 @@
 5. Register provider categories and compatible foundations.
 6. Add Patterns and Presets only after reusable composition exists.
 7. Run strict validation and resolver smoke tests before rendering examples.
-   Registration in a consumer catalog is a separate, consumer-side step: see
-   `references/catalog-format.md`. This skill does not write a consumer catalog
-   during Pack creation.
+8. Add a one-line `summary` to `PACK.md` frontmatter for registry publication.
+9. Regenerate `registry.json` with `node scripts/generate-registry.mjs` before release.
+   See `references/registry-format.md`; consumers discover packs through
+   `resolve-pack.mjs --list` and `install-pack.mjs --list-remote`, not a Markdown catalog.
 
 ## Add or update a Component
 

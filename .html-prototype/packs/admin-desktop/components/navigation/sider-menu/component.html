@@ -21,12 +21,12 @@
     background: transparent;
   }
   /* ponytail: menu hover and active not captured; replace current approximation with real state when available. */
-  .ui-menu-item:hover, .ui-menu-item.is-active { color: var(--ui-primary); background: var(--ui-bg-soft); }
+  .ui-menu-item:hover, .ui-menu-item--active { color: var(--ui-primary); background: var(--ui-bg-soft); }
 </style>
 
 <aside class="ui-sider" id="uiSider">
   <nav class="ui-menu" id="uiSiderMenu" aria-label="Sidebar menu">
-    <button class="ui-menu-item is-active" type="button" aria-current="page">
+    <button class="ui-menu-item ui-menu-item--active" type="button" aria-current="page">
       <span aria-hidden="true">◇</span><span>Current menu</span>
     </button>
     <button class="ui-menu-item" type="button">
