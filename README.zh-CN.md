@@ -14,7 +14,7 @@
 
 AI HTML Annotation 用原生 HTML 把这条链路接起来：用 UI 包稳定搭建页面，在真实 DOM 上完成标注和评审，把意见复制给 AI，并从锁定的元素直接跳到源码。**页面本身就是可操作的交付物，不只是一张效果图。**
 
-实验性 0.x · 零 npm 依赖 · MIT · [Changelog](CHANGELOG.md)
+实验性 0.x · 零 npm 依赖 · MIT · [更新日志](CHANGELOG.md)
 
 ## 安装
 
@@ -67,7 +67,7 @@ Author Tools 在同一面板中提供 Direct Edit 与 Mark。按住 `Ctrl`（mac
 
 ### UI 包复用，页面稳定输出
 
-从本地 UI 包按统一 Token、组件和 Pattern 组合页面，减少 AI 从零拼装时的猜测和视觉漂移。相同的 UI 资产可以持续产出风格一致、结构稳定的原生 HTML 原型。
+从本地 UI 包按统一 Token、组件和 Pattern 组合页面；目录现提供 `admin-desktop` 与 `mobile-vant` 两套完整 Pack。减少 AI 从零拼装时的猜测和视觉漂移，相同 UI 资产可以持续产出风格一致、结构稳定的原生 HTML 原型。
 
 ### 便捷修改，评审上下文可执行
 
@@ -123,7 +123,7 @@ Direct Edit 与评审标注都留在作者层，最终截图和原型文件保�
 - Skill 用途与协作方式 → [`skills/html-prototype-build/README.zh-CN.md`](skills/html-prototype-build/README.zh-CN.md)（英文版见 [README.md](skills/html-prototype-build/README.md)）
 - Agent 任务分流与硬约束 → [`skills/html-prototype-build/SKILL.md`](skills/html-prototype-build/SKILL.md)
 - 含命令的任务说明（作者服务、评审、截图） → [`skills/html-prototype-build/references/`](skills/html-prototype-build/references/)
-- 可对照样例 → [`examples/minimal-notes-system`](examples/minimal-notes-system)
+- 可对照样例 → [`examples/minimal-notes-system`](examples/minimal-notes-system)（桌面后台）、[`examples/mobile-work-order`](examples/mobile-work-order)（移动 H5）
 
 ## 分发结构
 

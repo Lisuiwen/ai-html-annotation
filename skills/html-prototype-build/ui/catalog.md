@@ -3,6 +3,7 @@
 ## Available packs
 
 - `admin-desktop`: Admin desktop-style UI providing foundation, action, navigation, form, data, feedback, plus optional Patterns and Presets.
+- `mobile-vant`: Mobile Vant-style H5 UI providing foundation, action, navigation, form, data, feedback, plus Patterns and Presets.
 
 ## Selection rules
 
@@ -15,7 +16,7 @@
 
 ## Current combination
 
-There is currently one complete pack:
+There are currently two complete packs:
 
 ```text
 foundation: admin-desktop.default
@@ -24,6 +25,16 @@ navigation: admin-desktop
 form: admin-desktop
 data: admin-desktop
 feedback: admin-desktop
+addons: choose as needed
+```
+
+```text
+foundation: mobile-vant.default
+action: mobile-vant
+navigation: mobile-vant
+form: mobile-vant
+data: mobile-vant
+feedback: mobile-vant
 addons: choose as needed
 ```
 

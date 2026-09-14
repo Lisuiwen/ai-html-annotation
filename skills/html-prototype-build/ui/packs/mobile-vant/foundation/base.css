@@ -1,0 +1,46 @@
+/* Mobile Vant document-level baseline. DOM-free; no component classes. */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: var(--mv-font-family);
+  font-size: var(--mv-font-size);
+  color: var(--mv-text-color);
+  background-color: var(--mv-background);
+  line-height: 1.5;
+}
+
+/* The page shell owns the rounded phone frame; the body remains viewport-safe. */
+body {
+  min-width: 320px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

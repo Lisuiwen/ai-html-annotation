@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile Work Order</title>
+  <link rel="stylesheet" href="./prototype/prototype.css">
+</head>
+<body>
+  <div class="ui-preview" id="uiPreview">
+    <!-- pattern.device-frame: desktop phone chrome; full-bleed on real mobile -->
+    <div class="mv-device-frame" data-mv-key="device-frame">
+      <div class="mv-device-status" aria-hidden="true">
+        <span class="mv-device-status__time">9:41</span>
+        <span class="mv-device-status__icons">
+          <svg class="mv-device-status__icon" width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true">
+            <rect x="0" y="9" width="3" height="3" rx="0.5" />
+            <rect x="4.3" y="6" width="3" height="6" rx="0.5" />
+            <rect x="8.6" y="3" width="3" height="9" rx="0.5" />
+            <rect x="12.9" y="0" width="3" height="12" rx="0.5" />
+          </svg>
+          <svg class="mv-device-status__icon" width="15" height="12" viewBox="0 0 15 12" fill="none" aria-hidden="true">
+            <path d="M7.5 9.6a1.35 1.35 0 1 0 0 2.7 1.35 1.35 0 0 0 0-2.7Z" fill="currentColor" />
+            <path d="M3.4 7.15a5.9 5.9 0 0 1 8.2 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            <path d="M1.15 4.55a9.2 9.2 0 0 1 12.7 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+          <svg class="mv-device-status__icon" width="24" height="12" viewBox="0 0 24 12" fill="none" aria-hidden="true">
+            <rect x="0.75" y="0.75" width="19.5" height="10.5" rx="2.2" stroke="currentColor" stroke-width="1.5" />
+            <rect x="2.5" y="2.5" width="13.5" height="7" rx="1.2" fill="currentColor" />
+            <path d="M21.5 3.75h1.1A1.15 1.15 0 0 1 23.75 4.9v2.2a1.15 1.15 0 0 1-1.15 1.15h-1.1" fill="currentColor" />
+          </svg>
+        </span>
+      </div>
+      <div class="mv-device-frame__body">
+
+    <!-- Work order list page (list) -->
+    <section class="mv-list-page" id="listPage" data-page="list" hidden>
+      <header class="mv-nav-bar" data-mv-key="nav-bar">
+        <button type="button" class="mv-nav-bar__back" data-mv-key="back" aria-label="Back">
+          <span class="mv-nav-bar__back-icon" aria-hidden="true">‹</span>
+        </button>
+        <h1 class="mv-nav-bar__title" data-mv-key="title">Work Orders</h1>
+        <button type="button" class="mv-nav-bar__right" data-mv-key="right" id="navNew" data-ui-interactive>New</button>
+      </header>
+
+      <div class="mv-list-page__body">
+        <div class="mv-list-page__row">
+          <div class="mv-cell" data-mv-key="cell">
+            <div class="mv-cell__content">
+              <div class="mv-cell__title" id="orderTitle1">Printer paper jam</div>
+              <div class="mv-cell__label" id="orderLabel1">Equipment · 2026-09-10 09:12</div>
+            </div>
+            <div class="mv-cell__value" id="orderValue1"><span class="mv-tag mv-tag--warning" data-mv-key="tag">In progress</span></div>
+            <span class="mv-cell__arrow" aria-hidden="true">›</span>
+          </div>
+        </div>
+        <div class="mv-list-page__row">
+          <div class="mv-cell" data-mv-key="cell">
+            <div class="mv-cell__content">
+              <div class="mv-cell__title" id="orderTitle2">Projector no signal</div>
+              <div class="mv-cell__label" id="orderLabel2">Equipment · 2026-09-09 15:40</div>
+            </div>
+            <div class="mv-cell__value" id="orderValue2"><span class="mv-tag mv-tag--success" data-mv-key="tag">Completed</span></div>
+            <span class="mv-cell__arrow" aria-hidden="true">›</span>
+          </div>
+        </div>
+        <div class="mv-list-page__row">
+          <div class="mv-cell" data-mv-key="cell">
+            <div class="mv-cell__content">
+              <div class="mv-cell__title" id="orderTitle3">Access permission request</div>
+              <div class="mv-cell__label" id="orderLabel3">Access · 2026-09-08 10:05</div>
+            </div>
+            <div class="mv-cell__value" id="orderValue3"><span class="mv-tag mv-tag--primary" data-mv-key="tag">Pending</span></div>
+            <span class="mv-cell__arrow" aria-hidden="true">›</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="mv-tab-bar" data-mv-key="tab-bar" role="tablist" aria-label="Main navigation">
+        <button type="button" class="mv-tab-bar__item" data-mv-key="home" role="tab" aria-selected="true">
+          <span class="mv-tab-bar__icon" aria-hidden="true">🏠</span>
+          <span class="mv-tab-bar__label">Home</span>
+        </button>
+        <button type="button" class="mv-tab-bar__item" data-mv-key="list" role="tab" aria-selected="false">
+          <span class="mv-tab-bar__icon" aria-hidden="true">📋</span>
+          <span class="mv-tab-bar__label">Orders</span>
+        </button>
+        <button type="button" class="mv-tab-bar__item" data-mv-key="mine" role="tab" aria-selected="false">
+          <span class="mv-tab-bar__icon" aria-hidden="true">👤</span>
+          <span class="mv-tab-bar__label">Mine</span>
+        </button>
+      </nav>
+    </section>
+
+    <!-- New work order page (form) -->
+    <section class="mv-form-page" id="formPage" data-page="form" hidden>
+      <header class="mv-nav-bar" data-mv-key="nav-bar">
+        <button type="button" class="mv-nav-bar__back" data-mv-key="back" aria-label="Back">
+          <span class="mv-nav-bar__back-icon" aria-hidden="true">‹</span>
+        </button>
+        <h1 class="mv-nav-bar__title" data-mv-key="title">New Work Order</h1>
+        <button type="button" class="mv-nav-bar__right" data-mv-key="right">Save</button>
+      </header>
+
+      <div class="mv-form-page__group">
+        <div class="mv-field" data-mv-key="field">
+          <label class="mv-field__label" data-mv-key="label">
+            <span class="mv-field__required" aria-hidden="true">*</span>
+            Title
+          </label>
+          <div class="mv-field__body">
+            <input
+              class="mv-field__input"
+              id="formTitle"
+              data-mv-key="input"
+              type="text"
+              placeholder="Enter work order title"
+              value=""
+            />
+          </div>
+          <p class="mv-field__error" data-mv-key="error"></p>
+        </div>
+
+        <div class="mv-field" data-mv-key="field">
+          <label class="mv-field__label" data-mv-key="label">
+            <span class="mv-field__required" aria-hidden="true">*</span>
+            Description
+          </label>
+          <div class="mv-field__body">
+            <input
+              class="mv-field__input"
+              id="formDescription"
+              data-mv-key="input"
+              type="text"
+              placeholder="Describe the issue"
+              value=""
+            />
+          </div>
+          <p class="mv-field__error" data-mv-key="error"></p>
+        </div>
+
+        <div class="mv-cell mv-cell--is-link" data-mv-key="cell" id="priorityCell">
+          <div class="mv-cell__content">
+            <div class="mv-cell__title">Priority</div>
+          </div>
+          <div class="mv-cell__value" id="priorityValue">Normal</div>
+          <span class="mv-cell__arrow" aria-hidden="true">›</span>
+        </div>
+
+        <div class="mv-cell" data-mv-key="cell">
+          <div class="mv-cell__content">
+            <div class="mv-cell__title" id="urgentTitle">Expedite</div>
+          </div>
+          <div class="mv-cell__value">
+            <button
+              type="button"
+              class="mv-switch"
+              id="urgentSwitch"
+              data-mv-key="switch"
+              role="switch"
+              aria-checked="false"
+            >
+              <span class="mv-switch__node"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mv-form-page__submit">
+        <button type="button" class="mv-button mv-button--primary mv-button--block" data-mv-key="button" id="submitButton" data-ui-interactive>
+          <span class="mv-button__content">Submit</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Feedback overlays -->
+    <div class="mv-dialog" id="submitDialog" data-mv-key="dialog" hidden>
+      <div class="mv-dialog__mask" data-mv-key="mask"></div>
+      <div class="mv-dialog__surface" role="dialog" aria-modal="true" aria-labelledby="submitDialogTitle">
+        <h2 class="mv-dialog__title" id="submitDialogTitle" data-mv-key="title">Confirm submission</h2>
+        <p class="mv-dialog__message" data-mv-key="message">Submit this work order?</p>
+        <div class="mv-dialog__actions">
+          <button type="button" class="mv-dialog__button mv-dialog__button--cancel" data-mv-key="cancel">Cancel</button>
+          <button type="button" class="mv-dialog__button mv-dialog__button--confirm" data-mv-key="confirm" id="dialogConfirm">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mv-toast" id="toast" data-mv-key="toast" role="status" hidden>
+      <span class="mv-toast__icon" data-mv-key="icon" aria-hidden="true"></span>
+      <p class="mv-toast__message" data-mv-key="message">Loading...</p>
+    </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="./prototype/notes.snapshot.js"></script>
+  <script src="./prototype/display-mode.js"></script>
+  <script src="./prototype/state.js"></script>
+  <script src="./prototype/model.js"></script>
+  <script src="./prototype/viewer.js" data-prototype-notes-viewer></script>
+  <script src="./prototype/ui-adapters.js"></script>
+  <script src="./prototype/prototype.js"></script>
+
+</body>
+</html>

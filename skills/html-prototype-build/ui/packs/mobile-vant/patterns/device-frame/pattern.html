@@ -1,0 +1,138 @@
+<!-- Device Frame: desktop phone chrome + fake status bar; full-bleed on real mobile. -->
+<style>
+  /* Preview-only tokens; not part of the product foundation contract. */
+  .mv-device-frame {
+    --mv-preview-frame-radius: 36px;
+    --mv-preview-safe-area-top: 44px;
+    --mv-preview-status-inset-x: 28px;
+    --mv-preview-status-inset-top: 14px;
+  }
+
+  .mv-device-frame {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    background: var(--mv-background);
+    overflow: hidden;
+  }
+
+  .mv-device-frame__body {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Fake status bar: hidden on real mobile; shown in desktop phone chrome. */
+  .mv-device-status {
+    display: none;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--mv-preview-safe-area-top);
+    padding:
+      var(--mv-preview-status-inset-top)
+      var(--mv-preview-status-inset-x)
+      8px;
+    background: var(--mv-white);
+    color: var(--mv-text-color);
+    pointer-events: none;
+  }
+  .mv-device-status__time {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+  .mv-device-status__icons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .mv-device-status__icon {
+    display: block;
+    flex-shrink: 0;
+    color: var(--mv-text-color);
+  }
+
+  /* Desktop: centered phone frame; status bar replaces env(safe-area-inset-top). */
+  @media (min-width: 420px) {
+    .mv-device-frame {
+      --mv-safe-area-top: 0px;
+      width: min(100%, var(--mv-viewport-width));
+      max-width: var(--mv-viewport-width);
+      min-height: 812px;
+      margin: 24px auto;
+      border-radius: var(--mv-preview-frame-radius);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+    }
+
+    .pn-preview {
+      background: #e8e8ed;
+    }
+
+    .mv-device-status {
+      display: flex;
+      border-radius: var(--mv-preview-frame-radius) var(--mv-preview-frame-radius) 0 0;
+    }
+
+    .mv-device-frame .mv-nav-bar {
+      min-height: var(--mv-nav-bar-height);
+      padding-top: 0;
+    }
+
+    .mv-device-frame .mv-tab-bar {
+      border-radius: 0 0 var(--mv-preview-frame-radius) var(--mv-preview-frame-radius);
+    }
+  }
+
+  /* Real mobile: rely on OS status bar; keep frame full-bleed. */
+  @media (max-width: 419px) {
+    .pn-preview,
+    body {
+      background: var(--mv-background);
+    }
+
+    .mv-device-status {
+      display: none;
+    }
+
+    .mv-device-frame .mv-tab-bar {
+      border-radius: 0;
+    }
+  }
+</style>
+<div class="mv-device-frame" data-mv-key="device-frame">
+  <div class="mv-device-status" aria-hidden="true">
+    <span class="mv-device-status__time">9:41</span>
+    <span class="mv-device-status__icons">
+      <!-- Cellular signal bars -->
+      <svg class="mv-device-status__icon" width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true">
+        <rect x="0" y="9" width="3" height="3" rx="0.5" />
+        <rect x="4.3" y="6" width="3" height="6" rx="0.5" />
+        <rect x="8.6" y="3" width="3" height="9" rx="0.5" />
+        <rect x="12.9" y="0" width="3" height="12" rx="0.5" />
+      </svg>
+      <!-- Wi-Fi arcs -->
+      <svg class="mv-device-status__icon" width="15" height="12" viewBox="0 0 15 12" fill="none" aria-hidden="true">
+        <path d="M7.5 9.6a1.35 1.35 0 1 0 0 2.7 1.35 1.35 0 0 0 0-2.7Z" fill="currentColor" />
+        <path d="M3.4 7.15a5.9 5.9 0 0 1 8.2 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        <path d="M1.15 4.55a9.2 9.2 0 0 1 12.7 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+      <!-- Battery outline + fill -->
+      <svg class="mv-device-status__icon" width="24" height="12" viewBox="0 0 24 12" fill="none" aria-hidden="true">
+        <rect x="0.75" y="0.75" width="19.5" height="10.5" rx="2.2" stroke="currentColor" stroke-width="1.5" />
+        <rect x="2.5" y="2.5" width="13.5" height="7" rx="1.2" fill="currentColor" />
+        <path d="M21.5 3.75h1.1A1.15 1.15 0 0 1 23.75 4.9v2.2a1.15 1.15 0 0 1-1.15 1.15h-1.1" fill="currentColor" />
+      </svg>
+    </span>
+  </div>
+  <div class="mv-device-frame__body">
+    <!-- slot: page -->
+  </div>
+</div>

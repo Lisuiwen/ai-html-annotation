@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Pack 创建与维护"
+  short_description: "创建、扩展、审查并验证 HTML 原型 UI Pack"
+  default_prompt: "使用 $ui-pack-maintain 根据当前证据创建或维护 UI Pack，完成结构校验，并在工作流要求时进行独立语义审查。"
