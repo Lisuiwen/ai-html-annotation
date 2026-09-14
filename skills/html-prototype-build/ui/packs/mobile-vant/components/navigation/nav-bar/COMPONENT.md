@@ -17,7 +17,7 @@ Confirmed:
 - `show-back` — boolean; the back affordance renders only when present. The
   leaf ships with the back button; remove the node at generation time when a
   page needs no back affordance.
-- `right-text` — optional right-side action text (e.g. "保存"). The leaf ships
+- `right-text` — optional right-side action text (e.g. "Save"). The leaf ships
   with a right action; remove the node at generation time when not needed.
 
 No state projection is required; the final prototype copies this leaf and edits

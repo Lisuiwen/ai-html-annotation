@@ -7,7 +7,7 @@ window.__PROTOTYPE_NOTES__ = {
       "form": {
         "title": "",
         "description": "",
-        "priority": "普通",
+        "priority": "Normal",
         "urgent": false,
         "errors": {
           "title": "",
@@ -28,21 +28,21 @@ window.__PROTOTYPE_NOTES__ = {
   "activeScenario": "list",
   "scenarios": {
     "list": {
-      "label": "工单列表",
+      "label": "List",
       "state": {
         "product": {
           "page": "list",
           "form": {
             "title": "",
             "description": "",
-            "priority": "普通",
+            "priority": "Normal",
             "urgent": false
           }
         }
       }
     },
     "form": {
-      "label": "新建工单",
+      "label": "New",
       "extends": "list",
       "state": {
         "product": {
@@ -51,21 +51,21 @@ window.__PROTOTYPE_NOTES__ = {
       }
     },
     "form-filled": {
-      "label": "填写中",
+      "label": "Editing",
       "extends": "form",
       "state": {
         "product": {
           "form": {
-            "title": "会议室投影仪故障",
-            "description": "连接后无信号，已尝试重启",
-            "priority": "紧急",
+            "title": "Projector no signal",
+            "description": "No signal after restart",
+            "priority": "High",
             "urgent": true
           }
         }
       }
     },
     "dialog-open": {
-      "label": "确认弹窗",
+      "label": "Confirm",
       "extends": "form-filled",
       "state": {
         "product": {
@@ -78,8 +78,8 @@ window.__PROTOTYPE_NOTES__ = {
     }
   },
   "header": {
-    "title": "功能说明",
-    "subtitle": "移动端工单列表与新建工单流程"
+    "title": "Function Notes",
+    "subtitle": "Mobile work order list and create flow"
   },
   "cards": [
     {
@@ -87,11 +87,11 @@ window.__PROTOTYPE_NOTES__ = {
       "when": {
         "product.page": "list"
       },
-      "title": "工单列表",
-      "body": "列表按时间倒序展示工单，右侧标签标识处理状态（待处理/处理中/已完成）。",
+      "title": "Work order list",
+      "body": "Orders are sorted by time; status tags show Pending, In progress, or Completed.",
       "target": {
         "anchor": "orderTitle1",
-        "label": "工单列表"
+        "label": "Work order list"
       }
     },
     {
@@ -99,11 +99,11 @@ window.__PROTOTYPE_NOTES__ = {
       "when": {
         "product.page": "list"
       },
-      "title": "新建入口",
-      "body": "点击右上角「新建」进入新建工单页。",
+      "title": "New entry",
+      "body": "Tap New in the top-right to open the create form.",
       "target": {
         "anchor": "navNew",
-        "label": "新建工单入口"
+        "label": "New work order entry"
       }
     },
     {
@@ -111,11 +111,11 @@ window.__PROTOTYPE_NOTES__ = {
       "when": {
         "product.page": "form"
       },
-      "title": "工单标题",
-      "body": "必填项，用于描述工单主题；留空提交时会提示错误。",
+      "title": "Title field",
+      "body": "Required; submit shows an error when empty.",
       "target": {
         "anchor": "formTitle",
-        "label": "工单标题输入"
+        "label": "Work order title input"
       }
     },
     {
@@ -123,11 +123,11 @@ window.__PROTOTYPE_NOTES__ = {
       "when": {
         "product.page": "form"
       },
-      "title": "问题描述",
-      "body": "选填，补充问题现象；留空时仅提交标题。",
+      "title": "Description field",
+      "body": "Required; describe the issue before submitting.",
       "target": {
         "anchor": "formDescription",
-        "label": "问题描述输入"
+        "label": "Description input"
       }
     },
     {
@@ -135,11 +135,11 @@ window.__PROTOTYPE_NOTES__ = {
       "when": {
         "product.page": "form"
       },
-      "title": "紧急程度",
-      "body": "点击循环切换 普通 / 紧急 / 加急，当前值显示在行右侧。",
+      "title": "Priority",
+      "body": "Tap to cycle Normal / High / Urgent; the current value appears on the right.",
       "target": {
         "anchor": "priorityCell",
-        "label": "紧急程度切换"
+        "label": "Priority selector"
       }
     },
     {
@@ -147,11 +147,11 @@ window.__PROTOTYPE_NOTES__ = {
       "when": {
         "product.page": "form"
       },
-      "title": "加急开关",
-      "body": "开启后该工单将标记为加急，优先处理。",
+      "title": "Expedite toggle",
+      "body": "When on, the order is marked for expedited handling.",
       "target": {
         "anchor": "urgentSwitch",
-        "label": "加急处理开关"
+        "label": "Expedite switch"
       }
     },
     {
@@ -159,11 +159,11 @@ window.__PROTOTYPE_NOTES__ = {
       "when": {
         "product.page": "form"
       },
-      "title": "提交工单",
-      "body": "校验必填项；通过后弹出确认对话框，确认即提交并返回列表。",
+      "title": "Submit",
+      "body": "Validates required fields, then opens a confirm dialog; confirm returns to the list.",
       "target": {
         "anchor": "submitButton",
-        "label": "提交工单按钮"
+        "label": "Submit button"
       }
     },
     {
@@ -172,11 +172,11 @@ window.__PROTOTYPE_NOTES__ = {
         "product.page": "form",
         "product.dialog.visible": true
       },
-      "title": "提交确认",
-      "body": "确认对话框用于二次确认；确认后提交并返回列表，取消则关闭。",
+      "title": "Confirm dialog",
+      "body": "Second confirmation before submit; Cancel closes, Confirm submits and returns to the list.",
       "target": {
         "anchor": "submitDialogTitle",
-        "label": "提交确认对话框"
+        "label": "Confirm dialog"
       }
     }
   ]

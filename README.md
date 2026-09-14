@@ -69,7 +69,7 @@ Formal notes are not sticky labels on a screenshot. They are structured data in 
 
 ### Stable pages from a reusable UI pack
 
-Compose pages from a local UI pack with shared tokens, components, and patterns. That reduces invent-from-scratch drift when an agent builds admin-style screens, and keeps later prototypes visually consistent.
+Compose pages from a local UI pack with shared tokens, components, and patterns. The catalog currently ships `admin-desktop` and `mobile-vant`. That reduces invent-from-scratch drift when an agent builds admin or mobile H5 screens, and keeps later prototypes visually consistent.
 
 ### Direct edits on the real DOM
 
@@ -129,7 +129,7 @@ This root README covers install and product overview only. Day-to-day usage live
 - Skill overview and collaboration model → [`skills/html-prototype-build/README.md`](skills/html-prototype-build/README.md) (English; 中文见 [README.zh-CN.md](skills/html-prototype-build/README.zh-CN.md))
 - Agent routing and hard constraints → [`skills/html-prototype-build/SKILL.md`](skills/html-prototype-build/SKILL.md)
 - Task guides with commands (authoring, review, screenshots) → [`skills/html-prototype-build/references/`](skills/html-prototype-build/references/)
-- Walkthrough sample → [`examples/minimal-notes-system`](examples/minimal-notes-system)
+- Walkthrough samples → [`examples/minimal-notes-system`](examples/minimal-notes-system) (admin desktop), [`examples/mobile-work-order`](examples/mobile-work-order) (mobile H5)
 
 Skill references, UI pack contracts, and addon docs are in English; Chinese README pairs are available where noted above.
 
