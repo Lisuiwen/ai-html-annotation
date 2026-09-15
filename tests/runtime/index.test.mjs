@@ -8,8 +8,6 @@ import './client/core/display-mode.test.mjs';
 import './client/core/state.test.mjs';
 import './client/notes/model.test.mjs';
 import './client/notes/viewer.test.mjs';
-import './client/charts/bridge.test.mjs';
-import './client/charts/presets.test.mjs';
 import './author/bootstrap.test.mjs';
 import './author/core/modes.test.mjs';
 import './author/core/selector.test.mjs';

@@ -1,0 +1,853 @@
+{
+  "schemaVersion": 2,
+  "id": "admin-desktop",
+  "version": 5,
+  "classPrefix": "ui-",
+  "tokenPrefix": "ui-",
+  "foundation": {
+    "id": "admin-desktop.default",
+    "contract": "foundation/FOUNDATION.md",
+    "sources": [
+      "foundation/tokens.css",
+      "foundation/base.css"
+    ]
+  },
+  "providers": {
+    "action": {
+      "compatibleFoundations": [
+        "admin-desktop.default"
+      ]
+    },
+    "navigation": {
+      "compatibleFoundations": [
+        "admin-desktop.default"
+      ]
+    },
+    "form": {
+      "compatibleFoundations": [
+        "admin-desktop.default"
+      ]
+    },
+    "data": {
+      "compatibleFoundations": [
+        "admin-desktop.default"
+      ]
+    },
+    "feedback": {
+      "compatibleFoundations": [
+        "admin-desktop.default"
+      ]
+    }
+  },
+  "delivery": {
+    "vendor/echarts/echarts.min.js": "assets/echarts.min.js",
+    "runtime/charts/bridge.js": "prototype/bridge.js",
+    "runtime/charts/presets.js": "prototype/presets.js",
+    "vendor/echarts/maps/china.json": "assets/maps/china.json",
+    "vendor/echarts/maps/china.js": "assets/maps/china.js"
+  },
+  "components": {
+    "action.button": {
+      "category": "action",
+      "keywords": [
+        "button",
+        "primary action",
+        "secondary action",
+        "text button",
+        "icon button"
+      ],
+      "contract": "components/action/button/COMPONENT.md",
+      "source": "components/action/button/component.html",
+      "requires": []
+    },
+    "navigation.app-header": {
+      "category": "navigation",
+      "keywords": [
+        "top navigation",
+        "global navigation",
+        "brand area",
+        "user menu"
+      ],
+      "contract": "components/navigation/app-header/COMPONENT.md",
+      "source": "components/navigation/app-header/component.html",
+      "requires": [],
+      "optional": [
+        "action.button"
+      ]
+    },
+    "navigation.sider-menu": {
+      "category": "navigation",
+      "keywords": [
+        "sidebar",
+        "side menu",
+        "left menu"
+      ],
+      "contract": "components/navigation/sider-menu/COMPONENT.md",
+      "source": "components/navigation/sider-menu/component.html",
+      "requires": []
+    },
+    "navigation.tree": {
+      "category": "navigation",
+      "keywords": [
+        "tree",
+        "hierarchy",
+        "tree node"
+      ],
+      "contract": "components/navigation/tree/COMPONENT.md",
+      "source": "components/navigation/tree/component.html",
+      "adapter": "components/navigation/tree/state-adapter.js",
+      "requires": []
+    },
+    "navigation.tabs": {
+      "category": "navigation",
+      "keywords": [
+        "Tabs",
+        "tab",
+        "tabs",
+        "content switch"
+      ],
+      "contract": "components/navigation/tabs/COMPONENT.md",
+      "source": "components/navigation/tabs/component.html",
+      "adapter": "components/navigation/tabs/state-adapter.js",
+      "requires": []
+    },
+    "form.input": {
+      "category": "form",
+      "keywords": [
+        "input",
+        "text input"
+      ],
+      "contract": "components/form/input/COMPONENT.md",
+      "source": "components/form/input/component.html",
+      "requires": []
+    },
+    "form.field": {
+      "category": "form",
+      "keywords": [
+        "field",
+        "form item",
+        "in-box label"
+      ],
+      "contract": "components/form/field/COMPONENT.md",
+      "source": "components/form/field/component.html",
+      "requires": [],
+      "optional": [
+        "form.input",
+        "form.select",
+        "form.textarea",
+        "form.date-picker",
+        "form.switch"
+      ]
+    },
+    "form.search": {
+      "category": "form",
+      "keywords": [
+        "search box",
+        "keyword search",
+        "combined search"
+      ],
+      "contract": "components/form/search/COMPONENT.md",
+      "source": "components/form/search/component.html",
+      "requires": [
+        "form.input",
+        "action.button"
+      ]
+    },
+    "form.select": {
+      "category": "form",
+      "keywords": [
+        "select",
+        "dropdown",
+        "filter option"
+      ],
+      "contract": "components/form/select/COMPONENT.md",
+      "source": "components/form/select/component.html",
+      "adapter": "components/form/select/state-adapter.js",
+      "requires": []
+    },
+    "form.form-grid": {
+      "category": "form",
+      "keywords": [
+        "form layout",
+        "field grid",
+        "two-column form"
+      ],
+      "contract": "components/form/form-grid/COMPONENT.md",
+      "source": "components/form/form-grid/component.html",
+      "requires": []
+    },
+    "data.filter-bar": {
+      "category": "data",
+      "keywords": [
+        "filter bar",
+        "query criteria",
+        "filter area"
+      ],
+      "contract": "components/data/filter-bar/COMPONENT.md",
+      "source": "components/data/filter-bar/component.html",
+      "requires": [],
+      "optional": [
+        "form.field",
+        "form.select",
+        "action.button"
+      ]
+    },
+    "data.toolbar": {
+      "category": "data",
+      "keywords": [
+        "toolbar",
+        "list actions",
+        "action area"
+      ],
+      "contract": "components/data/toolbar/COMPONENT.md",
+      "source": "components/data/toolbar/component.html",
+      "requires": [],
+      "optional": [
+        "action.button"
+      ]
+    },
+    "data.tag": {
+      "category": "data",
+      "keywords": [
+        "tag",
+        "status tag",
+        "category tag"
+      ],
+      "contract": "components/data/tag/COMPONENT.md",
+      "source": "components/data/tag/component.html",
+      "requires": []
+    },
+    "data.data-table": {
+      "category": "data",
+      "keywords": [
+        "table",
+        "data table",
+        "empty state",
+        "loading state"
+      ],
+      "contract": "components/data/data-table/COMPONENT.md",
+      "source": "components/data/data-table/component.html",
+      "adapter": "components/data/data-table/state-adapter.js",
+      "requires": [],
+      "optional": [
+        "action.button",
+        "data.tag"
+      ]
+    },
+    "data.pagination": {
+      "category": "data",
+      "keywords": [
+        "pagination",
+        "page navigation"
+      ],
+      "contract": "components/data/pagination/COMPONENT.md",
+      "source": "components/data/pagination/component.html",
+      "requires": [
+        "action.button"
+      ]
+    },
+    "feedback._overlay-core": {
+      "category": "feedback",
+      "visibility": "internal",
+      "keywords": [],
+      "contract": "components/feedback/_overlay-core/COMPONENT.md",
+      "source": "components/feedback/_overlay-core/component.html",
+      "adapter": "components/feedback/_overlay-core/state-adapter.js",
+      "requires": []
+    },
+    "feedback.alert": {
+      "category": "feedback",
+      "keywords": [
+        "alert",
+        "notice",
+        "Alert"
+      ],
+      "contract": "components/feedback/alert/COMPONENT.md",
+      "source": "components/feedback/alert/component.html",
+      "requires": []
+    },
+    "feedback.modal": {
+      "category": "feedback",
+      "keywords": [
+        "modal",
+        "dialog",
+        "Modal"
+      ],
+      "contract": "components/feedback/modal/COMPONENT.md",
+      "source": "components/feedback/modal/component.html",
+      "adapter": "components/feedback/_overlay-core/state-adapter.js",
+      "requires": [
+        "feedback._overlay-core",
+        "action.button"
+      ]
+    },
+    "feedback.drawer": {
+      "category": "feedback",
+      "keywords": [
+        "drawer",
+        "side panel",
+        "Drawer"
+      ],
+      "contract": "components/feedback/drawer/COMPONENT.md",
+      "source": "components/feedback/drawer/component.html",
+      "adapter": "components/feedback/_overlay-core/state-adapter.js",
+      "requires": [
+        "feedback._overlay-core",
+        "action.button"
+      ]
+    },
+    "feedback.toast": {
+      "category": "feedback",
+      "keywords": [
+        "Toast",
+        "message feedback",
+        "auto-dismiss toast"
+      ],
+      "contract": "components/feedback/toast/COMPONENT.md",
+      "source": "components/feedback/toast/component.html",
+      "adapter": "components/feedback/toast/state-adapter.js",
+      "requires": [
+        "action.button"
+      ]
+    },
+    "navigation.breadcrumb": {
+      "category": "navigation",
+      "keywords": [
+        "breadcrumb",
+        "path navigation",
+        "page hierarchy"
+      ],
+      "contract": "components/navigation/breadcrumb/COMPONENT.md",
+      "source": "components/navigation/breadcrumb/component.html",
+      "requires": []
+    },
+    "form.date-range-picker": {
+      "category": "form",
+      "keywords": [
+        "date range",
+        "time filter",
+        "date range picker"
+      ],
+      "contract": "components/form/date-range-picker/COMPONENT.md",
+      "source": "components/form/date-range-picker/component.html",
+      "adapter": "components/form/date-range-picker/state-adapter.js",
+      "requires": []
+    },
+    "form.checkbox-group": {
+      "category": "form",
+      "keywords": [
+        "multi-select",
+        "checkbox",
+        "multi-select filter"
+      ],
+      "contract": "components/form/checkbox-group/COMPONENT.md",
+      "source": "components/form/checkbox-group/component.html",
+      "adapter": "components/form/checkbox-group/state-adapter.js",
+      "requires": []
+    },
+    "form.radio-group": {
+      "category": "form",
+      "keywords": [
+        "radio",
+        "radio group",
+        "config selection"
+      ],
+      "contract": "components/form/radio-group/COMPONENT.md",
+      "source": "components/form/radio-group/component.html",
+      "adapter": "components/form/radio-group/state-adapter.js",
+      "requires": []
+    },
+    "feedback.popconfirm": {
+      "category": "feedback",
+      "keywords": [
+        "confirm dialog",
+        "delete confirm",
+        "popconfirm"
+      ],
+      "contract": "components/feedback/popconfirm/COMPONENT.md",
+      "source": "components/feedback/popconfirm/component.html",
+      "adapter": "components/feedback/popconfirm/state-adapter.js",
+      "requires": [
+        "action.button"
+      ]
+    },
+    "data.empty": {
+      "category": "data",
+      "keywords": [
+        "empty state",
+        "no data",
+        "no search results"
+      ],
+      "contract": "components/data/empty/COMPONENT.md",
+      "source": "components/data/empty/component.html",
+      "adapter": "components/data/empty/state-adapter.js",
+      "requires": []
+    },
+    "feedback.result": {
+      "category": "feedback",
+      "keywords": [
+        "result page",
+        "success page",
+        "error page",
+        "permission denied"
+      ],
+      "contract": "components/feedback/result/COMPONENT.md",
+      "source": "components/feedback/result/component.html",
+      "adapter": "components/feedback/result/state-adapter.js",
+      "requires": []
+    },
+    "data.descriptions": {
+      "category": "data",
+      "keywords": [
+        "descriptions",
+        "details",
+        "read-only info"
+      ],
+      "contract": "components/data/descriptions/COMPONENT.md",
+      "source": "components/data/descriptions/component.html",
+      "adapter": "components/data/descriptions/state-adapter.js",
+      "requires": []
+    },
+    "navigation.steps": {
+      "category": "navigation",
+      "keywords": [
+        "steps",
+        "approval flow",
+        "creation wizard"
+      ],
+      "contract": "components/navigation/steps/COMPONENT.md",
+      "source": "components/navigation/steps/component.html",
+      "adapter": "components/navigation/steps/state-adapter.js",
+      "requires": []
+    },
+    "data.timeline": {
+      "category": "data",
+      "keywords": [
+        "timeline",
+        "action history",
+        "approval history"
+      ],
+      "contract": "components/data/timeline/COMPONENT.md",
+      "source": "components/data/timeline/component.html",
+      "adapter": "components/data/timeline/state-adapter.js",
+      "requires": []
+    },
+    "feedback.progress": {
+      "category": "feedback",
+      "keywords": [
+        "progress bar",
+        "upload progress",
+        "task progress"
+      ],
+      "contract": "components/feedback/progress/COMPONENT.md",
+      "source": "components/feedback/progress/component.html",
+      "adapter": "components/feedback/progress/state-adapter.js",
+      "requires": []
+    },
+    "feedback.skeleton": {
+      "category": "feedback",
+      "keywords": [
+        "skeleton",
+        "loading placeholder",
+        "content loading"
+      ],
+      "contract": "components/feedback/skeleton/COMPONENT.md",
+      "source": "components/feedback/skeleton/component.html",
+      "adapter": "components/feedback/skeleton/state-adapter.js",
+      "requires": []
+    },
+    "data.statistic": {
+      "category": "data",
+      "keywords": [
+        "statistic",
+        "metric",
+        "trend"
+      ],
+      "contract": "components/data/statistic/COMPONENT.md",
+      "source": "components/data/statistic/component.html",
+      "adapter": "components/data/statistic/state-adapter.js",
+      "requires": []
+    },
+    "data.card": {
+      "category": "data",
+      "keywords": [
+        "card",
+        "content container",
+        "metric card"
+      ],
+      "contract": "components/data/card/COMPONENT.md",
+      "source": "components/data/card/component.html",
+      "adapter": "components/data/card/state-adapter.js",
+      "requires": []
+    },
+    "data.list": {
+      "category": "data",
+      "keywords": [
+        "list",
+        "task list",
+        "message list",
+        "lightweight records"
+      ],
+      "contract": "components/data/list/COMPONENT.md",
+      "source": "components/data/list/component.html",
+      "adapter": "components/data/list/state-adapter.js",
+      "requires": []
+    },
+    "data._echarts-core": {
+      "category": "data",
+      "visibility": "internal",
+      "keywords": [],
+      "contract": "components/data/_echarts-core/COMPONENT.md",
+      "source": "components/data/_echarts-core/component.html",
+      "adapter": "components/data/_echarts-core/state-adapter.js",
+      "requires": [],
+      "vendor": [
+        "vendor/echarts/echarts.min.js"
+      ],
+      "runtime": [
+        "runtime/charts/bridge.js",
+        "runtime/charts/presets.js"
+      ]
+    },
+    "data.chart-line": {
+      "category": "data",
+      "keywords": [
+        "line chart",
+        "trend chart",
+        "area chart",
+        "time trend"
+      ],
+      "contract": "components/data/chart-line/COMPONENT.md",
+      "source": "components/data/chart-line/component.html",
+      "adapter": "components/data/chart-line/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-bar": {
+      "category": "data",
+      "keywords": [
+        "bar chart",
+        "comparison chart",
+        "grouped bar",
+        "stacked bar"
+      ],
+      "contract": "components/data/chart-bar/COMPONENT.md",
+      "source": "components/data/chart-bar/component.html",
+      "adapter": "components/data/chart-bar/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-donut": {
+      "category": "data",
+      "keywords": [
+        "donut chart",
+        "share chart",
+        "composition chart",
+        "pie chart"
+      ],
+      "contract": "components/data/chart-donut/COMPONENT.md",
+      "source": "components/data/chart-donut/component.html",
+      "adapter": "components/data/chart-donut/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-mixed": {
+      "category": "data",
+      "keywords": [
+        "mixed chart",
+        "bar-line mixed",
+        "dual-axis chart"
+      ],
+      "contract": "components/data/chart-mixed/COMPONENT.md",
+      "source": "components/data/chart-mixed/component.html",
+      "adapter": "components/data/chart-mixed/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-funnel": {
+      "category": "data",
+      "keywords": [
+        "funnel chart",
+        "conversion",
+        "drop-off"
+      ],
+      "contract": "components/data/chart-funnel/COMPONENT.md",
+      "source": "components/data/chart-funnel/component.html",
+      "adapter": "components/data/chart-funnel/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-gauge": {
+      "category": "data",
+      "keywords": [
+        "gauge",
+        "completion rate",
+        "progress ring"
+      ],
+      "contract": "components/data/chart-gauge/COMPONENT.md",
+      "source": "components/data/chart-gauge/component.html",
+      "adapter": "components/data/chart-gauge/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-heatmap": {
+      "category": "data",
+      "keywords": [
+        "heatmap",
+        "activity distribution",
+        "matrix"
+      ],
+      "contract": "components/data/chart-heatmap/COMPONENT.md",
+      "source": "components/data/chart-heatmap/component.html",
+      "adapter": "components/data/chart-heatmap/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "data.chart-map": {
+      "category": "data",
+      "keywords": [
+        "map",
+        "regional stats",
+        "provincial distribution"
+      ],
+      "contract": "components/data/chart-map/COMPONENT.md",
+      "source": "components/data/chart-map/component.html",
+      "adapter": "components/data/chart-map/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "assets": [
+        "vendor/echarts/maps/china.json",
+        "vendor/echarts/maps/china.js"
+      ],
+      "optional": [
+        "data.card"
+      ]
+    },
+    "form.textarea": {
+      "category": "form",
+      "keywords": [
+        "multiline input",
+        "notes",
+        "description",
+        "textarea"
+      ],
+      "contract": "components/form/textarea/COMPONENT.md",
+      "source": "components/form/textarea/component.html",
+      "adapter": "components/form/textarea/state-adapter.js",
+      "requires": [],
+      "optional": [
+        "form.field"
+      ]
+    },
+    "form.switch": {
+      "category": "form",
+      "keywords": [
+        "switch",
+        "toggle",
+        "enable disable"
+      ],
+      "contract": "components/form/switch/COMPONENT.md",
+      "source": "components/form/switch/component.html",
+      "adapter": "components/form/switch/state-adapter.js",
+      "requires": [],
+      "optional": [
+        "form.field"
+      ]
+    },
+    "form.date-picker": {
+      "category": "form",
+      "keywords": [
+        "date",
+        "due date",
+        "single date",
+        "date picker"
+      ],
+      "contract": "components/form/date-picker/COMPONENT.md",
+      "source": "components/form/date-picker/component.html",
+      "adapter": "components/form/date-picker/state-adapter.js",
+      "requires": [],
+      "optional": [
+        "form.field"
+      ]
+    },
+    "form.upload": {
+      "category": "form",
+      "keywords": [
+        "upload",
+        "attachment",
+        "file",
+        "drag upload"
+      ],
+      "contract": "components/form/upload/COMPONENT.md",
+      "source": "components/form/upload/component.html",
+      "adapter": "components/form/upload/state-adapter.js",
+      "requires": [],
+      "optional": [
+        "action.button",
+        "feedback.progress"
+      ]
+    },
+    "data.avatar": {
+      "category": "data",
+      "keywords": [
+        "avatar",
+        "owner",
+        "user",
+        "participant"
+      ],
+      "contract": "components/data/avatar/COMPONENT.md",
+      "source": "components/data/avatar/component.html",
+      "adapter": "components/data/avatar/state-adapter.js",
+      "requires": []
+    },
+    "feedback.tooltip": {
+      "category": "feedback",
+      "keywords": [
+        "tooltip",
+        "Tooltip",
+        "hover hint"
+      ],
+      "contract": "components/feedback/tooltip/COMPONENT.md",
+      "source": "components/feedback/tooltip/component.html",
+      "adapter": "components/feedback/tooltip/state-adapter.js",
+      "requires": [
+        "action.button"
+      ]
+    },
+    "feedback.popover": {
+      "category": "feedback",
+      "keywords": [
+        "popover",
+        "Popover",
+        "overlay content"
+      ],
+      "contract": "components/feedback/popover/COMPONENT.md",
+      "source": "components/feedback/popover/component.html",
+      "adapter": "components/feedback/popover/state-adapter.js",
+      "requires": [
+        "action.button"
+      ]
+    }
+  },
+  "patterns": {
+    "pattern.application-shell": {
+      "keywords": [
+        "admin shell",
+        "header and sidebar",
+        "application shell"
+      ],
+      "contract": "patterns/application-shell/PATTERN.md",
+      "source": "patterns/application-shell/pattern.html",
+      "requires": [
+        "navigation.app-header",
+        "navigation.sider-menu"
+      ],
+      "optional": []
+    },
+    "pattern.page-header": {
+      "keywords": [
+        "page title",
+        "title action area"
+      ],
+      "contract": "patterns/page-header/PATTERN.md",
+      "source": "patterns/page-header/pattern.html",
+      "requires": [],
+      "optional": [
+        "action.button"
+      ]
+    },
+    "pattern.filter-table": {
+      "keywords": [
+        "filter table",
+        "query list",
+        "search list"
+      ],
+      "contract": "patterns/filter-table/PATTERN.md",
+      "source": "patterns/filter-table/pattern.html",
+      "requires": [
+        "data.filter-bar",
+        "data.toolbar",
+        "data.data-table"
+      ],
+      "optional": [
+        "data.pagination"
+      ]
+    }
+  },
+  "presets": {
+    "preset.admin-list": {
+      "keywords": [
+        "admin list page",
+        "backend list page",
+        "table page"
+      ],
+      "contract": "presets/admin-list/PRESET.md",
+      "source": "presets/admin-list/seed.html",
+      "uses": [
+        "pattern.application-shell",
+        "pattern.page-header",
+        "pattern.filter-table"
+      ],
+      "optional": [
+        "data.pagination"
+      ]
+    },
+    "preset.admin-form": {
+      "keywords": [
+        "admin form page",
+        "backend form page",
+        "create page",
+        "edit page"
+      ],
+      "contract": "presets/admin-form/PRESET.md",
+      "source": "presets/admin-form/seed.html",
+      "uses": [
+        "pattern.application-shell",
+        "pattern.page-header"
+      ],
+      "requires": [
+        "form.form-grid",
+        "form.field",
+        "form.input",
+        "action.button"
+      ],
+      "optional": [
+        "form.select",
+        "form.textarea",
+        "form.date-picker",
+        "form.switch",
+        "form.upload",
+        "feedback.alert"
+      ]
+    }
+  }
+}

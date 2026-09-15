@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-14T06:07:49.096Z",
+  "source": {
+    "repository": "Lisuiwen/ai-html-annotation",
+    "defaultRef": "v0.4.1",
+    "packPath": ".html-prototype/packs"
+  },
+  "packs": [
+    {
+      "id": "admin-desktop",
+      "name": "Admin Desktop UI",
+      "description": "Admin desktop-style UI for forms, tables, navigation, and dashboard charts.",
+      "version": 5,
+      "schemaVersion": 2,
+      "ref": "v0.4.1",
+      "foundation": "admin-desktop.default",
+      "providers": [
+        "action",
+        "navigation",
+        "form",
+        "data",
+        "feedback"
+      ],
+      "counts": {
+        "components": 51,
+        "patterns": 3,
+        "presets": 2
+      }
+    },
+    {
+      "id": "mobile-vant",
+      "name": "Mobile Vant",
+      "description": "Mobile Vant-style H5 UI for phone-width apps with touch-friendly controls and overlays.",
+      "version": 1,
+      "schemaVersion": 1,
+      "ref": "v0.4.1",
+      "foundation": "mobile-vant.default",
+      "providers": [
+        "action",
+        "navigation",
+        "form",
+        "data",
+        "feedback"
+      ],
+      "counts": {
+        "components": 12,
+        "patterns": 3,
+        "presets": 2
+      }
+    }
+  ]
+}

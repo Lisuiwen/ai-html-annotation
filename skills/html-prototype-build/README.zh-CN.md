@@ -65,7 +65,8 @@
 | -------- | ---- |
 | 让 Agent 做什么、有哪些硬约束 | [SKILL.md](SKILL.md) |
 | 某类任务的操作说明（含命令） | [references/](references/) 下对应入口 |
-| UI 包怎么选 | [ui/catalog.md](ui/catalog.md) |
+| UI 包怎么选、怎么安装 | [ui/catalog.md](ui/catalog.md)、[Pack install](references/pack-install.md) |
+| 编写或发布 UI pack | [`ui-pack-maintain`](../ui-pack-maintain/SKILL.md) skill |
 | 仓库安装与功能介绍 | [仓库 README](../../README.md) |
 
 本文件只说明 Skill 的用途与协作方式；具体命令、逐步操作和 Agent 契约都在上述文档中按任务拆分维护。

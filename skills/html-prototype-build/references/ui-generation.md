@@ -6,11 +6,11 @@ Use this entry when the user asks to generate a prototype, rebuild a UI, restore
 
 ## Minimal path
 
-1. Pick exactly one foundation, then select at most one compatible provider per action / navigation / form / data / feedback category, and resolve the minimal dependency closure with `node <skill-root>/scripts/resolve-pack.mjs --select=<id[,id...]>`.
+1. Run `node <skill-root>/scripts/resolve-pack.mjs --list`, pick exactly one foundation, then select at most one compatible provider per action / navigation / form / data / feedback category, and resolve the minimal dependency closure with `node <skill-root>/scripts/resolve-pack.mjs --pack=<pack-id> --select=<id[,id...]>`.
 2. Generate the snapshot + Client Runtime; every prototype manages scenarios and state through `PrototypeViewers` from `runtime/client/core/state.js`, and Notes Viewer only consumes state.
 3. Before delivery, verify against the [delivery checklist](delivery-checklist.md) item by item.
 
-The current complete UI pack is `../ui/packs/admin-desktop/`, which provides a foundation and providers for all categories (action / navigation / form / data / feedback), for admin-desktop style prototypes.
+If no pack is installed, follow [Pack install](pack-install.md) before generating UI.
 
 ## Generation flow
 

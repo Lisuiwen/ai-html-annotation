@@ -1,4 +1,5 @@
 /** Aggregate Skill metadata, links, browser script syntax, UI pack, example, and runtime contract validation. */
+import { spawnSync } from 'node:child_process';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -99,11 +100,46 @@ const rootMarkdownFiles = ['README.md', 'README.zh-CN.md'].map((name) => path.jo
 await validateMetadata();
 await validateMarkdownLinks([...skillFiles, ...exampleFiles, ...rootMarkdownFiles]);
 await validateBrowserScripts([...skillFiles, ...exampleFiles]);
-await import('../skills/html-prototype-build/ui/packs/admin-desktop/tools/validate-pack.mjs');
-if (process.exitCode) {
-  throw new Error('UI Pack validation failed; see errors above.');
+
+const packRootDirectory = path.join(repositoryDirectory, '.html-prototype', 'packs');
+const packValidator = path.join(repositoryDirectory, 'skills', 'ui-pack-maintain', 'scripts', 'validate-pack.mjs');
+for (const entry of await readdir(packRootDirectory, { withFileTypes: true })) {
+  if (!entry.isDirectory()) continue;
+  const packDirectory = path.join(packRootDirectory, entry.name);
+  try {
+    await stat(path.join(packDirectory, 'manifest.json'));
+  } catch {
+    continue;
+  }
+  const result = spawnSync(process.execPath, [
+    packValidator,
+    `--pack=${packDirectory}`
+  ], { stdio: 'inherit' });
+  if (result.status !== 0) {
+    throw new Error(`UI Pack validation failed for ${entry.name}; see errors above.`);
+  }
 }
-process.exitCode = 0;
+
+const registryGenerator = path.join(repositoryDirectory, 'skills', 'ui-pack-maintain', 'scripts', 'generate-registry.mjs');
+for (const output of [
+  path.join(repositoryDirectory, '.html-prototype', 'packs', 'registry.json'),
+  path.join(skillDirectory, 'ui', 'pack-registry.fallback.json')
+]) {
+  const registryCheck = spawnSync(process.execPath, [registryGenerator, '--check', `--output=${output}`], { stdio: 'inherit' });
+  if (registryCheck.status !== 0) {
+    throw new Error(`pack registry is stale: ${output}; run node skills/ui-pack-maintain/scripts/generate-registry.mjs`);
+  }
+}
+
+await import('../tests/scripts/resolve-pack.test.mjs');
+await import('../tests/scripts/install-pack.test.mjs');
+await import('../tests/scripts/pack-install-ref.test.mjs');
+await import('../tests/scripts/schema-versions.test.mjs');
+await import('../tests/e2e/pack-publish.e2e.mjs');
+await import('../tests/e2e/pack-install.e2e.mjs');
+await import('../tests/e2e/pack-validate.e2e.mjs');
+await import('../tests/e2e/pack-resolve.e2e.mjs');
+await import('../tests/packs/admin-desktop/charts.test.mjs');
 await import('../tests/runtime/index.test.mjs');
 await import('../tests/contracts/runtime.test.mjs');
 await import('../tests/examples/minimal-notes-system/prototype.test.mjs');

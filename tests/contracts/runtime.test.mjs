@@ -13,7 +13,7 @@ const exampleModelUrl = new URL('../../examples/minimal-notes-system/prototype/m
 const exampleViewerUrl = new URL('../../examples/minimal-notes-system/prototype/viewer.js', import.meta.url);
 const prototypeUrl = new URL('../../examples/minimal-notes-system/prototype.html', import.meta.url);
 const snapshotUrl = new URL('../../examples/minimal-notes-system/prototype/notes.snapshot.js', import.meta.url);
-const packManifestUrl = new URL('../../skills/html-prototype-build/ui/packs/admin-desktop/manifest.json', import.meta.url);
+const packManifestUrl = new URL('../../.html-prototype/packs/admin-desktop/manifest.json', import.meta.url);
 
 async function readSnapshot() {
   const source = await readFile(snapshotUrl, 'utf8');
@@ -74,8 +74,8 @@ test('UI pack stateful components provide local Adapter and static snippets avoi
   for (const id of statefulIds) {
     const entry = manifest.components[id];
     const [source, adapter] = await Promise.all([
-      readFile(new URL(`../../skills/html-prototype-build/ui/packs/admin-desktop/${entry.source}`, import.meta.url), 'utf8'),
-      readFile(new URL(`../../skills/html-prototype-build/ui/packs/admin-desktop/${entry.adapter}`, import.meta.url), 'utf8')
+      readFile(new URL(`../../.html-prototype/packs/admin-desktop/${entry.source}`, import.meta.url), 'utf8'),
+      readFile(new URL(`../../.html-prototype/packs/admin-desktop/${entry.adapter}`, import.meta.url), 'utf8')
     ]);
     assert.doesNotMatch(source, /<script\b/i, `${id} static component snippet must not register global events`);
     assert.deepEqual([...source.matchAll(deprecated)].map((match) => match[0]), []);

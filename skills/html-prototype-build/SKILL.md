@@ -8,7 +8,7 @@ description: Build, annotate, review, screenshot, and deliver native HTML UI pro
 ## Quick start
 
 1. Confirm the prototype type and business facts from the user's materials; ask first when information is insufficient, do not guess.
-2. When generating or heavily changing UI, run `node <skill-root>/scripts/resolve-pack.mjs --select=<preset, pattern, or component id>` and read only the minimal file closure it outputs.
+2. When generating or heavily changing UI, run `node <skill-root>/scripts/resolve-pack.mjs --list`, then `node <skill-root>/scripts/resolve-pack.mjs --pack=<pack-id> --select=<preset, pattern, or component id>` and read only the minimal file closure it outputs.
 3. Generate the complete `<prototype-name>/` delivery directory per [shared generation contract §7](references/generation-contract.md#7-delivery-files); route all business state through `PrototypeViewers`, and use the Runtime copy as-is for the formal Client Runtime.
 4. When done, run `npm test` at the repository root; start the authoring server or scenario screenshots only when the task needs them.
 
@@ -19,6 +19,7 @@ Read only the entry that matches the current task; do not read all references at
 | User goal | Required entry | Main output or tool |
 |---|---|---|
 | Generate, rebuild, or heavily change UI | [UI generation](references/ui-generation.md) | HTML prototype and on-demand UI components |
+| Install or download missing UI packs | [Pack install](references/pack-install.md) | `scripts/install-pack.mjs` |
 | Understand Viewer, note cards, SVG connectors, or interaction lightning | [Product annotations](references/product-annotations.md) | snapshot + Client Runtime |
 | Start the authoring environment, direct edit, edit notes, or jump to source | [Local authoring](references/local-authoring.md) | `runtime/server/index.mjs` + Author Tools |
 | Add review pins to a page, export For AI | [Review mark](references/review-mark.md) | `runtime/author/tools/mark/` |
@@ -28,7 +29,7 @@ Read only the entry that matches the current task; do not read all references at
 
 When generating or heavily changing UI, read the [shared generation contract](references/generation-contract.md) first; for other tasks read the matching entry above without reading the full contract.
 
-For visual tasks, pick a foundation and providers via the [UI pack catalog](ui/catalog.md), then locate the minimal dependency closure with `node <skill-root>/scripts/resolve-pack.mjs --select=<id>`; all UI packs follow the [UI pack contract](ui/contract.md).
+For visual tasks, discover packs, pick a foundation and providers via the [UI pack catalog](ui/catalog.md), resolve the minimal closure, and follow the [consumer pack rules](ui/contract.md). When no pack is installed, follow [Pack install](references/pack-install.md).
 
 `scripts/` holds the agent's deterministic tools. `runtime/` is split by execution boundary: `client/` formal browser runtime, `author/` browser authoring tools, `server/` local Node authoring service, `cli/` standalone command-line tools.
 

@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
+import { parseFrontmatter } from './_pack-md.mjs';
+import { SUPPORTED_SCHEMA_VERSION_SET as SUPPORTED_SCHEMA_VERSIONS } from './_pack-schema.mjs';
 
 const args = process.argv.slice(2);
 const packArg = args.find((value) => value.startsWith('--pack='));
-const skillRootArg = args.find((value) => value.startsWith('--skill-root='));
 const strict = args.includes('--strict');
 if (!packArg || !packArg.slice('--pack='.length)) {
   console.error('Usage: node validate-pack.mjs --pack=<pack-directory> [--strict]');
@@ -12,23 +13,17 @@ if (!packArg || !packArg.slice('--pack='.length)) {
 }
 
 const packDirectory = path.resolve(packArg.slice('--pack='.length));
-// Self-contained default: skill-level resources (assets/vendor/runtime) resolve
-// relative to the Pack itself. A consumer may override with --skill-root= when
-// it supplies skill-level shared resources of its own.
-const skillDirectory = skillRootArg
-  ? path.resolve(skillRootArg.slice('--skill-root='.length))
-  : packDirectory;
 const errors = [];
 const warnings = [];
-const referencedFiles = new Set(['PACK.md', 'manifest.json', 'design-system.md']);
+const referencedFiles = new Set(['PACK.md', 'manifest.json', 'design-system.md', '.pack-source.json']);
 
 const slash = (value) => value.split(path.sep).join('/');
 const isObject = (value) => value && typeof value === 'object' && !Array.isArray(value);
 const list = (value) => Array.isArray(value) ? value : [];
 
-async function fileExists(relativePath, rootDirectory = packDirectory) {
+async function fileExists(relativePath) {
   try {
-    return (await stat(path.join(rootDirectory, relativePath))).isFile();
+    return (await stat(path.join(packDirectory, relativePath))).isFile();
   } catch {
     return false;
   }
@@ -42,17 +37,17 @@ async function directoryExists(relativePath) {
   }
 }
 
-async function requireFile(relativePath, label, rootDirectory = packDirectory) {
-  if (rootDirectory === packDirectory) referencedFiles.add(relativePath);
-  if (!await fileExists(relativePath, rootDirectory)) {
+async function requireFile(relativePath, label) {
+  referencedFiles.add(relativePath);
+  if (!await fileExists(relativePath)) {
     errors.push(`${label} missing: ${relativePath}`);
     return false;
   }
   return true;
 }
 
-async function readText(relativePath, rootDirectory = packDirectory) {
-  const buffer = await readFile(path.join(rootDirectory, relativePath));
+async function readText(relativePath) {
+  const buffer = await readFile(path.join(packDirectory, relativePath));
   if (buffer[0] === 0xef && buffer[1] === 0xbb && buffer[2] === 0xbf) {
     errors.push(`UTF-8 BOM is not allowed: ${relativePath}`);
   }
@@ -64,20 +59,9 @@ async function readText(relativePath, rootDirectory = packDirectory) {
   }
 }
 
-function frontmatter(source) {
-  const match = source.match(/^---\s*\r?\n([\s\S]*?)\r?\n---/);
-  if (!match) return null;
-  const fields = {};
-  for (const line of match[1].split(/\r?\n/)) {
-    const pair = line.match(/^([a-zA-Z][\w-]*):\s*(.*)$/);
-    if (pair) fields[pair[1]] = pair[2].trim().replace(/^['"]|['"]$/g, '');
-  }
-  return fields;
-}
-
 async function validateContract(id, relativePath, expectedCategory) {
   if (!await requireFile(relativePath, `${id} contract`)) return;
-  const fields = frontmatter(await readText(relativePath));
+  const fields = parseFrontmatter(await readText(relativePath), 'null');
   if (!fields) {
     errors.push(`Contract frontmatter missing: ${relativePath}`);
     return;
@@ -114,6 +98,9 @@ try {
 }
 
 if (!Number.isInteger(manifest.schemaVersion) || manifest.schemaVersion < 1) errors.push('manifest.schemaVersion must be a positive integer.');
+if (!SUPPORTED_SCHEMA_VERSIONS.has(manifest.schemaVersion)) {
+  errors.push(`manifest.schemaVersion ${manifest.schemaVersion} is not supported by current consumers (supported: ${[...SUPPORTED_SCHEMA_VERSIONS].join(', ')}).`);
+}
 if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(manifest.id ?? '')) errors.push('manifest.id must use lowercase hyphen-case.');
 if (!Number.isInteger(manifest.version) || manifest.version < 1) errors.push('manifest.version must be a positive integer.');
 if (typeof manifest.classPrefix !== 'string' || !manifest.classPrefix.endsWith('-')) errors.push('manifest.classPrefix must be a non-empty prefix ending in "-".');
@@ -123,8 +110,9 @@ if (!isObject(manifest.providers)) errors.push('manifest.providers must be an ob
 if (!isObject(manifest.components)) errors.push('manifest.components must be an object.');
 if (manifest.patterns !== undefined && !isObject(manifest.patterns)) errors.push('manifest.patterns must be an object when present.');
 if (manifest.presets !== undefined && !isObject(manifest.presets)) errors.push('manifest.presets must be an object when present.');
+if (manifest.delivery !== undefined && !isObject(manifest.delivery)) errors.push('manifest.delivery must be an object when present.');
 
-const packFields = frontmatter(await readText('PACK.md'));
+const packFields = parseFrontmatter(await readText('PACK.md'), 'null');
 if (!packFields) errors.push('PACK.md frontmatter missing.');
 else {
   if (packFields.id !== manifest.id) errors.push('PACK.md id must match manifest.id.');
@@ -229,7 +217,11 @@ for (const [id, entry] of Object.entries(registries)) {
     if (!registries[dependency]) errors.push(`${id} references unknown dependency: ${dependency}`);
   }
   for (const asset of [...list(entry.assets), ...list(entry.vendor), ...list(entry.runtime)]) {
-    await requireFile(asset, `${id} skill-level resource`, skillDirectory);
+    await requireFile(asset, `${id} pack resource`);
+    const delivery = isObject(manifest.delivery) ? manifest.delivery : {};
+    if (!delivery[asset] || typeof delivery[asset] !== 'string') {
+      errors.push(`${id} resource must declare manifest.delivery target: ${asset}`);
+    }
   }
 }
 
@@ -277,8 +269,10 @@ if (strict) {
   const uses = [];
   for (const file of textFiles) {
     const source = await readText(file);
-    if (/https?:\/\//i.test(source)) errors.push(`Pack implementation must not reference external URLs: ${file}`);
-    for (const match of source.matchAll(/(--[a-zA-Z0-9_-]+)\s*:/g)) {
+    if (!file.startsWith('vendor/') && /https?:\/\//i.test(source)) {
+      errors.push(`Pack implementation must not reference external URLs: ${file}`);
+    }
+    for (const match of source.matchAll(/(--[a-zA-Z0-9_-]+)\s*:\s+/g)) {
       customProperties.add(match[1]);
       if (!match[1].startsWith(`--${manifest.tokenPrefix}`)) errors.push(`Token declaration does not use manifest.tokenPrefix in ${file}: ${match[1]}`);
     }
@@ -304,7 +298,7 @@ function finish() {
   for (const warning of warnings) console.warn(`warning: ${warning}`);
   if (errors.length) {
     console.error(errors.join('\n'));
-    process.exit(errors.length ? 1 : 0);
+    process.exit(1);
   }
   console.log(`UI Pack valid: ${manifest.id} (${Object.keys(components).length} components, ${Object.keys(patterns).length} patterns, ${Object.keys(presets).length} presets).`);
 }

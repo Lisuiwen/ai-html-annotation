@@ -11,7 +11,7 @@ The Mark review tool under `skills/html-prototype-build/runtime/author/tools/mar
 
 ## Apache ECharts
 
-`skills/html-prototype-build/vendor/echarts/` distributes Apache ECharts 5.5.1
+`.html-prototype/packs/admin-desktop/vendor/echarts/` distributes Apache ECharts 5.5.1
 (Apache License 2.0). Upstream NOTICE retained:
 
 ```
