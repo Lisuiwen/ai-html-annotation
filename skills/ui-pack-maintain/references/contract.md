@@ -21,13 +21,25 @@ A Pack is a directory containing at minimum:
 └── components/              # reusable leaf controls, grouped by category
 ```
 
-Optional directories, present only when the matching registry is non-empty:
+Optional registries, present only when the matching object in `manifest.json` is non-empty:
 
 ```
 <pack-directory>/
 ├── patterns/                # reusable component order, layout, and slots
 └── presets/                 # business-fact-free page starting points
 ```
+
+Optional resource directories, present when components declare `vendor`, `runtime`, or `assets`:
+
+```
+<pack-directory>/
+├── vendor/                  # third-party libraries (for example ECharts)
+├── runtime/                 # pack-local runtime helpers (for example chart bridge)
+└── assets/                  # static files delivered into prototypes
+```
+
+Every such referenced file must appear in root `manifest.delivery` (schema v2) with a
+prototype-relative target path.
 
 ## Layer responsibilities
 
@@ -57,6 +69,9 @@ Required top-level fields:
 - `components` — object keyed by component id.
 - `patterns` — optional object keyed by pattern id.
 - `presets` — optional object keyed by preset id.
+- `delivery` — optional object (schema v2) mapping pack-relative resource paths to
+  prototype delivery paths. Required for every `vendor` / `runtime` / `assets` entry
+  declared on components. Example: `"vendor/echarts/echarts.min.js": "assets/echarts.min.js"`.
 
 Registry entry fields (`components`, `patterns`, `presets`):
 

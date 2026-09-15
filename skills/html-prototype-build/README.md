@@ -65,7 +65,8 @@ The same business state drives page notes and scenario switching as well as mult
 | -------------- | --- |
 | What to make the agent do, hard constraints | [SKILL.md](SKILL.md) |
 | Task-specific instructions (with commands) | Matching entry under [references/](references/) |
-| How to pick UI packs | [ui/catalog.md](ui/catalog.md) |
+| How to pick and install UI packs | [ui/catalog.md](ui/catalog.md), [Pack install](references/pack-install.md) |
+| Authoring or publishing UI packs | [`ui-pack-maintain`](../ui-pack-maintain/SKILL.md) skill |
 | Repository install and feature overview | [Repository README](../../README.md) |
 
 This file only explains what the Skill is for and how to collaborate; concrete commands, step-by-step operations, and agent contracts are maintained per-task in the documents above.

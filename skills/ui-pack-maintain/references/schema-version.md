@@ -8,7 +8,7 @@
 | schemaVersion | Status | Notes |
 |---|---|---|
 | `1` | supported | Initial mobile/admin shared contract |
-| `2` | supported | Current admin-desktop manifest shape |
+| `2` | supported | Adds root `manifest.delivery` for pack-local `vendor` / `runtime` / `assets` copy-out |
 
 Current consumer support is defined in `scripts/_pack-schema.mjs` (`SUPPORTED_SCHEMA_VERSIONS`).
 

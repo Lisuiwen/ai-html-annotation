@@ -12,6 +12,14 @@ Use this entry when `resolve-pack.mjs` exits with code `2` (`pack-not-found`) or
 The lookup chain already prefers project packs over user-cache. End users normally have no
 `<repo>/.html-prototype/packs/`, so their downloaded or self-created packs resolve from home.
 
+## Empty workspace behavior
+
+- `resolve-pack --list` returns `{ "packs": [] }` with exit code `0` when no pack is installed.
+- That JSON does **not** include `remediation`. Treat an empty list as a signal to follow this
+  document, not as permission to invent UI from scratch.
+- `resolve-pack --pack=<id> --select=...` exits with code `2` and includes `remediation` when the
+  requested pack is missing.
+
 ## Agent protocol
 
 1. Run `node <skill-root>/scripts/resolve-pack.mjs --list`.
@@ -84,6 +92,10 @@ does not contain `.html-prototype/packs/<id>/`, `install-pack.mjs` automatically
 
 Successful installs record both refs in `.pack-source.json` (`requestedRef`, `refFallback`) and
 emit a `warning` in JSON output. Explicit `--ref=master` skips fallback.
+
+When both the pinned ref and `master` lack the new pack layout, install fails with a thrown
+error and exit code `1` (not structured JSON). In that case show the manual placement paths
+above or install from a branch that contains `.html-prototype/packs/` using `--ref=<branch>`.
 
 ## Boundaries
 

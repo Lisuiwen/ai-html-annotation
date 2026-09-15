@@ -13,7 +13,8 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/html-prototype-build"
+        "./skills/html-prototype-build",
+        "./skills/ui-pack-maintain"
       ]
     }
   ]

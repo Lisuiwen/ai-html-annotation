@@ -12,6 +12,8 @@ Use the returned `packs[].id`, `foundation`, and `providers` to choose exactly o
 
 If `--list` returns no packs, follow [Pack install](../references/pack-install.md).
 
+`--list` reports `origin: installed | local` so downloaded packs can be distinguished from hand-authored ones.
+
 ## Selection rules
 
 1. Each prototype must choose exactly one foundation.
@@ -22,17 +24,12 @@ If `--list` returns no packs, follow [Pack install](../references/pack-install.m
 
 ## Pack locations
 
-The resolver searches, in order:
+This skill does not bundle pack files. Official packs (`admin-desktop`, `mobile-vant`) live in the repository under `.html-prototype/packs/`. Write locations and download steps are in [Pack install](../references/pack-install.md). Pack authoring belongs to `ui-pack-maintain`.
+
+The resolver searches installed packs, in order:
 
 1. `--pack-dir` / `--pack-root`
 2. `HTML_PROTOTYPE_PACK_ROOT`
-3. `.html-prototype/packs/` from the current working directory upward
-4. `~/.html-prototype/packs/`
-5. `<skill-root>/ui/packs/` (optional built-in fallback)
-
-End-user downloads and self-created packs belong in `~/.html-prototype/packs/` (layer 4). They stay
-local and are not synced to any remote. Project developers maintain official packs in
-`<repo>/.html-prototype/packs/` (layer 3), which is also the source for `registry.json`.
-
-`--list` reports `origin: installed | local` so downloaded packs can be distinguished from
-hand-authored ones.
+3. `.html-prototype/packs/` from the current working directory upward (project)
+4. `~/.html-prototype/packs/` (user cache)
+5. `<skill-root>/ui/packs/` (optional legacy fallback; not shipped)

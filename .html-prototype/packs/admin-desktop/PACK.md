@@ -23,3 +23,4 @@ After reading `manifest.json`, choose Component, Pattern, or Preset based on use
 - Other packs may replace a component category in this pack only after explicitly declaring compatibility with the `admin-desktop.default` foundation.
 - `feedback._overlay-core` is a private component and may be loaded only indirectly through Modal or Drawer.
 - This pack provides admin-desktop prototype visuals; it does not bundle third-party design system code and does not promise compatibility with any commercial UI library version.
+- Chart components ship vendored Apache ECharts under `vendor/echarts/` plus pack-local chart runtime under `runtime/charts/`. Copy paths come from `manifest.delivery` via `resolve-pack` `deliver[]`; see [NOTICE](../../../NOTICE) for attribution.

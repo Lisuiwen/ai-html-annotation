@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2,
+  "id": "chart-pack",
+  "version": 1,
+  "classPrefix": "cp-",
+  "tokenPrefix": "cp-",
+  "delivery": {
+    "vendor/chart/chart.js": "assets/chart.js",
+    "runtime/charts/bridge.js": "prototype/bridge.js"
+  },
+  "foundation": {
+    "id": "chart-pack.default",
+    "contract": "foundation/FOUNDATION.md",
+    "sources": ["foundation/tokens.css", "foundation/base.css"]
+  },
+  "providers": {
+    "data": { "compatibleFoundations": ["chart-pack.default"] }
+  },
+  "components": {
+    "data.chart-line": {
+      "category": "data",
+      "contract": "components/data/chart-line/COMPONENT.md",
+      "source": "components/data/chart-line/component.html",
+      "vendor": ["vendor/chart/chart.js"],
+      "runtime": ["runtime/charts/bridge.js"]
+    }
+  }
+}

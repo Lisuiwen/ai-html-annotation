@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "mini-pack",
+  "version": 1,
+  "classPrefix": "mp-",
+  "tokenPrefix": "mp-",
+  "foundation": {
+    "id": "mini-pack.default",
+    "contract": "foundation/FOUNDATION.md",
+    "sources": ["foundation/tokens.css", "foundation/base.css"]
+  },
+  "providers": {
+    "action": { "compatibleFoundations": ["mini-pack.default"] }
+  },
+  "components": {
+    "action.button": {
+      "category": "action",
+      "contract": "components/action/button/COMPONENT.md",
+      "source": "components/action/button/component.html"
+    }
+  }
+}

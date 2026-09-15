@@ -24,9 +24,10 @@ AI HTML Annotation 用原生 HTML 把这条链路接起来：用 UI 包稳定搭
 
 ```bash
 npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill ui-pack-maintain   # 仅 pack 维护者
 ```
 
-skills.sh 会根据真实 CLI 安装自动发现并统计公开 Skill，不需要额外维护平台专用 manifest。
+skills.sh 会根据真实 CLI 安装自动发现并统计公开 Skill，不需要额外维护平台专用 manifest。安装 `html-prototype-build` 后，用 `install-pack.mjs` 下载 UI pack（见 [Pack install](skills/html-prototype-build/references/pack-install.md)）。
 
 ### Claude Code Plugin Marketplace
 
@@ -37,7 +38,7 @@ skills.sh 会根据真实 CLI 安装自动发现并统计公开 Skill，不需�
 /plugin install ai-html-annotation@lisuiwen-agent-skills
 ```
 
-Claude 插件直接引用仓库中的 `skills/html-prototype-build/`，所以仍然只有一份 Skill 源，不需要同步维护第二份 `SKILL.md`。
+Claude 插件从本仓库加载 `html-prototype-build` 与 `ui-pack-maintain`，没有第二份 `SKILL.md` 副本。
 
 ## 你可以先看演示
 
@@ -67,7 +68,7 @@ Author Tools 在同一面板中提供 Direct Edit 与 Mark。按住 `Ctrl`（mac
 
 ### UI 包复用，页面稳定输出
 
-从本地 UI 包按统一 Token、组件和 Pattern 组合页面；目录现提供 `admin-desktop` 与 `mobile-vant` 两套完整 Pack。减少 AI 从零拼装时的猜测和视觉漂移，相同 UI 资产可以持续产出风格一致、结构稳定的原生 HTML 原型。
+从可安装的 UI 包按统一 Token、组件和 Pattern 组合页面。官方 pack（`admin-desktop`、`mobile-vant`）位于仓库 `.html-prototype/packs/`，不打进 `html-prototype-build`。终端用户用 `install-pack.mjs` 下载（见 [Pack install](skills/html-prototype-build/references/pack-install.md)）。减少 AI 从零拼装时的猜测和视觉漂移，相同 UI 资产可以持续产出风格一致、结构稳定的原生 HTML 原型。
 
 ### 便捷修改，评审上下文可执行
 
@@ -129,11 +130,13 @@ Direct Edit 与评审标注都留在作者层，最终截图和原型文件保�
 
 ```text
 .claude-plugin/marketplace.json  Claude Code Marketplace 清单
-skills/html-prototype-build/     唯一的 Agent Skill 源
+.html-prototype/packs/           官方 UI pack 与 registry.json
+skills/html-prototype-build/     原型构建 Agent Skill
+skills/ui-pack-maintain/         UI pack 维护 Agent Skill
 examples/                        可直接运行的最小原型
 media/                           README 演示素材
 scripts/                         校验脚本
-tests/                           Runtime 单元测试与契约测试
+tests/                           Runtime、pack 与契约测试
 ```
 
 Skill 内部 Runtime 按执行边界拆分：`client/` 是正式浏览器运行时，`author/` 是浏览器作者工具，`server/` 是本地 Node 作者服务，`cli/` 是独立命令行工具。
@@ -149,7 +152,7 @@ Skill 内部 Runtime 按执行边界拆分：`client/` 是正式浏览器运行�
 
 项目当前处于实验性 0.x 阶段，接口和目录仍可能变化。贡献方式见 [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md)，行为规范见 [`.github/CODE_OF_CONDUCT.md`](.github/CODE_OF_CONDUCT.md)，漏洞请按 [`.github/SECURITY.md`](.github/SECURITY.md) 私下报告。
 
-本项目 UI 包为自研原生 HTML 视觉模拟，不捆绑第三方设计系统代码或官方资源。
+本项目 UI 包为自研原生 HTML 视觉模拟，不捆绑第三方设计系统代码；pack 内引用的第三方库（例如 `admin-desktop` 中的 Apache ECharts）随 pack 分发，见 [NOTICE](NOTICE)。
 
 ## 许可证
 

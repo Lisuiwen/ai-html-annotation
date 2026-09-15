@@ -15,7 +15,7 @@ Thank you for contributing to HTML Prototype Build. The project is in experiment
 
 1. Describe the problem, use case, and expected behavior in an Issue or Discussion first.
 2. Submit small, independent changes and explain how you validated them.
-3. Changes to UI packs, examples, or delivery structure should update the matching references docs.
+3. Changes to UI packs under `.html-prototype/packs/`, examples, or delivery structure should update the matching references docs (`ui-pack-maintain` for pack contract/registry, `html-prototype-build` for consumer install and generation).
 4. Do not post credentials, internal pages, customer data, or exploitable security details in public Issues.
 
 Maintainers review contributions during the experimental phase for compatibility, privacy, accessibility, and security boundaries.

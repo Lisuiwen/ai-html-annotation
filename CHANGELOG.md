@@ -2,16 +2,20 @@
 
 All notable changes to AI HTML Annotation are documented here.
 
-## v0.4.1 — 2026-09-14
+## v0.4.1 — 2026-09-15
 
 ### English
 
 #### Changed
 
 - Official UI packs moved to `.html-prototype/packs/`; `html-prototype-build` shrinks to 50 skill files.
-- Pack install registry pins `ref: v0.4.1`; `install-pack.mjs` downloads from the tagged layout.
+- Pack install registry pins `ref: v0.4.1`; `install-pack.mjs` downloads from the tagged layout and falls back to `master` when the tag tarball is missing.
 - `admin-desktop` v5 is self-contained (ECharts vendor + chart runtime live inside the pack).
 - `resolve-pack.mjs` outputs `deliver[]` as `{ from, to }` pairs from `manifest.delivery`.
+
+#### Added
+
+- Pack install/discovery e2e tests with fixture packs and a local mock registry server.
 
 #### Install / update
 
@@ -27,9 +31,13 @@ node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
 #### 变更
 
 - 官方 UI pack 迁至 `.html-prototype/packs/`；`html-prototype-build` 缩减至 50 个 skill 文件。
-- 安装 registry 固定 `ref: v0.4.1`；`install-pack.mjs` 从该 tag 的布局下载。
+- 安装 registry 固定 `ref: v0.4.1`；`install-pack.mjs` 优先从 tag 下载，tag 缺失时回退 `master`。
 - `admin-desktop` v5 自包含（ECharts vendor 与 chart runtime 在 pack 内）。
 - `resolve-pack.mjs` 通过 `manifest.delivery` 输出 `deliver[]`（`{ from, to }`）。
+
+#### 新增
+
+- 基于 fixture pack 与本地 mock registry 的 pack 安装/发现端到端测试。
 
 #### 安装 / 更新
 

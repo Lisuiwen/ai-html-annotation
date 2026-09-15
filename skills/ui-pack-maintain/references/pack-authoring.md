@@ -19,12 +19,14 @@ End-user packs should stay in the home cache. Only project developers commit pac
   `mycompany-admin`, to avoid shadowing an official pack with the same id.
 
 ## Resource placement
+
 | Change | Destination | Must not contain |
 |---|---|---|
 | Cross-component token or document baseline | `foundation/` | Component classes, page shells, DOM, scripts |
 | Reusable control or visual unit | `components/<category>/<component-id>/` | Business state ownership, page-specific data |
 | Reusable composition order and slots | `patterns/<pattern-id>/` | Copied component CSS, scripts, or business content |
 | Business-free page starting point | `presets/<preset-id>/` | Real system names, fields, columns, or records |
+| Third-party library or pack-local runtime | `vendor/`, `runtime/`, or `assets/` | Skill-level shared files; undeclared `manifest.delivery` targets |
 
 ## Create a Pack
 
@@ -33,10 +35,12 @@ End-user packs should stay in the home cache. Only project developers commit pac
 3. Extract shared tokens only from repeated or explicitly confirmed evidence.
 4. Add only components supported by the intended Pack capability and available evidence.
 5. Register provider categories and compatible foundations.
-6. Add Patterns and Presets only after reusable composition exists.
-7. Run strict validation and resolver smoke tests before rendering examples.
-8. Add a one-line `summary` to `PACK.md` frontmatter for registry publication.
-9. Regenerate `registry.json` with `node scripts/generate-registry.mjs` before release.
+6. Place third-party or pack-local runtime files under `vendor/`, `runtime/`, or `assets/` and
+   declare every path in `manifest.delivery` (see [the pack contract](contract.md)).
+7. Add Patterns and Presets only after reusable composition exists.
+8. Run strict validation and resolver smoke tests before rendering examples.
+9. Add a one-line `summary` to `PACK.md` frontmatter for registry publication.
+10. Regenerate `registry.json` with `node scripts/generate-registry.mjs` before release.
    See `references/registry-format.md`; consumers discover packs through
    `resolve-pack.mjs --list` and `install-pack.mjs --list-remote`, not a Markdown catalog.
 
@@ -58,19 +62,26 @@ Keep data, empty, loading, selection, and similar states together when they belo
 - Let Patterns reference component IDs. Let Presets reference Patterns through `uses` and direct required Components through `requires`.
 - Never duplicate leaf implementation code.
 
-## Resolver smoke test
+## Resolver smoke tests
 
-After changing public entries, run the self-contained resolver for every changed
-Component, Pattern, and Preset:
+After changing public entries, run both resolvers:
+
+**1. In-pack closure** (`ui-pack-maintain`):
 
 ```bash
 node scripts/resolve-pack.mjs --pack=<pack-directory> --entry=<id>[,<id>...] [--optional=<id>[,<id>...]]
 ```
 
-Check the required closure and at least one representative optional selection. A
-new Pack is complete once it validates with `--strict` and the resolver can resolve
-every public entry. Cross-pack references are out of scope for the resolver; report
-them as a `ponytail:` evidence gap until a consumer defines cross-pack wiring.
+**2. Consumer discovery** (`html-prototype-build`, from a repo that contains the pack under
+`.html-prototype/packs/` or after `install-pack`):
+
+```bash
+node <html-prototype-build-skill-root>/scripts/resolve-pack.mjs --pack=<pack-id> --select=<id>[,<id>...]
+```
+
+Check the required closure, at least one representative optional selection, and any `deliver[]`
+entries. A new Pack is complete once it validates with `--strict` and both resolvers succeed.
+Cross-pack references are out of scope; report them as a `ponytail:` evidence gap.
 
 ## Evidence gaps
 

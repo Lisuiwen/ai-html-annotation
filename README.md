@@ -26,9 +26,10 @@ Use the open Agent Skills CLI for Claude Code, Cursor, Codex-compatible workflow
 
 ```bash
 npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill ui-pack-maintain   # pack authors only
 ```
 
-The skills.sh leaderboard discovers public skills automatically from real CLI installs; no separate submission manifest is required.
+The skills.sh leaderboard discovers public skills automatically from real CLI installs; no separate submission manifest is required. After installing `html-prototype-build`, download a UI pack with `install-pack.mjs` (see [Pack install](skills/html-prototype-build/references/pack-install.md)).
 
 ### Claude Code Plugin Marketplace
 
@@ -39,7 +40,7 @@ Add this repository as a Claude Code marketplace, then install the plugin:
 /plugin install ai-html-annotation@lisuiwen-agent-skills
 ```
 
-The Claude plugin points directly at the canonical `skills/html-prototype-build/` directory, so the project keeps a single Skill source instead of maintaining a duplicate copy.
+The Claude plugin loads skills from this repository (`html-prototype-build` and `ui-pack-maintain`); there is no separate copy of either `SKILL.md`.
 
 ## See it first
 
@@ -69,7 +70,7 @@ Formal notes are not sticky labels on a screenshot. They are structured data in 
 
 ### Stable pages from a reusable UI pack
 
-Compose pages from a local UI pack with shared tokens, components, and patterns. The catalog currently ships `admin-desktop` and `mobile-vant`. That reduces invent-from-scratch drift when an agent builds admin or mobile H5 screens, and keeps later prototypes visually consistent.
+Compose pages from installable UI packs with shared tokens, components, and patterns. Official packs (`admin-desktop`, `mobile-vant`) live in `.html-prototype/packs/` in this repository; they are not bundled inside `html-prototype-build`. End users download them with `install-pack.mjs` (see [Pack install](skills/html-prototype-build/references/pack-install.md)). That reduces invent-from-scratch drift when an agent builds admin or mobile H5 screens, and keeps later prototypes visually consistent.
 
 ### Direct edits on the real DOM
 
@@ -137,11 +138,13 @@ Skill references, UI pack contracts, and addon docs are in English; Chinese READ
 
 ```text
 .claude-plugin/marketplace.json  Claude Code marketplace catalog
-skills/html-prototype-build/     Canonical Agent Skill source
+.html-prototype/packs/           Official UI packs + registry.json
+skills/html-prototype-build/     Prototype build Agent Skill
+skills/ui-pack-maintain/         UI pack authoring Agent Skill
 examples/                        Runnable minimal prototype
 media/                           README demo assets
 scripts/                         Validation entry
-tests/                           Runtime unit and contract tests
+tests/                           Runtime unit, pack, and contract tests
 ```
 
 Inside the Skill, Runtime is organized by execution boundary: `client/` for final browser runtime, `author/` for browser authoring tools, `server/` for the localhost Node service, and `cli/` for standalone commands.
@@ -157,7 +160,7 @@ Inside the Skill, Runtime is organized by execution boundary: `client/` for fina
 
 This project is experimental 0.x; APIs and layout may change. See [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md) and [`.github/CODE_OF_CONDUCT.md`](.github/CODE_OF_CONDUCT.md). Report vulnerabilities privately per [`.github/SECURITY.md`](.github/SECURITY.md).
 
-The UI pack is an original native-HTML visual simulation. It does not bundle third-party design-system code or official assets.
+UI packs are original native-HTML visual simulations. They do not bundle third-party design-system code; vendored libraries used by a pack (for example Apache ECharts in `admin-desktop`) ship inside the pack directory and are listed in [NOTICE](NOTICE).
 
 ## License
 

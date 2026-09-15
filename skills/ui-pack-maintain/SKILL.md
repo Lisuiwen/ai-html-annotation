@@ -25,20 +25,16 @@ node scripts/generate-registry.mjs
 node scripts/generate-registry.mjs --check
 ```
 
+Landing paths, create/update steps, and the consumer resolver smoke test are in
+[Pack authoring](references/pack-authoring.md).
+
 ## Responsibility split
 
 | Owns `ui-pack-maintain` | Owns `html-prototype-build` |
 |---|---|
-| pack structure and contract | pack lookup chain |
-| `schemaVersion` rules | `resolve-pack.mjs --list` |
-| `registry.json` schema and generation | `install-pack.mjs` download flow |
-| `validate-pack.mjs` | shared `vendor/` and `runtime/` provision |
-| pack lifecycle: create → validate → version → publish | prototype generation and delivery |
-
-Landing paths by role:
-
-- End user self-created packs: `~/.html-prototype/packs/<id>/` (local only, never committed)
-- Project developer official packs: `<repo>/.html-prototype/packs/<id>/` (committed, feeds `registry.json`)
+| pack contract, `schemaVersion`, `validate-pack.mjs`, registry generation | pack lookup chain, `install-pack.mjs`, `deliver[]` copy-out |
+| in-pack `resolve-pack.mjs` (`--pack=<dir> --entry=`) | consumer `resolve-pack.mjs` (`--list` / `--select`) |
+| pack lifecycle: create → validate → version → publish | prototype generation |
 
 ## Workflow
 
@@ -81,7 +77,7 @@ Publication references:
   in `optional`.
 - Patterns and Presets must not select internal components directly.
 - Do not implement consumer download flows here; point users to
-  `html-prototype-build/scripts/install-pack.mjs`.
+  `html-prototype-build` [Pack install](../html-prototype-build/references/pack-install.md).
 
 ## Deterministic validation
 
@@ -89,22 +85,9 @@ Publication references:
 node scripts/validate-pack.mjs --pack=<pack-directory> --strict
 ```
 
-All `vendor`, `runtime`, and `assets` paths must exist inside the pack and
-declare `manifest.delivery` targets for prototype copy-out.
-
-Fix every error before semantic review. Warnings must be resolved or explicitly
-reported as evidence gaps.
-
-The validator checks:
-
-- required documents and manifest shape
-- supported `schemaVersion`
-- provider compatibility and conventional paths
-- frontmatter alignment, referenced and orphan files
-- dependency validity and cycles, offline resources
-- common prefix violations and Foundation boundaries
-- forbidden adapter behavior
-- pack-local `vendor` / `runtime` / `assets` files and `manifest.delivery` targets
+The validator enforces [the pack contract](references/contract.md), including pack-local
+`vendor` / `runtime` / `assets` and `manifest.delivery`. Fix every error before semantic
+review. Warnings must be resolved or explicitly reported as evidence gaps.
 
 It cannot judge whether a component boundary is useful or whether visual evidence
 is sufficient; delegate those questions to the semantic reviewer.
@@ -115,10 +98,9 @@ is sufficient; delegate those questions to the semantic reviewer.
 node scripts/resolve-pack.mjs --pack=<pack-directory> --entry=<id>[,<id>...] [--optional=<id>[,<id>...]]
 ```
 
-The maintain resolver covers in-pack `requires`/`uses` closures and optional
-selection only. Cross-pack references are out of scope and must be reported as a
-`ponytail:` evidence gap. Consumer discovery and lookup chains belong to
-`html-prototype-build/scripts/resolve-pack.mjs`.
+This covers in-pack `requires`/`uses` closures only. After validation, also run the
+consumer resolver check in [Pack authoring](references/pack-authoring.md#resolver-smoke-tests).
+Cross-pack references are out of scope and must be reported as a `ponytail:` evidence gap.
 
 ## Completion report
 
