@@ -15,7 +15,7 @@
 聊天意见对不上元素，对着截图写的 HTML 会漂，说明 / 聊天 / 源码各说各的。[产品指南](docs/guide.zh-CN.md) 写清为何失败、环上的四个岗位，以及编号步骤。
 
 ```text
-用 UI 包生成 HTML
+用 UI pack 生成 HTML
         │
         ▼
      Viewer

@@ -21,7 +21,7 @@ AI HTML Annotation 给需要和编程 Agent 一起评审原生 HTML 的人用。
 接回去的方式是原生 HTML：在真实 DOM 上**标注**，用**作者工具**，**复制给 AI**，再出**多状态截图**。Mark、Direct Edit、Inspector 是 Viewer 之后的并行可选项，不是一条必走的线性链。
 
 ```text
-用 UI 包生成 HTML
+用 UI pack 生成 HTML
         │
         ▼
      Viewer
