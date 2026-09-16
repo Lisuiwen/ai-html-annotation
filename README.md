@@ -14,6 +14,22 @@ Experimental 0.x · zero npm dependencies · MIT · [Changelog](CHANGELOG.md)
 
 Chat comments never hit an element, screenshot-based HTML drifts, and spec / chat / source stay disconnected. The [product guide](docs/guide.md) covers why that fails, four jobs on the loop, and the numbered workflow.
 
+```text
+generate HTML from a UI pack
+        │
+        ▼
+     Viewer
+        │
+        ├── Mark → Copy for AI   (optional)
+        ├── Direct Edit          (optional)
+        └── Inspector            (optional)
+        │
+        ▼
+   scenarios
+```
+
+Mark, Direct Edit, and Inspector are parallel options after Viewer, not a required sequence.
+
 ## See it first
 
 Walkthrough video: [media/hero-main.mp4](media/hero-main.mp4) (GitHub may not autoplay — open the file).

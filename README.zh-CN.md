@@ -14,6 +14,22 @@
 
 聊天意见对不上元素，对着截图写的 HTML 会漂，说明 / 聊天 / 源码各说各的。[产品指南](docs/guide.zh-CN.md) 写清为何失败、环上的四个岗位，以及编号步骤。
 
+```text
+用 UI 包生成 HTML
+        │
+        ▼
+     Viewer
+        │
+        ├── Mark → Copy for AI   (optional)
+        ├── Direct Edit          (optional)
+        └── Inspector            (optional)
+        │
+        ▼
+   scenarios
+```
+
+Mark、Direct Edit、Inspector 是 Viewer 之后的并行可选项，不是一条必走的线性链。
+
 ## 你可以先看演示
 
 走读视频：[media/hero-main.mp4](media/hero-main.mp4)（GitHub 不一定会自动播放 — 打开文件即可）。

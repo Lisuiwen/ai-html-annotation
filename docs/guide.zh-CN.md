@@ -18,11 +18,20 @@ AI HTML Annotation 给需要和编程 Agent 一起评审原生 HTML 的人用。
 | 作者 / Agent | 对着像素重写 HTML | 没有共享 UI 包。每次视觉都重来。 |
 | 任何要验收修改的人 | 说明在文档、意见在聊天、改动在源码 | 对不上同一个元素，验证很慢。 |
 
-接回去的方式是原生 HTML：在真实 DOM 上**标注**，用**作者工具**，**复制给 AI**，再出**多状态截图**。
+接回去的方式是原生 HTML：在真实 DOM 上**标注**，用**作者工具**，**复制给 AI**，再出**多状态截图**。Mark、Direct Edit、Inspector 是 Viewer 之后的并行可选项，不是一条必走的线性链。
 
 ```text
-UI 包 → 标注（Viewer）→ Mark → 复制给 AI
-        → Direct Edit → Inspector → 多状态截图
+用 UI 包生成 HTML
+        │
+        ▼
+     Viewer
+        │
+        ├── Mark → Copy for AI   (optional)
+        ├── Direct Edit          (optional)
+        └── Inspector            (optional)
+        │
+        ▼
+   scenarios
 ```
 
 ## 四个场景
@@ -85,7 +94,7 @@ Mark、Direct Edit、Inspector 和作者工具只在你写作时加载。交出�
 
 ## 端到端步骤
 
-不必每次跑完每一步。只做评审时从 Mark 开始。UI 包工作是可选的。第一条命令：[quickstart](quickstart.zh-CN.md)。
+不必每次跑完每一步。只做评审时从 Mark 开始。Direct Edit 和 Inspector 可选，且在 Viewer 之后可按任意顺序。UI 包工作是可选的。第一条命令：[quickstart](quickstart.zh-CN.md)。
 
 1. **从材料到可打开的 HTML。** 从材料确认页面类型（UI 类型不清楚就先问）。还没有 UI 包就先安装（笔记系统样例用 `admin-desktop`；mobile-work-order 用 `mobile-vant`）。启用原型 Skill，让 Agent 生成页面。双击 HTML 可只读预览 Viewer；要改内容需作者工具。
 

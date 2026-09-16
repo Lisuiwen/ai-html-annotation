@@ -18,11 +18,20 @@ Most prototype workflows break after the mock looks “good enough.” The pictu
 | Author / agent | Rebuild HTML from pixels | No shared UI pack. Visuals reinvent themselves every pass. |
 | Anyone verifying a fix | Spec in a doc, notes in chat, change in source | Nothing is bound to the same element, so checking is slow. |
 
-The reconnection is native HTML: **annotate** on the real DOM, use **Author Tools**, **copy to an AI**, and ship **multi-state screenshots**.
+The reconnection is native HTML: **annotate** on the real DOM, use **Author Tools**, **copy to an AI**, and ship **multi-state screenshots**. Mark, Direct Edit, and Inspector are parallel options after Viewer, not a required sequence.
 
 ```text
-UI pack → annotations (Viewer) → Mark → Copy all → For AI
-        → Direct Edit → Inspector → multi-state screenshots
+generate HTML from a UI pack
+        │
+        ▼
+     Viewer
+        │
+        ├── Mark → Copy for AI   (optional)
+        ├── Direct Edit          (optional)
+        └── Inspector            (optional)
+        │
+        ▼
+   scenarios
 ```
 
 ## Four scenarios
@@ -85,7 +94,7 @@ Mark, Direct Edit, Inspector, and Author Tools load only while you are authoring
 
 ## End-to-end steps
 
-You do not have to run every step every time. Review-only sessions start at Mark. Pack work is optional. First commands: [quickstart](quickstart.md).
+You do not have to run every step every time. Review-only sessions start at Mark. Direct Edit and Inspector are optional and can run in any order after Viewer. Pack work is optional. First commands: [quickstart](quickstart.md).
 
 1. **Materials to openable HTML.** Confirm page type from materials (ask if the UI type is unclear). Install a UI pack if none is present (`admin-desktop` for the notes-system sample; `mobile-vant` for mobile-work-order). Enable the prototype skill and let the agent generate the page. Double-click the HTML for a read-only Viewer preview; Author Tools are required to edit.
 
