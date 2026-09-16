@@ -66,9 +66,7 @@ Mark、Direct Edit、Inspector 是 Viewer 之后的并行可选项，不是一�
 
 ### 用 UI 包生成，让页面视觉保持稳定
 
-可安装的视觉系统 — Token、组件、Pattern — 不打进 Skill。官方 UI 包：`admin-desktop`（桌面后台）与 `mobile-vant`（手机宽度 H5）。
-
-![官方 pack 一览：桌面后台与移动 H5](media/ui-pack.gif)
+可安装的视觉系统 — Token、组件、Pattern — 不打进 Skill。官方 UI 包：`admin-desktop`（桌面后台）与 `mobile-vant`（手机宽度 H5）。官方模拟不是你的视觉语言时，用 `ui-pack-maintain` Skill 自定义或编写 UI 包。详见 [UI 包](docs/ui-packs.zh-CN.md)。
 
 ## 适合 / 不适合
 

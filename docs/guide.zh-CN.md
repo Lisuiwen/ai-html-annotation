@@ -72,7 +72,7 @@ Direct Edit 改源码；Mark 不改。Inspector 的高亮只用于当前会话 �
 你要的不只是这一页，而是下一张后台或 H5 还长得像上一张。
 
 - **安装**官方 `admin-desktop`、`mobile-vant`（或已下载的包）。UI 包**不**打进原型 Skill。
-- 官方视觉不是你的语言时，去 **自定义或编写** UI 包，而不是每页手写一套 CSS。写包用另一套 Skill，不是生成业务原型。
+- 官方视觉不是你的语言时，用 `ui-pack-maintain` Skill **自定义或编写** UI 包，而不是每页手写一套 CSS。那不是生成业务原型。
 - 自制包放在 `~/.html-prototype/packs/<id>/`，id 加命名空间，避免盖住官方 id。
 
 自定义 / 维护的产品文档仍在[计划中](README.zh-CN.md#计划中)。在此之前看 [UI 包](ui-packs.zh-CN.md)。

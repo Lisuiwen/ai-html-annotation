@@ -66,9 +66,7 @@ Multi-state screenshots hide the annotation rail, connectors, and Author Tools. 
 
 ### Generate from a UI pack so pages stay visually consistent
 
-Installable visual systems — tokens, components, patterns — not bundled inside the Skill. Official packs: `admin-desktop` (desktop admin) and `mobile-vant` (phone-width H5).
-
-![Official packs at a glance: admin desktop and mobile H5](media/ui-pack.gif)
+Installable visual systems — tokens, components, patterns — not bundled inside the Skill. Official packs: `admin-desktop` (desktop admin) and `mobile-vant` (phone-width H5). Customize or author a pack with the `ui-pack-maintain` skill when the official simulation is the wrong visual language. Details: [UI packs](docs/ui-packs.md).
 
 ## Fit / not fit
 

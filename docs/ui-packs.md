@@ -41,12 +41,12 @@ Project packs win over user cache. Self-created ids should be namespaced (`mycom
 | Situation | Do |
 | --- | --- |
 | Desktop admin vs phone H5 (or materials name a different installed pack) | **Switch** pack id, then generate |
-| Official simulation is the wrong language, but you still want agent-built HTML | **Customize** or author a pack, then rebuild the prototype |
+| Official simulation is the wrong language, but you still want agent-built HTML | **Customize** or author a pack with `ui-pack-maintain`, then rebuild the prototype |
 | You already have an agreed **production** UI kit and need app code | Use that kit — not this Skill |
 
-Customize / maintain product pages are planned: [customize a pack](ui-pack-customize.md), [maintain a pack](ui-pack-maintain.md). Until they ship, follow the pack-author skill.
+Customize or author a pack with the `ui-pack-maintain` skill, then rebuild the prototype. Product pages for that flow are planned: [customize a pack](ui-pack-customize.md), [maintain a pack](ui-pack-maintain.md).
 
-Prototype generation consumes packs. Pack authoring is a different skill. Do not use pack authoring to generate business pages, and do not use prototype generation to invent pack contracts.
+Prototype generation consumes packs. Do not use `ui-pack-maintain` to generate business pages, and do not use prototype generation to invent pack contracts.
 
 ## Next
 

@@ -72,7 +72,7 @@ Formal HTML may still include the read-only Viewer. The PNG is a clean product c
 You want the next admin or H5 page to match the last.
 
 - **Install** official `admin-desktop` or `mobile-vant` (or a downloaded pack). Packs are not bundled inside the prototype skill.
-- If official visuals are the wrong language, **customize or author** a pack rather than hand-writing CSS on every page. Pack authoring is a different skill, not prototype generation.
+- If official visuals are the wrong language, **customize or author** a pack with the `ui-pack-maintain` skill rather than hand-writing CSS on every page. That is not prototype generation.
 - Self-created packs live under `~/.html-prototype/packs/<id>/` with a namespaced id so they do not shadow official ids.
 
 Product docs for customize / maintain are still [planned](README.md#planned). Until then: [UI packs](ui-packs.md).
