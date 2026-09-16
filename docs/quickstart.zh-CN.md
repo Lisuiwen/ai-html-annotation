@@ -2,11 +2,13 @@
 
 [English](quickstart.md)
 
-安装 Skill、安装 pack、打开桌面样例、启动作者服务。到这里就应该能看到 Viewer、复制一次 Mark 导出、切换场景。更长的协议在 Skill references — 本页保持短。
+安装 Skill、安装 UI 包、打开桌面样例、启动作者工具。到这里就应该能看到 Viewer、复制一次给 AI、切换页面状态。
 
-需要 **Node.js 18+**。批量截图（可选）需要本机 Microsoft Edge 或 Google Chrome。
+需要 **Node.js 18+**。批量多状态截图（可选）需要本机 Microsoft Edge 或 Google Chrome。
 
-默认样例：[`examples/minimal-notes-system`](../examples/minimal-notes-system)。手机宽度备选：[`examples/mobile-work-order`](../examples/mobile-work-order)，pack 用 `mobile-vant`。
+默认样例：[`examples/minimal-notes-system`](../examples/minimal-notes-system)。手机宽度：[`examples/mobile-work-order`](../examples/mobile-work-order)，UI 包用 `mobile-vant`。
+
+这条环为什么存在、第一次成功之后做什么：见[产品指南](guide.zh-CN.md)。
 
 ## 安装 Skill
 
@@ -16,7 +18,7 @@
 npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
 ```
 
-CLI 会打印 Skill 目录。下面的 `<skill-root>` 就是这条路径。
+CLI 会打印 Skill 目录。Pack 作者再加 `--skill ui-pack-maintain`。
 
 **备选 — Claude Code 插件 Marketplace：**
 
@@ -25,55 +27,50 @@ CLI 会打印 Skill 目录。下面的 `<skill-root>` 就是这条路径。
 /plugin install ai-html-annotation@lisuiwen-agent-skills
 ```
 
-两者都从本仓库加载 `html-prototype-build`，没有第二份 `SKILL.md`。Pack 作者再加 `--skill ui-pack-maintain`（或同一个插件，它也会加载该 Skill）。
+两者都从本仓库加载原型 Skill，没有第二份 `SKILL.md`。同一个插件也会加载 pack 编写 Skill。
 
-## 安装 UI pack
+## 安装 UI 包
 
-Pack 不在 Skill 里。安装 Skill 之后：
-
-```bash
-node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
-```
-
-默认写到 `~/.html-prototype/packs/admin-desktop/`。需要先选包时用 `--list-remote`。完整参数、覆盖保护和 `--dest=project` 见 [pack 安装](../skills/html-prototype-build/references/pack-install.md)。
-
-移动样例改用 `--pack=mobile-vant`。
+UI 包不在 Skill 里。安装 Skill 之后，让 Agent 安装 `admin-desktop`（桌面）或 `mobile-vant`（手机）。默认位置：`~/.html-prototype/packs/<id>/`。
 
 ## 打开样例
 
 在本仓库的 clone 里，用浏览器打开 `examples/minimal-notes-system/prototype.html`（双击即可）。
 
-你应看到后台页面 **以及** 右侧 Viewer（正式说明、场景控件、连线）。`file://` 下是只读：可以读说明、切场景；不能保存卡片，也不能用 Mark、Direct Edit、Inspector。
+你应看到后台页面 **以及** 右侧 Viewer（标注、场景控件、连线）。双击打开是只读：可以读标注、切状态；不能保存卡片，也不能用 Mark、Direct Edit、Inspector。
 
-如果没用这个仓库：先安装 pack，启用 Skill，让 Agent 按你的材料生成一页（[工作流](workflows.zh-CN.md#1-从材料到可打开的-html)）。
+如果没用这个仓库：先安装 UI 包，启用 Skill，让 Agent 按你的材料生成一页（[产品指南](guide.zh-CN.md#端到端步骤)）。
 
-## 本地作者服务（最短路径）
+## 启动作者工具
 
-```bash
-node <skill-root>/runtime/server/index.mjs examples/minimal-notes-system/prototype.html --snapshot=prototype/notes.snapshot.js
-```
+作者工具只监听 `127.0.0.1`。打开进程打印的 localhost 地址。没有正式标注数据时，Direct Edit、Mark、Inspector 仍可用；标注卡片无法保存。
 
-保证 HTML 路径相对你的 cwd 正确（或改用绝对路径）。打开进程打印的 `http://127.0.0.1:4178/...`。服务只绑定 `127.0.0.1`。
-
-不带 `--snapshot` 时，Direct Edit、Mark、Inspector 仍可用；正式说明卡片无法保存。
-
-Inspector 跳转 IDE：把 [`skills/html-prototype-build/.env.example`](../skills/html-prototype-build/.env.example) 拷到 `<skill-root>/.env`。不要提交 `.env`。手势和 tab 见[本地作者服务](../skills/html-prototype-build/references/local-authoring.md)。
+Inspector 跳转 IDE：把 Skill 根目录的 `.env.example` 拷成 `.env`。不要提交 `.env`。
 
 ## 第一次成功
 
 五分钟路径完成的标志是下面三件都成立：
 
-1. **Viewer** — 笔记系统页面上有正式说明；切换场景会改变卡片（以及页面状态）。
-2. **Mark 复制** — Author Tools → Mark，钉一个元素，`Copy all → For AI` 把 selector + HTML 快照放到剪贴板（[评审打点](../skills/html-prototype-build/references/review-mark.md)）。
-3. **Scenario** — `?scene=<id>` 或右侧控件对应 `prototype/notes.snapshot.js` 里 `scenarios` 的某个 key。可选：用截图 CLI 出纯净 PNG（[截图](../skills/html-prototype-build/references/screenshots.md)）。
+1. **Viewer** — 笔记系统页面上有标注；切换状态会改变卡片（以及页面）。
+2. **复制给 AI** — 作者工具 → Mark，钉一个元素，`Copy all → For AI` 把 selector + HTML 放到剪贴板。
+3. **页面状态** — 右侧控件对应已声明的场景。可选：出纯净的多状态 PNG。
 
-Mark、Direct Edit、Inspector 只属于作者会话，不进入正式 HTML。边界：[能力地图](features.zh-CN.md#作者层-vs-正式交付物)。
+Mark、Direct Edit、Inspector 只属于作者会话，不进入正式 HTML。边界：[产品指南](guide.zh-CN.md#能力表)。
 
 ## 接下来
 
-- 第一次成功之后做什么 → [工作流](workflows.zh-CN.md)
-- 工具地图 → [features](features.zh-CN.md)
-- Pack → [UI packs](ui-packs.zh-CN.md)
-- Agent 分流 → [SKILL.md](../skills/html-prototype-build/SKILL.md)
-- Skill 怎么用 → [html-prototype-build README](../skills/html-prototype-build/README.zh-CN.md)
+- 第一次成功之后做什么 → [产品指南](guide.zh-CN.md)
+- UI 包 → [UI 包](ui-packs.zh-CN.md)
+- 和其他评审方式对比 → [对比](comparison.zh-CN.md)
 - 常见问题 → [FAQ](faq.zh-CN.md)
+
+## 进阶
+
+`<skill-root>` 是 `npx skills add` 打印的目录。
+
+```bash
+node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
+node <skill-root>/runtime/server/index.mjs examples/minimal-notes-system/prototype.html --snapshot=prototype/notes.snapshot.js
+```
+
+参数、覆盖保护和 `--dest=project`：[Pack install](../skills/html-prototype-build/references/pack-install.md)。手势和 tab：[本地作者服务](../skills/html-prototype-build/references/local-authoring.md)。纯净 PNG：[截图](../skills/html-prototype-build/references/screenshots.md)。Agent 分流：[SKILL.md](../skills/html-prototype-build/SKILL.md)。

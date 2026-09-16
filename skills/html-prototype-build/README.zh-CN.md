@@ -4,7 +4,7 @@
 
 面向 AI Agent 的 HTML 产品原型 Skill：用 UI 包生成页面，在真实 DOM 上维护正式说明、发起评审、跳转源码，并按场景输出交付截图。
 
-安装方式、产品演示与仓库级功能介绍见[仓库 README](../../README.zh-CN.md)。场景向产品文档（痛点、能力地图、工作流、quickstart、UI packs）见 [`docs/`](../../docs/README.zh-CN.md)。本文件负责 Skill 怎么用；具体命令与逐步操作仍在 `references/`。
+安装方式、产品演示与仓库级功能介绍见[仓库 README](../../README.zh-CN.md)。产品文档（指南、quickstart、UI 包）见 [`docs/`](../../docs/README.zh-CN.md)。本文件负责 Skill 怎么用；具体命令与逐步操作仍在 `references/`。
 
 ## 适合谁用
 
@@ -67,7 +67,7 @@
 | 某类任务的操作说明（含命令） | [references/](references/) 下对应入口 |
 | UI 包怎么选、怎么安装 | [ui/catalog.md](ui/catalog.md)、[Pack install](references/pack-install.md) |
 | 编写或发布 UI pack | [`ui-pack-maintain`](../ui-pack-maintain/SKILL.md) skill |
-| 痛点、工作流、quickstart、UI packs | [产品文档](../../docs/README.zh-CN.md) |
+| 产品指南、quickstart、UI 包 | [产品文档](../../docs/README.zh-CN.md) |
 | 仓库安装与功能介绍 | [仓库 README](../../README.zh-CN.md) |
 
 本文件只说明 Skill 的用途与协作方式；具体命令、逐步操作和 Agent 契约都在上述文档中按任务拆分维护。
