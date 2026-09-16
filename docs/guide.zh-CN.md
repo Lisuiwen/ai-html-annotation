@@ -75,7 +75,7 @@ Direct Edit 改源码；Mark 不改。Inspector 的高亮只用于当前会话 �
 - 官方视觉不是你的语言时，用 `ui-pack-maintain` Skill **自定义或编写** UI 包，而不是每页手写一套 CSS。那不是生成业务原型。
 - 自制包放在 `~/.html-prototype/packs/<id>/`，id 加命名空间，避免盖住官方 id。
 
-自定义 / 维护的产品文档仍在[计划中](README.zh-CN.md#计划中)。在此之前看 [UI 包](ui-packs.zh-CN.md)。
+自定义或编写 UI 包：见 [UI 包](ui-packs.zh-CN.md) 和 [`ui-pack-maintain`](../skills/ui-pack-maintain/SKILL.md) Skill。
 
 ## 能力表
 
@@ -104,7 +104,7 @@ Mark、Direct Edit、Inspector 和作者工具只在你写作时加载。交出�
 
 4. **多状态截图交付。** 声明页面状态（id 必须能当文件名）。在页面上抽查。出纯产品 PNG。整理带 `AGENTS.md` 的目录，让后续 Agent 读标注和 PNG — 不要搬原型实现。作者工具从不进入这个包。
 
-5. **可选：自定义 UI 包再重新生成。** 产品形态变了（桌面后台 vs 手机 H5）就换包。视觉语言是你自己的就自定义（[UI 包](ui-packs.zh-CN.md)）。用新包重新生成。不要把写包当成业务页面任务。自定义 / 维护的产品文档仍在[计划中](README.zh-CN.md#计划中)。
+5. **可选：自定义 UI 包再重新生成。** 产品形态变了（桌面后台 vs 手机 H5）就换包。视觉语言是你自己的就自定义（[UI 包](ui-packs.zh-CN.md) 和 [`ui-pack-maintain`](../skills/ui-pack-maintain/SKILL.md)）。用新包重新生成。不要把写包当成业务页面任务。
 
 ## 接下来
 

@@ -75,7 +75,7 @@ You want the next admin or H5 page to match the last.
 - If official visuals are the wrong language, **customize or author** a pack with the `ui-pack-maintain` skill rather than hand-writing CSS on every page. That is not prototype generation.
 - Self-created packs live under `~/.html-prototype/packs/<id>/` with a namespaced id so they do not shadow official ids.
 
-Product docs for customize / maintain are still [planned](README.md#planned). Until then: [UI packs](ui-packs.md).
+Customize or author a pack: [UI packs](ui-packs.md) and the [`ui-pack-maintain`](../skills/ui-pack-maintain/SKILL.md) Skill.
 
 ## Capability table
 
@@ -104,7 +104,7 @@ You do not have to run every step every time. Review-only sessions start at Mark
 
 4. **Multi-state screenshot delivery.** Declare page states (ids must be safe as file names). Spot-check them on the page. Capture clean product-only PNGs. Assemble the folder with `AGENTS.md` so later agents read annotations and PNGs — not prototype implementation. Author Tools never go in that package.
 
-5. **Optional: customize the UI pack, then rebuild.** Switch pack when the product surface changes (desktop admin vs phone H5). Customize when the visual language is yours ([UI packs](ui-packs.md)). Rebuild from the new pack. Do not treat pack authoring as a business-page task. Customize / maintain product pages are [planned](README.md#planned).
+5. **Optional: customize the UI pack, then rebuild.** Switch pack when the product surface changes (desktop admin vs phone H5). Customize when the visual language is yours ([UI packs](ui-packs.md) and [`ui-pack-maintain`](../skills/ui-pack-maintain/SKILL.md)). Rebuild from the new pack. Do not treat pack authoring as a business-page task.
 
 ## Next
 

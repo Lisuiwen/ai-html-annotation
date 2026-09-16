@@ -97,8 +97,9 @@ async function validateMarkdownLinks(files) {
 const skillFiles = await listFiles(skillDirectory);
 const exampleFiles = await listFiles(examplesDirectory);
 const rootMarkdownFiles = ['README.md', 'README.zh-CN.md'].map((name) => path.join(repositoryDirectory, name));
+const docsFiles = await listFiles(path.join(repositoryDirectory, 'docs'));
 await validateMetadata();
-await validateMarkdownLinks([...skillFiles, ...exampleFiles, ...rootMarkdownFiles]);
+await validateMarkdownLinks([...skillFiles, ...exampleFiles, ...rootMarkdownFiles, ...docsFiles]);
 await validateBrowserScripts([...skillFiles, ...exampleFiles]);
 
 const packRootDirectory = path.join(repositoryDirectory, '.html-prototype', 'packs');
