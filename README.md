@@ -4,42 +4,31 @@
 
 [![skills.sh](https://skills.sh/b/Lisuiwen/ai-html-annotation)](https://skills.sh/Lisuiwen/ai-html-annotation)
 
-> Agent Skill for native HTML prototypes with real-DOM notes — for Claude Code, Codex, Cursor, and other coding agents.
+> Agent Skill for native HTML prototypes with real-DOM annotations — for Claude Code, Codex, Cursor, and other coding agents.
 
-**The page is the deliverable, not just a picture of one.** Build from a UI pack, review on the live DOM, hand the agent selectors instead of pixels, and ship clean multi-state screenshots.
+**The page is the deliverable, not just a picture of one.** Build from a UI pack, annotate on the live DOM, copy feedback to an AI, and ship clean multi-state screenshots.
 
 Experimental 0.x · zero npm dependencies · MIT · [Changelog](CHANGELOG.md)
 
-## Where the old loop fails
+## Why it exists
 
-Three people, three old habits, three breaks. Detail: [Pain points and scenarios](docs/pain-points-and-scenarios.md).
-
-- **Reviewer / PM** × comments in chat or a doc (“move this left”) × the note never maps to an element, so the agent guesses.
-- **Author / agent** × iterating from screenshots × there is no DOM, so the next HTML rewrite drifts.
-- **Anyone verifying a fix** × spec, chat thread, and source stay disconnected × checking the change is slow.
-
-## Collaboration loop
+Chat comments never hit an element, screenshot-based HTML drifts, and spec / chat / source stay disconnected. The [product guide](docs/guide.md) covers why that fails, four jobs on the loop, and the numbered workflow.
 
 ```text
 generate HTML from a UI pack
         │
         ▼
-   Viewer          formal notes on the real page
+     Viewer
+        │
+        ├── Mark → Copy for AI   (optional)
+        ├── Direct Edit          (optional)
+        └── Inspector            (optional)
         │
         ▼
-   Mark → Copy for AI     pins, selectors, element HTML snapshots
-        │
-        ▼
-   Direct Edit     tweak style or copy on localhost, write back to source
-        │
-        ▼
-   Inspector       lock an element → open that location in the IDE
-        │
-        ▼
-   scenarios       clean multi-state PNGs (no author chrome)
+   scenarios
 ```
 
-Author tools (Mark, Direct Edit, Inspector, localhost authoring) load only in the authoring session. Formal HTML keeps the read-only Viewer and semantic DOM. Scenario PNGs omit that chrome.
+Mark, Direct Edit, and Inspector are parallel options after Viewer, not a required sequence.
 
 ## See it first
 
@@ -47,19 +36,19 @@ Walkthrough video: [media/hero-main.mp4](media/hero-main.mp4) (GitHub may not au
 
 ### Review the page the way a PM would
 
-Formal notes sit on the real DOM. Add, edit, or browse them, switch page scenarios, and follow SVG connectors to the matching modules — same page, not a separate spec.
+Formal annotations sit on the real DOM. Add, edit, or browse them, switch page states, and follow SVG connectors to the matching modules — same page, not a separate spec.
 
 ![Formal notes on the live page: browse annotations and switch scenarios](media/viewer.gif)
 
-### Pin a problem and hand it to the agent
+### Pin a problem and copy it to the AI
 
-Hold `Ctrl` (macOS: `⌘`) and click an element to drop a removable review pin. Then `Copy all → For AI` exports selectors plus element HTML snapshots.
+Hold `Ctrl` (macOS: `⌘`) and click an element to drop a removable review pin. Then `Copy all → For AI` exports selectors plus element HTML.
 
 ![Pin feedback on a real element and copy selector + HTML snapshot for the agent](media/mark.gif)
 
 ### Tweak style or copy on the live page
 
-Author Tools → **edit**. Hold `Ctrl` (macOS: `⌘`), change copy or styles (for example a background color), and save — the authoring server writes back to source HTML. The editor UI stays in the authoring session; it is not injected into the deliverable.
+Author Tools → **edit**. Hold `Ctrl` (macOS: `⌘`), change copy or styles (for example a background color), and save. The editor UI stays in the authoring session; it is not injected into the deliverable.
 
 ![Change copy or styles on the page and write them back to source](media/direct-edit.gif)
 
@@ -71,57 +60,36 @@ Hold `Alt + Shift`, hover to see the selector, click to open that location in yo
 
 ### Deliver clean multi-state screenshots
 
-`scenarios` plus the screenshot CLI hide the notes rail, connectors, and author chrome. Formal HTML can still show Viewer; the PNGs are the product page only.
+Multi-state screenshots hide the annotation rail, connectors, and Author Tools. Formal HTML can still show Viewer; the PNGs are the product page only.
 
 ![Notes rail versus product-only output for the same mobile page](media/scenarios-mobile.gif)
 
 ### Generate from a UI pack so pages stay visually consistent
 
-Installable visual systems — tokens, components, patterns — not bundled inside the Skill. Official packs: `admin-desktop` (desktop admin) and `mobile-vant` (phone-width H5).
-
-![Official packs at a glance: admin desktop and mobile H5](media/ui-pack.gif)
-
-## Two capabilities
-
-1. **Prototype collaboration** (`html-prototype-build`) — generate an openable HTML page, review it on the DOM, copy agent-ready context, tweak in place, and deliver scenario screenshots. See [workflows](docs/workflows.md).
-2. **UI packs** — install, customize, or maintain a reusable visual system so agent-built pages stay consistent. Official packs are `admin-desktop` and `mobile-vant`. See [UI packs](docs/ui-packs.md).
+Installable visual systems — tokens, components, patterns — not bundled inside the Skill. Official packs: `admin-desktop` (desktop admin) and `mobile-vant` (phone-width H5). Customize or author a pack with the `ui-pack-maintain` skill when the official simulation is the wrong visual language. Details: [UI packs](docs/ui-packs.md).
 
 ## Fit / not fit
 
 **Fit** when you need to:
 
 - turn UI materials into openable HTML quickly;
-- review on the real page and hand precise feedback to an AI;
+- review on the real page and copy precise feedback to an AI;
 - iterate structure, copy, and state while keeping reproducible screenshots;
 - keep admin, config, or interaction prototypes visually stable across tasks.
 
 **Not a fit** as a production component library, a Figma replacement, a third-party design-system implementation, or a general frontend scaffold / production code generator.
 
-## 5-minute Quickstart
+## Install
 
-skills.sh is the default install. After it prints `<skill-root>`:
+skills.sh is the default. Then install a UI pack (`admin-desktop` for desktop, `mobile-vant` for phone) and open Author Tools — steps in [5-minute quickstart](docs/quickstart.md).
 
 ```bash
 npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
-node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
 ```
 
-Open [`examples/minimal-notes-system/prototype.html`](examples/minimal-notes-system) (desktop sample in this repo). For authoring (Mark, Direct Edit, Inspector), start the localhost server — command in [5-minute quickstart](docs/quickstart.md).
+Open [`examples/minimal-notes-system/prototype.html`](examples/minimal-notes-system) (desktop sample in this repo).
 
 Claude Code marketplace is secondary: `/plugin marketplace add Lisuiwen/ai-html-annotation` then `/plugin install ai-html-annotation@lisuiwen-agent-skills`. Pack authors also install `ui-pack-maintain`.
-
-## Capability cheat sheet
-
-| Need | Use | Layer |
-| --- | --- | --- |
-| Formal notes, scenario switch, SVG connectors | Viewer | Formal page |
-| Review pins → selectors + HTML snapshots | Mark, `Copy all → For AI` | Author session |
-| Tweak style or copy on the page | Direct Edit | Author session |
-| Lock element → IDE | Inspector | Author session |
-| Stable visuals | UI pack (`install-pack`) | Pack, not the Skill |
-| Clean create / edit / empty / … PNGs | `scenarios` + screenshot CLI | Delivery |
-
-Full map: [Capability map](docs/features.md). Author vs formal boundary stays in that page.
 
 ## Examples
 
@@ -130,32 +98,33 @@ Full map: [Capability map](docs/features.md). Author vs formal boundary stays in
 
 ## Where to go next
 
-- [Docs index](docs/README.md) — pain points, features, workflows, quickstart, UI packs, [comparison](docs/comparison.md), [FAQ](docs/faq.md)
-- Skill overview → [`skills/html-prototype-build/README.md`](skills/html-prototype-build/README.md) ([中文](skills/html-prototype-build/README.zh-CN.md))
-- Agent routing → [`skills/html-prototype-build/SKILL.md`](skills/html-prototype-build/SKILL.md)
-- Task commands → [`skills/html-prototype-build/references/`](skills/html-prototype-build/references/) ([pack install](skills/html-prototype-build/references/pack-install.md), [local authoring](skills/html-prototype-build/references/local-authoring.md), [review mark](skills/html-prototype-build/references/review-mark.md), [screenshots](skills/html-prototype-build/references/screenshots.md))
+- [Product guide](docs/guide.md) — why it fails, four scenarios, capabilities, numbered steps
+- [Quickstart](docs/quickstart.md) · [UI packs](docs/ui-packs.md) · [Comparison](docs/comparison.md) · [FAQ](docs/faq.md)
+- [Docs index](docs/README.md)
+- Skill overview → [html-prototype-build README](skills/html-prototype-build/README.md) ([中文](skills/html-prototype-build/README.zh-CN.md))
 
 Skill references, UI pack contracts, and addon docs are in English.
+
+## For agents
+
+Local Author Tools, pack install, and screenshot commands: [Local authoring](skills/html-prototype-build/references/local-authoring.md), [Pack install](skills/html-prototype-build/references/pack-install.md), [Screenshots](skills/html-prototype-build/references/screenshots.md). Agent routing: [SKILL.md](skills/html-prototype-build/SKILL.md).
 
 ## Distribution layout
 
 ```text
 .claude-plugin/marketplace.json  Claude Code marketplace catalog
-.html-prototype/packs/           Official UI packs + registry.json
+.html-prototype/packs/           Official UI packs
 skills/html-prototype-build/     Prototype build Agent Skill
 skills/ui-pack-maintain/         UI pack authoring Agent Skill
 examples/                        Runnable samples
 media/                           README demo assets
-scripts/                         Validation entry
-tests/                           Runtime, pack, and contract tests
+docs/                            Product docs
 ```
-
-Inside the Skill, runtime splits by boundary: `client/` formal browser runtime, `author/` browser authoring tools, `server/` localhost Node service, `cli/` standalone commands.
 
 ## Security
 
-- Authoring server binds to `127.0.0.1` only. Do not run authoring or screenshots against untrusted HTML or snapshot files.
-- Author writes require same-origin localhost JSON. Keep `skills/html-prototype-build/.env` local for IDE selection; never commit it.
+- Author Tools bind to `127.0.0.1` only. Do not run authoring or screenshots against untrusted HTML.
+- Author writes require same-origin localhost JSON. Keep the Skill-root `.env` local for IDE selection; never commit it.
 - Direct Edit and Mark load only in the authoring session. Direct Edit writes style/copy through localhost; Mark stores pins in page-scoped `localStorage` and may copy to the clipboard. Neither is injected into source HTML.
 - Do not put real credentials, production data, personal information, or unauthorized brand assets in prototypes.
 
