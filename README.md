@@ -127,6 +127,7 @@ This is an AI-assisted HTML annotation and prototyping toolkit—not a productio
 
 This root README covers install and product overview only. Day-to-day usage lives with the Skill:
 
+- Comparison and FAQ → [`docs/README.md`](docs/README.md) ([comparison](docs/comparison.md), [FAQ](docs/faq.md))
 - Skill overview and collaboration model → [`skills/html-prototype-build/README.md`](skills/html-prototype-build/README.md) (English; 中文见 [README.zh-CN.md](skills/html-prototype-build/README.zh-CN.md))
 - Agent routing and hard constraints → [`skills/html-prototype-build/SKILL.md`](skills/html-prototype-build/SKILL.md)
 - Task guides with commands (authoring, review, screenshots) → [`skills/html-prototype-build/references/`](skills/html-prototype-build/references/)
