@@ -43,6 +43,8 @@
 
 ## 你可以先看演示
 
+走读视频：[media/hero-main.mp4](media/hero-main.mp4)（GitHub 不一定会自动播放 — 打开文件即可）。
+
 ### 像产品一样直接在页面上读说明
 
 正式说明绑在真实 DOM 上。增删改查标注、切换页面场景、沿 SVG 连线定位模块 — 都在同一页，不用另开一份说明文档。
@@ -51,15 +53,33 @@
 
 ### 把问题钉在元素上，交给 Agent
 
-按住 `Ctrl`（macOS：`⌘`）点击元素，打上可移除的评审 pin；或切到 Direct Edit 改样式 / 文案并写回源码。然后用 `Copy all → For AI` 导出 selector 和元素 HTML 快照。
+按住 `Ctrl`（macOS：`⌘`）点击元素，打上可移除的评审 pin。然后用 `Copy all → For AI` 导出 selector 和元素 HTML 快照。
 
 ![在真实元素上打点，复制 selector 与 HTML 快照给 Agent](media/mark.gif)
+
+### 在真实页面上改样式或文案
+
+Author Tools → **edit**。按住 `Ctrl`（macOS：`⌘`），改文案或样式（例如背景色），保存后由本地作者服务写回源 HTML。编辑器界面只存在于作者会话，不会注入交付物。
+
+![在页面上改文案或样式并写回源码](media/direct-edit.gif)
 
 ### 锁定看起来不对的地方，跳回源码
 
 按住 `Alt + Shift` 悬停查看选择器，单击即可在本机 IDE 打开对应位置。
 
 ![锁定元素并从页面跳转到源码](media/inspector.gif)
+
+### 交付不含作者层的多状态截图
+
+`scenarios` 加上截图 CLI 会藏掉说明栏、连线和作者层。正式 HTML 仍可以带 Viewer；PNG 是纯页面。
+
+![同一张移动页：说明栏视图对照纯产品输出](media/scenarios-mobile.gif)
+
+### 用 UI pack 生成，让页面视觉保持稳定
+
+可安装的视觉系统 — Token、组件、Pattern — 不打进 Skill。官方 pack：`admin-desktop`（桌面后台）与 `mobile-vant`（手机宽度 H5）。
+
+![官方 pack 一览：桌面后台与移动 H5](media/ui-pack.gif)
 
 ## 两条能力线
 

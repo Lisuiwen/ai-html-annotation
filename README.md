@@ -43,6 +43,8 @@ Author tools (Mark, Direct Edit, Inspector, localhost authoring) load only in th
 
 ## See it first
 
+Walkthrough video: [media/hero-main.mp4](media/hero-main.mp4) (GitHub may not autoplay — open the file).
+
 ### Review the page the way a PM would
 
 Formal notes sit on the real DOM. Add, edit, or browse them, switch page scenarios, and follow SVG connectors to the matching modules — same page, not a separate spec.
@@ -51,15 +53,33 @@ Formal notes sit on the real DOM. Add, edit, or browse them, switch page scenari
 
 ### Pin a problem and hand it to the agent
 
-Hold `Ctrl` (macOS: `⌘`) and click an element to drop a removable review pin, or switch to Direct Edit to tweak style or copy and save back to source. Then `Copy all → For AI` exports selectors plus element HTML snapshots.
+Hold `Ctrl` (macOS: `⌘`) and click an element to drop a removable review pin. Then `Copy all → For AI` exports selectors plus element HTML snapshots.
 
 ![Pin feedback on a real element and copy selector + HTML snapshot for the agent](media/mark.gif)
+
+### Tweak style or copy on the live page
+
+Author Tools → **edit**. Hold `Ctrl` (macOS: `⌘`), change copy or styles (for example a background color), and save — the authoring server writes back to source HTML. The editor UI stays in the authoring session; it is not injected into the deliverable.
+
+![Change copy or styles on the page and write them back to source](media/direct-edit.gif)
 
 ### Lock the thing that looks wrong and jump to source
 
 Hold `Alt + Shift`, hover to see the selector, click to open that location in your local IDE.
 
 ![Lock an element and jump from the page to its source](media/inspector.gif)
+
+### Deliver clean multi-state screenshots
+
+`scenarios` plus the screenshot CLI hide the notes rail, connectors, and author chrome. Formal HTML can still show Viewer; the PNGs are the product page only.
+
+![Notes rail versus product-only output for the same mobile page](media/scenarios-mobile.gif)
+
+### Generate from a UI pack so pages stay visually consistent
+
+Installable visual systems — tokens, components, patterns — not bundled inside the Skill. Official packs: `admin-desktop` (desktop admin) and `mobile-vant` (phone-width H5).
+
+![Official packs at a glance: admin desktop and mobile H5](media/ui-pack.gif)
 
 ## Two capabilities
 
