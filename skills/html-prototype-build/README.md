@@ -4,7 +4,7 @@
 
 An HTML product-prototype Skill for AI agents: generate pages from UI packs, maintain formal notes on the real DOM, review and jump to source, and output scenario screenshots for delivery.
 
-Installation, product demo, and repository-level overview live in the [repository README](../../README.md). This file covers how to use the Skill; concrete commands and step-by-step operations live in `references/`.
+Installation, product demo, and repository-level overview live in the [repository README](../../README.md). Scenario-led product docs (pain points, capability map, workflows, quickstart, UI packs) live in [`docs/`](../../docs/README.md). This file covers how to use the Skill; concrete commands and step-by-step operations live in `references/`.
 
 ## Who it is for
 
@@ -67,6 +67,7 @@ The same business state drives page notes and scenario switching as well as mult
 | Task-specific instructions (with commands) | Matching entry under [references/](references/) |
 | How to pick and install UI packs | [ui/catalog.md](ui/catalog.md), [Pack install](references/pack-install.md) |
 | Authoring or publishing UI packs | [`ui-pack-maintain`](../ui-pack-maintain/SKILL.md) skill |
+| Pain points, workflows, quickstart, UI packs | [Product docs](../../docs/README.md) |
 | Repository install and feature overview | [Repository README](../../README.md) |
 
 This file only explains what the Skill is for and how to collaborate; concrete commands, step-by-step operations, and agent contracts are maintained per-task in the documents above.

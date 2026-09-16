@@ -4,127 +4,138 @@
 
 ![skills.sh](https://skills.sh/b/Lisuiwen/ai-html-annotation)
 
-> 面向 AI Agent 的 HTML UI 原型生成、DOM 标注、评审与迭代工具。
+> 面向 Claude Code、Codex、Cursor 等编程 Agent 的 Skill：原生 HTML 原型 + 真实 DOM 标注。
 
-很多原型的问题，不是“画得不够像”，而是**画完之后无法继续工作**：
-
-- 截图没有 DOM，AI 只能猜页面结构，修改结果容易漂移；
-- 评审意见写在文档或聊天里，“这里改一下”无法准确对应页面元素；
-- 设计说明、评审批注和源码彼此分离，改完之后也很难快速验证。
-
-AI HTML Annotation 用原生 HTML 把这条链路接起来：用 UI 包稳定搭建页面，在真实 DOM 上完成标注和评审，把意见复制给 AI，并从锁定的元素直接跳到源码。**页面本身就是可操作的交付物，不只是一张效果图。**
+**页面本身就是交付物，不只是一张效果图。** 用 UI pack 搭页，在真实 DOM 上评审，把 selector 而不是像素交给 Agent，并输出不含作者层的多状态截图。
 
 实验性 0.x · 零 npm 依赖 · MIT · [更新日志](CHANGELOG.md)
 
-## 安装
+## 旧链路在哪里断
 
-### Agent Skills / skills.sh
+三种角色、三种旧做法、三处失败。展开见[痛点与场景](docs/pain-points-and-scenarios.zh-CN.md)。
 
-适用于 Claude Code、Cursor、Codex 兼容工作流和其他支持 Agent Skills 的客户端：
+- **评审人 / 产品** × 把意见写在聊天或文档里（“往左移一点”）× 对不上元素，Agent 只能猜。
+- **作者 / Agent** × 对着截图改下一版 HTML × 没有 DOM，结构容易漂。
+- **任何要验收修改的人** × 说明、聊天记录和源码各写各的 × 对不上同一个元素，验证很慢。
 
-```bash
-npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
-npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill ui-pack-maintain   # 仅 pack 维护者
-```
-
-skills.sh 会根据真实 CLI 安装自动发现并统计公开 Skill，不需要额外维护平台专用 manifest。安装 `html-prototype-build` 后，用 `install-pack.mjs` 下载 UI pack（见 [Pack install](skills/html-prototype-build/references/pack-install.md)）。
-
-### Claude Code Plugin Marketplace
-
-先把本仓库加入 Claude Code Marketplace，再安装插件：
+## 协作闭环
 
 ```text
-/plugin marketplace add Lisuiwen/ai-html-annotation
-/plugin install ai-html-annotation@lisuiwen-agent-skills
+用 UI pack 生成 HTML
+        │
+        ▼
+   Viewer          正式说明贴在真实页面上
+        │
+        ▼
+   Mark → Copy for AI     评审 pin、selector、元素 HTML 快照
+        │
+        ▼
+   Direct Edit     在 localhost 改样式或文案，写回源码
+        │
+        ▼
+   Inspector       锁定元素 → 在 IDE 打开对应位置
+        │
+        ▼
+   scenarios       多状态纯页面 PNG（不含作者层）
 ```
 
-Claude 插件从本仓库加载 `html-prototype-build` 与 `ui-pack-maintain`，没有第二份 `SKILL.md` 副本。
+作者工具（Mark、Direct Edit、Inspector、本地作者服务）只在作者会话中加载。正式 HTML 只保留只读 Viewer 与语义 DOM。按场景输出的 PNG 不含作者层界面。
 
 ## 你可以先看演示
 
-### 1. 右侧工具栏：标注的增删改查与场景切换
+走读视频：[media/hero-main.mp4](media/hero-main.mp4)（GitHub 不一定会自动播放 — 打开文件即可）。
 
-Viewer 把正式说明组织在页面右侧。你可以新增、编辑、删除和查看标注，并按场景切换页面说明；标注通过 SVG 连线指向对应模块，阅读和定位都在同一页面完成。
+### 像产品一样直接在页面上读说明
 
-![Viewer：右侧工具栏中的标注增删改查与分组管理](media/viewer.gif)
+正式说明绑在真实 DOM 上。增删改查标注、切换页面场景、沿 SVG 连线定位模块 — 都在同一页，不用另开一份说明文档。
 
-### 2. 作者工具：直接改页面或打点交给 AI
+![在真实页面上阅读正式说明并切换场景](media/viewer.gif)
 
-Author Tools 在同一面板中提供 Direct Edit 与 Mark。按住 `Ctrl`（macOS：`⌘`）点击元素即可调整样式或文案并写回源 HTML；切换到 Mark 可在真实元素上添加可移除的评审标记，集中查看意见后使用 `Copy all → For AI`，复制包含 selector 与元素 HTML 快照的修改上下文，直接交给 AI。
+### 把问题钉在元素上，交给 Agent
 
-![Author Tools：Direct Edit 与 Mark 的页面修改与评审打点](media/mark.gif)
+按住 `Ctrl`（macOS：`⌘`）点击元素，打上可移除的评审 pin。然后用 `Copy all → For AI` 导出 selector 和元素 HTML 快照。
 
-### 3. Inspector：锁定元素并跳转源码
+![在真实元素上打点，复制 selector 与 HTML 快照给 Agent](media/mark.gif)
 
-按住 `Alt + Shift` 悬停页面元素，Inspector 会显示对应选择器；单击即可在本机 IDE 打开该元素的源码位置，减少在文件中反复搜索和猜测的时间。
+### 在真实页面上改样式或文案
 
-![Inspector：按住 Alt + Shift 锁定元素并跳转到对应源码](media/inspector.gif)
+Author Tools → **edit**。按住 `Ctrl`（macOS：`⌘`），改文案或样式（例如背景色），保存后由本地作者服务写回源 HTML。编辑器界面只存在于作者会话，不会注入交付物。
 
-## 核心价值
+![在页面上改文案或样式并写回源码](media/direct-edit.gif)
 
-### HTML 标注，意见和元素绑定
+### 锁定看起来不对的地方，跳回源码
 
-正式说明不是贴在截图上的便利贴，而是由 `notes.snapshot.js` 驱动的结构化数据。Viewer 将说明、锚点、SVG 连线和交互状态渲染到页面上，让每条说明都能回到具体 DOM。
+按住 `Alt + Shift` 悬停查看选择器，单击即可在本机 IDE 打开对应位置。
 
-### UI 包复用，页面稳定输出
+![锁定元素并从页面跳转到源码](media/inspector.gif)
 
-从可安装的 UI 包按统一 Token、组件和 Pattern 组合页面。官方 pack（`admin-desktop`、`mobile-vant`）位于仓库 `.html-prototype/packs/`，不打进 `html-prototype-build`。终端用户用 `install-pack.mjs` 下载（见 [Pack install](skills/html-prototype-build/references/pack-install.md)）。减少 AI 从零拼装时的猜测和视觉漂移，相同 UI 资产可以持续产出风格一致、结构稳定的原生 HTML 原型。
+### 交付不含作者层的多状态截图
 
-### 便捷修改，评审上下文可执行
+`scenarios` 加上截图 CLI 会藏掉说明栏、连线和作者层。正式 HTML 仍可以带 Viewer；PNG 是纯页面。
 
-Direct Edit 与 Mark 都只在本地作者服务会话中加载，不污染正式页面。Direct Edit 在浏览器里预览样式或文案修改，并通过服务端安全写回 `prototype.html`；Mark 的评审标记可以批量复制和随时清空。导出的指令带有稳定 selector、元素 HTML 快照和评审意见，AI 拿到的是可执行的修改上下文。
+![同一张移动页：说明栏视图对照纯产品输出](media/scenarios-mobile.gif)
 
-### 从页面直接回源码
+### 用 UI pack 生成，让页面视觉保持稳定
 
-本地作者服务运行在 `127.0.0.1`，负责 Direct Edit、Mark、编辑正式说明、重绑锚点和定位源码。作者层与正式交付物分离，原型文件仍保持轻量、可移植。
+可安装的视觉系统 — Token、组件、Pattern — 不打进 Skill。官方 pack：`admin-desktop`（桌面后台）与 `mobile-vant`（手机宽度 H5）。
 
-### 一份状态，多种输出
+![官方 pack 一览：桌面后台与移动 H5](media/ui-pack.gif)
 
-通过 `PrototypeViewers` 统一管理业务状态；同一份原型既可以用于页面评审，也可以按 `scenarios` 批量输出不带批注层的纯页面 PNG。新建、编辑、空态、关联等多种页面状态都能被显式声明、稳定复现并批量截图。
+## 两条能力线
 
-### 标注和原型分离，交付物保持干净
+1. **原型协作**（`html-prototype-build`）— 生成可打开的 HTML，在 DOM 上评审，复制给 Agent 的上下文，原地微调，再按场景出图。见[工作流](docs/workflows.zh-CN.md)。
+2. **UI pack** — 安装、自定义或维护一套可复用视觉，让 Agent 搭出来的页面保持稳定。官方 pack 为 `admin-desktop` 与 `mobile-vant`。见 [UI packs](docs/ui-packs.zh-CN.md)。
 
-正式原型只保留语义 DOM、稳定锚点、只读 Viewer 和渲染逻辑。Mark、Direct Edit、Notes Editor、Inspector、本地作者服务都属于独立作者工具，不写入正式 HTML 的加载结构。
+## 适合 / 不适合
 
-## 最终产出
+**适合**：
 
-一次原型任务最终可以得到三类相互配合的产物：
+- 尽快把 UI 材料落成可打开的 HTML；
+- 在真实页面上评审，并把意见准确交给 AI；
+- 改结构、文案和状态，同时保留可复现截图；
+- 后台、配置页、交互原型需要跨任务保持视觉稳定。
 
-- **完整交接包**：带 `AGENTS.md` 的命名目录，包含原生 HTML 与配套文件；`AGENTS.md` 引导 Coding Agent 读取标注和截图，而非复用原型实现；
-- **可复用的状态定义**：由 snapshot 声明页面说明和 `scenarios`，保证后续修改仍有稳定基准；
-- **多状态页面截图**：按场景批量生成新建、编辑、空态、关联等纯页面 PNG，截图不包含右侧说明、SVG 连线和作者工具。
+**不适合**当作生产组件库、Figma 替代品、第三方设计系统实现，或通用前端脚手架 / 生产代码生成器。
 
-Direct Edit 与评审标注都留在作者层，最终截图和原型文件保持干净。
+## 5 分钟 Quickstart
 
-## 工作方式
+默认用 skills.sh。CLI 会打印 `<skill-root>`：
 
-```text
-原生 HTML
-   │
-   ├── Viewer：正式说明、场景切换、SVG 连线
-   ├── Direct Edit / Mark：直接改页面样式或打评审 pin，selector、元素快照、Copy for AI
-   ├── Inspector：锁定元素、查看选择器、跳转源码
-   └── Screenshot：按场景输出纯页面截图
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
 ```
 
-这套方式适合需要频繁调整的后台页面、配置页和交互原型：作者可在页面上直接改样式，产品打点把问题交给 AI，开发或作者也可以快速回到源码验证修改。
+打开本仓库 [`examples/minimal-notes-system/prototype.html`](examples/minimal-notes-system)（桌面样例）。要用 Mark / Direct Edit / Inspector，需启动本地作者服务 — 命令见[5 分钟 quickstart](docs/quickstart.zh-CN.md)。
 
-## 适用范围
+Claude Code Marketplace 为备选：`/plugin marketplace add Lisuiwen/ai-html-annotation`，再 `/plugin install ai-html-annotation@lisuiwen-agent-skills`。Pack 作者再安装 `ui-pack-maintain`。
 
-这是一个面向 AI 协作的 HTML 标注和原型工具，不是生产组件库、Figma 替代品，也不是第三方设计系统实现。它更适合：
+## 能力速查
 
-- 需要快速把 UI 材料落成可打开 HTML 的原型；
-- 需要在页面上评审，并把意见准确交给 AI；
-- 需要频繁修改页面结构、文案和状态，并保留可复现截图的场景。
+| 你要做什么 | 用什么 | 所在层 |
+| --- | --- | --- |
+| 正式说明、场景切换、SVG 连线 | Viewer | 正式页面 |
+| 评审 pin → selector + HTML 快照 | Mark，`Copy all → For AI` | 作者会话 |
+| 在页面上改样式或文案 | Direct Edit | 作者会话 |
+| 锁定元素 → IDE | Inspector | 作者会话 |
+| 视觉稳定 | UI pack（`install-pack`） | Pack，不在 Skill 内 |
+| 新建 / 编辑 / 空态等纯净 PNG | `scenarios` + 截图 CLI | 交付 |
+
+完整对照见[能力地图](docs/features.zh-CN.md)。作者层与正式交付的边界也在该页。
+
+## 样例
+
+- 默认走读：[`examples/minimal-notes-system`](examples/minimal-notes-system)（桌面后台）。
+- 备选：[`examples/mobile-work-order`](examples/mobile-work-order)（移动 H5，`mobile-vant`）。
 
 ## 接下来看哪里
 
-根 README 只负责安装与功能介绍。日常怎么用，请看 Skill 文档：
+- [文档索引](docs/README.zh-CN.md) — 痛点、能力、工作流、quickstart、UI packs、[对比](docs/comparison.zh-CN.md)、[FAQ](docs/faq.zh-CN.md)
+- Skill 怎么用 → [`skills/html-prototype-build/README.zh-CN.md`](skills/html-prototype-build/README.zh-CN.md)（[English](skills/html-prototype-build/README.md)）
+- Agent 分流 → [`skills/html-prototype-build/SKILL.md`](skills/html-prototype-build/SKILL.md)
+- 任务命令 → [`skills/html-prototype-build/references/`](skills/html-prototype-build/references/)（[pack 安装](skills/html-prototype-build/references/pack-install.md)、[本地作者服务](skills/html-prototype-build/references/local-authoring.md)、[评审打点](skills/html-prototype-build/references/review-mark.md)、[截图](skills/html-prototype-build/references/screenshots.md)）
 
-- Skill 用途与协作方式 → [`skills/html-prototype-build/README.zh-CN.md`](skills/html-prototype-build/README.zh-CN.md)（英文版见 [README.md](skills/html-prototype-build/README.md)）
-- Agent 任务分流与硬约束 → [`skills/html-prototype-build/SKILL.md`](skills/html-prototype-build/SKILL.md)
-- 含命令的任务说明（作者服务、评审、截图） → [`skills/html-prototype-build/references/`](skills/html-prototype-build/references/)
-- 可对照样例 → [`examples/minimal-notes-system`](examples/minimal-notes-system)（桌面后台）、[`examples/mobile-work-order`](examples/mobile-work-order)（移动 H5）
+Skill 参考、UI pack 契约和 addon 文档为英文。
 
 ## 分发结构
 
@@ -133,26 +144,26 @@ Direct Edit 与评审标注都留在作者层，最终截图和原型文件保�
 .html-prototype/packs/           官方 UI pack 与 registry.json
 skills/html-prototype-build/     原型构建 Agent Skill
 skills/ui-pack-maintain/         UI pack 维护 Agent Skill
-examples/                        可直接运行的最小原型
+examples/                        可运行样例
 media/                           README 演示素材
 scripts/                         校验脚本
 tests/                           Runtime、pack 与契约测试
 ```
 
-Skill 内部 Runtime 按执行边界拆分：`client/` 是正式浏览器运行时，`author/` 是浏览器作者工具，`server/` 是本地 Node 作者服务，`cli/` 是独立命令行工具。
+Skill 内部 Runtime 按边界拆分：`client/` 正式浏览器运行时，`author/` 浏览器作者工具，`server/` 本地 Node 作者服务，`cli/` 独立命令行。
 
-## 安全边界
+## 安全
 
-- `runtime/server/index.mjs` 只监听 `127.0.0.1`。不要对不可信 HTML 或 snapshot 运行作者服务和截图。
-- 作者写接口要求 localhost 同源 JSON；`.env` 位于 `skills/html-prototype-build/`，只用于本机 IDE 选择，不要提交。
-- Direct Edit 与 Mark 都是临时作者工具，只在作者服务会话中加载。Direct Edit 通过本地服务把样式或文案修改写回源 HTML；Mark 按页面把评审上下文存入 localStorage，也可能复制到剪贴板。它们都不会注入源 HTML，也不属于正式交付物。
+- 作者服务只绑定 `127.0.0.1`。不要对不可信 HTML 或 snapshot 跑作者服务和截图。
+- 作者写接口要求 localhost 同源 JSON。`skills/html-prototype-build/.env` 只用于本机 IDE 选择，不要提交。
+- Direct Edit 与 Mark 只在作者会话中加载。Direct Edit 经 localhost 写回样式 / 文案；Mark 把 pin 存在页面作用域的 `localStorage`，也可能复制到剪贴板。它们都不会注入源 HTML。
 - 原型中不要放真实凭据、生产数据、个人信息或未授权品牌。
 
 ## 开源协作
 
-项目当前处于实验性 0.x 阶段，接口和目录仍可能变化。贡献方式见 [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md)，行为规范见 [`.github/CODE_OF_CONDUCT.md`](.github/CODE_OF_CONDUCT.md)，漏洞请按 [`.github/SECURITY.md`](.github/SECURITY.md) 私下报告。
+实验性 0.x，接口和目录仍可能变化。贡献见 [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md)，行为规范见 [`.github/CODE_OF_CONDUCT.md`](.github/CODE_OF_CONDUCT.md)，漏洞请按 [`.github/SECURITY.md`](.github/SECURITY.md) 私下报告。
 
-本项目 UI 包为自研原生 HTML 视觉模拟，不捆绑第三方设计系统代码；pack 内引用的第三方库（例如 `admin-desktop` 中的 Apache ECharts）随 pack 分发，见 [NOTICE](NOTICE)。
+本项目 UI pack 为自研原生 HTML 视觉模拟，不捆绑第三方设计系统代码；pack 内引用的库（例如 `admin-desktop` 中的 Apache ECharts）随 pack 分发，见 [NOTICE](NOTICE)。
 
 ## 许可证
 
