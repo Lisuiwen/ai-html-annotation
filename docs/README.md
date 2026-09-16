@@ -6,6 +6,11 @@ Product docs for AI HTML Annotation. The root [README](../README.md) covers inst
 
 ## Available
 
+- [Pain points and scenarios](pain-points-and-scenarios.md) — who × old way × failure, then four jobs on the collaboration loop
+- [Capability map](features.md) — Viewer, Mark, Direct Edit, Inspector, UI packs, scenarios; author layer vs formal deliverable
+- [Workflows](workflows.md) — materials → review → tweak → screenshots → optional pack customize
+- [5-minute quickstart](quickstart.md) — shortest install, pack, example, authoring
+- [UI packs](ui-packs.md) — official `admin-desktop` / `mobile-vant`, install, switch vs customize
 - [Comparison](comparison.md) — vs screenshots, Figma, bare HTML, and production component libraries
 - [FAQ](faq.md)
 
@@ -13,9 +18,5 @@ Product docs for AI HTML Annotation. The root [README](../README.md) covers inst
 
 These paths are linked from the pages above; the files are not written yet.
 
-- [quickstart](quickstart.md)
-- [pain points and scenarios](pain-points-and-scenarios.md)
-- [features](features.md)
-- [workflows](workflows.md)
-- [UI packs](ui-packs.md)
 - [customize a pack](ui-pack-customize.md)
+- [maintain a pack](ui-pack-maintain.md)

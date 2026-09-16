@@ -24,11 +24,11 @@ Authoring aids — Mark, Direct Edit, Inspector, and the localhost authoring ser
 
 **Not a fit** as a production component library, a Figma replacement, a third-party design-system implementation, or a general frontend scaffold / production code generator. If you already have an agreed production UI kit and need app code, use that kit — not this Skill.
 
-Official packs (`admin-desktop`, `mobile-vant`) are prototype visual simulations you download with `install-pack`; they are not bundled inside the Skill. Pack details: [UI packs](ui-packs.md) (planned).
+Official packs (`admin-desktop`, `mobile-vant`) are prototype visual simulations you download with `install-pack`; they are not bundled inside the Skill. Pack details: [UI packs](ui-packs.md).
 
 ## Next
 
-- Install and first run → [quickstart](quickstart.md) (planned)
-- When the screenshot-and-chat loop breaks → [pain points and scenarios](pain-points-and-scenarios.md) (planned)
+- Install and first run → [quickstart](quickstart.md)
+- When the screenshot-and-chat loop breaks → [pain points and scenarios](pain-points-and-scenarios.md)
 - Short answers → [FAQ](faq.md)
-- Authoring vs delivery → [workflows](workflows.md) (planned)
+- Authoring vs delivery → [workflows](workflows.md)

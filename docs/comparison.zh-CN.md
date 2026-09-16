@@ -24,11 +24,11 @@
 
 **不适合**当作生产组件库、Figma 替代品、第三方设计系统实现，或通用前端脚手架 / 生产代码生成器。如果生产 UI 套件已经定稿、你要的是应用代码，用那套套件，不要用本 Skill。
 
-官方 pack（`admin-desktop`、`mobile-vant`）是原型用的视觉模拟，用 `install-pack` 下载，不打进 Skill。详见 [UI packs](ui-packs.zh-CN.md)（计划中）。
+官方 pack（`admin-desktop`、`mobile-vant`）是原型用的视觉模拟，用 `install-pack` 下载，不打进 Skill。详见 [UI packs](ui-packs.zh-CN.md)。
 
 ## 接下来
 
-- 安装与第一次运行 → [quickstart](quickstart.zh-CN.md)（计划中）
-- 截图 + 聊天这条链路在哪里断 → [痛点与场景](pain-points-and-scenarios.zh-CN.md)（计划中）
+- 安装与第一次运行 → [quickstart](quickstart.zh-CN.md)
+- 截图 + 聊天这条链路在哪里断 → [痛点与场景](pain-points-and-scenarios.zh-CN.md)
 - 短问答 → [FAQ](faq.zh-CN.md)
-- 作者层 vs 交付 → [workflows](workflows.zh-CN.md)（计划中）
+- 作者层 vs 交付 → [workflows](workflows.zh-CN.md)

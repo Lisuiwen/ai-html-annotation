@@ -6,6 +6,11 @@ AI HTML Annotation 的产品文档。根目录 [README](../README.zh-CN.md) 负�
 
 ## 已发布
 
+- [痛点与场景](pain-points-and-scenarios.zh-CN.md) — 谁 × 旧做法 × 失败，以及协作环上的四个岗位
+- [能力地图](features.zh-CN.md) — Viewer、Mark、Direct Edit、Inspector、UI packs、scenarios；作者层 vs 正式交付
+- [工作流](workflows.zh-CN.md) — 材料 → 评审 → 微调 → 截图 → 可选自定义 pack
+- [5 分钟 quickstart](quickstart.zh-CN.md) — 最短安装、pack、样例、作者服务
+- [UI packs](ui-packs.zh-CN.md) — 官方 `admin-desktop` / `mobile-vant`、安装、换包 vs 自定义
 - [对比](comparison.zh-CN.md) — 对比截图、Figma、裸 HTML 和生产组件库
 - [常见问题](faq.zh-CN.md)
 
@@ -13,9 +18,5 @@ AI HTML Annotation 的产品文档。根目录 [README](../README.zh-CN.md) 负�
 
 上面的页面已链到这些路径，文件尚未写。
 
-- [quickstart](quickstart.zh-CN.md)
-- [痛点与场景](pain-points-and-scenarios.zh-CN.md)
-- [features](features.zh-CN.md)
-- [workflows](workflows.zh-CN.md)
-- [UI packs](ui-packs.zh-CN.md)
 - [自定义 pack](ui-pack-customize.zh-CN.md)
+- [维护 pack](ui-pack-maintain.zh-CN.md)
