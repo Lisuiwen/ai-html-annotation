@@ -32,7 +32,7 @@ Direct Edit、Mark、标注编辑、Inspector 只在该会话中加载。不要�
 
 **官方 UI 包是原型用的视觉模拟，不是你的生产设计系统。**
 
-`admin-desktop` 和 `mobile-vant` 在仓库里，单独下载，不打进原型 Skill。它们不是第三方设计系统的实现。要自己的视觉，去写 UI 包，不要把官方包当应用组件。见 [UI 包](ui-packs.zh-CN.md)和 [自定义 pack](ui-pack-customize.zh-CN.md)（计划中）。
+`admin-desktop` 和 `mobile-vant` 在仓库里，单独下载，不打进原型 Skill。它们不是第三方设计系统的实现。要自己的视觉，去写 UI 包，不要把官方包当应用组件。见 [UI 包](ui-packs.zh-CN.md) 和 [`ui-pack-maintain`](../skills/ui-pack-maintain/SKILL.md) Skill。
 
 ## 6. skills.sh 和 Claude Code 插件该用哪个？
 
@@ -56,7 +56,7 @@ Direct Edit、Mark、标注编辑、Inspector 只在该会话中加载。不要�
 
 **可以。** 安装已下载的包，或自己写一个。
 
-自制包放在 `~/.html-prototype/packs/<id>/`；id 加命名空间，避免盖住 `admin-desktop` 或 `mobile-vant`。写包用另一套 Skill，不是生成业务原型。见 [UI 包](ui-packs.zh-CN.md)和 [自定义 pack](ui-pack-customize.zh-CN.md)（计划中）。
+自制包放在 `~/.html-prototype/packs/<id>/`；id 加命名空间，避免盖住 `admin-desktop` 或 `mobile-vant`。写包用另一套 Skill，不是生成业务原型。见 [UI 包](ui-packs.zh-CN.md) 和 [`ui-pack-maintain`](../skills/ui-pack-maintain/SKILL.md) Skill。
 
 ## 还是卡住了？
 

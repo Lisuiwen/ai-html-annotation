@@ -12,11 +12,4 @@ Product docs for AI HTML Annotation. The root [README](../README.md) covers inst
 - [Comparison](comparison.md) — vs screenshots, Figma, bare HTML, and production component libraries
 - [FAQ](faq.md)
 
-Older filenames [pain points](pain-points-and-scenarios.md), [features](features.md), and [workflows](workflows.md) redirect to the guide.
-
-## Planned
-
-These paths are linked from the pages above; the files are not written yet.
-
-- [customize a pack](ui-pack-customize.md)
-- [maintain a pack](ui-pack-maintain.md)
+To customize or author a pack, see [UI packs](ui-packs.md) and the [`ui-pack-maintain`](../skills/ui-pack-maintain/SKILL.md) Skill.

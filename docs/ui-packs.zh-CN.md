@@ -44,7 +44,7 @@ UI 包是原型生成**消费**的可复用视觉系统（Token、组件、Patte
 | 官方模拟不是你的视觉语言，但仍要 Agent 出 HTML | 用 `ui-pack-maintain` **自定义**或编写 UI 包，再重新生成原型 |
 | 生产 UI 套件已经定稿，你要的是应用代码 | 用那套套件 — 不要用本 Skill |
 
-用 `ui-pack-maintain` Skill 自定义或编写 UI 包，再重新生成原型。该流程的产品文档仍在计划中：[自定义 pack](ui-pack-customize.zh-CN.md)、[维护 pack](ui-pack-maintain.zh-CN.md)。
+用 [`ui-pack-maintain`](../skills/ui-pack-maintain/SKILL.md) Skill 自定义或编写 UI 包，再重新生成原型。
 
 原型生成消费 UI 包。不要用 `ui-pack-maintain` 去生成业务页面，也不要用原型生成去发明包契约。
 

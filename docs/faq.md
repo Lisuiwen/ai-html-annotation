@@ -32,7 +32,7 @@ Direct Edit, Mark, annotation editing, and Inspector load only in that session. 
 
 **Official packs are prototype visual simulations, not your production design system.**
 
-`admin-desktop` and `mobile-vant` live in the repo and you download them separately; they are not bundled inside the prototype skill. They do not implement a third-party design system. For your own look, author a pack rather than treating official packs as app components. See [UI packs](ui-packs.md) and [customize a pack](ui-pack-customize.md) (planned).
+`admin-desktop` and `mobile-vant` live in the repo and you download them separately; they are not bundled inside the prototype skill. They do not implement a third-party design system. For your own look, author a pack rather than treating official packs as app components. See [UI packs](ui-packs.md) and the [`ui-pack-maintain`](../skills/ui-pack-maintain/SKILL.md) Skill.
 
 ## 6. skills.sh vs Claude Code plugin — which should I use?
 
@@ -56,7 +56,7 @@ Declared page states (create, edit, empty, linked, and others you define) drive 
 
 **Yes.** Install a downloaded pack or author one.
 
-Put a self-created pack at `~/.html-prototype/packs/<id>/` and use a namespaced id so you do not shadow `admin-desktop` or `mobile-vant`. Pack authoring is a different skill, not prototype generation. See [UI packs](ui-packs.md) and [customize a pack](ui-pack-customize.md) (planned).
+Put a self-created pack at `~/.html-prototype/packs/<id>/` and use a namespaced id so you do not shadow `admin-desktop` or `mobile-vant`. Pack authoring is a different skill, not prototype generation. See [UI packs](ui-packs.md) and the [`ui-pack-maintain`](../skills/ui-pack-maintain/SKILL.md) Skill.
 
 ## Still stuck?
 
