@@ -13,7 +13,7 @@ import {
   readOption,
   readPackOrigin
 } from './_script-utils.mjs';
-import { SUPPORTED_SCHEMA_VERSION_SET as SUPPORTED_SCHEMA_VERSIONS } from '../../ui-pack-maintain/scripts/_pack-schema.mjs';
+import { SUPPORTED_SCHEMA_VERSION_SET as SUPPORTED_SCHEMA_VERSIONS } from './_pack-schema.mjs';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const defaultSkillDirectory = path.resolve(scriptDirectory, '..');
