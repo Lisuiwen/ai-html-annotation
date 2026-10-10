@@ -6,7 +6,7 @@ All notable changes to AI HTML Annotation are documented here.
 
 ### Added
 
-- Module sketch board: a free canvas for a rough reference screenshot. It ships inside `html-prototype-build` and opens from Author Tools, or on its own with `node <skill-root>/sketch/serve.mjs`. Place atoms from an installed UI pack, draw boxes for a phone frame, and export the canvas only.
+- Module sketch board: a free canvas for a rough reference screenshot. It ships inside `html-prototype-build` and opens from Author Tools, or on its own with `node <skill-root>/sketch/serve.mjs`. Place atoms from an installed UI pack, draw boxes for a phone frame, and copy the canvas to the clipboard. The button does not save a file.
 - UI packs declare placeable atoms in `components[<id>].atoms` and mark them with `data-pack-atom` in `component.html`. `ui-pack-maintain` owns the field rules; `validate-pack.mjs` checks them. `admin-desktop` is v6 (40 atoms) and `mobile-vant` is v2 (12 atoms).
 
 ### Changed

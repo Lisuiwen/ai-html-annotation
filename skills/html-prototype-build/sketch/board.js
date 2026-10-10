@@ -1,5 +1,5 @@
 import { isChart, paintChart } from './charts.js';
-import { downloadBoardPng } from './export.js';
+import { copyBoardPng } from './export.js';
 import { fillStamp, loadFoundation, loadManifest, loadPackList, measureStamp, packId, paletteEntries } from './mount.js';
 import { FRAME, resolveSizing } from './sizing.js';
 
@@ -651,8 +651,8 @@ document.getElementById('export').addEventListener('click', async () => {
   button.disabled = true;
   setStatus('Capturing…');
   try {
-    await downloadBoardPng(board);
-    setStatus('Screenshot downloaded');
+    await copyBoardPng(board);
+    setStatus('Copied to clipboard');
   } catch (error) {
     setStatus(error.message || 'Screenshot failed');
   } finally {

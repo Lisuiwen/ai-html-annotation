@@ -48,7 +48,7 @@ Native HTML prototype
    ├── Direct edit / Mark: tweak page styles or drop review pins, export selectors and element snapshots for AI
    ├── Notes editor: edit formal note cards
    ├── Inspector: jump from a page element to local IDE source
-   ├── Sketch board: place pack atoms on a free canvas and export a reference PNG
+   ├── Sketch board: place pack atoms on a free canvas and copy a reference image to the clipboard
    └── Screenshot: output clean page PNGs per snapshot scenario
 ```
 

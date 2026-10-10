@@ -2,7 +2,7 @@
 
 ## Scope
 
-Use this entry when adding or changing a placeable item on the module sketch board (`sketch/` inside this skill). The board is a free canvas for a rough reference screenshot that the AI uses to implement an increment. It is not a prototype page, and it does not write a layout file. It loads atoms from the installed UI pack (project `.html-prototype/packs/`, then `~/.html-prototype/packs/`).
+Use this entry when adding or changing a placeable item on the module sketch board (`sketch/` inside this skill). The board is a free canvas for a rough reference screenshot that the AI uses to implement an increment. **Copy image** puts that canvas on the clipboard and does not download a file. The board is not a prototype page, and it does not write a layout file. It loads atoms from the installed UI pack (project `.html-prototype/packs/`, then `~/.html-prototype/packs/`).
 
 ## Where items come from
 
