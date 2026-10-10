@@ -72,6 +72,49 @@ async function validateContract(id, relativePath, expectedCategory) {
   }
 }
 
+const ATOM_RESIZE = new Set(['none', 'x', 'y', 'both']);
+const ATOM_FIELDS = new Set(['label', 'resize', 'width', 'height', 'minWidth', 'minHeight']);
+
+function validateAtoms(id, entry, source, isComponent) {
+  let declared = {};
+  if (entry.atoms !== undefined) {
+    if (!isComponent) errors.push(`Only components may declare atoms: ${id}`);
+    else if (!isObject(entry.atoms)) errors.push(`${id}.atoms must be an object when present.`);
+    else {
+      declared = entry.atoms;
+      if (entry.visibility === 'internal' && Object.keys(declared).length) errors.push(`Internal component must not declare atoms: ${id}`);
+    }
+  }
+  for (const [key, atom] of Object.entries(declared)) {
+    const name = `${id}.atoms.${key}`;
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(key)) errors.push(`Atom key must use lowercase hyphen-case: ${name}`);
+    if (!isObject(atom)) {
+      errors.push(`${name} must be an object.`);
+      continue;
+    }
+    if (typeof atom.label !== 'string' || !atom.label.trim()) errors.push(`${name}.label is required.`);
+    if (!ATOM_RESIZE.has(atom.resize)) errors.push(`${name}.resize must be one of none, x, y, both.`);
+    for (const field of ['width', 'height', 'minWidth', 'minHeight']) {
+      if (atom[field] !== undefined && !(typeof atom[field] === 'number' && atom[field] > 0)) errors.push(`${name}.${field} must be a positive number.`);
+    }
+    const unknown = Object.keys(atom).filter((field) => !ATOM_FIELDS.has(field));
+    if (unknown.length) errors.push(`${name} has unknown fields: ${unknown.join(', ')}`);
+    if (atom.resize === 'none' && ['width', 'height', 'minWidth', 'minHeight'].some((field) => atom[field] !== undefined)) {
+      warnings.push(`${name} size fields are ignored when resize is none.`);
+    }
+  }
+  if (source == null) return;
+  const counts = new Map();
+  for (const match of source.matchAll(/\sdata-pack-atom\s*=\s*["']([^"']*)["']/g)) counts.set(match[1], (counts.get(match[1]) || 0) + 1);
+  for (const key of Object.keys(declared)) {
+    const found = counts.get(key) || 0;
+    if (found !== 1) errors.push(`${id} atom must be marked exactly once in ${entry.source}: ${key} (found ${found})`);
+  }
+  for (const key of counts.keys()) {
+    if (!Object.hasOwn(declared, key)) errors.push(`${id} marks an undeclared atom in ${entry.source}: ${key}`);
+  }
+}
+
 async function walk(relativeDirectory) {
   if (!await directoryExists(relativeDirectory)) return [];
   const files = [];
@@ -191,7 +234,9 @@ for (const [id, entry] of Object.entries(registries)) {
   if (entry.contract !== expectedContract) errors.push(`${id} contract must use conventional path: ${expectedContract}`);
   if (entry.source !== expectedSource) errors.push(`${id} source must use conventional path: ${expectedSource}`);
   if (typeof entry.contract === 'string') await validateContract(id, entry.contract, category);
-  if (typeof entry.source === 'string' && await requireFile(entry.source, `${id} implementation`)) await readText(entry.source);
+  let sourceText = null;
+  if (typeof entry.source === 'string' && await requireFile(entry.source, `${id} implementation`)) sourceText = await readText(entry.source);
+  validateAtoms(id, entry, sourceText, Boolean(components[id]));
   if (entry.adapter !== undefined) {
     if (!components[id]) errors.push(`Only components may declare adapters: ${id}`);
     if (typeof entry.adapter !== 'string' || !await requireFile(entry.adapter, `${id} adapter`)) continue;

@@ -13,6 +13,9 @@
   var dirtyBar;
 
   var launch;
+  var sketch;
+  var sketchLayer;
+  var sketchOpen = false;
 
   function toastMsg(msg) {
     toast.textContent = msg;
@@ -93,6 +96,9 @@
     if (window.PrototypeNotesViewer && typeof window.PrototypeNotesViewer.syncPanelActions === 'function') {
       window.PrototypeNotesViewer.syncPanelActions();
     }
+    if (launch && launch.parentElement && sketch && sketch.previousElementSibling !== launch) {
+      launch.insertAdjacentElement('afterend', sketch);
+    }
     if (panel.parentElement !== notes) {
       if (actions.parentElement === notes) notes.insertBefore(panel, actions);
       else notes.appendChild(panel);
@@ -154,8 +160,36 @@
     }
   }
 
+  function openSketch() {
+    sketchOpen = true;
+    sketchLayer.hidden = false;
+    sketch.classList.add('is-open');
+    sketch.setAttribute('aria-expanded', 'true');
+    var frame = sketchLayer.querySelector('iframe');
+    if (!frame.getAttribute('src')) {
+      frame.addEventListener('load', function focusFrame() {
+        frame.removeEventListener('load', focusFrame);
+        try { frame.contentWindow.focus(); } catch (error) { /* frame not ready */ }
+      });
+      frame.src = '/sketch/?embed=1';
+    } else {
+      try { frame.contentWindow.focus(); } catch (error) { /* frame not ready */ }
+    }
+  }
+
+  function closeSketch() {
+    sketchOpen = false;
+    sketchLayer.hidden = true;
+    sketch.classList.remove('is-open');
+    sketch.setAttribute('aria-expanded', 'false');
+  }
+
   function handleKey(event) {
     var inField = event.target.matches && event.target.matches('input, textarea, select, [contenteditable="true"]');
+    if (event.key === 'Escape' && sketchOpen && !inField) {
+      closeSketch();
+      return;
+    }
     if (!inField && (event.key === 'm' || event.key === 'M') && !event.metaKey && !event.ctrlKey && !event.altKey) {
       event.preventDefault();
       requestTab('mark');
@@ -205,10 +239,47 @@
     toast = document.createElement('div');
     toast.className = 'at-toast at-ui';
 
+    sketch = document.createElement('button');
+    sketch.type = 'button';
+    sketch.id = 'at-sketch';
+    sketch.className = 'at-sketch at-ui';
+    sketch.title = 'Open the module sketch board';
+    sketch.setAttribute('aria-label', 'Sketch board');
+    sketch.setAttribute('aria-expanded', 'false');
+    sketch.innerHTML =
+      '<svg class="at-launch-icon" viewBox="0 0 16 16" aria-hidden="true">' +
+      '<rect x="2.2" y="2.2" width="11.6" height="11.6" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.4"/>' +
+      '<path d="M2.2 6.2h11.6" fill="none" stroke="currentColor" stroke-width="1.4"/>' +
+      '</svg>';
+
+    sketchLayer = document.createElement('div');
+    sketchLayer.className = 'at-sketch-layer at-ui';
+    sketchLayer.hidden = true;
+    sketchLayer.innerHTML =
+      '<div class="at-sketch-backdrop"></div>' +
+      '<div class="at-sketch-drawer" role="dialog" aria-label="Module sketch">' +
+      '  <div class="at-sketch-head"><span>Module sketch</span>' +
+      '    <button type="button" class="at-iconbtn" id="at-sketch-close" title="Close">×</button>' +
+      '  </div>' +
+      '  <iframe class="at-sketch-frame" title="Module sketch"></iframe>' +
+      '</div>';
+
     document.body.appendChild(toast);
+    document.body.appendChild(sketchLayer);
     dirtyBar = panel.querySelector('#at-dirty');
     attachShell();
 
+    sketch.addEventListener('click', function () {
+      if (sketchOpen) closeSketch();
+      else openSketch();
+    });
+    sketchLayer.querySelector('.at-sketch-backdrop').addEventListener('click', closeSketch);
+    sketchLayer.querySelector('#at-sketch-close').addEventListener('click', closeSketch);
+    window.addEventListener('message', function (event) {
+      if (event.origin !== window.location.origin) return;
+      if (!event.data || event.data.source !== 'sketch-board' || event.data.type !== 'close') return;
+      closeSketch();
+    });
     launch.addEventListener('click', function () {
       if (open) closeDrawer();
       else requestTab(activeName || 'edit');

@@ -51,7 +51,10 @@ End-user packs should stay in the home cache. Only project developers commit pac
 3. Add `state-adapter.js` only when local state projection is required.
 4. Declare confirmed and provisional states in the contract.
 5. Register paths, dependencies, visibility, and assets in `manifest.json`.
-6. Verify isolated use and composition with its direct dependents.
+6. For a public component that can be placed on its own, declare `atoms` and mark each atom in
+   `component.html` (see [Sketch atoms](contract.md#sketch-atoms)). Mark one control per atom,
+   not the whole demo, unless the sample is already one layout block.
+7. Verify isolated use and composition with its direct dependents.
 
 Keep data, empty, loading, selection, and similar states together when they belong to one component lifecycle.
 

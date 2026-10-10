@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { applyPrototypeEdit, isTrustedAuthorRequest } from './source-editor.mjs';
 import { validateSnapshot, writeSnapshot } from './snapshot.mjs';
 import { injectTargets, openIDE, resolveInspectorTarget } from './inspector.mjs';
+import { resolvePackAsset } from './packs.mjs';
 
 export { applyPrototypeEdit, isTrustedAuthorRequest } from './source-editor.mjs';
 export { validateSnapshot } from './snapshot.mjs';
@@ -15,6 +16,7 @@ export { injectTargets, resolveInspectorTarget } from './inspector.mjs';
 const here = dirname(fileURLToPath(import.meta.url));
 const runtimeRoot = resolve(here, '..');
 const skillRoot = resolve(here, '../..');
+const sketchRoot = resolve(skillRoot, 'sketch');
 const input = process.argv.slice(2).find((arg) => !arg.startsWith('--'));
 const isDirectExecution = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 const portArg = process.argv.find((arg) => arg.startsWith('--port='));
@@ -84,7 +86,11 @@ function sendFile(response, path) {
     response.writeHead(404).end('Not Found');
     return;
   }
-  const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml' };
+  const types = {
+    '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
+    '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml',
+    '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp', '.woff2': 'font/woff2'
+  };
   response.writeHead(200, { 'content-type': types[extname(path).toLowerCase()] || 'application/octet-stream', 'cache-control': 'no-store' });
   response.end(readFileSync(path));
 }
@@ -125,6 +131,22 @@ const server = createServer(async (request, response) => {
       return;
     }
 
+    if (request.method === 'GET' && (url.pathname === '/sketch' || url.pathname === '/sketch/')) {
+      if (url.pathname === '/sketch') {
+        response.writeHead(302, { location: '/sketch/' }).end();
+        return;
+      }
+      sendFile(response, join(sketchRoot, 'index.html'));
+      return;
+    }
+    if (request.method === 'GET' && serveRepoFile(response, url.pathname, '/sketch/', sketchRoot)) return;
+    if (request.method === 'GET' && url.pathname.startsWith('/.html-prototype/packs/')) {
+      const assetPath = resolvePackAsset(decodeURIComponent(url.pathname.slice('/.html-prototype/packs/'.length)));
+      if (!assetPath) return response.writeHead(404).end('Not Found');
+      sendFile(response, assetPath);
+      return;
+    }
+
     /* Author browser assets may only come from runtime/author and runtime/client. */
     if (url.pathname.startsWith('/__prototype-author/')) {
       const rel = decodeURIComponent(url.pathname.slice('/__prototype-author/'.length));
@@ -150,6 +172,22 @@ const server = createServer(async (request, response) => {
     response.writeHead(500, { 'content-type': 'text/plain; charset=utf-8' }).end(error.message);
   }
 });
+
+function serveRepoFile(response, pathname, prefix, baseDir) {
+  if (!pathname.startsWith(prefix)) return false;
+  const rel = decodeURIComponent(pathname.slice(prefix.length)).replace(/^\/+/, '');
+  if (!rel || rel.includes('..')) {
+    response.writeHead(403).end('Forbidden');
+    return true;
+  }
+  const assetPath = resolve(baseDir, rel);
+  if (relative(baseDir, assetPath).startsWith('..')) {
+    response.writeHead(403).end('Forbidden');
+    return true;
+  }
+  sendFile(response, assetPath);
+  return true;
+}
 
 function injectAuthorLoader(content) {
   var script = '<script src="/__prototype-author/author/bootstrap.js" data-prototype-author-loader></script>';

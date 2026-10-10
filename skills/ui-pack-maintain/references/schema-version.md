@@ -15,7 +15,8 @@ Current consumer support is defined in `scripts/_pack-schema.mjs` (`SUPPORTED_SC
 ## Authoring rules
 
 - Bump `manifest.version` for pack content changes.
-- Bump `manifest.schemaVersion` only when the manifest contract itself changes.
+- Bump `manifest.schemaVersion` only when the manifest contract itself changes in a way resolvers must understand.
+  Optional fields that resolvers may ignore, such as `components[<id>].atoms`, do not bump it.
 - Never publish a pack whose `schemaVersion` is outside the supported set.
 - `validate-pack.mjs --strict` must reject unsupported `schemaVersion` values before release.
 

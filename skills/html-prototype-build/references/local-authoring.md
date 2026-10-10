@@ -2,7 +2,7 @@
 
 ## Scope
 
-Use this entry when you need to modify prototype styles/text directly in the browser, edit formal annotations, add/remove or reorder cards, re-bind targets, or use the Inspector to jump to source.
+Use this entry when you need to modify prototype styles/text directly in the browser, edit formal annotations, add/remove or reorder cards, re-bind targets, use the Inspector to jump to source, or open the module sketch board.
 
 The authoring service binds only to `127.0.0.1`, dynamically injects the `runtime/author/` tools, and does not modify the prototype source HTML's load structure.
 
@@ -27,6 +27,7 @@ In the Author Tools overlay, `edit` and `Mark` are two tabs of the same panel; t
 | edit formal annotations | Double-click an annotation title, body, or header copy; press `Enter` to save title/header, `Ctrl + Enter` (macOS: `⌘ + Enter`) to save body, `Esc` to cancel. |
 | Manage formal annotations | Use `+`, edit, target binding, delete, and drag-to-reorder. |
 | Inspector | Hold `Alt + Shift`, hover and click a target to jump to the IDE source location. |
+| Sketch board | Click the sketch button in Author Tools. Place pack atoms, draw a frame, and export a canvas-only PNG. Adding an atom is a pack change: [Sketch board components](sketch-board.md). |
 | Switch page scenario | Use the right-side scenario buttons, or `?scene=<scenario-id>`. |
 
 ## Platform differences

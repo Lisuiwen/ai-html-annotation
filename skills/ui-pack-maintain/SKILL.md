@@ -76,6 +76,8 @@ Publication references:
 - Declare only required dependencies in `requires`; keep conditional capabilities
   in `optional`.
 - Patterns and Presets must not select internal components directly.
+- Declare sketch atoms in `components[<id>].atoms`, and mark each one with `data-pack-atom` in
+  its own `component.html`. Mark one control per atom, not a composite demo.
 - Do not implement consumer download flows here; point users to
   `html-prototype-build` [Pack install](../html-prototype-build/references/pack-install.md).
 

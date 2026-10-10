@@ -96,3 +96,76 @@ test('e2e validate: strict classPrefix violation fails', () => {
     rmSync(tempDirectory, { recursive: true, force: true });
   }
 });
+
+function withAtoms(atoms, html) {
+  const { tempDirectory, packDirectory } = copyFixturePack(miniPackDirectory);
+  const manifestPath = path.join(packDirectory, 'manifest.json');
+  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+  manifest.components['action.button'].atoms = atoms;
+  writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+  if (html !== undefined) writeFileSync(path.join(packDirectory, 'components/action/button/component.html'), html, 'utf8');
+  return { tempDirectory, packDirectory };
+}
+
+const markedButton = '<button type="button" class="mp-button" data-pack-atom="button">OK</button>\n';
+
+test('e2e validate: declared and marked atom passes strict validation', () => {
+  const { tempDirectory, packDirectory } = withAtoms({ button: { label: 'Button', resize: 'x', minWidth: 32 } }, markedButton);
+  try {
+    const result = validatePack(packDirectory, true);
+    assert.equal(result.status, 0, result.output);
+  } finally {
+    rmSync(tempDirectory, { recursive: true, force: true });
+  }
+});
+
+test('e2e validate: declared atom without marker fails', () => {
+  const { tempDirectory, packDirectory } = withAtoms({ button: { label: 'Button', resize: 'none' } });
+  try {
+    const result = validatePack(packDirectory);
+    assert.notEqual(result.status, 0);
+    assert.match(result.output, /atom must be marked exactly once in components\/action\/button\/component\.html: button \(found 0\)/);
+  } finally {
+    rmSync(tempDirectory, { recursive: true, force: true });
+  }
+});
+
+test('e2e validate: undeclared atom marker fails', () => {
+  const { tempDirectory, packDirectory } = withAtoms(undefined, markedButton);
+  try {
+    const result = validatePack(packDirectory);
+    assert.notEqual(result.status, 0);
+    assert.match(result.output, /marks an undeclared atom in components\/action\/button\/component\.html: button/);
+  } finally {
+    rmSync(tempDirectory, { recursive: true, force: true });
+  }
+});
+
+test('e2e validate: invalid atom fields fail', () => {
+  const { tempDirectory, packDirectory } = withAtoms({ button: { resize: 'diagonal', width: -1, text: 'x' } }, markedButton);
+  try {
+    const result = validatePack(packDirectory);
+    assert.notEqual(result.status, 0);
+    assert.match(result.output, /action\.button\.atoms\.button\.label is required/);
+    assert.match(result.output, /resize must be one of none, x, y, both/);
+    assert.match(result.output, /width must be a positive number/);
+    assert.match(result.output, /has unknown fields: text/);
+  } finally {
+    rmSync(tempDirectory, { recursive: true, force: true });
+  }
+});
+
+test('e2e validate: internal component must not declare atoms', () => {
+  const { tempDirectory, packDirectory } = withAtoms({ button: { label: 'Button', resize: 'none' } }, markedButton);
+  try {
+    const manifestPath = path.join(packDirectory, 'manifest.json');
+    const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+    manifest.components['action.button'].visibility = 'internal';
+    writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+    const result = validatePack(packDirectory);
+    assert.notEqual(result.status, 0);
+    assert.match(result.output, /Internal component must not declare atoms: action\.button/);
+  } finally {
+    rmSync(tempDirectory, { recursive: true, force: true });
+  }
+});

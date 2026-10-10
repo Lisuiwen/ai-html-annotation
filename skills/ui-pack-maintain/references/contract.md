@@ -81,6 +81,7 @@ Registry entry fields (`components`, `patterns`, `presets`):
   strings when present. `requires` lists required dependencies; `optional` lists
   conditional capabilities; `uses` is for Presets referencing Patterns.
 - `adapter` — Components only. Path to a local state adapter.
+- `atoms` — Components only, optional. Placeable sketch pieces; see [Sketch atoms](#sketch-atoms).
 
 Conventional paths (the validator enforces these exactly):
 
@@ -112,6 +113,46 @@ start with YAML frontmatter:
 - A static component `component.html` must not register global events and must not
   use the stateful `data-ui-*` protocol.
 - Add `state-adapter.js` only when local state projection is required.
+
+## Sketch atoms
+
+An atom is a node that the module sketch board (`html-prototype-build/sketch/`) can copy out of
+`component.html` and place by itself: one button, one input, one menu item, one tab. When the
+whole sample is already one layout block (table, card, chart, modal panel), mark that block as the
+atom. Do not mark a composite demo, such as a button row or a full header, as one atom; mark
+each control inside it. The board builds its palette from these declarations only. It groups
+atoms by component `category` in `providers` order, then by manifest order, so no separate
+grouping field exists.
+
+### Manifest
+
+`components[<id>].atoms` is an object keyed by atom key. A key uses lowercase hyphen-case and
+is unique within its component. Key order is palette order.
+
+| Field | Required | Meaning |
+|---|---|---|
+| `label` | yes | Palette name shown to the user. |
+| `resize` | yes | `none` (move only), `x` (width only), `y` (height only), `both`. |
+| `width` | no | Seed width in px. Without it, the atom starts at its content width. |
+| `height` | no | Seed height in px. On an `x` atom, this fixes the height; without it, the height follows the content. |
+| `minWidth` / `minHeight` | no | Smallest size. Defaults to the starting size. |
+
+With `resize: none`, the atom keeps its content size, and the size fields do not apply.
+`visibility: internal` components must not declare atoms.
+
+### Markers in `component.html`
+
+| Attribute | Placement |
+|---|---|
+| `data-pack-atom="<key>"` | Exactly one element per declared key. Every marker value must be declared. |
+| `data-pack-atom-scope` | An ancestor kept as an empty wrapper around the copied atom, because component CSS selects through it (for example `.ui-checkbox-group label`). |
+| `data-pack-atom-strip` | A descendant removed from the copy, such as an open menu or date panel. |
+
+- The copy always drops `[hidden]` descendants and clears `hidden` / `aria-hidden` on the atom root.
+- The board resets fixed, sticky, and transformed atom roots to normal flow. Do not add wrappers to
+  work around overlay positioning; mark the visible panel instead.
+- Markers carry no style or behavior. CSS and scripts must not select them. When consumers copy
+  component markup into a prototype, they drop these markers.
 
 ## State adapter contract
 

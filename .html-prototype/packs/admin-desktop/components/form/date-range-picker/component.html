@@ -8,7 +8,7 @@
   .ui-date-range-panel { display: none; position: absolute; z-index: 45; top: calc(100% + var(--ui-space-1)); width: 100%; padding: var(--ui-space-3); border: 1px solid var(--ui-border); border-radius: var(--ui-radius-container); background: var(--ui-bg); }
   .ui-date-range.is-open .ui-date-range-panel { display: block; }
 </style>
-<div class="ui-date-range" id="uiDateRange">
+<div class="ui-date-range" id="uiDateRange" data-pack-atom="date-range">
   <button class="ui-date-range-trigger" type="button" aria-haspopup="dialog" aria-controls="uiDateRangePanel" aria-expanded="false"><span class="ui-date-range-value">Please select date range</span><span aria-hidden="true">▣</span></button>
-  <div class="ui-date-range-panel" id="uiDateRangePanel" role="dialog" aria-label="Select date range">Date panel provided by the final prototype.</div>
+  <div class="ui-date-range-panel" id="uiDateRangePanel" data-pack-atom-strip role="dialog" aria-label="Select date range">Date panel provided by the final prototype.</div>
 </div>

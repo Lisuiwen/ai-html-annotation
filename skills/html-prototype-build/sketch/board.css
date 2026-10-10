@@ -1,0 +1,279 @@
+.app {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  color: #1f1f1f;
+}
+
+.pack-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.65);
+}
+.pack-picker select {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
+  color: #1f1f1f;
+}
+
+.dock {
+  display: flex;
+  flex: 0 0 260px;
+  flex-direction: column;
+  gap: 12px;
+  width: 260px;
+  padding: 16px;
+  overflow: auto;
+  border-left: 1px solid #d9d9d9;
+  background: #fff;
+}
+
+body.is-embed .dock h1 { display: none; }
+
+.dock h1 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.hint, .status {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.dock-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dock button, .file-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 10px;
+  color: #1f1f1f;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dock button.is-active, .dock button.primary, .file-button {
+  color: #fff;
+  border-color: #1677ff;
+  background: #1677ff;
+}
+.dock button.danger {
+  margin-left: auto;
+  color: #fff;
+  border-color: #ff4d4f;
+  background: #ff4d4f;
+}
+.palette button[data-tool="select"].is-active {
+  color: #1f1f1f;
+  border-color: #d9d9d9;
+  background: #fff;
+}
+
+.file-button input { display: none; }
+
+.palette {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  align-content: start;
+}
+.palette h2 {
+  grid-column: 1 / -1;
+  margin: 8px 0 0;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 12px;
+  font-weight: 600;
+}
+.palette button {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stage {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #eceff3;
+}
+
+.board-fit {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.board {
+  position: relative;
+  width: 1440px;
+  height: 900px;
+  overflow: visible;
+  background: #f3f4f7;
+  transform-origin: top left;
+  touch-action: none;
+}
+
+.board[data-tool="rect"],
+.board[data-tool="ellipse"],
+.board[data-tool="line"],
+.board[data-tool="text"] { cursor: crosshair; }
+
+.board-underlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.measurer {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: max-content;
+  height: max-content;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.stamp {
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.stamp.is-selected { outline: 1px solid #1677ff; outline-offset: 1px; }
+
+.stamp-host { position: relative; }
+.stamp[data-stretch-x] .stamp-host { width: 100%; }
+.stamp[data-stretch-y] .stamp-host,
+.stamp[data-lock-height] .stamp-host { width: 100%; height: 100%; overflow: hidden; }
+.stamp[data-axis="x"]:not([data-lock-height]) .stamp-host,
+.stamp[data-axis="none"] .stamp-host { height: auto; overflow: visible; }
+.stamp[data-axis="none"] .stamp-host { width: max-content; }
+
+.stamp[data-stretch-x] .stamp-host > *,
+.stamp[data-stretch-x] .ui-select,
+.stamp[data-stretch-x] .ui-search,
+.stamp[data-stretch-x] .ui-date-picker,
+.stamp[data-stretch-x] .ui-date-range,
+.stamp[data-stretch-x] .ui-input,
+.stamp[data-stretch-x] .ui-modal {
+  width: 100%;
+  max-width: none;
+}
+
+.stamp[data-lock-width] .stamp-host > *,
+.stamp[data-lock-width] .ui-drawer,
+.stamp[data-lock-width] .ui-sider {
+  width: 100%;
+  max-width: none;
+}
+
+.stamp[data-stretch-y] .stamp-host > *,
+.stamp[data-stretch-y] .ui-drawer,
+.stamp[data-stretch-y] .ui-sider,
+.stamp[data-stretch-y] .ui-modal,
+.stamp[data-stretch-y] .ui-table-wrap { height: 100%; }
+
+.stamp[data-stretch-y] .ui-table-wrap { overflow: auto; }
+
+.stamp[data-chart] .stamp-host > * { height: auto; }
+.stamp[data-chart] .ui-chart-canvas { background: var(--ui-bg, #fff); }
+
+/* Overlay roots (toast, tab bar, sticky header) are laid out by the stamp, not the viewport. */
+.stamp .stamp-host > * {
+  position: relative;
+  inset: auto;
+  z-index: auto;
+  margin: 0;
+  transform: none;
+}
+.stamp[data-atom="navigation.app-header#brand"] .ui-brand { width: max-content; height: auto; }
+.stamp .ui-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+}
+
+.stamp[data-kind="component"] .stamp-host { pointer-events: none; }
+.stamp-hit { position: absolute; inset: 0; z-index: 1; cursor: move; }
+
+.handle {
+  position: absolute;
+  z-index: 2;
+  width: 10px;
+  height: 10px;
+  box-sizing: border-box;
+  border: 1px solid #1677ff;
+  background: #fff;
+}
+.handle-n { top: -5px; left: calc(50% - 5px); cursor: ns-resize; }
+.handle-s { bottom: -5px; left: calc(50% - 5px); cursor: ns-resize; }
+.handle-e { top: calc(50% - 5px); right: -5px; cursor: ew-resize; }
+.handle-w { top: calc(50% - 5px); left: -5px; cursor: ew-resize; }
+.handle-ne { top: -5px; right: -5px; cursor: nesw-resize; }
+.handle-sw { bottom: -5px; left: -5px; cursor: nesw-resize; }
+.handle-nw { top: -5px; left: -5px; cursor: nwse-resize; }
+.handle-se { bottom: -5px; right: -5px; cursor: nwse-resize; }
+
+.shape-rect, .shape-ellipse {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 2px solid #1677ff;
+  background: rgba(22, 119, 255, 0.08);
+}
+.shape-ellipse { border-radius: 50%; }
+
+.text-body {
+  width: 100%;
+  min-height: 22px;
+  color: #1f1f1f;
+  outline: none;
+  font-size: 14px;
+  line-height: 22px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  cursor: text;
+}
+
+.stamp[data-kind="line"] { pointer-events: none; }
+.line-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.line-hit { stroke: transparent; stroke-width: 14; pointer-events: stroke; cursor: move; }
+.line-visual { stroke: #1677ff; stroke-width: 2; pointer-events: none; }
+.stamp.is-selected .line-visual { stroke-width: 3; }
+.stamp[data-kind="line"] .handle { pointer-events: auto; }
