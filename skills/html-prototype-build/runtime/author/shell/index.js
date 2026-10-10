@@ -261,7 +261,7 @@
       '  <div class="at-sketch-head"><span>Module sketch</span>' +
       '    <button type="button" class="at-iconbtn" id="at-sketch-close" title="Close">×</button>' +
       '  </div>' +
-      '  <iframe class="at-sketch-frame" title="Module sketch"></iframe>' +
+      '  <iframe class="at-sketch-frame" title="Module sketch" allow="clipboard-write"></iframe>' +
       '</div>';
 
     document.body.appendChild(toast);

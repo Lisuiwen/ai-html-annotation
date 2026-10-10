@@ -24,7 +24,7 @@ function loadImage(src) {
   });
 }
 
-export async function downloadBoardPng(board) {
+async function rasterizeBoard(board) {
   const underlay = board.querySelector('.board-underlay');
   const underlaySrc = underlay && !underlay.hidden ? underlay.src : '';
   const css = await inlineStyles();
@@ -93,15 +93,25 @@ export async function downloadBoardPng(board) {
       reject(error);
     }
   });
+  return blob;
+}
 
-  const now = new Date();
-  const pad = (value) => String(value).padStart(2, '0');
-  const name = 'sketch-' + now.getFullYear() + pad(now.getMonth() + 1) + pad(now.getDate())
-    + '-' + pad(now.getHours()) + pad(now.getMinutes()) + pad(now.getSeconds()) + '.png';
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = name;
-  link.click();
-  URL.revokeObjectURL(url);
+/* Write during the click. A blob promise keeps the user gesture while the canvas encodes. */
+export function copyBoardPng(board) {
+  if (!navigator.clipboard || typeof navigator.clipboard.write !== 'function' || typeof ClipboardItem === 'undefined') {
+    return Promise.reject(new Error('Clipboard image copy is not available'));
+  }
+  const png = rasterizeBoard(board);
+  let item;
+  try {
+    item = new ClipboardItem({ 'image/png': png });
+  } catch (error) {
+    return png.then((blob) => navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]));
+  }
+  return navigator.clipboard.write([item]).catch((error) => {
+    if (error && error.name === 'NotAllowedError') {
+      throw new Error('Clipboard permission was denied');
+    }
+    throw error;
+  });
 }

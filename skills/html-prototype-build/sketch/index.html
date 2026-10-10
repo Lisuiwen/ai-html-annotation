@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,11 +14,11 @@
   </main>
   <aside class="dock">
     <h1>Module sketch</h1>
-    <p class="hint">Ctrl+Z undo, Delete remove, ] bring forward, [ send back. Double-click text to edit, Esc to leave it. The screenshot is the canvas only.</p>
+    <p class="hint">Ctrl+Z undo, Delete remove, ] bring forward, [ send back. Double-click text to edit, Esc to leave it. The copied image is the canvas only.</p>
     <label class="pack-picker">Pack<select id="pack-select" aria-label="Pack"></select></label>
     <div class="dock-actions">
-      <label class="file-button" title="Lay an existing page screenshot under the canvas to place modules against it. The export includes it.">Underlay<input id="underlay-file" type="file" accept="image/*"></label>
-      <button type="button" id="export" class="primary">Screenshot</button>
+      <label class="file-button" title="Lay an existing page screenshot under the canvas to place modules against it. The copied image includes it.">Underlay<input id="underlay-file" type="file" accept="image/*"></label>
+      <button type="button" id="export" class="primary" title="Copy the canvas to the clipboard">Copy image</button>
       <button type="button" id="clear-board" class="danger">Clear</button>
     </div>
     <p id="status" class="status" role="status"></p>
