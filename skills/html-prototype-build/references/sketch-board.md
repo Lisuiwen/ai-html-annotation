@@ -2,29 +2,29 @@
 
 ## Scope
 
-Use this entry when adding or changing a placeable item on the module sketch board (`sketch/`). The board is a layout reference for screenshots. It is not a prototype page and it does not write a layout file.
+Use this entry when adding or changing a placeable item on the module sketch board (`sketch/`). The board is a free canvas for a rough reference screenshot that the AI uses to implement an increment. It is not a prototype page, and it does not write a layout file.
+
+## Where items come from
+
+The board builds its palette from the selected UI pack. It does not keep its own component list. Every item is an atom that the pack declares:
+
+- `manifest.json` → `components[<id>].atoms`: palette label and resize behavior.
+- `component.html` → `data-pack-atom="<key>"`: the node to copy.
+
+The palette groups atoms by component `category` in `providers` order. The pack picker in the dock switches packs (`?pack=<id>`, default `admin-desktop`). Switching packs clears the canvas.
+
+To add or change an item, edit the pack, not `sketch/`. The format and rules belong to `ui-pack-maintain`: [Sketch atoms](../../ui-pack-maintain/references/contract.md#sketch-atoms). Validate with `validate-pack.mjs --strict`, which checks that every declared atom is marked exactly once.
 
 ## Decision
 
-Add atoms, not composite demos.
+Add atoms, not composite demos. Mark one button, one input, one menu item, or one tab, not the button row or the whole header. A sample that is already one layout block (table, filter bar, card, modal panel, drawer, chart) is marked as a whole. Do not split it into cells, columns, or series.
 
-A pack `component.html` is a demo. It often groups several controls (a button row, a labeled field, a full header, a menu). The sketch palette must not mount that demo as one item. Each palette control is one atom: one button, one input, one menu item, one tab, placed and sized on its own.
+For a mobile screen, the board stays free-form. Draw the phone frame with the rectangle tool, then place the pack atoms inside it.
 
-A region that is already one layout block may mount the whole sample. That list is table, filter bar, card, modal, drawer, and chart. Do not split those into inner cells, columns, or series.
+## Board-side behavior
 
-Do not edit pack files to make an atom. Read `component.html` and copy a node into the board. Sample labels, hidden panels, and id prefixes change only on that copy.
-
-## How to add one
-
-Declare the atom in `sketch/atoms.js`. `sketch/mount.js` clones it; do not add a second extractor.
-
-| Field | Use |
-|---|---|
-| `componentId` | Manifest component whose `component.html` and CSS are read. |
-| `selector` | Node to clone. `null` only for a whole-sample block. |
-| `piece` | Keep one descendant and a shallow parent so group CSS still applies. |
-| `strip` | Drop an open layer such as a menu or date panel. |
-| `text` / `textSelector` | Change the visible label on the copy. Do not set `textContent` on a node that contains an input. |
-| `sizing` or `sizingKey` | `none` drag only, `x` width only, `y` height only, `both` both axes. Never `transform: scale()`. |
-
-`visibility: internal` components such as `_echarts-core` are not palette items. Their CSS still loads through `requires`. Charts are the only atoms that load a pack script, and they paint the pack sample series onto the stamp.
+- `sketch/mount.js` is the only extractor. It copies the marked node, keeps `data-pack-atom-scope` ancestors as empty wrappers, drops `data-pack-atom-strip` and `[hidden]` descendants, and prefixes ids per stamp.
+- The board resets fixed, sticky, and transformed atom roots to normal flow.
+- Resizing never uses `transform: scale()`.
+- Charts are the only atoms that load a pack script (`sketch/charts.js`, admin-desktop ECharts bridge). They paint the pack sample series onto the stamp.
+- `visibility: internal` components such as `_echarts-core` are never palette items. Their CSS still loads through `requires`.

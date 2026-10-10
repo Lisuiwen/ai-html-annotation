@@ -1,7 +1,9 @@
 /* Draw pack sample charts. Presets supply the series when no business state is passed. */
 
-const PACK = '/.html-prototype/packs/admin-desktop/';
-const PRESET = {
+import { packBase as PACK, packId } from './mount.js';
+
+/* Only admin-desktop ships the ECharts bridge these presets drive. */
+const PRESET = packId !== 'admin-desktop' ? {} : {
   'data.chart-line': 'line',
   'data.chart-bar': 'bar',
   'data.chart-donut': 'donut',
@@ -13,6 +15,10 @@ const PRESET = {
 };
 
 let runtime = null;
+
+export function isChart(componentId) {
+  return Object.hasOwn(PRESET, componentId);
+}
 
 function loadScript(src) {
   return new Promise((resolve, reject) => {
@@ -44,7 +50,10 @@ export async function paintChart(stamp, componentId) {
   const preset = PRESET[componentId];
   if (!preset) return;
   await ensureRuntime();
-  if (preset === 'map') await loadScript(PACK + 'vendor/echarts/maps/china.js');
+  if (preset === 'map') {
+    await loadScript(PACK + 'vendor/echarts/maps/china.js');
+    await window.PrototypeChartBridge.loadMapJson('china');
+  }
   const root = stamp.querySelector('.ui-chart');
   const core = window.PrototypeChartCore;
   if (!root || !core) return;

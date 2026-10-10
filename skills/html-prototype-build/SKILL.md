@@ -22,7 +22,7 @@ Read only the entry that matches the current task; do not read all references at
 | Install or download missing UI packs | [Pack install](references/pack-install.md) | `scripts/install-pack.mjs` |
 | Understand Viewer, note cards, SVG connectors, or interaction lightning | [Product annotations](references/product-annotations.md) | snapshot + Client Runtime |
 | Start the authoring environment, direct edit, edit notes, or jump to source | [Local authoring](references/local-authoring.md) | `runtime/server/index.mjs` + Author Tools |
-| Add or change a sketch-board component | [Sketch board components](references/sketch-board.md) | `sketch/atoms.js` |
+| Add or change a sketch-board component | [Sketch board components](references/sketch-board.md) | pack `manifest.json` `atoms` + `data-pack-atom` |
 | Add review pins to a page, export For AI | [Review mark](references/review-mark.md) | `runtime/author/tools/mark/` |
 | Batch screenshots by page state | [Scenario screenshots](references/screenshots.md) | `runtime/cli/screenshot.mjs` |
 | Prepare final files | [Delivery & iteration](references/delivery.md) | Final delivery files |

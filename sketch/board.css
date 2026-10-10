@@ -2,7 +2,26 @@
   display: flex;
   height: 100vh;
   overflow: hidden;
-  background: #eceff3;
+  color: #1f1f1f;
+}
+
+.pack-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.65);
+}
+.pack-picker select {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
   color: #1f1f1f;
 }
 
@@ -101,6 +120,7 @@ body.is-embed .dock h1 { display: none; }
   min-width: 0;
   min-height: 0;
   overflow: hidden;
+  background: #eceff3;
 }
 
 .board-fit {
@@ -114,7 +134,7 @@ body.is-embed .dock h1 { display: none; }
   width: 1440px;
   height: 900px;
   overflow: visible;
-  background: var(--ui-bg-page, #f3f4f7);
+  background: #f3f4f7;
   transform-origin: top left;
   touch-action: none;
 }
@@ -189,9 +209,15 @@ body.is-embed .dock h1 { display: none; }
 .stamp[data-chart] .stamp-host > * { height: auto; }
 .stamp[data-chart] .ui-chart-canvas { background: var(--ui-bg, #fff); }
 
-.stamp[data-atom="brand"] .ui-brand { width: max-content; height: auto; }
-.stamp[data-atom="nav-link"] { height: auto; }
-.stamp .ui-header { position: relative; top: auto; z-index: auto; }
+/* Overlay roots (toast, tab bar, sticky header) are laid out by the stamp, not the viewport. */
+.stamp .stamp-host > * {
+  position: relative;
+  inset: auto;
+  z-index: auto;
+  margin: 0;
+  transform: none;
+}
+.stamp[data-atom="navigation.app-header#brand"] .ui-brand { width: max-content; height: auto; }
 .stamp .ui-visually-hidden {
   position: absolute;
   width: 1px;

@@ -1,20 +1,53 @@
-/* Mount one atom from a pack component. Styles inject once. No adapters. */
+/* Mount sketch atoms a UI pack declares: manifest components[].atoms + data-pack-atom markers. */
 
-import { ATOMS, findAtom } from './atoms.js';
-
-const PACK = '/.html-prototype/packs/admin-desktop/';
+const PACKS = '/.html-prototype/packs/';
+const DEFAULT_PACK = 'admin-desktop';
+const MARKERS = ['data-pack-atom', 'data-pack-atom-scope', 'data-pack-atom-strip'];
 const styled = new Set();
 const htmlCache = new Map();
 let manifestPromise = null;
+let foundationPromise = null;
+
+export function packIdFrom(search) {
+  const id = new URLSearchParams(search || '').get('pack');
+  return id && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id) ? id : DEFAULT_PACK;
+}
+
+export const packId = packIdFrom(globalThis.location ? globalThis.location.search : '');
+export const packBase = PACKS + packId + '/';
 
 export function loadManifest() {
   if (!manifestPromise) {
-    manifestPromise = fetch(PACK + 'manifest.json').then((response) => {
-      if (!response.ok) throw new Error('Cannot read admin-desktop manifest');
+    manifestPromise = fetch(packBase + 'manifest.json').then((response) => {
+      if (!response.ok) throw new Error('Cannot read ' + packId + ' manifest');
       return response.json();
     });
   }
   return manifestPromise;
+}
+
+export function loadPackList() {
+  return fetch(PACKS + 'registry.json')
+    .then((response) => (response.ok ? response.json() : { packs: [] }))
+    .then((registry) => (Array.isArray(registry.packs) ? registry.packs : []))
+    .catch(() => []);
+}
+
+/* Foundation sheets go before board.css so board rules keep winning at equal specificity. */
+export function loadFoundation(manifest) {
+  if (!foundationPromise) {
+    const before = document.querySelector('link[href$="board.css"]');
+    const sources = manifest.foundation && Array.isArray(manifest.foundation.sources) ? manifest.foundation.sources : [];
+    foundationPromise = Promise.all(sources.map((source) => new Promise((resolve) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = packBase + source;
+      link.onload = resolve;
+      link.onerror = resolve;
+      document.head.insertBefore(link, before);
+    })));
+  }
+  return foundationPromise;
 }
 
 function splitHtml(html) {
@@ -27,7 +60,7 @@ function splitHtml(html) {
 async function componentHtml(entry) {
   const key = entry.source;
   if (!htmlCache.has(key)) {
-    const response = await fetch(PACK + entry.source);
+    const response = await fetch(packBase + entry.source);
     if (!response.ok) throw new Error('Cannot read ' + entry.source);
     htmlCache.set(key, splitHtml(await response.text()));
   }
@@ -72,43 +105,26 @@ function prefixIds(root, stampId) {
   });
 }
 
-function applyText(node, atom) {
-  if (atom.text == null) return;
-  const target = atom.textSelector ? node.querySelector(atom.textSelector) : node;
-  if (!target) return;
-  if (target === node && target.childElementCount > 0 && !atom.textSelector) return;
-  target.textContent = atom.text;
+function reveal(node) {
+  node.removeAttribute('hidden');
+  node.removeAttribute('aria-hidden');
 }
 
-function extractAtom(bodyHtml, atom, stampId) {
+function extractAtom(bodyHtml, entry, stampId) {
   const doc = new DOMParser().parseFromString(bodyHtml, 'text/html');
-  doc.querySelectorAll('script').forEach((node) => node.remove());
-  if (!atom.selector) {
-    const panel = doc.body.querySelector('.ui-modal, .ui-drawer');
-    const kids = Array.from(doc.body.children);
-    const root = panel || (kids.length === 1 ? kids[0] : null);
-    const host = root || document.createElement('div');
-    if (!root) kids.forEach((kid) => host.appendChild(kid));
-    host.querySelectorAll('[hidden]').forEach((el) => el.remove());
-    host.removeAttribute('hidden');
-    host.removeAttribute('aria-hidden');
-    prefixIds(host, stampId);
-    return host;
+  const found = Array.from(doc.querySelectorAll('[data-pack-atom]')).find((el) => el.getAttribute('data-pack-atom') === entry.key);
+  if (!found) throw new Error('找不到原子件 ' + entry.id);
+  let node = found.cloneNode(true);
+  node.querySelectorAll('[data-pack-atom-strip], [hidden], script').forEach((el) => el.remove());
+  reveal(node);
+  for (let parent = found.parentElement; parent && parent !== doc.body; parent = parent.parentElement) {
+    if (!parent.hasAttribute('data-pack-atom-scope')) continue;
+    const wrapper = parent.cloneNode(false);
+    reveal(wrapper);
+    wrapper.appendChild(node);
+    node = wrapper;
   }
-  const found = doc.querySelector(atom.selector);
-  if (!found) throw new Error('找不到原子件 ' + atom.id);
-  let node;
-  if (atom.piece) {
-    const piece = found.querySelector(atom.piece);
-    if (!piece) throw new Error('找不到原子件 ' + atom.id);
-    node = found.cloneNode(false);
-    node.appendChild(piece.cloneNode(true));
-  } else {
-    node = found.cloneNode(true);
-  }
-  if (atom.strip) node.querySelectorAll(atom.strip).forEach((el) => el.remove());
-  node.querySelectorAll('[hidden]').forEach((el) => el.remove());
-  applyText(node, atom);
+  [node, ...node.querySelectorAll('*')].forEach((el) => MARKERS.forEach((name) => el.removeAttribute(name)));
   prefixIds(node, stampId);
   return node;
 }
@@ -138,32 +154,32 @@ export function measureStamp(stamp, spec) {
   };
 }
 
-export async function fillStamp(stamp, atomId) {
-  const atom = findAtom(atomId);
-  if (!atom) throw new Error('未知原子件 ' + atomId);
+export async function fillStamp(stamp, entry) {
   const manifest = await loadManifest();
-  const entry = manifest.components[atom.componentId];
-  if (!entry) throw new Error('Unknown component ' + atom.componentId);
-  await ensureStyles(atom.componentId, manifest.components);
-  const { body } = await componentHtml(entry);
-  const root = extractAtom(body, atom, stamp.dataset.stampId);
-  stamp.querySelector('.stamp-host').replaceChildren(root);
+  const component = manifest.components[entry.componentId];
+  if (!component) throw new Error('Unknown component ' + entry.componentId);
+  await ensureStyles(entry.componentId, manifest.components);
+  const { body } = await componentHtml(component);
+  stamp.querySelector('.stamp-host').replaceChildren(extractAtom(body, entry, stamp.dataset.stampId));
 }
 
 export function paletteEntries(manifest) {
   const components = manifest && manifest.components || {};
   const categoryOrder = manifest && manifest.providers ? Object.keys(manifest.providers) : [];
-  const entries = ATOMS.map((atom) => {
-    const component = components[atom.componentId];
-    const category = component && typeof component.category === 'string' ? component.category.trim() : '';
-    return {
-      id: atom.id,
-      label: atom.label,
-      category,
-      componentId: atom.componentId,
-      sizing: atom.sizing,
-      sizingKey: atom.sizingKey
-    };
+  const entries = [];
+  Object.entries(components).forEach(([componentId, component]) => {
+    if (!component || component.visibility === 'internal' || !component.atoms) return;
+    const category = typeof component.category === 'string' ? component.category.trim() : '';
+    Object.entries(component.atoms).forEach(([key, atom]) => {
+      entries.push({
+        id: componentId + '#' + key,
+        key,
+        componentId,
+        category,
+        label: atom && atom.label || key,
+        sizing: atom || {}
+      });
+    });
   });
   return { entries, categoryOrder };
 }

@@ -118,6 +118,7 @@ Every prototype generates the same structure:
 
 - Forbid carrying any example business names, system names, menu names, field names, codes, people, departments, channels, dates, or data over from historical prototypes or other tasks.
 - Forbid mistaking structural examples in components, Patterns, or Presets for the user's business content; after copying, replace them with the current requirements or neutral placeholders.
+- `data-pack-atom`, `data-pack-atom-scope`, and `data-pack-atom-strip` in `component.html` are sketch-board markers. Drop them when copying markup into a prototype.
 - Do not use real login credentials, tokens, API addresses, personal information, production data, or unauthorized brand assets.
 - Local mocks express only the minimal data relationships needed by the current interaction and must not expand business rules the user did not ask for.
 - When the user's information is insufficient to determine business meaning, stay neutral and explicitly mark as pending confirmation; do not "fill in to look more like a real system".

@@ -1,6 +1,6 @@
-import { paintChart } from './charts.js';
+import { isChart, paintChart } from './charts.js';
 import { downloadBoardPng } from './export.js';
-import { fillStamp, loadManifest, measureStamp, paletteEntries } from './mount.js';
+import { fillStamp, loadFoundation, loadManifest, loadPackList, measureStamp, packId, paletteEntries } from './mount.js';
 import { FRAME, resolveSizing } from './sizing.js';
 
 const board = document.getElementById('board');
@@ -185,8 +185,6 @@ function addHandles(stamp, axis) {
 
 function decorate(stamp, spec) {
   stamp.dataset.axis = spec.axis;
-  stamp.dataset.minWidth = String(spec.minWidth || 1);
-  stamp.dataset.minHeight = String(spec.minHeight || 1);
   if (spec.lockWidth) stamp.dataset.lockWidth = '1';
   if (spec.lockHeight) stamp.dataset.lockHeight = '1';
   if (spec.chart) stamp.dataset.chart = '1';
@@ -374,7 +372,7 @@ async function placeComponent(entry, button) {
   button.disabled = true;
   setStatus('');
   try {
-    const spec = resolveSizing(entry);
+    const spec = { ...resolveSizing(entry.sizing), chart: isChart(entry.componentId) };
     const stamp = document.createElement('div');
     stamp.className = 'stamp';
     stamp.dataset.kind = 'component';
@@ -385,9 +383,10 @@ async function placeComponent(entry, button) {
     const host = document.createElement('div');
     host.className = 'stamp-host';
     stamp.appendChild(host);
-    await fillStamp(stamp, entry.id);
+    await fillStamp(stamp, entry);
     const size = measureStamp(stamp, spec);
-    if (spec.width == null && spec.axis !== 'none') stamp.dataset.minWidth = String(size.width);
+    stamp.dataset.minWidth = String(spec.minWidth ?? size.width);
+    stamp.dataset.minHeight = String(spec.minHeight ?? size.height);
     const origin = originFor(size.width, size.height);
     if (spec.axis !== 'none') addHandles(stamp, spec.axis);
     const hit = document.createElement('div');
@@ -408,7 +407,7 @@ async function placeComponent(entry, button) {
 function appendPaletteButton(palette, entry) {
   const button = document.createElement('button');
   button.type = 'button';
-  const spec = resolveSizing(entry);
+  const spec = resolveSizing(entry.sizing);
   button.textContent = entry.label;
   button.title = entry.id + ' · ' + AXIS_LABEL[spec.axis];
   button.addEventListener('click', () => placeComponent(entry, button));
@@ -664,7 +663,36 @@ document.getElementById('export').addEventListener('click', async () => {
 fitBoard();
 new ResizeObserver(fitBoard).observe(board.parentElement.parentElement);
 
-loadManifest().then((manifest) => {
+async function renderPackPicker() {
+  const picker = document.getElementById('pack-select');
+  const packs = await loadPackList();
+  const ids = packs.map((pack) => pack.id);
+  if (!ids.includes(packId)) ids.unshift(packId);
+  picker.replaceChildren(...ids.map((id) => {
+    const option = document.createElement('option');
+    const pack = packs.find((item) => item.id === id);
+    option.value = id;
+    option.textContent = pack && pack.name ? pack.name : id;
+    option.selected = id === packId;
+    return option;
+  }));
+  picker.addEventListener('change', () => {
+    if (board.querySelector('.stamp') && !window.confirm('切换组件库会清空当前画布，继续？')) {
+      picker.value = packId;
+      return;
+    }
+    const params = new URLSearchParams(location.search);
+    params.set('pack', picker.value);
+    location.search = params.toString();
+  });
+}
+
+renderPackPicker();
+
+loadManifest().then(async (manifest) => {
+  await loadFoundation(manifest);
+  const page = getComputedStyle(document.body).backgroundColor;
+  if (page && page !== 'rgba(0, 0, 0, 0)') board.style.backgroundColor = page;
   const palette = paletteEntries(manifest);
   renderPalette(palette.entries, palette.categoryOrder);
 }).catch((error) => {
