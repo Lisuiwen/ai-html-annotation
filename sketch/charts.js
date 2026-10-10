@@ -31,7 +31,7 @@ function loadScript(src) {
     script.src = src;
     script.dataset.sketchSrc = src;
     script.onload = () => resolve();
-    script.onerror = () => reject(new Error('无法加载 ' + src));
+    script.onerror = () => reject(new Error('Could not load ' + src));
     document.head.appendChild(script);
   });
 }
@@ -62,11 +62,11 @@ export async function paintChart(stamp, componentId) {
   const state = { status: 'data' };
   if (preset === 'map') {
     state.data = [
-      { name: '广东', value: 120 },
-      { name: '浙江', value: 90 },
-      { name: '江苏', value: 85 },
-      { name: '北京', value: 70 },
-      { name: '四川', value: 55 }
+      { name: 'Guangdong', value: 120 },
+      { name: 'Zhejiang', value: 90 },
+      { name: 'Jiangsu', value: 85 },
+      { name: 'Beijing', value: 70 },
+      { name: 'Sichuan', value: 55 }
     ];
   }
   core.renderLeaf(root, state, { preset });

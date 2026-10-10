@@ -23,6 +23,8 @@ Official packs are **prototype visual simulations**. Use them to get to an opena
 
 Choose from **installed** packs. When the UI type is unclear, ask — never silently default.
 
+A public component that can sit on the module sketch board declares `atoms` in the manifest and marks each node with `data-pack-atom` in `component.html`. The board reads that declaration; it does not keep its own component list. Field rules: [Sketch atoms](../skills/ui-pack-maintain/references/contract.md#sketch-atoms).
+
 ## Install
 
 End-user default: home cache `~/.html-prototype/packs/<id>/`. Ask the agent to install `admin-desktop` or `mobile-vant`.

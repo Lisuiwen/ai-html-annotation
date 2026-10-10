@@ -22,7 +22,8 @@ generate HTML from a UI pack
         │
         ├── Mark → Copy for AI   (optional)
         ├── Direct Edit          (optional)
-        └── Inspector            (optional)
+        ├── Inspector            (optional)
+        └── Sketch board         (optional reference PNG)
         │
         ▼
    scenarios

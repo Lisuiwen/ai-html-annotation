@@ -23,7 +23,7 @@
       "source": "components/action/button/component.html",
       "adapter": "components/action/button/state-adapter.js",
       "atoms": {
-        "button": { "label": "按钮", "resize": "x", "width": 343, "minWidth": 64 }
+        "button": { "label": "Button", "resize": "x", "width": 343, "minWidth": 64 }
       }
     },
     "navigation.nav-bar": {
@@ -31,7 +31,7 @@
       "contract": "components/navigation/nav-bar/COMPONENT.md",
       "source": "components/navigation/nav-bar/component.html",
       "atoms": {
-        "nav-bar": { "label": "导航栏", "resize": "x", "width": 375, "minWidth": 240 }
+        "nav-bar": { "label": "Nav bar", "resize": "x", "width": 375, "minWidth": 240 }
       }
     },
     "navigation.tab-bar": {
@@ -40,7 +40,7 @@
       "source": "components/navigation/tab-bar/component.html",
       "adapter": "components/navigation/tab-bar/state-adapter.js",
       "atoms": {
-        "tab-bar": { "label": "标签栏", "resize": "x", "width": 375, "minWidth": 240 }
+        "tab-bar": { "label": "Tab bar", "resize": "x", "width": 375, "minWidth": 240 }
       }
     },
     "form.field": {
@@ -49,7 +49,7 @@
       "source": "components/form/field/component.html",
       "adapter": "components/form/field/state-adapter.js",
       "atoms": {
-        "field": { "label": "输入项", "resize": "x", "width": 375, "minWidth": 200 }
+        "field": { "label": "Field", "resize": "x", "width": 375, "minWidth": 200 }
       }
     },
     "form.switch": {
@@ -58,7 +58,7 @@
       "source": "components/form/switch/component.html",
       "adapter": "components/form/switch/state-adapter.js",
       "atoms": {
-        "switch": { "label": "开关", "resize": "none" }
+        "switch": { "label": "Switch", "resize": "none" }
       }
     },
     "form.radio-group": {
@@ -67,7 +67,7 @@
       "source": "components/form/radio-group/component.html",
       "adapter": "components/form/radio-group/state-adapter.js",
       "atoms": {
-        "radio": { "label": "单选项", "resize": "x", "width": 375, "minWidth": 160 }
+        "radio": { "label": "Radio", "resize": "x", "width": 375, "minWidth": 160 }
       }
     },
     "form.checkbox-group": {
@@ -76,7 +76,7 @@
       "source": "components/form/checkbox-group/component.html",
       "adapter": "components/form/checkbox-group/state-adapter.js",
       "atoms": {
-        "checkbox": { "label": "复选项", "resize": "x", "width": 375, "minWidth": 160 }
+        "checkbox": { "label": "Checkbox", "resize": "x", "width": 375, "minWidth": 160 }
       }
     },
     "data.cell": {
@@ -84,7 +84,7 @@
       "contract": "components/data/cell/COMPONENT.md",
       "source": "components/data/cell/component.html",
       "atoms": {
-        "cell": { "label": "单元格", "resize": "x", "width": 375, "minWidth": 200 }
+        "cell": { "label": "Cell", "resize": "x", "width": 375, "minWidth": 200 }
       }
     },
     "data.tag": {
@@ -92,7 +92,7 @@
       "contract": "components/data/tag/COMPONENT.md",
       "source": "components/data/tag/component.html",
       "atoms": {
-        "tag": { "label": "标签", "resize": "none" }
+        "tag": { "label": "Tag", "resize": "none" }
       }
     },
     "data.empty": {
@@ -100,7 +100,7 @@
       "contract": "components/data/empty/COMPONENT.md",
       "source": "components/data/empty/component.html",
       "atoms": {
-        "empty": { "label": "空状态", "resize": "x", "width": 343, "minWidth": 160 }
+        "empty": { "label": "Empty", "resize": "x", "width": 343, "minWidth": 160 }
       }
     },
     "feedback.dialog": {
@@ -109,7 +109,7 @@
       "source": "components/feedback/dialog/component.html",
       "adapter": "components/feedback/dialog/state-adapter.js",
       "atoms": {
-        "dialog": { "label": "对话框", "resize": "x", "width": 320, "minWidth": 240 }
+        "dialog": { "label": "Dialog", "resize": "x", "width": 320, "minWidth": 240 }
       }
     },
     "feedback.toast": {
@@ -118,7 +118,7 @@
       "source": "components/feedback/toast/component.html",
       "adapter": "components/feedback/toast/state-adapter.js",
       "atoms": {
-        "toast": { "label": "轻提示", "resize": "none" }
+        "toast": { "label": "Toast", "resize": "none" }
       }
     }
   },

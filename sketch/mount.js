@@ -113,7 +113,7 @@ function reveal(node) {
 function extractAtom(bodyHtml, entry, stampId) {
   const doc = new DOMParser().parseFromString(bodyHtml, 'text/html');
   const found = Array.from(doc.querySelectorAll('[data-pack-atom]')).find((el) => el.getAttribute('data-pack-atom') === entry.key);
-  if (!found) throw new Error('找不到原子件 ' + entry.id);
+  if (!found) throw new Error('Atom not found: ' + entry.id);
   let node = found.cloneNode(true);
   node.querySelectorAll('[data-pack-atom-strip], [hidden], script').forEach((el) => el.remove());
   reveal(node);

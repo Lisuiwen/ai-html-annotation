@@ -243,8 +243,8 @@
     sketch.type = 'button';
     sketch.id = 'at-sketch';
     sketch.className = 'at-sketch at-ui';
-    sketch.title = '打开模块草图画板';
-    sketch.setAttribute('aria-label', '画板');
+    sketch.title = 'Open the module sketch board';
+    sketch.setAttribute('aria-label', 'Sketch board');
     sketch.setAttribute('aria-expanded', 'false');
     sketch.innerHTML =
       '<svg class="at-launch-icon" viewBox="0 0 16 16" aria-hidden="true">' +
@@ -257,11 +257,11 @@
     sketchLayer.hidden = true;
     sketchLayer.innerHTML =
       '<div class="at-sketch-backdrop"></div>' +
-      '<div class="at-sketch-drawer" role="dialog" aria-label="模块草图">' +
-      '  <div class="at-sketch-head"><span>模块草图</span>' +
-      '    <button type="button" class="at-iconbtn" id="at-sketch-close" title="关闭">×</button>' +
+      '<div class="at-sketch-drawer" role="dialog" aria-label="Module sketch">' +
+      '  <div class="at-sketch-head"><span>Module sketch</span>' +
+      '    <button type="button" class="at-iconbtn" id="at-sketch-close" title="Close">×</button>' +
       '  </div>' +
-      '  <iframe class="at-sketch-frame" title="模块草图"></iframe>' +
+      '  <iframe class="at-sketch-frame" title="Module sketch"></iframe>' +
       '</div>';
 
     document.body.appendChild(toast);

@@ -28,7 +28,8 @@ generate HTML from a UI pack
         │
         ├── Mark → Copy for AI   (optional)
         ├── Direct Edit          (optional)
-        └── Inspector            (optional)
+        ├── Inspector            (optional)
+        └── Sketch board         (optional reference PNG)
         │
         ▼
    scenarios
@@ -85,6 +86,7 @@ Customize or author a pack: [UI packs](ui-packs.md) and the [`ui-pack-maintain`]
 | Review pins → copy to an AI | Mark, `Copy all → For AI` | Author session |
 | Tweak style or copy on the page | Direct Edit | Author session |
 | Lock element → IDE | Inspector | Author session |
+| Rough module layout for the agent | Sketch board | Author session |
 | Stable visuals | UI pack | Pack, not the Skill |
 | Clean create / edit / empty / … PNGs | Multi-state screenshots | Delivery |
 
@@ -118,6 +120,7 @@ You do not have to run every step every time. Review-only sessions start at Mark
 Script names, snapshot files, and localhost commands live in Skill references — not in the product copy above.
 
 - Start Author Tools → [Local authoring](../skills/html-prototype-build/references/local-authoring.md)
+- Sketch a module layout → [Sketch board](../skills/html-prototype-build/references/sketch-board.md)
 - Install a UI pack → [Pack install](../skills/html-prototype-build/references/pack-install.md)
 - Pin and copy for AI → [Review mark](../skills/html-prototype-build/references/review-mark.md)
 - Multi-state PNGs → [Screenshots](../skills/html-prototype-build/references/screenshots.md)

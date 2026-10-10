@@ -61,22 +61,22 @@
       "requires": [],
       "atoms": {
         "primary": {
-          "label": "主按钮",
+          "label": "Primary button",
           "resize": "x",
           "minWidth": 32
         },
         "secondary": {
-          "label": "次按钮",
+          "label": "Secondary button",
           "resize": "x",
           "minWidth": 32
         },
         "text": {
-          "label": "文字按钮",
+          "label": "Text button",
           "resize": "x",
           "minWidth": 32
         },
         "icon": {
-          "label": "图标按钮",
+          "label": "Icon button",
           "resize": "none"
         }
       }
@@ -97,11 +97,11 @@
       ],
       "atoms": {
         "brand": {
-          "label": "品牌",
+          "label": "Brand",
           "resize": "none"
         },
         "link": {
-          "label": "顶栏链接",
+          "label": "Top link",
           "resize": "none"
         }
       }
@@ -118,7 +118,7 @@
       "requires": [],
       "atoms": {
         "menu-item": {
-          "label": "菜单项",
+          "label": "Menu item",
           "resize": "x",
           "width": 180,
           "minWidth": 96
@@ -138,7 +138,7 @@
       "requires": [],
       "atoms": {
         "row": {
-          "label": "树节点",
+          "label": "Tree node",
           "resize": "x",
           "width": 180,
           "minWidth": 96
@@ -159,7 +159,7 @@
       "requires": [],
       "atoms": {
         "tab": {
-          "label": "页签",
+          "label": "Tab",
           "resize": "none"
         }
       }
@@ -175,7 +175,7 @@
       "requires": [],
       "atoms": {
         "input": {
-          "label": "输入框",
+          "label": "Input",
           "resize": "x",
           "width": 180,
           "minWidth": 80
@@ -201,7 +201,7 @@
       ],
       "atoms": {
         "field": {
-          "label": "行内字段",
+          "label": "Inline field",
           "resize": "x",
           "width": 220,
           "minWidth": 120
@@ -223,7 +223,7 @@
       ],
       "atoms": {
         "search": {
-          "label": "搜索框",
+          "label": "Search",
           "resize": "x",
           "width": 220,
           "minWidth": 120
@@ -243,7 +243,7 @@
       "requires": [],
       "atoms": {
         "select": {
-          "label": "选择器",
+          "label": "Select",
           "resize": "x",
           "width": 180,
           "minWidth": 80
@@ -278,7 +278,7 @@
       ],
       "atoms": {
         "filter": {
-          "label": "筛选条",
+          "label": "Filter bar",
           "resize": "x",
           "width": 720,
           "height": 102,
@@ -312,7 +312,7 @@
       "requires": [],
       "atoms": {
         "tag": {
-          "label": "标签",
+          "label": "Tag",
           "resize": "none"
         }
       }
@@ -335,7 +335,7 @@
       ],
       "atoms": {
         "table": {
-          "label": "表格",
+          "label": "Table",
           "resize": "both",
           "width": 680,
           "height": 160
@@ -375,7 +375,7 @@
       "requires": [],
       "atoms": {
         "alert": {
-          "label": "提示",
+          "label": "Alert",
           "resize": "x",
           "width": 320,
           "minWidth": 160
@@ -398,7 +398,7 @@
       ],
       "atoms": {
         "modal": {
-          "label": "弹窗",
+          "label": "Modal",
           "resize": "both",
           "width": 520,
           "minWidth": 280,
@@ -422,7 +422,7 @@
       ],
       "atoms": {
         "drawer": {
-          "label": "抽屉",
+          "label": "Drawer",
           "resize": "y",
           "width": 420,
           "height": 480,
@@ -456,7 +456,7 @@
       "requires": [],
       "atoms": {
         "crumb": {
-          "label": "面包屑项",
+          "label": "Breadcrumb item",
           "resize": "none"
         }
       }
@@ -474,7 +474,7 @@
       "requires": [],
       "atoms": {
         "date-range": {
-          "label": "日期范围",
+          "label": "Date range",
           "resize": "x",
           "width": 220,
           "minWidth": 160
@@ -494,7 +494,7 @@
       "requires": [],
       "atoms": {
         "checkbox": {
-          "label": "复选框",
+          "label": "Checkbox",
           "resize": "none"
         }
       }
@@ -512,7 +512,7 @@
       "requires": [],
       "atoms": {
         "radio": {
-          "label": "单选框",
+          "label": "Radio",
           "resize": "none"
         }
       }
@@ -581,7 +581,7 @@
       "requires": [],
       "atoms": {
         "step": {
-          "label": "步骤",
+          "label": "Step",
           "resize": "none"
         }
       }
@@ -611,7 +611,7 @@
       "requires": [],
       "atoms": {
         "progress": {
-          "label": "进度条",
+          "label": "Progress",
           "resize": "x",
           "width": 180,
           "minWidth": 80
@@ -643,7 +643,7 @@
       "requires": [],
       "atoms": {
         "statistic": {
-          "label": "指标",
+          "label": "Statistic",
           "resize": "none"
         }
       }
@@ -661,7 +661,7 @@
       "requires": [],
       "atoms": {
         "card": {
-          "label": "卡片",
+          "label": "Card",
           "resize": "both",
           "width": 320,
           "minWidth": 160,
@@ -717,7 +717,7 @@
       ],
       "atoms": {
         "chart": {
-          "label": "折线图",
+          "label": "Line chart",
           "resize": "both",
           "width": 480,
           "height": 240,
@@ -745,7 +745,7 @@
       ],
       "atoms": {
         "chart": {
-          "label": "柱状图",
+          "label": "Bar chart",
           "resize": "both",
           "width": 480,
           "height": 240,
@@ -773,7 +773,7 @@
       ],
       "atoms": {
         "chart": {
-          "label": "环形图",
+          "label": "Donut chart",
           "resize": "both",
           "width": 480,
           "height": 240,
@@ -800,7 +800,7 @@
       ],
       "atoms": {
         "chart": {
-          "label": "组合图",
+          "label": "Mixed chart",
           "resize": "both",
           "width": 480,
           "height": 240,
@@ -827,7 +827,7 @@
       ],
       "atoms": {
         "chart": {
-          "label": "漏斗图",
+          "label": "Funnel chart",
           "resize": "both",
           "width": 480,
           "height": 280,
@@ -854,7 +854,7 @@
       ],
       "atoms": {
         "chart": {
-          "label": "仪表盘",
+          "label": "Gauge",
           "resize": "both",
           "width": 480,
           "height": 240,
@@ -881,7 +881,7 @@
       ],
       "atoms": {
         "chart": {
-          "label": "热力图",
+          "label": "Heatmap",
           "resize": "both",
           "width": 480,
           "height": 280,
@@ -912,7 +912,7 @@
       ],
       "atoms": {
         "chart": {
-          "label": "地图",
+          "label": "Map",
           "resize": "both",
           "width": 480,
           "height": 360,
@@ -938,7 +938,7 @@
       ],
       "atoms": {
         "textarea": {
-          "label": "多行输入",
+          "label": "Textarea",
           "resize": "both",
           "width": 240,
           "minWidth": 80,
@@ -962,7 +962,7 @@
       ],
       "atoms": {
         "switch": {
-          "label": "开关",
+          "label": "Switch",
           "resize": "none"
         }
       }
@@ -984,7 +984,7 @@
       ],
       "atoms": {
         "date": {
-          "label": "日期",
+          "label": "Date",
           "resize": "x",
           "width": 160,
           "minWidth": 120
@@ -1009,7 +1009,7 @@
       ],
       "atoms": {
         "button": {
-          "label": "上传按钮",
+          "label": "Upload button",
           "resize": "none"
         }
       }
@@ -1028,7 +1028,7 @@
       "requires": [],
       "atoms": {
         "avatar": {
-          "label": "头像",
+          "label": "Avatar",
           "resize": "none"
         }
       }

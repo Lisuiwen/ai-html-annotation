@@ -2,6 +2,17 @@
 
 All notable changes to AI HTML Annotation are documented here.
 
+## Unreleased
+
+### Added
+
+- Module sketch board: a free canvas for a rough reference screenshot. Open it from Author Tools, or on its own with `node sketch/serve.mjs`. Place atoms from the selected UI pack, draw boxes for a phone frame, and export the canvas only.
+- UI packs declare placeable atoms in `components[<id>].atoms` and mark them with `data-pack-atom` in `component.html`. `ui-pack-maintain` owns the field rules; `validate-pack.mjs` checks them. `admin-desktop` is v6 (40 atoms) and `mobile-vant` is v2 (12 atoms).
+
+### Changed
+
+- The sketch static server exposes only `sketch/` and `.html-prototype/packs/`, and it accepts only `127.0.0.1` and `localhost` hosts.
+
 ## v0.4.1 — 2026-09-15
 
 ### English

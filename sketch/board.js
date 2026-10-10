@@ -6,13 +6,13 @@ import { FRAME, resolveSizing } from './sizing.js';
 const board = document.getElementById('board');
 const status = document.getElementById('status');
 const BASIC_TOOLS = [
-  ['select', '选择'],
-  ['rect', '方框'],
-  ['ellipse', '圆'],
-  ['line', '直线'],
-  ['text', '文字']
+  ['select', 'Select'],
+  ['rect', 'Box'],
+  ['ellipse', 'Circle'],
+  ['line', 'Line'],
+  ['text', 'Text']
 ];
-const AXIS_LABEL = { none: '只拖动', x: '只拉宽', y: '只拉高', both: '拉宽和高' };
+const AXIS_LABEL = { none: 'move only', x: 'width only', y: 'height only', both: 'width and height' };
 const HANDLES = { none: [], x: ['w', 'e'], y: ['n', 's'], both: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'] };
 
 let tool = 'select';
@@ -57,7 +57,7 @@ function restack(node, toFront) {
     board.insertBefore(node, first);
   }
   remember({ type: 'order', node, next });
-  setStatus(toFront ? '已置顶' : '已置底');
+  setStatus(toFront ? 'Brought forward' : 'Sent back');
 }
 
 function setUnderlay(src) {
@@ -113,7 +113,7 @@ function remember(entry) {
 function undo() {
   const entry = undoStack.pop();
   if (!entry) {
-    setStatus('没有可撤回的操作');
+    setStatus('Nothing to undo');
     return;
   }
   if (entry.type === 'add') {
@@ -132,7 +132,7 @@ function undo() {
   } else if (entry.type === 'underlay') {
     setUnderlay(entry.before);
   }
-  setStatus('已撤回');
+  setStatus('Undone');
 }
 
 function removeSelected() {
@@ -326,7 +326,7 @@ function createShape(kind) {
     body.className = 'text-body';
     try { body.contentEditable = 'plaintext-only'; } catch (error) { body.contentEditable = 'true'; }
     body.spellcheck = false;
-    body.textContent = '文字';
+    body.textContent = 'Text';
     body.addEventListener('input', () => {
       stamp.dataset.edited = '1';
       syncFluidHeight(stamp);
@@ -643,18 +643,18 @@ document.getElementById('clear-board').addEventListener('click', () => {
   selected = null;
   setUnderlay('');
   remember({ type: 'clear', nodes, underlay: previous });
-  setStatus('已清空');
+  setStatus('Cleared');
 });
 
 document.getElementById('export').addEventListener('click', async () => {
   const button = document.getElementById('export');
   button.disabled = true;
-  setStatus('正在截图…');
+  setStatus('Capturing…');
   try {
     await downloadBoardPng(board);
-    setStatus('已下载截图');
+    setStatus('Screenshot downloaded');
   } catch (error) {
-    setStatus(error.message || '截图失败');
+    setStatus(error.message || 'Screenshot failed');
   } finally {
     button.disabled = false;
   }
@@ -677,7 +677,7 @@ async function renderPackPicker() {
     return option;
   }));
   picker.addEventListener('change', () => {
-    if (board.querySelector('.stamp') && !window.confirm('切换组件库会清空当前画布，继续？')) {
+    if (board.querySelector('.stamp') && !window.confirm('Switching packs clears the canvas. Continue?')) {
       picker.value = packId;
       return;
     }
