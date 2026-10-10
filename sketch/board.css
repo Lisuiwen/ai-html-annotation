@@ -126,11 +126,11 @@ body.is-embed .dock h1 { display: none; }
 
 .board-underlay {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
   z-index: 0;
   width: 100%;
-  height: 100%;
-  object-fit: fill;
+  height: auto;
   pointer-events: none;
 }
 
@@ -189,8 +189,8 @@ body.is-embed .dock h1 { display: none; }
 .stamp[data-chart] .stamp-host > * { height: auto; }
 .stamp[data-chart] .ui-chart-canvas { background: var(--ui-bg, #fff); }
 
-.stamp[data-atom="nav.brand"] .ui-brand { width: max-content; height: auto; }
-.stamp[data-atom="nav.nav-link"] { height: auto; }
+.stamp[data-atom="brand"] .ui-brand { width: max-content; height: auto; }
+.stamp[data-atom="nav-link"] { height: auto; }
 .stamp .ui-header { position: relative; top: auto; z-index: auto; }
 .stamp .ui-visually-hidden {
   position: absolute;
@@ -219,6 +219,10 @@ body.is-embed .dock h1 { display: none; }
 .handle-s { bottom: -5px; left: calc(50% - 5px); cursor: ns-resize; }
 .handle-e { top: calc(50% - 5px); right: -5px; cursor: ew-resize; }
 .handle-w { top: calc(50% - 5px); left: -5px; cursor: ew-resize; }
+.handle-ne { top: -5px; right: -5px; cursor: nesw-resize; }
+.handle-sw { bottom: -5px; left: -5px; cursor: nesw-resize; }
+.handle-nw { top: -5px; left: -5px; cursor: nwse-resize; }
+.handle-se { bottom: -5px; right: -5px; cursor: nwse-resize; }
 
 .shape-rect, .shape-ellipse {
   width: 100%;

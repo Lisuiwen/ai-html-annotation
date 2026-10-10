@@ -79,7 +79,7 @@ export async function downloadBoardPng(board) {
   ctx.fillRect(0, 0, frameWidth, frameHeight);
   if (underlaySrc) {
     const photo = await loadImage(underlaySrc);
-    ctx.drawImage(photo, 0, 0, frameWidth, frameHeight);
+    ctx.drawImage(photo, 0, 0, frameWidth, frameWidth * photo.naturalHeight / photo.naturalWidth);
   }
   ctx.drawImage(image, 0, 0, frameWidth, frameHeight);
 

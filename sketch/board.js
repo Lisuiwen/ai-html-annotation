@@ -13,14 +13,13 @@ const BASIC_TOOLS = [
   ['text', '文字']
 ];
 const AXIS_LABEL = { none: '只拖动', x: '只拉宽', y: '只拉高', both: '拉宽和高' };
-const HANDLES = { none: [], x: ['w', 'e'], y: ['n', 's'], both: ['n', 'e', 's', 'w'] };
+const HANDLES = { none: [], x: ['w', 'e'], y: ['n', 's'], both: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'] };
 
 let tool = 'select';
 let selected = null;
 let drag = null;
 let stampSerial = 0;
 let placeSerial = 0;
-let zIndex = 1;
 const undoStack = [];
 
 if (new URLSearchParams(location.search).get('embed') === '1') {
@@ -44,8 +43,31 @@ function select(stamp) {
   selected = stamp || null;
   if (!stamp) return;
   stamp.classList.add('is-selected');
-  zIndex += 1;
-  stamp.style.zIndex = String(zIndex);
+}
+
+/* Stacking follows DOM order; the underlay stays the first child. */
+function restack(node, toFront) {
+  const next = node.nextSibling;
+  if (toFront) {
+    if (!next) return;
+    board.appendChild(node);
+  } else {
+    const first = underlay.nextSibling;
+    if (first === node) return;
+    board.insertBefore(node, first);
+  }
+  remember({ type: 'order', node, next });
+  setStatus(toFront ? '已置顶' : '已置底');
+}
+
+function setUnderlay(src) {
+  if (src) {
+    underlay.src = src;
+    underlay.hidden = false;
+  } else {
+    underlay.removeAttribute('src');
+    underlay.hidden = true;
+  }
 }
 
 function geomOf(stamp) {
@@ -97,7 +119,7 @@ function undo() {
   if (entry.type === 'add') {
     if (selected === entry.node) selected = null;
     entry.node.remove();
-  } else if (entry.type === 'remove') {
+  } else if (entry.type === 'remove' || entry.type === 'order') {
     if (entry.next && entry.next.parentNode === board) board.insertBefore(entry.node, entry.next);
     else board.appendChild(entry.node);
     select(entry.node);
@@ -106,10 +128,9 @@ function undo() {
     select(entry.node);
   } else if (entry.type === 'clear') {
     entry.nodes.forEach((node) => board.appendChild(node));
-    if (entry.underlay) {
-      underlay.src = entry.underlay;
-      underlay.hidden = false;
-    }
+    if (entry.underlay) setUnderlay(entry.underlay);
+  } else if (entry.type === 'underlay') {
+    setUnderlay(entry.before);
   }
   setStatus('已撤回');
 }
@@ -236,7 +257,7 @@ function resizeBox(start, edge, dx, dy, stamp) {
 
   if (stamp.dataset.kind === 'ellipse') {
     if (edge === 'e' || edge === 'w') height = width;
-    else width = height;
+    else if (edge === 'n' || edge === 's') width = height;
   }
 
   width = Math.max(minW, width);
@@ -305,7 +326,7 @@ function createShape(kind) {
   if (kind === 'text') {
     const body = document.createElement('div');
     body.className = 'text-body';
-    body.contentEditable = 'true';
+    try { body.contentEditable = 'plaintext-only'; } catch (error) { body.contentEditable = 'true'; }
     body.spellcheck = false;
     body.textContent = '文字';
     body.addEventListener('input', () => {
@@ -433,7 +454,7 @@ function renderPalette(entries, categoryOrder) {
 function beginPointer(event) {
   if (event.button !== 0) return;
   const handle = event.target.closest('.handle');
-  const stamp = event.target.closest('.stamp');
+  const stamp = tool === 'select' ? event.target.closest('.stamp') : null;
   if (stamp) {
     const already = stamp.classList.contains('is-selected');
     select(stamp);
@@ -518,7 +539,7 @@ function movePointer(event) {
   }
 }
 
-function endPointer(event) {
+function endPointer() {
   if (!drag) return;
   const ended = drag;
   drag = null;
@@ -542,11 +563,6 @@ function endPointer(event) {
     selection.removeAllRanges();
     selection.addRange(range);
   }
-  if (ended.mode === 'move' && ended.stamp.dataset.kind === 'text' && event) {
-    const current = point(event);
-    const moved = Math.hypot(current.x - ended.origin.x, current.y - ended.origin.y);
-    if (moved < 3) ended.stamp.querySelector('.text-body').focus();
-  }
 }
 
 document.getElementById('palette').addEventListener('click', (event) => {
@@ -558,7 +574,7 @@ document.getElementById('palette').addEventListener('click', (event) => {
 board.addEventListener('pointerdown', beginPointer);
 board.addEventListener('pointermove', movePointer);
 board.addEventListener('pointerup', endPointer);
-board.addEventListener('pointercancel', () => { drag = null; });
+board.addEventListener('pointercancel', endPointer);
 
 function typingTarget(node) {
   return node && (node.isContentEditable || (node.closest && node.closest('input, textarea')));
@@ -574,6 +590,12 @@ window.addEventListener('keydown', (event) => {
     return;
   }
   if (event.key === 'Escape') {
+    const active = document.activeElement;
+    if (active && active.isContentEditable && active.closest('.stamp')) {
+      active.blur();
+      window.getSelection().removeAllRanges();
+      return;
+    }
     if (tool !== 'select') {
       setTool('select');
       return;
@@ -581,6 +603,12 @@ window.addEventListener('keydown', (event) => {
     if (window.parent !== window) {
       window.parent.postMessage({ source: 'sketch-board', type: 'close' }, window.location.origin);
     }
+    return;
+  }
+  if ((event.key === ']' || event.key === '[') && !event.ctrlKey && !event.metaKey && !event.altKey) {
+    if (!selected || drag || typingTarget(document.activeElement)) return;
+    event.preventDefault();
+    restack(selected, event.key === ']');
     return;
   }
   if (event.key !== 'Delete' && event.key !== 'Backspace') return;
@@ -599,10 +627,11 @@ board.appendChild(underlay);
 document.getElementById('underlay-file').addEventListener('change', (event) => {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
+  event.target.value = '';
   const reader = new FileReader();
   reader.onload = () => {
-    underlay.src = String(reader.result);
-    underlay.hidden = false;
+    remember({ type: 'underlay', before: underlay.hidden ? '' : underlay.src });
+    setUnderlay(String(reader.result));
   };
   reader.readAsDataURL(file);
 });
@@ -613,9 +642,7 @@ document.getElementById('clear-board').addEventListener('click', () => {
   if (!nodes.length && !previous) return;
   nodes.forEach((node) => node.remove());
   selected = null;
-  underlay.removeAttribute('src');
-  underlay.hidden = true;
-  document.getElementById('underlay-file').value = '';
+  setUnderlay('');
   remember({ type: 'clear', nodes, underlay: previous });
   setStatus('已清空');
 });
