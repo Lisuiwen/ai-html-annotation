@@ -5,11 +5,6 @@ import { FRAME, resolveSizing } from './sizing.js';
 
 const board = document.getElementById('board');
 const status = document.getElementById('status');
-const CATEGORY_LABEL = {
-  control: '控件',
-  nav: '导航',
-  block: '区块'
-};
 const BASIC_TOOLS = [
   ['select', '选择'],
   ['rect', '方框'],
@@ -389,12 +384,19 @@ async function placeComponent(entry, button) {
   }
 }
 
-function renderPalette(entries) {
+function appendPaletteButton(palette, entry) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  const spec = resolveSizing(entry);
+  button.textContent = entry.label;
+  button.title = entry.id + ' · ' + AXIS_LABEL[spec.axis];
+  button.addEventListener('click', () => placeComponent(entry, button));
+  palette.appendChild(button);
+}
+
+function renderPalette(entries, categoryOrder) {
   const palette = document.getElementById('palette');
   palette.replaceChildren();
-  const basicHeading = document.createElement('h2');
-  basicHeading.textContent = '基础';
-  palette.appendChild(basicHeading);
   BASIC_TOOLS.forEach(([id, label]) => {
     const button = document.createElement('button');
     button.type = 'button';
@@ -403,12 +405,18 @@ function renderPalette(entries) {
     button.classList.toggle('is-active', id === tool);
     palette.appendChild(button);
   });
-  const order = ['control', 'nav', 'block'];
   const groups = new Map();
+  const loose = [];
   entries.forEach((entry) => {
+    if (!entry.category) {
+      loose.push(entry);
+      return;
+    }
     if (!groups.has(entry.category)) groups.set(entry.category, []);
     groups.get(entry.category).push(entry);
   });
+  loose.forEach((entry) => appendPaletteButton(palette, entry));
+  const order = categoryOrder || [];
   const categories = [...groups.keys()].sort((a, b) => {
     const ia = order.indexOf(a);
     const ib = order.indexOf(b);
@@ -416,17 +424,9 @@ function renderPalette(entries) {
   });
   categories.forEach((category) => {
     const heading = document.createElement('h2');
-    heading.textContent = CATEGORY_LABEL[category] || category;
+    heading.textContent = category;
     palette.appendChild(heading);
-    groups.get(category).forEach((entry) => {
-      const button = document.createElement('button');
-      button.type = 'button';
-      const spec = resolveSizing(entry);
-      button.textContent = entry.label;
-      button.title = entry.id + ' · ' + AXIS_LABEL[spec.axis];
-      button.addEventListener('click', () => placeComponent(entry, button));
-      palette.appendChild(button);
-    });
+    groups.get(category).forEach((entry) => appendPaletteButton(palette, entry));
   });
 }
 
@@ -638,8 +638,9 @@ fitBoard();
 new ResizeObserver(fitBoard).observe(board.parentElement.parentElement);
 
 loadManifest().then((manifest) => {
-  renderPalette(paletteEntries(manifest));
+  const palette = paletteEntries(manifest);
+  renderPalette(palette.entries, palette.categoryOrder);
 }).catch((error) => {
-  renderPalette([]);
+  renderPalette([], []);
   setStatus(error.message);
 });

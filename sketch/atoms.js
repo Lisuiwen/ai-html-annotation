@@ -1,15 +1,15 @@
 /* Placeable pieces taken out of pack demos. Each atom is one control, not the whole example. */
 
 const control = (id, componentId, label, selector, sizing, extra) => Object.assign({
-  id, componentId, label, selector, category: 'control', sizing
+  id, componentId, label, selector, sizing
 }, extra);
 
 const nav = (id, componentId, label, selector, sizing, extra) => Object.assign({
-  id, componentId, label, selector, category: 'nav', sizing
+  id, componentId, label, selector, sizing
 }, extra);
 
 const block = (id, componentId, label, sizingKey) => ({
-  id, componentId, label, category: 'block', sizingKey, selector: null
+  id, componentId, label, sizingKey, selector: null
 });
 
 export const ATOMS = [

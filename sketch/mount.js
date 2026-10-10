@@ -150,13 +150,20 @@ export async function fillStamp(stamp, atomId) {
   stamp.querySelector('.stamp-host').replaceChildren(root);
 }
 
-export function paletteEntries() {
-  return ATOMS.map((atom) => ({
-    id: atom.id,
-    label: atom.label,
-    category: atom.category,
-    componentId: atom.componentId,
-    sizing: atom.sizing,
-    sizingKey: atom.sizingKey
-  }));
+export function paletteEntries(manifest) {
+  const components = manifest && manifest.components || {};
+  const categoryOrder = manifest && manifest.providers ? Object.keys(manifest.providers) : [];
+  const entries = ATOMS.map((atom) => {
+    const component = components[atom.componentId];
+    const category = component && typeof component.category === 'string' ? component.category.trim() : '';
+    return {
+      id: atom.id,
+      label: atom.label,
+      category,
+      componentId: atom.componentId,
+      sizing: atom.sizing,
+      sizingKey: atom.sizingKey
+    };
+  });
+  return { entries, categoryOrder };
 }
