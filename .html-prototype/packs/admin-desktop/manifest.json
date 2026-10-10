@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "admin-desktop",
-  "version": 5,
+  "version": 6,
   "classPrefix": "ui-",
   "tokenPrefix": "ui-",
   "foundation": {
@@ -58,7 +58,28 @@
       ],
       "contract": "components/action/button/COMPONENT.md",
       "source": "components/action/button/component.html",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "primary": {
+          "label": "主按钮",
+          "resize": "x",
+          "minWidth": 32
+        },
+        "secondary": {
+          "label": "次按钮",
+          "resize": "x",
+          "minWidth": 32
+        },
+        "text": {
+          "label": "文字按钮",
+          "resize": "x",
+          "minWidth": 32
+        },
+        "icon": {
+          "label": "图标按钮",
+          "resize": "none"
+        }
+      }
     },
     "navigation.app-header": {
       "category": "navigation",
@@ -73,7 +94,17 @@
       "requires": [],
       "optional": [
         "action.button"
-      ]
+      ],
+      "atoms": {
+        "brand": {
+          "label": "品牌",
+          "resize": "none"
+        },
+        "link": {
+          "label": "顶栏链接",
+          "resize": "none"
+        }
+      }
     },
     "navigation.sider-menu": {
       "category": "navigation",
@@ -84,7 +115,15 @@
       ],
       "contract": "components/navigation/sider-menu/COMPONENT.md",
       "source": "components/navigation/sider-menu/component.html",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "menu-item": {
+          "label": "菜单项",
+          "resize": "x",
+          "width": 180,
+          "minWidth": 96
+        }
+      }
     },
     "navigation.tree": {
       "category": "navigation",
@@ -96,7 +135,15 @@
       "contract": "components/navigation/tree/COMPONENT.md",
       "source": "components/navigation/tree/component.html",
       "adapter": "components/navigation/tree/state-adapter.js",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "row": {
+          "label": "树节点",
+          "resize": "x",
+          "width": 180,
+          "minWidth": 96
+        }
+      }
     },
     "navigation.tabs": {
       "category": "navigation",
@@ -109,7 +156,13 @@
       "contract": "components/navigation/tabs/COMPONENT.md",
       "source": "components/navigation/tabs/component.html",
       "adapter": "components/navigation/tabs/state-adapter.js",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "tab": {
+          "label": "页签",
+          "resize": "none"
+        }
+      }
     },
     "form.input": {
       "category": "form",
@@ -119,7 +172,15 @@
       ],
       "contract": "components/form/input/COMPONENT.md",
       "source": "components/form/input/component.html",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "input": {
+          "label": "输入框",
+          "resize": "x",
+          "width": 180,
+          "minWidth": 80
+        }
+      }
     },
     "form.field": {
       "category": "form",
@@ -137,7 +198,15 @@
         "form.textarea",
         "form.date-picker",
         "form.switch"
-      ]
+      ],
+      "atoms": {
+        "field": {
+          "label": "行内字段",
+          "resize": "x",
+          "width": 220,
+          "minWidth": 120
+        }
+      }
     },
     "form.search": {
       "category": "form",
@@ -151,7 +220,15 @@
       "requires": [
         "form.input",
         "action.button"
-      ]
+      ],
+      "atoms": {
+        "search": {
+          "label": "搜索框",
+          "resize": "x",
+          "width": 220,
+          "minWidth": 120
+        }
+      }
     },
     "form.select": {
       "category": "form",
@@ -163,7 +240,15 @@
       "contract": "components/form/select/COMPONENT.md",
       "source": "components/form/select/component.html",
       "adapter": "components/form/select/state-adapter.js",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "select": {
+          "label": "选择器",
+          "resize": "x",
+          "width": 180,
+          "minWidth": 80
+        }
+      }
     },
     "form.form-grid": {
       "category": "form",
@@ -190,7 +275,16 @@
         "form.field",
         "form.select",
         "action.button"
-      ]
+      ],
+      "atoms": {
+        "filter": {
+          "label": "筛选条",
+          "resize": "x",
+          "width": 720,
+          "height": 102,
+          "minWidth": 240
+        }
+      }
     },
     "data.toolbar": {
       "category": "data",
@@ -215,7 +309,13 @@
       ],
       "contract": "components/data/tag/COMPONENT.md",
       "source": "components/data/tag/component.html",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "tag": {
+          "label": "标签",
+          "resize": "none"
+        }
+      }
     },
     "data.data-table": {
       "category": "data",
@@ -232,7 +332,15 @@
       "optional": [
         "action.button",
         "data.tag"
-      ]
+      ],
+      "atoms": {
+        "table": {
+          "label": "表格",
+          "resize": "both",
+          "width": 680,
+          "height": 160
+        }
+      }
     },
     "data.pagination": {
       "category": "data",
@@ -264,7 +372,15 @@
       ],
       "contract": "components/feedback/alert/COMPONENT.md",
       "source": "components/feedback/alert/component.html",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "alert": {
+          "label": "提示",
+          "resize": "x",
+          "width": 320,
+          "minWidth": 160
+        }
+      }
     },
     "feedback.modal": {
       "category": "feedback",
@@ -279,7 +395,16 @@
       "requires": [
         "feedback._overlay-core",
         "action.button"
-      ]
+      ],
+      "atoms": {
+        "modal": {
+          "label": "弹窗",
+          "resize": "both",
+          "width": 520,
+          "minWidth": 280,
+          "minHeight": 120
+        }
+      }
     },
     "feedback.drawer": {
       "category": "feedback",
@@ -294,7 +419,16 @@
       "requires": [
         "feedback._overlay-core",
         "action.button"
-      ]
+      ],
+      "atoms": {
+        "drawer": {
+          "label": "抽屉",
+          "resize": "y",
+          "width": 420,
+          "height": 480,
+          "minHeight": 160
+        }
+      }
     },
     "feedback.toast": {
       "category": "feedback",
@@ -319,7 +453,13 @@
       ],
       "contract": "components/navigation/breadcrumb/COMPONENT.md",
       "source": "components/navigation/breadcrumb/component.html",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "crumb": {
+          "label": "面包屑项",
+          "resize": "none"
+        }
+      }
     },
     "form.date-range-picker": {
       "category": "form",
@@ -331,7 +471,15 @@
       "contract": "components/form/date-range-picker/COMPONENT.md",
       "source": "components/form/date-range-picker/component.html",
       "adapter": "components/form/date-range-picker/state-adapter.js",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "date-range": {
+          "label": "日期范围",
+          "resize": "x",
+          "width": 220,
+          "minWidth": 160
+        }
+      }
     },
     "form.checkbox-group": {
       "category": "form",
@@ -343,7 +491,13 @@
       "contract": "components/form/checkbox-group/COMPONENT.md",
       "source": "components/form/checkbox-group/component.html",
       "adapter": "components/form/checkbox-group/state-adapter.js",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "checkbox": {
+          "label": "复选框",
+          "resize": "none"
+        }
+      }
     },
     "form.radio-group": {
       "category": "form",
@@ -355,7 +509,13 @@
       "contract": "components/form/radio-group/COMPONENT.md",
       "source": "components/form/radio-group/component.html",
       "adapter": "components/form/radio-group/state-adapter.js",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "radio": {
+          "label": "单选框",
+          "resize": "none"
+        }
+      }
     },
     "feedback.popconfirm": {
       "category": "feedback",
@@ -418,7 +578,13 @@
       "contract": "components/navigation/steps/COMPONENT.md",
       "source": "components/navigation/steps/component.html",
       "adapter": "components/navigation/steps/state-adapter.js",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "step": {
+          "label": "步骤",
+          "resize": "none"
+        }
+      }
     },
     "data.timeline": {
       "category": "data",
@@ -442,7 +608,15 @@
       "contract": "components/feedback/progress/COMPONENT.md",
       "source": "components/feedback/progress/component.html",
       "adapter": "components/feedback/progress/state-adapter.js",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "progress": {
+          "label": "进度条",
+          "resize": "x",
+          "width": 180,
+          "minWidth": 80
+        }
+      }
     },
     "feedback.skeleton": {
       "category": "feedback",
@@ -466,7 +640,13 @@
       "contract": "components/data/statistic/COMPONENT.md",
       "source": "components/data/statistic/component.html",
       "adapter": "components/data/statistic/state-adapter.js",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "statistic": {
+          "label": "指标",
+          "resize": "none"
+        }
+      }
     },
     "data.card": {
       "category": "data",
@@ -478,7 +658,16 @@
       "contract": "components/data/card/COMPONENT.md",
       "source": "components/data/card/component.html",
       "adapter": "components/data/card/state-adapter.js",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "card": {
+          "label": "卡片",
+          "resize": "both",
+          "width": 320,
+          "minWidth": 160,
+          "minHeight": 80
+        }
+      }
     },
     "data.list": {
       "category": "data",
@@ -525,7 +714,17 @@
       ],
       "optional": [
         "data.card"
-      ]
+      ],
+      "atoms": {
+        "chart": {
+          "label": "折线图",
+          "resize": "both",
+          "width": 480,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
     },
     "data.chart-bar": {
       "category": "data",
@@ -543,7 +742,17 @@
       ],
       "optional": [
         "data.card"
-      ]
+      ],
+      "atoms": {
+        "chart": {
+          "label": "柱状图",
+          "resize": "both",
+          "width": 480,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
     },
     "data.chart-donut": {
       "category": "data",
@@ -561,7 +770,17 @@
       ],
       "optional": [
         "data.card"
-      ]
+      ],
+      "atoms": {
+        "chart": {
+          "label": "环形图",
+          "resize": "both",
+          "width": 480,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
     },
     "data.chart-mixed": {
       "category": "data",
@@ -578,7 +797,17 @@
       ],
       "optional": [
         "data.card"
-      ]
+      ],
+      "atoms": {
+        "chart": {
+          "label": "组合图",
+          "resize": "both",
+          "width": 480,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
     },
     "data.chart-funnel": {
       "category": "data",
@@ -595,7 +824,17 @@
       ],
       "optional": [
         "data.card"
-      ]
+      ],
+      "atoms": {
+        "chart": {
+          "label": "漏斗图",
+          "resize": "both",
+          "width": 480,
+          "height": 280,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
     },
     "data.chart-gauge": {
       "category": "data",
@@ -612,7 +851,17 @@
       ],
       "optional": [
         "data.card"
-      ]
+      ],
+      "atoms": {
+        "chart": {
+          "label": "仪表盘",
+          "resize": "both",
+          "width": 480,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
     },
     "data.chart-heatmap": {
       "category": "data",
@@ -629,7 +878,17 @@
       ],
       "optional": [
         "data.card"
-      ]
+      ],
+      "atoms": {
+        "chart": {
+          "label": "热力图",
+          "resize": "both",
+          "width": 480,
+          "height": 280,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
     },
     "data.chart-map": {
       "category": "data",
@@ -650,7 +909,17 @@
       ],
       "optional": [
         "data.card"
-      ]
+      ],
+      "atoms": {
+        "chart": {
+          "label": "地图",
+          "resize": "both",
+          "width": 480,
+          "height": 360,
+          "minWidth": 160,
+          "minHeight": 200
+        }
+      }
     },
     "form.textarea": {
       "category": "form",
@@ -666,7 +935,16 @@
       "requires": [],
       "optional": [
         "form.field"
-      ]
+      ],
+      "atoms": {
+        "textarea": {
+          "label": "多行输入",
+          "resize": "both",
+          "width": 240,
+          "minWidth": 80,
+          "minHeight": 64
+        }
+      }
     },
     "form.switch": {
       "category": "form",
@@ -681,7 +959,13 @@
       "requires": [],
       "optional": [
         "form.field"
-      ]
+      ],
+      "atoms": {
+        "switch": {
+          "label": "开关",
+          "resize": "none"
+        }
+      }
     },
     "form.date-picker": {
       "category": "form",
@@ -697,7 +981,15 @@
       "requires": [],
       "optional": [
         "form.field"
-      ]
+      ],
+      "atoms": {
+        "date": {
+          "label": "日期",
+          "resize": "x",
+          "width": 160,
+          "minWidth": 120
+        }
+      }
     },
     "form.upload": {
       "category": "form",
@@ -714,7 +1006,13 @@
       "optional": [
         "action.button",
         "feedback.progress"
-      ]
+      ],
+      "atoms": {
+        "button": {
+          "label": "上传按钮",
+          "resize": "none"
+        }
+      }
     },
     "data.avatar": {
       "category": "data",
@@ -727,7 +1025,13 @@
       "contract": "components/data/avatar/COMPONENT.md",
       "source": "components/data/avatar/component.html",
       "adapter": "components/data/avatar/state-adapter.js",
-      "requires": []
+      "requires": [],
+      "atoms": {
+        "avatar": {
+          "label": "头像",
+          "resize": "none"
+        }
+      }
     },
     "feedback.tooltip": {
       "category": "feedback",
