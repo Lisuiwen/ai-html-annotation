@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* Local prototype author server: HTTP, static assets, and author-tool wiring only. */
 import { createServer } from 'node:http';
+import { randomBytes } from 'node:crypto';
 import { existsSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, extname, join, normalize, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -21,6 +22,7 @@ const input = process.argv.slice(2).find((arg) => !arg.startsWith('--'));
 const isDirectExecution = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 const portArg = process.argv.find((arg) => arg.startsWith('--port='));
 const port = Number(portArg && portArg.split('=')[1] || 4178);
+const authorToken = randomBytes(24).toString('hex');
 
 /* Load skill-root .env without overriding existing process.env so outer CI/local vars win. */
 function loadEnvFile(filePath) {
@@ -110,6 +112,7 @@ const server = createServer(async (request, response) => {
 
     if (request.method === 'POST' && url.pathname === '/__prototype-author/edit') {
       if (!isTrustedAuthorRequest(request, port)) return response.writeHead(403).end('Forbidden author request');
+      if (request.headers['x-prototype-author-token'] !== authorToken) return response.writeHead(403).end('Forbidden author request');
       if (!htmlPath) return response.writeHead(503).end('This service has no prototype HTML configured.');
       const payload = await readJson(request);
       const next = applyPrototypeEdit(readFileSync(htmlPath, 'utf8'), payload);
@@ -190,7 +193,7 @@ function serveRepoFile(response, pathname, prefix, baseDir) {
 }
 
 function injectAuthorLoader(content) {
-  var script = '<script src="/__prototype-author/author/bootstrap.js" data-prototype-author-loader></script>';
+  var script = '<script src="/__prototype-author/author/bootstrap.js" data-prototype-author-loader data-token="' + authorToken + '"></script>';
   if (/<\/body>/i.test(content)) return content.replace(/<\/body>/i, script + '\n</body>');
   return content + '\n' + script + '\n';
 }

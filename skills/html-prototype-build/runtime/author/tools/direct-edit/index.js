@@ -121,9 +121,11 @@
       return;
     }
     var patch = session.toPatch();
+    var loader = document.querySelector('[data-prototype-author-loader]');
+    var token = loader ? loader.getAttribute('data-token') : '';
     fetch('/__prototype-author/edit', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', 'x-prototype-author-token': token || '' },
       body: JSON.stringify({ selector: selector, changes: patch })
     }).then(function (res) {
       if (!res.ok) return res.text().then(function (msg) { throw new Error(msg || res.statusText); });
