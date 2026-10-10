@@ -31,9 +31,14 @@ async function validateMetadata() {
   if (!/^html-prototype-build$/.test(path.basename(skillDirectory))) throw new Error('Skill directory name does not match naming rules.');
 }
 
-/** Compile browser scripts without ESM import via VM to avoid spawning child processes. */
+/** Compile classic browser scripts in a VM. Sketch board files are ESM, so check those with node --check. */
 async function validateBrowserScripts(files) {
   for (const file of files.filter((target) => target.endsWith('.js') && !target.includes(`${path.sep}vendor${path.sep}`))) {
+    if (file.includes(`${path.sep}sketch${path.sep}`)) {
+      const checked = spawnSync(process.execPath, ['--check', file], { encoding: 'utf8' });
+      if (checked.status !== 0) throw new Error(checked.stderr || `syntax check failed: ${file}`);
+      continue;
+    }
     const source = await readFile(file, 'utf8');
     new vm.Script(source, { filename: file });
   }

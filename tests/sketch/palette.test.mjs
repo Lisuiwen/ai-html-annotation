@@ -3,8 +3,8 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
-import { packIdFrom, paletteEntries } from '../../sketch/mount.js';
-import { resolveSizing } from '../../sketch/sizing.js';
+import { packIdFrom, paletteEntries } from '../../skills/html-prototype-build/sketch/mount.js';
+import { resolveSizing } from '../../skills/html-prototype-build/sketch/sizing.js';
 
 const repositoryDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const readManifest = (id) => JSON.parse(readFileSync(path.join(repositoryDirectory, '.html-prototype', 'packs', id, 'manifest.json'), 'utf8'));

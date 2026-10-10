@@ -2,11 +2,13 @@
 /* Read-only static server so the sketch board can fetch UI pack files. */
 import { createServer } from 'node:http';
 import { existsSync, readFileSync, statSync } from 'node:fs';
-import { dirname, extname, isAbsolute, join, relative, resolve } from 'node:path';
+import { dirname, extname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { resolvePackAsset } from '../runtime/server/packs.mjs';
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const sketchDir = dirname(fileURLToPath(import.meta.url));
 const port = Number(process.env.SKETCH_PORT || 4180);
+const allowedHosts = new Set([`127.0.0.1:${port}`, `localhost:${port}`]);
 
 const types = {
   '.html': 'text/html; charset=utf-8',
@@ -23,13 +25,13 @@ const types = {
   '.woff2': 'font/woff2'
 };
 
-/* Only the board and the packs it reads are exposed; the rest of the repo (.git, .env) is not. */
-const exposed = ['sketch', join('.html-prototype', 'packs')].map((dir) => resolve(root, dir));
-const allowedHosts = new Set([`127.0.0.1:${port}`, `localhost:${port}`]);
-
-function inside(base, filePath) {
-  const rel = relative(base, filePath);
-  return rel !== '' && !rel.startsWith('..') && !isAbsolute(rel);
+function sketchFile(pathname) {
+  const rel = pathname.replace(/^\/sketch\/?/, '') || 'index.html';
+  if (!rel || rel.split('/').includes('..')) return null;
+  const filePath = resolve(sketchDir, rel);
+  if (relative(sketchDir, filePath).startsWith('..')) return null;
+  if (existsSync(filePath) && statSync(filePath).isDirectory()) return join(filePath, 'index.html');
+  return filePath;
 }
 
 function fileFor(pathname) {
@@ -39,12 +41,9 @@ function fileFor(pathname) {
   } catch {
     return null;
   }
-  const filePath = resolve(root, decoded.replace(/^\/+/, ''));
-  if (!exposed.some((base) => filePath === base || inside(base, filePath))) return null;
-  if (existsSync(filePath) && statSync(filePath).isDirectory()) {
-    return join(filePath, 'index.html');
-  }
-  return filePath;
+  if (decoded === '/sketch' || decoded.startsWith('/sketch/')) return sketchFile(decoded);
+  if (decoded.startsWith('/.html-prototype/packs/')) return resolvePackAsset(decoded.slice('/.html-prototype/packs/'.length));
+  return null;
 }
 
 const server = createServer((request, response) => {

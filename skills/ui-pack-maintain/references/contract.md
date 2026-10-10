@@ -116,7 +116,7 @@ start with YAML frontmatter:
 
 ## Sketch atoms
 
-An atom is a node that the module sketch board (`html-prototype-build`, `sketch/`) can copy out of
+An atom is a node that the module sketch board (`html-prototype-build/sketch/`) can copy out of
 `component.html` and place by itself: one button, one input, one menu item, one tab. When the
 whole sample is already one layout block (table, card, chart, modal panel), mark that block as the
 atom. Do not mark a composite demo, such as a button row or a full header, as one atom; mark
