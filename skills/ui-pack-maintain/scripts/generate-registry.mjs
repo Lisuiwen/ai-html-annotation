@@ -19,7 +19,7 @@ const defaultRegistryPath = path.join(packRoot, 'registry.json');
 const fallbackRegistryPath = path.join(repositoryRoot, 'skills', 'html-prototype-build', 'ui', 'pack-registry.fallback.json');
 const outputPath = path.resolve(valueOf('--output') || defaultRegistryPath);
 const writeFallback = !argv.includes('--check') && outputPath === path.resolve(defaultRegistryPath);
-const defaultRef = valueOf('--default-ref') || 'v0.4.1';
+const defaultRef = valueOf('--default-ref') || 'master';
 const repository = valueOf('--repository') || 'Lisuiwen/ai-html-annotation';
 const checkOnly = argv.includes('--check');
 

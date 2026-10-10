@@ -12,6 +12,7 @@ All notable changes to AI HTML Annotation are documented here.
 ### Changed
 
 - The sketch static server exposes only the board and installed UI packs, and it accepts only `127.0.0.1` and `localhost` hosts. Pack files resolve from the project, then `~/.html-prototype/packs/`.
+- Pack install registry `ref` is `master` until the next release tag, so a download includes sketch atoms. `resolve-pack.mjs` reads its schema allowlist from inside `html-prototype-build`, so it runs when that skill is installed on its own.
 
 ## v0.4.1 — 2026-09-15
 

@@ -20,7 +20,7 @@ child `manifest.json` qualify as packs.
   "generatedAt": "2026-09-14T00:00:00.000Z",
   "source": {
     "repository": "owner/repo",
-    "defaultRef": "v0.4.1",
+    "defaultRef": "master",
     "packPath": ".html-prototype/packs"
   },
   "packs": [
@@ -30,7 +30,7 @@ child `manifest.json` qualify as packs.
       "description": "Human-readable one-line summary",
       "version": 5,
       "schemaVersion": 2,
-      "ref": "v0.4.1",
+      "ref": "master",
       "foundation": "admin-desktop.default",
       "providers": ["action", "navigation", "form", "data", "feedback"],
       "counts": { "components": 51, "patterns": 3, "presets": 2 }
