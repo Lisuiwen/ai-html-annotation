@@ -2,7 +2,7 @@
 /* Read-only static server so the sketch board can fetch UI pack files. */
 import { createServer } from 'node:http';
 import { existsSync, readFileSync, statSync } from 'node:fs';
-import { dirname, extname, isAbsolute, join, normalize, relative, resolve } from 'node:path';
+import { dirname, extname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -23,17 +23,24 @@ const types = {
   '.woff2': 'font/woff2'
 };
 
-function insideRoot(filePath) {
-  const rel = relative(root, filePath);
+/* Only the board and the packs it reads are exposed; the rest of the repo (.git, .env) is not. */
+const exposed = ['sketch', join('.html-prototype', 'packs')].map((dir) => resolve(root, dir));
+const allowedHosts = new Set([`127.0.0.1:${port}`, `localhost:${port}`]);
+
+function inside(base, filePath) {
+  const rel = relative(base, filePath);
   return rel !== '' && !rel.startsWith('..') && !isAbsolute(rel);
 }
 
 function fileFor(pathname) {
-  const decoded = decodeURIComponent(pathname);
-  const trimmed = decoded.replace(/^\/+/, '');
-  const requested = trimmed === '' ? 'sketch/index.html' : trimmed;
-  const filePath = normalize(join(root, requested));
-  if (!insideRoot(filePath)) return null;
+  let decoded;
+  try {
+    decoded = decodeURIComponent(pathname);
+  } catch {
+    return null;
+  }
+  const filePath = resolve(root, decoded.replace(/^\/+/, ''));
+  if (!exposed.some((base) => filePath === base || inside(base, filePath))) return null;
   if (existsSync(filePath) && statSync(filePath).isDirectory()) {
     return join(filePath, 'index.html');
   }
@@ -45,11 +52,19 @@ const server = createServer((request, response) => {
     response.writeHead(405, { allow: 'GET, HEAD' }).end('Method Not Allowed');
     return;
   }
+  if (!allowedHosts.has(request.headers.host)) {
+    response.writeHead(403).end('Forbidden');
+    return;
+  }
   let url;
   try {
     url = new URL(request.url, `http://127.0.0.1:${port}`);
   } catch {
     response.writeHead(400).end('Bad Request');
+    return;
+  }
+  if (url.pathname === '/') {
+    response.writeHead(302, { location: '/sketch/' }).end();
     return;
   }
   const filePath = fileFor(url.pathname);
