@@ -1,6 +1,6 @@
 ---
 name: html-prototype-build
-description: Build, annotate, review, screenshot, and deliver native HTML UI prototypes with AI agents using reusable UI packs, DOM-bound product annotations, in-browser Direct Edit, browser review pins, a local authoring server, an element-to-source Inspector, and multi-state screenshots. Use when the user mentions /html-prototype-build or asks to reconstruct UI in HTML, create product annotations, edit prototype styles, review or mark DOM elements, capture prototype states, or package prototype deliverables. Works with Claude Code, Codex, Cursor, and other Agent Skills clients; do not use for generic source-code navigation, ordinary documentation, or production frontend development.
+description: Build, annotate, review, screenshot, and deliver native HTML UI prototypes with AI agents using reusable UI packs, DOM-bound product annotations, in-browser Direct Edit, browser review pins, a local authoring server, an element-to-source Inspector, and multi-state screenshots. Use when the user mentions /html-prototype-build or asks to reconstruct UI in HTML, create product annotations, edit prototype styles, review or mark DOM elements, capture prototype states, package prototype deliverables, or add components to the module sketch board. Works with Claude Code, Codex, Cursor, and other Agent Skills clients; do not use for generic source-code navigation, ordinary documentation, or production frontend development.
 ---
 
 # HTML Prototype Build
@@ -22,6 +22,7 @@ Read only the entry that matches the current task; do not read all references at
 | Install or download missing UI packs | [Pack install](references/pack-install.md) | `scripts/install-pack.mjs` |
 | Understand Viewer, note cards, SVG connectors, or interaction lightning | [Product annotations](references/product-annotations.md) | snapshot + Client Runtime |
 | Start the authoring environment, direct edit, edit notes, or jump to source | [Local authoring](references/local-authoring.md) | `runtime/server/index.mjs` + Author Tools |
+| Add or change a sketch-board component | [Sketch board components](references/sketch-board.md) | `sketch/atoms.js` |
 | Add review pins to a page, export For AI | [Review mark](references/review-mark.md) | `runtime/author/tools/mark/` |
 | Batch screenshots by page state | [Scenario screenshots](references/screenshots.md) | `runtime/cli/screenshot.mjs` |
 | Prepare final files | [Delivery & iteration](references/delivery.md) | Final delivery files |

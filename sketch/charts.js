@@ -1,0 +1,64 @@
+/* Draw pack sample charts. Presets supply the series when no business state is passed. */
+
+const PACK = '/.html-prototype/packs/admin-desktop/';
+const PRESET = {
+  'data.chart-line': 'line',
+  'data.chart-bar': 'bar',
+  'data.chart-donut': 'donut',
+  'data.chart-mixed': 'mixed',
+  'data.chart-gauge': 'gauge',
+  'data.chart-funnel': 'funnel',
+  'data.chart-heatmap': 'heatmap',
+  'data.chart-map': 'map'
+};
+
+let runtime = null;
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const existing = document.querySelector('script[data-sketch-src="' + src + '"]');
+    if (existing) {
+      resolve();
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.dataset.sketchSrc = src;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error('无法加载 ' + src));
+    document.head.appendChild(script);
+  });
+}
+
+function ensureRuntime() {
+  if (!runtime) {
+    runtime = loadScript(PACK + 'vendor/echarts/echarts.min.js')
+      .then(() => loadScript(PACK + 'runtime/charts/bridge.js'))
+      .then(() => loadScript(PACK + 'runtime/charts/presets.js'))
+      .then(() => loadScript(PACK + 'components/data/_echarts-core/state-adapter.js'));
+  }
+  return runtime;
+}
+
+export async function paintChart(stamp, componentId) {
+  const preset = PRESET[componentId];
+  if (!preset) return;
+  await ensureRuntime();
+  if (preset === 'map') await loadScript(PACK + 'vendor/echarts/maps/china.js');
+  const root = stamp.querySelector('.ui-chart');
+  const core = window.PrototypeChartCore;
+  if (!root || !core) return;
+  const canvas = root.querySelector('.ui-chart-canvas');
+  if (canvas) void canvas.offsetHeight;
+  const state = { status: 'data' };
+  if (preset === 'map') {
+    state.data = [
+      { name: '广东', value: 120 },
+      { name: '浙江', value: 90 },
+      { name: '江苏', value: 85 },
+      { name: '北京', value: 70 },
+      { name: '四川', value: 55 }
+    ];
+  }
+  core.renderLeaf(root, state, { preset });
+}

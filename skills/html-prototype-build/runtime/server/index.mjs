@@ -15,6 +15,9 @@ export { injectTargets, resolveInspectorTarget } from './inspector.mjs';
 const here = dirname(fileURLToPath(import.meta.url));
 const runtimeRoot = resolve(here, '..');
 const skillRoot = resolve(here, '../..');
+const repoRoot = resolve(skillRoot, '../..');
+const sketchRoot = resolve(repoRoot, 'sketch');
+const packRoot = resolve(repoRoot, '.html-prototype', 'packs');
 const input = process.argv.slice(2).find((arg) => !arg.startsWith('--'));
 const isDirectExecution = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 const portArg = process.argv.find((arg) => arg.startsWith('--port='));
@@ -125,6 +128,17 @@ const server = createServer(async (request, response) => {
       return;
     }
 
+    if (request.method === 'GET' && (url.pathname === '/sketch' || url.pathname === '/sketch/')) {
+      if (url.pathname === '/sketch') {
+        response.writeHead(302, { location: '/sketch/' }).end();
+        return;
+      }
+      sendFile(response, join(sketchRoot, 'index.html'));
+      return;
+    }
+    if (request.method === 'GET' && serveRepoFile(response, url.pathname, '/sketch/', sketchRoot)) return;
+    if (request.method === 'GET' && serveRepoFile(response, url.pathname, '/.html-prototype/packs/', packRoot)) return;
+
     /* Author browser assets may only come from runtime/author and runtime/client. */
     if (url.pathname.startsWith('/__prototype-author/')) {
       const rel = decodeURIComponent(url.pathname.slice('/__prototype-author/'.length));
@@ -150,6 +164,22 @@ const server = createServer(async (request, response) => {
     response.writeHead(500, { 'content-type': 'text/plain; charset=utf-8' }).end(error.message);
   }
 });
+
+function serveRepoFile(response, pathname, prefix, baseDir) {
+  if (!pathname.startsWith(prefix)) return false;
+  const rel = decodeURIComponent(pathname.slice(prefix.length)).replace(/^\/+/, '');
+  if (!rel || rel.includes('..')) {
+    response.writeHead(403).end('Forbidden');
+    return true;
+  }
+  const assetPath = resolve(baseDir, rel);
+  if (relative(baseDir, assetPath).startsWith('..')) {
+    response.writeHead(403).end('Forbidden');
+    return true;
+  }
+  sendFile(response, assetPath);
+  return true;
+}
 
 function injectAuthorLoader(content) {
   var script = '<script src="/__prototype-author/author/bootstrap.js" data-prototype-author-loader></script>';
