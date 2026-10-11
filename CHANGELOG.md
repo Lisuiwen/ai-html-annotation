@@ -4,15 +4,53 @@ All notable changes to AI HTML Annotation are documented here.
 
 ## Unreleased
 
-### Added
+## v0.5.0 — 2026-10-11
+
+### English
+
+#### Added
 
 - Module sketch board: a free canvas for a rough reference screenshot. It ships inside `html-prototype-build` and opens from Author Tools, or on its own with `node <skill-root>/sketch/serve.mjs`. Place atoms from an installed UI pack, draw boxes for a phone frame, and copy the canvas to the clipboard. The button does not save a file.
 - UI packs declare placeable atoms in `components[<id>].atoms` and mark them with `data-pack-atom` in `component.html`. `ui-pack-maintain` owns the field rules; `validate-pack.mjs` checks them. `admin-desktop` is v6 (40 atoms) and `mobile-vant` is v2 (12 atoms).
 
-### Changed
+#### Changed
 
 - The sketch static server exposes only the board and installed UI packs, and it accepts only `127.0.0.1` and `localhost` hosts. Pack files resolve from the project, then `~/.html-prototype/packs/`.
-- Pack install registry `ref` is `master` until the next release tag, so a download includes sketch atoms. `resolve-pack.mjs` reads its schema allowlist from inside `html-prototype-build`, so it runs when that skill is installed on its own.
+- `resolve-pack.mjs` reads its schema allowlist from inside `html-prototype-build`, so it runs when that skill is installed on its own.
+- Pack install registry pins `ref: v0.5.0`.
+- Sketch board sidebar is 340px wide so Underlay, Copy image, and Clear sit on one row.
+
+#### Install / update
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill ui-pack-maintain
+node <skill-root>/scripts/install-pack.mjs --list-remote
+node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
+```
+
+### 中文
+
+#### 新增
+
+- 模块草图板：用来摆一张粗参考图的自由画布。随 `html-prototype-build` 提供，可从 Author Tools 打开，或单独运行 `node <skill-root>/sketch/serve.mjs`。从已安装的 UI pack 放置原子、画手机外框，并把画布复制到剪贴板。按钮不会保存文件。
+- UI pack 在 `components[<id>].atoms` 声明可放置原子，并在 `component.html` 用 `data-pack-atom` 标记。字段规则由 `ui-pack-maintain` 维护，`validate-pack.mjs` 负责检查。`admin-desktop` 为 v6（40 个原子），`mobile-vant` 为 v2（12 个原子）。
+
+#### 变更
+
+- 草图静态服务只暴露画板和已安装的 UI pack，且只接受 `127.0.0.1` 与 `localhost`。Pack 文件先从项目目录解析，再从 `~/.html-prototype/packs/` 解析。
+- `resolve-pack.mjs` 从 `html-prototype-build` 内部读取 schema 允许列表，因此只安装该 skill 时也能运行。
+- 安装 registry 固定 `ref: v0.5.0`。
+- 草图板侧栏加宽到 340px，Underlay、Copy image 和 Clear 排在同一行。
+
+#### 安装 / 更新
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill ui-pack-maintain
+node <skill-root>/scripts/install-pack.mjs --list-remote
+node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
+```
 
 ## v0.4.1 — 2026-09-15
 

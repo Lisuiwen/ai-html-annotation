@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -78,7 +78,8 @@ test('install-pack refuses to overwrite a local pack without --force', () => {
 
 test('generate-registry --check passes for committed registry', () => {
   const generator = path.join(repositoryDirectory, 'skills', 'ui-pack-maintain', 'scripts', 'generate-registry.mjs');
-  const result = spawnSync(process.execPath, [generator, '--check'], { cwd: repositoryDirectory, encoding: 'utf8' });
+  const pinnedRef = JSON.parse(readFileSync(registryPath, 'utf8')).source.defaultRef;
+  const result = spawnSync(process.execPath, [generator, '--check', `--default-ref=${pinnedRef}`], { cwd: repositoryDirectory, encoding: 'utf8' });
   assert.equal(result.status, 0, result.stderr || result.stdout);
 });
 

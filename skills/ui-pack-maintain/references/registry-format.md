@@ -43,8 +43,13 @@ child `manifest.json` qualify as packs.
 
 ```bash
 node skills/ui-pack-maintain/scripts/generate-registry.mjs
-node skills/ui-pack-maintain/scripts/generate-registry.mjs --check
+node skills/ui-pack-maintain/scripts/generate-registry.mjs --check --default-ref=<committed source.defaultRef>
+node skills/ui-pack-maintain/scripts/generate-registry.mjs --default-ref=v0.5.0
 ```
+
+Day-to-day generation leaves `ref` at `master`. A release passes `--default-ref=<tag>`.
+Skill validation reads `source.defaultRef` from the committed registry and forwards it to
+`--check`, so the pin and the pack metadata stay in sync.
 
 Generation rules:
 
@@ -58,7 +63,7 @@ Generation rules:
 
 `skills/html-prototype-build/ui/pack-registry.fallback.json` is regenerated together with
 `registry.json` when generation runs without a custom `--output`. CI checks both files with
-`generate-registry.mjs --check --output=<path>`.
+`generate-registry.mjs --check --output=<path> --default-ref=<committed source.defaultRef>`.
 
 ## Ref pinning and install fallback
 
@@ -74,7 +79,7 @@ day-to-day installs while a tag is pending.
 1. `validate-pack.mjs --pack=<dir> --strict`
 2. resolver smoke test with `--pack=<id> --select=<id>`
 3. bump `manifest.version` when pack content changes; bump `--default-ref` / tag when publishing
-4. `node skills/ui-pack-maintain/scripts/generate-registry.mjs` (writes registry + fallback)
+4. `node skills/ui-pack-maintain/scripts/generate-registry.mjs --default-ref=<tag>` when publishing (writes registry + fallback)
 5. tag the repository at the recorded `ref` (must include `.html-prototype/packs/<id>/`)
 6. commit pack changes and both registry files together
 
