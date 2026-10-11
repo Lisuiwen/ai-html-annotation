@@ -131,11 +131,13 @@ for (const entry of await readdir(packRootDirectory, { withFileTypes: true })) {
 }
 
 const registryGenerator = path.join(repositoryDirectory, 'skills', 'ui-pack-maintain', 'scripts', 'generate-registry.mjs');
+const primaryRegistryPath = path.join(repositoryDirectory, '.html-prototype', 'packs', 'registry.json');
+const pinnedRef = JSON.parse(await readFile(primaryRegistryPath, 'utf8')).source?.defaultRef || 'master';
 for (const output of [
-  path.join(repositoryDirectory, '.html-prototype', 'packs', 'registry.json'),
+  primaryRegistryPath,
   path.join(skillDirectory, 'ui', 'pack-registry.fallback.json')
 ]) {
-  const registryCheck = spawnSync(process.execPath, [registryGenerator, '--check', `--output=${output}`], { stdio: 'inherit' });
+  const registryCheck = spawnSync(process.execPath, [registryGenerator, '--check', `--output=${output}`, `--default-ref=${pinnedRef}`], { stdio: 'inherit' });
   if (registryCheck.status !== 0) {
     throw new Error(`pack registry is stale: ${output}; run node skills/ui-pack-maintain/scripts/generate-registry.mjs`);
   }

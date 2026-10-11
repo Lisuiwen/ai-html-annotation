@@ -27,10 +27,10 @@
 
 .dock {
   display: flex;
-  flex: 0 0 260px;
+  flex: 0 0 340px;
   flex-direction: column;
   gap: 12px;
-  width: 260px;
+  width: 340px;
   padding: 16px;
   overflow: auto;
   border-left: 1px solid #d9d9d9;
