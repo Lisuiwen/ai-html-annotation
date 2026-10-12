@@ -27,4 +27,7 @@ test('Shell keeps dirty tab switch and close guard', async () => {
   assert.match(source, /pendingTab = '__close__'/);
   assert.match(source, /discardAndSwitch/);
   assert.match(source, /confirmClose/);
+  assert.match(source, /id = 'at-stop'/);
+  assert.match(source, /pagehide/);
+  assert.match(source, /__prototype-author\/shutdown/);
 });

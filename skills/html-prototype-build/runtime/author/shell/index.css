@@ -24,6 +24,24 @@ body.at-picker-armed .at-ui select { cursor: text !important; }
   box-shadow: 0 0 0 6px rgba(22, 119, 255, 0.14) !important;
 }
 
+.at-stop {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 10px;
+  color: #fff;
+  border: 1px solid #ff4d4f;
+  border-radius: 16px;
+  background: #ff4d4f;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  font-size: 13px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.at-stop:hover { background: #d9363e; border-color: #d9363e; }
+.at-stop:disabled { opacity: 0.5; cursor: default; }
+
 .at-launch {
   display: grid;
   place-items: center;

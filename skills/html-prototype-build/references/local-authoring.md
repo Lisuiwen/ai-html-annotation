@@ -14,6 +14,10 @@ node <skill-root>/runtime/server/index.mjs <prototype.html> --snapshot=prototype
 
 Open the `http://127.0.0.1:4178/...` URL printed by the terminal. Without `--snapshot`, Direct edit, Mark, and Inspector still work, but formal annotation cards cannot be saved.
 
+If that port is already serving the same HTML and snapshot, the new process prints the existing URL and exits. If it is serving a different page, it prints that page and exits; stop the running session from its page before starting another.
+
+The page shows a red **Stop** button in the notes toolbar, beside the other authoring controls. Stop shuts the process down immediately. Closing the tab does not: the process waits 3 minutes, and a tab that is still open or opened again cancels that wait. With no requests for 2 hours, the process exits on its own.
+
 The IDE jump configuration lives in `<skill-root>/.env`, with the template at [.env.example](../.env.example).
 
 ## In-page authoring tools
