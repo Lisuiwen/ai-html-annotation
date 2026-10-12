@@ -8,7 +8,7 @@ Use this entry when you need to organize the final files, distinguish the author
 
 | Scope | Rule |
 |---|---|
-| Authoring / review session | Author Tools are injected dynamically by `runtime/server/index.mjs`; Direct edit, Mark, Notes editor, and Inspector never write to the formal HTML. Direct edit writes back to the source HTML through the server; Mark pins exist only in browser localStorage. |
+| Authoring / review session | Author Tools are injected dynamically by `runtime/server/index.mjs`; Direct edit, Mark, Notes editor, Inspector, and the sketch board never write to the formal HTML. Direct edit writes back to the source HTML through the server; Mark pins exist only in browser localStorage. The sketch board lives in `runtime/author/sketch/` and opens inside the authoring session. |
 | Formal delivery package | Delivered as a standalone `<prototype-name>/` directory; `AGENTS.md` inside is copied verbatim from the template. The HTML must not contain Author Bootstrap, Direct edit, Notes editor, Inspector, source-locating tokens, or inline annotation editing scripts. Formal annotations come only from the snapshot + Client Runtime. |
 
 The formal file structure and runtime copy rules follow [generation-contract.md §7](generation-contract.md#7-delivery-files). Before delivery, verify item by item against the [delivery checklist](delivery-checklist.md).

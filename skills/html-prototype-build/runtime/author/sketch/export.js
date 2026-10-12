@@ -98,7 +98,8 @@ async function rasterizeBoard(board) {
 
 /* Write during the click. A blob promise keeps the user gesture while the canvas encodes. */
 export function copyBoardPng(board) {
-  if (!navigator.clipboard || typeof navigator.clipboard.write !== 'function' || typeof ClipboardItem === 'undefined') {
+  const clipboard = globalThis.navigator && globalThis.navigator.clipboard;
+  if (!clipboard || typeof clipboard.write !== 'function' || typeof ClipboardItem === 'undefined') {
     return Promise.reject(new Error('Clipboard image copy is not available'));
   }
   const png = rasterizeBoard(board);
@@ -106,9 +107,9 @@ export function copyBoardPng(board) {
   try {
     item = new ClipboardItem({ 'image/png': png });
   } catch (error) {
-    return png.then((blob) => navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]));
+    return png.then((blob) => clipboard.write([new ClipboardItem({ 'image/png': blob })]));
   }
-  return navigator.clipboard.write([item]).catch((error) => {
+  return clipboard.write([item]).catch((error) => {
     if (error && error.name === 'NotAllowedError') {
       throw new Error('Clipboard permission was denied');
     }

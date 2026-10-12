@@ -16,7 +16,7 @@ export { injectTargets, resolveInspectorTarget } from './inspector.mjs';
 const here = dirname(fileURLToPath(import.meta.url));
 const runtimeRoot = resolve(here, '..');
 const skillRoot = resolve(here, '../..');
-const sketchRoot = resolve(skillRoot, 'sketch');
+const sketchRoot = resolve(runtimeRoot, 'author', 'sketch');
 const input = process.argv.slice(2).find((arg) => !arg.startsWith('--'));
 const isDirectExecution = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 const portArg = process.argv.find((arg) => arg.startsWith('--port='));

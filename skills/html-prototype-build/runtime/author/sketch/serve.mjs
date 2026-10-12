@@ -4,7 +4,7 @@ import { createServer } from 'node:http';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, extname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { resolvePackAsset } from '../runtime/server/packs.mjs';
+import { resolvePackAsset } from '../../server/packs.mjs';
 
 const sketchDir = dirname(fileURLToPath(import.meta.url));
 const port = Number(process.env.SKETCH_PORT || 4180);
@@ -46,6 +46,10 @@ function fileFor(pathname) {
   return null;
 }
 
+const isDirectExecution = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+export { fileFor };
+
 const server = createServer((request, response) => {
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     response.writeHead(405, { allow: 'GET, HEAD' }).end('Method Not Allowed');
@@ -79,6 +83,8 @@ const server = createServer((request, response) => {
   response.end(body);
 });
 
-server.listen(port, '127.0.0.1', () => {
-  console.log(`Sketch board: http://127.0.0.1:${port}/sketch/`);
-});
+if (isDirectExecution) {
+  server.listen(port, '127.0.0.1', () => {
+    console.log(`Sketch board: http://127.0.0.1:${port}/sketch/`);
+  });
+}
