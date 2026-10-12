@@ -14,6 +14,7 @@
 
   var launch;
   var sketch;
+  var stop;
   var sketchLayer;
   var sketchOpen = false;
 
@@ -98,6 +99,10 @@
     }
     if (launch && launch.parentElement && sketch && sketch.previousElementSibling !== launch) {
       launch.insertAdjacentElement('afterend', sketch);
+    }
+    var toolAnchor = (sketch && sketch.parentElement) ? sketch : launch;
+    if (toolAnchor && toolAnchor.parentElement && stop && stop.previousElementSibling !== toolAnchor) {
+      toolAnchor.insertAdjacentElement('afterend', stop);
     }
     if (panel.parentElement !== notes) {
       if (actions.parentElement === notes) notes.insertBefore(panel, actions);
@@ -264,6 +269,28 @@
       '  <iframe class="at-sketch-frame" title="Module sketch" allow="clipboard-write"></iframe>' +
       '</div>';
 
+    stop = document.createElement('button');
+    stop.type = 'button';
+    stop.id = 'at-stop';
+    stop.className = 'at-stop at-ui';
+    stop.textContent = 'Stop';
+    stop.title = 'Stop the author server';
+    stop.addEventListener('click', function () {
+      stop.disabled = true;
+      fetch('/__prototype-author/shutdown', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: '{}'
+      }).then(function (response) {
+        if (!response.ok) throw new Error('stop failed');
+        stop.textContent = 'Stopped';
+        toastMsg('Author tools stopped. Refresh will not restore them until the server is started again.');
+      }).catch(function () {
+        stop.disabled = false;
+        toastMsg('Could not stop the author server');
+      });
+    });
+
     document.body.appendChild(toast);
     document.body.appendChild(sketchLayer);
     dirtyBar = panel.querySelector('#at-dirty');
@@ -315,11 +342,42 @@
     });
   }
 
+  function watchAuthorSession() {
+    var key = 'prototype-author-tab';
+    var tabId = '';
+    try { tabId = sessionStorage.getItem(key) || ''; } catch (error) { tabId = ''; }
+    if (!tabId) {
+      tabId = String(Date.now()) + '-' + Math.random().toString(16).slice(2);
+      try { sessionStorage.setItem(key, tabId); } catch (error) { /* private mode */ }
+    }
+    function post(open) {
+      var body = JSON.stringify({ id: tabId, open: open });
+      if (!open && navigator.sendBeacon) {
+        navigator.sendBeacon('/__prototype-author/presence', new Blob([body], { type: 'application/json' }));
+        return;
+      }
+      fetch('/__prototype-author/presence', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: body,
+        keepalive: true
+      }).catch(function () {});
+    }
+    function beat() {
+      if (document.visibilityState === 'hidden') return;
+      post(true);
+    }
+    beat();
+    setInterval(beat, 20000);
+    window.addEventListener('pagehide', function () { post(false); });
+  }
+
   function init() {
     if (window.PrototypeAuthorChrome && window.PrototypeAuthorChrome.isProductOnly()) return;
     build();
     if (window.AuthorToolsEditTool) register('edit', window.AuthorToolsEditTool);
     if (window.AuthorToolsMarkTool) register('mark', window.AuthorToolsMarkTool);
+    watchAuthorSession();
     if (window.PrototypeAuthor) {
       window.PrototypeAuthor.register('edit', function () {
         if (tools.edit && typeof tools.edit.deactivate === 'function') tools.edit.deactivate();

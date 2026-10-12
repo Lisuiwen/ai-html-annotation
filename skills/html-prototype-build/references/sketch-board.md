@@ -2,7 +2,7 @@
 
 ## Scope
 
-Use this entry when adding or changing a placeable item on the module sketch board (`runtime/author/sketch/`). The board is an authoring tool, not a prototype page and not part of the formal delivery. It is a free canvas for a rough reference screenshot that the AI uses to implement an increment. **Copy image** puts that canvas on the clipboard and does not download a file. It does not write a layout file. It loads atoms from the installed UI pack (project `.html-prototype/packs/`, then `~/.html-prototype/packs/`). Open it from Author Tools, or alone with `node <skill-root>/runtime/author/sketch/serve.mjs`.
+Use this entry when adding or changing a placeable item on the module sketch board (`runtime/author/sketch/`). The board is an authoring tool, not a prototype page and not part of the formal delivery. It is a free canvas for a rough reference screenshot that the AI uses to implement an increment. **Copy image** puts that canvas on the clipboard and does not download a file. It does not write a layout file. It loads atoms from the installed UI pack (project `.html-prototype/packs/`, then `~/.html-prototype/packs/`). Open it from Author Tools. The author server serves it at `/sketch/`; there is no separate sketch process.
 
 ## Where items come from
 

@@ -8,6 +8,7 @@ import { applyPrototypeEdit, isTrustedAuthorRequest } from './source-editor.mjs'
 import { validateSnapshot, writeSnapshot } from './snapshot.mjs';
 import { injectTargets, openIDE, resolveInspectorTarget } from './inspector.mjs';
 import { resolvePackAsset } from './packs.mjs';
+import { createAuthorSession, samePath } from './session.mjs';
 
 export { applyPrototypeEdit, isTrustedAuthorRequest } from './source-editor.mjs';
 export { validateSnapshot } from './snapshot.mjs';
@@ -95,9 +96,56 @@ function sendFile(response, path) {
   response.end(readFileSync(path));
 }
 
+let session = null;
+
+function sessionUrl() {
+  return `http://127.0.0.1:${port}/${htmlPath.split(/[\\/]/).pop()}`;
+}
+
+function stopProcess(reason) {
+  console.log(reason === 'button' ? 'Author server stopped from the page.' : 'Author server stopped.');
+  server.close(() => process.exit(0));
+  setTimeout(() => process.exit(0), 500).unref();
+}
+
+async function readExistingSession(listenPort) {
+  try {
+    const response = await fetch(`http://127.0.0.1:${listenPort}/__prototype-author/session`, {
+      signal: AbortSignal.timeout(800)
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
+    if (!data || typeof data.htmlPath !== 'string') return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
 const server = createServer(async (request, response) => {
   try {
     const url = new URL(request.url, `http://127.0.0.1:${port}`);
+    session.noteActivity();
+    if (request.method === 'GET' && url.pathname === '/__prototype-author/session') {
+      response.writeHead(200, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' });
+      response.end(JSON.stringify({ htmlPath, snapshotPath, url: sessionUrl() }));
+      return;
+    }
+    if (request.method === 'POST' && url.pathname === '/__prototype-author/shutdown') {
+      if (!isTrustedAuthorRequest(request, port)) return response.writeHead(403).end('Forbidden author request');
+      response.writeHead(204).end();
+      session.stop('button');
+      return;
+    }
+    if (request.method === 'POST' && url.pathname === '/__prototype-author/presence') {
+      if (!isTrustedAuthorRequest(request, port)) return response.writeHead(403).end('Forbidden author request');
+      const payload = await readJson(request);
+      const tabId = payload && payload.id;
+      if (payload && payload.open) session.hello(tabId);
+      else session.leave(tabId);
+      response.writeHead(204).end();
+      return;
+    }
     if (request.method === 'PUT' && url.pathname === '/__prototype-author/notes') {
       if (!isTrustedAuthorRequest(request, port)) return response.writeHead(403).end('Forbidden author request');
       if (!snapshotPath) return response.writeHead(503).end('This service has no snapshot file configured.');
@@ -195,7 +243,7 @@ function injectAuthorLoader(content) {
   return content + '\n' + script + '\n';
 }
 
-export function startServer() {
+export async function startServer() {
   if (!input) {
     console.error('Usage: node runtime/server/index.mjs <prototype.html> [--port=4178] [--snapshot=prototype/notes.snapshot.js]');
     process.exit(1);
@@ -208,10 +256,31 @@ export function startServer() {
     console.error('Snapshot file must be inside the prototype directory.');
     process.exit(1);
   }
+  const existing = await readExistingSession(port);
+  if (existing) {
+    const samePage = samePath(existing.htmlPath, htmlPath) && samePath(existing.snapshotPath, snapshotPath);
+    if (samePage) {
+      console.log(`Author server already running: ${existing.url}`);
+      process.exit(0);
+    }
+    console.error(`Author server is already serving ${existing.htmlPath}`);
+    if (existing.snapshotPath) console.error(`Snapshot: ${existing.snapshotPath}`);
+    console.error('Stop that session from its page before starting another.');
+    process.exit(1);
+  }
+  session = createAuthorSession({ onStop: stopProcess });
+  server.on('error', (error) => {
+    if (error && error.code === 'EADDRINUSE') {
+      console.error(`127.0.0.1:${port} is already in use.`);
+      process.exit(1);
+    }
+    console.error(error);
+    process.exit(1);
+  });
   server.listen(port, '127.0.0.1', () => {
-    console.log(`Author server: http://127.0.0.1:${port}/${htmlPath.split(/[\\/]/).pop()}`);
+    console.log(`Author server: ${sessionUrl()}`);
     console.log('Inspector IDE: ' + ((process.env.CODE_EDITOR || '').trim() || 'not configured, fallback cursor → code'));
-    console.log('Stop server: Ctrl+C');
+    console.log('Stop it with the button on the page. The last closed tab waits 3 minutes; otherwise the process exits after 2 hours without a request.');
   });
 }
 

@@ -7,6 +7,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
+import { runScriptAsync } from '../../helpers/run-script.mjs';
 
 const serverUrl = new URL('../../../skills/html-prototype-build/runtime/server/index.mjs', import.meta.url);
 
@@ -120,4 +121,50 @@ test('Server HTTP integration guards resource boundaries and writes HTML / snaps
   const writtenSnapshot = await readFile(snapshotPath, 'utf8');
   assert.match(writtenSnapshot, /window\.__PROTOTYPE_NOTES__/);
   assert.match(writtenSnapshot, /"card-1"/);
+});
+
+test('Server reuses the same page and the page stop button shuts it down', async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), 'ai-html-author-life-'));
+  const htmlPath = join(directory, 'prototype.html');
+  const otherPath = join(directory, 'other.html');
+  await writeFile(htmlPath, '<!doctype html><body>one</body>', 'utf8');
+  await writeFile(otherPath, '<!doctype html><body>two</body>', 'utf8');
+  const port = await freePort();
+  const args = [fileURLToPath(serverUrl), htmlPath, `--port=${port}`];
+  const child = spawn(process.execPath, args, { stdio: ['ignore', 'pipe', 'pipe'] });
+  t.after(async () => {
+    if (child.exitCode === null && child.signalCode === null) child.kill();
+    await rm(directory, { recursive: true, force: true });
+  });
+  await waitForServer(child);
+  const origin = `http://127.0.0.1:${port}`;
+  const session = await fetch(`${origin}/__prototype-author/session`);
+  assert.equal(session.status, 200);
+  const body = await session.json();
+  assert.equal(body.htmlPath, htmlPath);
+  assert.equal(body.snapshotPath, null);
+
+  const script = fileURLToPath(serverUrl);
+  const reuse = await runScriptAsync(script, [htmlPath, `--port=${port}`]);
+  assert.equal(reuse.status, 0);
+  assert.match(reuse.stdout, /already running/);
+
+  const conflict = await runScriptAsync(script, [otherPath, `--port=${port}`]);
+  assert.equal(conflict.status, 1);
+  assert.match(conflict.stderr, /already serving/);
+
+  const denied = await fetch(`${origin}/__prototype-author/shutdown`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', origin: 'https://attacker.test' },
+    body: '{}'
+  });
+  assert.equal(denied.status, 403);
+  const stopped = fetch(`${origin}/__prototype-author/shutdown`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', origin },
+    body: '{}'
+  });
+  const exitCode = await once(child, 'exit').then(([code]) => code);
+  await stopped.catch(() => {});
+  assert.equal(exitCode, 0);
 });

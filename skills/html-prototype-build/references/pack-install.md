@@ -86,7 +86,7 @@ Do not add `.pack-source.json` to hand-authored packs.
 
 ## Ref fallback
 
-Registry entries pin a release `ref` (for example `v0.5.1`). When that tarball is missing or
+Registry entries pin a release `ref` (for example `v0.5.2`). When that tarball is missing or
 does not contain `.html-prototype/packs/<id>/`, `install-pack.mjs` automatically retries from
 `master` before failing.
 
