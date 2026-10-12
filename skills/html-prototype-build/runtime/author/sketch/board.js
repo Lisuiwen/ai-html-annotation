@@ -3,14 +3,14 @@ import { copyBoardPng } from './export.js';
 import { fillStamp, loadFoundation, loadManifest, loadPackList, measureStamp, packId, paletteEntries } from './mount.js';
 import { FRAME, resolveSizing } from './sizing.js';
 
-const board = document.getElementById('board');
-const status = document.getElementById('status');
+const board = globalThis.document ? document.getElementById('board') : null;
+const status = board ? document.getElementById('status') : null;
 const BASIC_TOOLS = [
-  ['select', 'Select'],
-  ['rect', 'Box'],
-  ['ellipse', 'Circle'],
-  ['line', 'Line'],
-  ['text', 'Text']
+  ['select', 'Select', '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.2 1.8 2.8 12.4l2.8-2.7 1.7 4.1 1.8-.8-1.7-4 3.6.2z" fill="currentColor"/></svg>'],
+  ['rect', 'Box', '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="9" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>'],
+  ['ellipse', 'Circle', '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.2" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>'],
+  ['line', 'Line', '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>'],
+  ['text', 'Text', '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3.5h10M8 3.5v9" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>']
 ];
 const AXIS_LABEL = { none: 'move only', x: 'width only', y: 'height only', both: 'width and height' };
 const HANDLES = { none: [], x: ['w', 'e'], y: ['n', 's'], both: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'] };
@@ -18,13 +18,11 @@ const HANDLES = { none: [], x: ['w', 'e'], y: ['n', 's'], both: ['n', 'e', 's', 
 let tool = 'select';
 let selected = null;
 let drag = null;
+let draggingEntry = null;
+let textEdit = null;
 let stampSerial = 0;
 let placeSerial = 0;
 const undoStack = [];
-
-if (new URLSearchParams(location.search).get('embed') === '1') {
-  document.body.classList.add('is-embed');
-}
 
 function setStatus(message) {
   status.textContent = message || '';
@@ -33,27 +31,35 @@ function setStatus(message) {
 function setTool(next) {
   tool = next;
   board.dataset.tool = next;
-  document.querySelectorAll('[data-tool]').forEach((button) => {
-    button.classList.toggle('is-active', button.dataset.tool === next);
+  document.querySelectorAll('#tool-bar [data-tool]').forEach((button) => {
+    const on = button.dataset.tool === next;
+    button.classList.toggle('is-active', on);
+    button.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
 }
 
 function select(stamp) {
   if (selected && selected !== stamp) selected.classList.remove('is-selected');
   selected = stamp || null;
-  if (!stamp) return;
-  stamp.classList.add('is-selected');
+  if (stamp) stamp.classList.add('is-selected');
+  syncActions();
 }
 
 /* Stacking follows DOM order; the underlay stays the first child. */
 function restack(node, toFront) {
   const next = node.nextSibling;
   if (toFront) {
-    if (!next) return;
+    if (!next) {
+      setStatus('Already in front');
+      return;
+    }
     board.appendChild(node);
   } else {
     const first = underlay.nextSibling;
-    if (first === node) return;
+    if (first === node) {
+      setStatus('Already at the back');
+      return;
+    }
     board.insertBefore(node, first);
   }
   remember({ type: 'order', node, next });
@@ -108,6 +114,7 @@ function applyGeom(stamp, geom) {
 function remember(entry) {
   undoStack.push(entry);
   if (undoStack.length > 80) undoStack.shift();
+  syncActions();
 }
 
 function undo() {
@@ -117,7 +124,7 @@ function undo() {
     return;
   }
   if (entry.type === 'add') {
-    if (selected === entry.node) selected = null;
+    if (selected === entry.node) select(null);
     entry.node.remove();
   } else if (entry.type === 'remove' || entry.type === 'order') {
     if (entry.next && entry.next.parentNode === board) board.insertBefore(entry.node, entry.next);
@@ -133,15 +140,64 @@ function undo() {
     setUnderlay(entry.before);
   }
   setStatus('Undone');
+  syncActions();
 }
 
 function removeSelected() {
-  if (!selected) return;
+  if (!selected) {
+    setStatus('Select something first');
+    return;
+  }
   const node = selected;
   const next = node.nextSibling;
+  select(null);
   node.remove();
-  selected = null;
   remember({ type: 'remove', node, next });
+  setStatus('Removed');
+}
+
+function orderSelected(toFront) {
+  if (!selected) {
+    setStatus('Select something first');
+    return;
+  }
+  restack(selected, toFront);
+}
+
+function leave() {
+  if (textEdit) {
+    textEdit.node.blur();
+    finishTextEdit();
+    window.getSelection().removeAllRanges();
+    setStatus('Left text');
+    return;
+  }
+  const active = document.activeElement;
+  if (active && active.isContentEditable && active.closest('.stamp')) {
+    active.blur();
+    window.getSelection().removeAllRanges();
+    setStatus('Left text');
+    return;
+  }
+  if (tool !== 'select') {
+    setTool('select');
+    setStatus('Select');
+    return;
+  }
+  if (window.parent !== window) {
+    window.parent.postMessage({ source: 'sketch-board', type: 'close' }, window.location.origin);
+  }
+}
+
+function syncActions() {
+  const bar = globalThis.document && document.getElementById('tool-bar');
+  if (!bar) return;
+  const undoButton = bar.querySelector('[data-action="undo"]');
+  if (undoButton) undoButton.setAttribute('aria-disabled', undoStack.length === 0 ? 'true' : 'false');
+  const needs = Boolean(selected);
+  bar.querySelectorAll('[data-needs-selection]').forEach((button) => {
+    button.setAttribute('aria-disabled', needs ? 'false' : 'true');
+  });
 }
 
 function point(event) {
@@ -190,6 +246,15 @@ function decorate(stamp, spec) {
   if (spec.chart) stamp.dataset.chart = '1';
   if (spec.axis === 'x' || spec.axis === 'both') stamp.dataset.stretchX = '1';
   if (spec.axis === 'y' || spec.axis === 'both') stamp.dataset.stretchY = '1';
+}
+
+function dropOrigin(width, height, at) {
+  const maxLeft = Math.max(0, board.offsetWidth - width);
+  const maxTop = Math.max(0, board.offsetHeight - height);
+  return {
+    left: Math.min(Math.max(0, at.x - width / 2), maxLeft),
+    top: Math.min(Math.max(0, at.y - height / 2), maxTop)
+  };
 }
 
 function originFor(width, height) {
@@ -368,7 +433,8 @@ function boxFromDrag(start, current, kind) {
   };
 }
 
-async function placeComponent(entry, button) {
+async function placeComponent(entry, button, at) {
+  const dropAt = at ? { x: at.x, y: at.y } : null;
   button.disabled = true;
   setStatus('');
   try {
@@ -387,7 +453,7 @@ async function placeComponent(entry, button) {
     const size = measureStamp(stamp, spec);
     stamp.dataset.minWidth = String(spec.minWidth ?? size.width);
     stamp.dataset.minHeight = String(spec.minHeight ?? size.height);
-    const origin = originFor(size.width, size.height);
+    const origin = dropAt ? dropOrigin(size.width, size.height, dropAt) : originFor(size.width, size.height);
     if (spec.axis !== 'none') addHandles(stamp, spec.axis);
     const hit = document.createElement('div');
     hit.className = 'stamp-hit';
@@ -409,22 +475,103 @@ function appendPaletteButton(palette, entry) {
   button.type = 'button';
   const spec = resolveSizing(entry.sizing);
   button.textContent = entry.label;
-  button.title = entry.id + ' · ' + AXIS_LABEL[spec.axis];
-  button.addEventListener('click', () => placeComponent(entry, button));
+  button.title = entry.id + ' · ' + AXIS_LABEL[spec.axis] + ' · drag onto the canvas';
+  button.addEventListener('pointerdown', (event) => {
+    if (event.button !== 0 || button.disabled) return;
+    draggingEntry = { entry, button, pointerId: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
+    try { button.setPointerCapture(event.pointerId); } catch (error) { /* pointer already released */ }
+  });
+  button.addEventListener('pointermove', (event) => {
+    if (!draggingEntry || draggingEntry.pointerId !== event.pointerId) return;
+    if (!draggingEntry.moved && Math.hypot(event.clientX - draggingEntry.x, event.clientY - draggingEntry.y) < 5) return;
+    draggingEntry.moved = true;
+    showDragGhost(entry.label, event.clientX, event.clientY);
+    stage.classList.toggle('is-drop', overBoard(event));
+  });
+  button.addEventListener('pointerup', (event) => finishPaletteDrag(event));
+  button.addEventListener('pointercancel', (event) => finishPaletteDrag(event));
+  button.addEventListener('click', (event) => {
+    if (button.dataset.suppressClick === '1') {
+      delete button.dataset.suppressClick;
+      event.preventDefault();
+      return;
+    }
+    placeComponent(entry, button);
+  });
   palette.appendChild(button);
+}
+
+function overBoard(event) {
+  const rect = board.getBoundingClientRect();
+  return event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+}
+
+function showDragGhost(label, x, y) {
+  dragGhost.hidden = false;
+  dragGhost.textContent = label;
+  dragGhost.style.left = x + 'px';
+  dragGhost.style.top = y + 'px';
+}
+
+function finishPaletteDrag(event) {
+  const pending = draggingEntry;
+  if (!pending || pending.pointerId !== event.pointerId) return;
+  draggingEntry = null;
+  dragGhost.hidden = true;
+  stage.classList.remove('is-drop');
+  if (!pending.moved) return;
+  pending.button.dataset.suppressClick = '1';
+  if (!overBoard(event)) return;
+  placeComponent(pending.entry, pending.button, point(event));
+}
+
+const ACTIONS = [
+  ['undo', 'Undo', 'Ctrl+Z', '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6.2 4.2 3.2 7.2l3 3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.6 7.2h6.1a2.7 2.7 0 1 1 0 5.4H8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>', false, undo],
+  ['back', 'Send back', '[', '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="5" y="2.5" width="8" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="2.5" y="7.5" width="8" height="6" rx="1" fill="#fff" stroke="currentColor" stroke-width="1.4"/></svg>', true, () => orderSelected(false)],
+  ['forward', 'Bring forward', ']', '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="7.5" width="8" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="5" y="2.5" width="8" height="6" rx="1" fill="#fff" stroke="currentColor" stroke-width="1.4"/></svg>', true, () => orderSelected(true)],
+  ['remove', 'Delete', 'Delete', '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 4.5h9M6.2 4.5V3.2h3.6v1.3M4.6 4.5l.6 8.2h5.6l.6-8.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>', true, removeSelected],
+  ['leave', 'Leave', 'Esc', '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4 12 12M12 4 4 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>', false, leave]
+];
+
+function renderTools() {
+  const bar = document.getElementById('tool-bar');
+  BASIC_TOOLS.forEach(([id, label, icon]) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.tool = id;
+    button.title = label;
+    button.setAttribute('aria-label', label);
+    button.setAttribute('aria-pressed', id === tool ? 'true' : 'false');
+    button.classList.toggle('is-active', id === tool);
+    button.innerHTML = icon;
+    button.addEventListener('click', () => setTool(id));
+    bar.appendChild(button);
+  });
+  const separator = document.createElement('span');
+  separator.className = 'tool-sep';
+  separator.setAttribute('role', 'separator');
+  separator.setAttribute('aria-orientation', 'vertical');
+  bar.appendChild(separator);
+  ACTIONS.forEach(([id, label, shortcut, icon, needsSelection, run]) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.action = id;
+    if (needsSelection) button.dataset.needsSelection = '1';
+    button.dataset.tip = label + ' (' + shortcut + ')';
+    button.setAttribute('aria-label', label + ' (' + shortcut + ')');
+    button.innerHTML = icon;
+    button.addEventListener('click', () => {
+      if (button.getAttribute('aria-disabled') === 'true') return;
+      run();
+    });
+    bar.appendChild(button);
+  });
+  syncActions();
 }
 
 function renderPalette(entries, categoryOrder) {
   const palette = document.getElementById('palette');
   palette.replaceChildren();
-  BASIC_TOOLS.forEach(([id, label]) => {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.dataset.tool = id;
-    button.textContent = label;
-    button.classList.toggle('is-active', id === tool);
-    palette.appendChild(button);
-  });
   const groups = new Map();
   const loose = [];
   entries.forEach((entry) => {
@@ -450,10 +597,153 @@ function renderPalette(entries, categoryOrder) {
   });
 }
 
+function isTextField(field) {
+  if (field.tagName === 'TEXTAREA') return true;
+  const type = (field.getAttribute('type') || 'text').toLowerCase();
+  return ['text', 'search', 'email', 'url', 'tel', 'number', 'password'].includes(type);
+}
+
+function isChoiceField(field) {
+  if (!field || field.tagName !== 'INPUT') return false;
+  const type = (field.getAttribute('type') || '').toLowerCase();
+  return type === 'radio' || type === 'checkbox';
+}
+
+/* Radio and checkbox sit beside their caption. They are controls, not part of the sentence. */
+function isCaptionSibling(child) {
+  if (child.getAttribute('aria-hidden') === 'true' || child.classList.contains('ui-visually-hidden')) return true;
+  return isChoiceField(child);
+}
+
+function isIconGlyph(node) {
+  const button = node.closest('button, a');
+  if (!button) return false;
+  if (button.classList.contains('ui-button--icon')) return true;
+  const text = button.textContent.trim();
+  return button.hasAttribute('aria-label') && text.length > 0 && !/[\p{L}\p{N}]/u.test(text);
+}
+
+/* The hit element is editable when its own sentence is text and its child elements are only icons. */
+function editableTextElement(start) {
+  let node = start;
+  const host = start.closest('.stamp-host');
+  while (node && node !== host) {
+    if (node.getAttribute('aria-hidden') === 'true') return null;
+    const text = [...node.childNodes].some((child) => child.nodeType === 3 && child.textContent.trim());
+    const structural = [...node.children].some((child) => !isCaptionSibling(child));
+    if (text && !structural) return node;
+    if (structural) return null;
+    node = node.parentElement;
+  }
+  return null;
+}
+
+function isolateText(node) {
+  if (node.children.length === 0) return node;
+  const textNode = [...node.childNodes].find((child) => child.nodeType === 3 && child.textContent.trim());
+  if (!textNode) return node;
+  const span = document.createElement('span');
+  textNode.replaceWith(span);
+  span.appendChild(textNode);
+  return span;
+}
+
+function textTargetAt(stamp, event) {
+  if (stamp.dataset.chart === '1' || /#(icon|switch|avatar)$/.test(stamp.dataset.atom || '')) return null;
+  const host = stamp.querySelector('.stamp-host');
+  const hit = stamp.querySelector('.stamp-hit');
+  if (!host) return null;
+  const previousHost = host.style.pointerEvents;
+  const previousHit = hit ? hit.style.pointerEvents : '';
+  host.style.pointerEvents = 'auto';
+  if (hit) hit.style.pointerEvents = 'none';
+  const stack = document.elementsFromPoint(event.clientX, event.clientY);
+  host.style.pointerEvents = previousHost;
+  if (hit) hit.style.pointerEvents = previousHit;
+  const inside = stack.find((el) => el !== host && host.contains(el));
+  if (!inside || inside.closest('.ui-switch, .ui-avatar, .ui-button--icon, canvas')) return null;
+  const field = inside.closest('input, textarea');
+  if (field && host.contains(field) && !isChoiceField(field)) {
+    if (!isTextField(field)) return null;
+    return { kind: 'field', node: field };
+  }
+  if (isIconGlyph(inside)) return null;
+  const node = editableTextElement(inside);
+  if (!node || !host.contains(node)) return null;
+  return { kind: 'text', node: isolateText(node) };
+}
+
+function finishTextEdit() {
+  const current = textEdit;
+  if (!current) return;
+  textEdit = null;
+  current.node.removeEventListener('blur', finishTextEdit);
+  if (current.keepControl) current.node.removeEventListener('click', current.keepControl);
+  if (current.kind === 'text') {
+    current.node.contentEditable = 'false';
+    current.node.removeAttribute('contenteditable');
+    current.node.removeAttribute('spellcheck');
+    if ((current.node.textContent || '') !== current.before) current.stamp.dataset.edited = '1';
+  } else {
+    if (current.placeholder) {
+      current.node.placeholder = current.node.value;
+      current.node.value = '';
+    }
+    const next = current.placeholder ? current.node.placeholder : current.node.value;
+    if (next !== current.before) current.stamp.dataset.edited = '1';
+  }
+  current.stamp.classList.remove('is-editing');
+  delete current.stamp.dataset.editing;
+  const hit = current.stamp.querySelector('.stamp-hit');
+  if (hit) hit.hidden = false;
+}
+
+function focusTextEdit(current) {
+  const node = current.node;
+  node.focus();
+  if (current.kind === 'field') {
+    node.select();
+    return;
+  }
+  const range = document.createRange();
+  range.selectNodeContents(node);
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
+function startTextEdit(stamp, target) {
+  finishTextEdit();
+  const node = target.node;
+  stamp.dataset.editing = '1';
+  stamp.classList.add('is-editing');
+  const hit = stamp.querySelector('.stamp-hit');
+  if (hit) hit.hidden = true;
+  const current = { stamp, node, kind: target.kind, before: '', placeholder: false };
+  if (target.kind === 'field') {
+    current.placeholder = !node.value && !!node.placeholder;
+    current.before = current.placeholder ? node.placeholder : node.value;
+    if (current.placeholder) node.value = node.placeholder;
+  } else {
+    current.before = node.textContent;
+    try { node.contentEditable = 'plaintext-only'; } catch (error) { node.contentEditable = 'true'; }
+    node.spellcheck = false;
+    current.keepControl = (event) => event.preventDefault();
+    node.addEventListener('click', current.keepControl);
+  }
+  textEdit = current;
+  node.addEventListener('blur', finishTextEdit);
+  requestAnimationFrame(() => {
+    if (textEdit === current) focusTextEdit(current);
+  });
+}
+
 function beginPointer(event) {
   if (event.button !== 0) return;
+  if (textEdit && !textEdit.node.contains(event.target)) finishTextEdit();
   const handle = event.target.closest('.handle');
   const stamp = tool === 'select' ? event.target.closest('.stamp') : null;
+  if (stamp && textEdit && textEdit.stamp === stamp && textEdit.node.contains(event.target)) return;
   if (stamp) {
     const already = stamp.classList.contains('is-selected');
     select(stamp);
@@ -472,6 +762,22 @@ function beginPointer(event) {
       drag = { mode: 'resize', stamp, edge: handle.dataset.edge, box: boxOf(stamp), origin: point(event), before: geomOf(stamp) };
     } else if (stamp.dataset.kind === 'text' && already && event.target.closest('.text-body')) {
       return;
+    } else if (stamp.dataset.kind === 'component' && already) {
+      const textTarget = textTargetAt(stamp, event);
+      if (textTarget) {
+        drag = {
+          mode: 'pending-edit',
+          stamp,
+          textTarget,
+          clientX: event.clientX,
+          clientY: event.clientY,
+          origin: point(event),
+          box: boxOf(stamp),
+          before: geomOf(stamp)
+        };
+      } else {
+        drag = { mode: 'move', stamp, origin: point(event), box: boxOf(stamp), before: geomOf(stamp) };
+      }
     } else if (stamp.dataset.kind === 'line') {
       drag = {
         mode: 'move-line',
@@ -514,6 +820,10 @@ function beginPointer(event) {
 function movePointer(event) {
   if (!drag) return;
   const current = point(event);
+  if (drag.mode === 'pending-edit') {
+    if (Math.hypot(event.clientX - drag.clientX, event.clientY - drag.clientY) < 5) return;
+    drag.mode = 'move';
+  }
   if (drag.mode === 'move') {
     applyBox(drag.stamp, {
       left: drag.box.left + current.x - drag.origin.x,
@@ -542,11 +852,15 @@ function endPointer() {
   if (!drag) return;
   const ended = drag;
   drag = null;
+  if (ended.mode === 'pending-edit') {
+    startTextEdit(ended.stamp, ended.textTarget);
+    return;
+  }
   if (ended.mode === 'draw' && ended.kind === 'line') {
     const length = Math.hypot(Number(ended.stamp.dataset.x2) - Number(ended.stamp.dataset.x1), Number(ended.stamp.dataset.y2) - Number(ended.stamp.dataset.y1));
     if (length < 4) {
       ended.stamp.remove();
-      selected = null;
+      select(null);
     }
   }
   if (ended.mode === 'draw' && ended.stamp.isConnected) remember({ type: 'add', node: ended.stamp });
@@ -564,11 +878,18 @@ function endPointer() {
   }
 }
 
-document.getElementById('palette').addEventListener('click', (event) => {
-  const button = event.target.closest('[data-tool]');
-  if (!button) return;
-  setTool(button.dataset.tool);
-});
+let stage = null;
+let dragGhost = null;
+let underlay = null;
+
+function boot() {
+  if (!board) return;
+  if (new URLSearchParams(location.search).get('embed') === '1') document.body.classList.add('is-embed');
+  stage = board.parentElement.parentElement;
+  dragGhost = document.createElement('div');
+  dragGhost.className = 'drag-ghost';
+  dragGhost.hidden = true;
+  document.body.appendChild(dragGhost);
 
 board.addEventListener('pointerdown', beginPointer);
 board.addEventListener('pointermove', movePointer);
@@ -580,44 +901,41 @@ function typingTarget(node) {
 }
 
 window.addEventListener('keydown', (event) => {
-  if ((event.ctrlKey || event.metaKey) && !event.shiftKey && event.key.toLowerCase() === 'z') {
+  if ((event.ctrlKey || event.metaKey) && !event.shiftKey && (event.key.toLowerCase() === 'z' || event.code === 'KeyZ')) {
     const active = document.activeElement;
-    const editingText = active && active.isContentEditable && active.closest('.stamp') && active.closest('.stamp').dataset.edited === '1';
+    const editingText = textEdit || (active && active.isContentEditable && active.closest('.stamp'));
     if (drag || editingText || (active && active.closest && active.closest('input, textarea'))) return;
     event.preventDefault();
     undo();
     return;
   }
-  if (event.key === 'Escape') {
-    const active = document.activeElement;
-    if (active && active.isContentEditable && active.closest('.stamp')) {
-      active.blur();
-      window.getSelection().removeAllRanges();
-      return;
-    }
-    if (tool !== 'select') {
-      setTool('select');
-      return;
-    }
-    if (window.parent !== window) {
-      window.parent.postMessage({ source: 'sketch-board', type: 'close' }, window.location.origin);
-    }
-    return;
-  }
-  if ((event.key === ']' || event.key === '[') && !event.ctrlKey && !event.metaKey && !event.altKey) {
-    if (!selected || drag || typingTarget(document.activeElement)) return;
+  if (event.key === 'Escape' || event.code === 'Escape') {
     event.preventDefault();
-    restack(selected, event.key === ']');
+    leave();
     return;
   }
-  if (event.key !== 'Delete' && event.key !== 'Backspace') return;
+  if (!event.ctrlKey && !event.metaKey && !event.altKey && !event.shiftKey) {
+    let forward = event.key === ']' || event.key === '】';
+    let back = event.key === '[' || event.key === '【';
+    if (!forward && !back && (event.key === 'Process' || event.key === 'Unidentified')) {
+      forward = event.code === 'BracketRight';
+      back = event.code === 'BracketLeft';
+    }
+    if (forward || back) {
+      if (drag || typingTarget(document.activeElement)) return;
+      event.preventDefault();
+      orderSelected(forward);
+      return;
+    }
+  }
+  if (event.key !== 'Delete' && event.key !== 'Backspace' && event.code !== 'Delete' && event.code !== 'Backspace') return;
   if (typingTarget(document.activeElement)) return;
   if (!selected) return;
   event.preventDefault();
   removeSelected();
 });
 
-const underlay = document.createElement('img');
+underlay = document.createElement('img');
 underlay.className = 'board-underlay';
 underlay.alt = '';
 underlay.hidden = true;
@@ -639,8 +957,8 @@ document.getElementById('clear-board').addEventListener('click', () => {
   const nodes = [...board.querySelectorAll('.stamp')];
   const previous = underlay.hidden ? '' : underlay.src;
   if (!nodes.length && !previous) return;
+  select(null);
   nodes.forEach((node) => node.remove());
-  selected = null;
   setUnderlay('');
   remember({ type: 'clear', nodes, underlay: previous });
   setStatus('Cleared');
@@ -660,6 +978,7 @@ document.getElementById('export').addEventListener('click', async () => {
   }
 });
 
+renderTools();
 fitBoard();
 new ResizeObserver(fitBoard).observe(board.parentElement.parentElement);
 
@@ -699,3 +1018,6 @@ loadManifest().then(async (manifest) => {
   renderPalette([], []);
   setStatus(error.message);
 });
+}
+
+boot();

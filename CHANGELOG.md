@@ -2,7 +2,57 @@
 
 All notable changes to AI HTML Annotation are documented here.
 
-## Unreleased
+## v0.5.1 — 2026-10-12
+
+### English
+
+#### Changed
+
+- The sketch board lives in `runtime/author/sketch/` with the other authoring tools. It is not copied into a prototype delivery. Open it from Author Tools, or with `node <skill-root>/runtime/author/sketch/serve.mjs` (replacing `node <skill-root>/sketch/serve.mjs` from v0.5.0).
+- Drag palette components onto the canvas. Resize handles appear only on the selected stamp.
+- Click text on a selected stamp to edit that sentence inline, including radio and checkbox captions. Edits stay on the stamp only and are not written back to the UI pack.
+- A floating toolbar holds draw tools, then undo, send back, bring forward, delete, and leave. Shortcut hints appear when you hover those buttons.
+- Pack install registry pins `ref: v0.5.1`.
+
+#### Fixed
+
+- Layer shortcuts and underlay handling after the sketch board boot guard.
+
+#### Install / update
+
+Re-install or update the skill copy so Author Tools and the sketch board pick up this release:
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill ui-pack-maintain
+node <skill-root>/scripts/install-pack.mjs --list-remote
+node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
+```
+
+### 中文
+
+#### 变更
+
+- 草图板放到 `runtime/author/sketch/`，和其他作者工具放在一起，不进入原型交付目录。可从 Author Tools 打开，或运行 `node <skill-root>/runtime/author/sketch/serve.mjs`（取代 v0.5.0 的 `node <skill-root>/sketch/serve.mjs`）。
+- 组件面板支持拖到画布上。只有选中的图章才显示拉伸锚点。
+- 选中图章后，可点击命中的文字就地改字，含单选、复选说明；改动只留在当前图章，不会写回 UI pack。
+- 画布上方悬浮工具栏：绘图工具，以及撤销、后移、前移、删除、退出；悬停按钮时显示快捷键提示。
+- 安装 registry 固定 `ref: v0.5.1`。
+
+#### 修复
+
+- 草图板启动守卫之后，层级快捷键与底图处理恢复正常。
+
+#### 安装 / 更新
+
+请重新安装或更新本地 Skill 副本，Author Tools 与草图板才会用到本版：
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill ui-pack-maintain
+node <skill-root>/scripts/install-pack.mjs --list-remote
+node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
+```
 
 ## v0.5.0 — 2026-10-11
 

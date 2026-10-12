@@ -2,7 +2,7 @@
 
 ## Scope
 
-Use this entry when adding or changing a placeable item on the module sketch board (`sketch/` inside this skill). The board is a free canvas for a rough reference screenshot that the AI uses to implement an increment. **Copy image** puts that canvas on the clipboard and does not download a file. The board is not a prototype page, and it does not write a layout file. It loads atoms from the installed UI pack (project `.html-prototype/packs/`, then `~/.html-prototype/packs/`).
+Use this entry when adding or changing a placeable item on the module sketch board (`runtime/author/sketch/`). The board is an authoring tool, not a prototype page and not part of the formal delivery. It is a free canvas for a rough reference screenshot that the AI uses to implement an increment. **Copy image** puts that canvas on the clipboard and does not download a file. It does not write a layout file. It loads atoms from the installed UI pack (project `.html-prototype/packs/`, then `~/.html-prototype/packs/`). Open it from Author Tools, or alone with `node <skill-root>/runtime/author/sketch/serve.mjs`.
 
 ## Where items come from
 
@@ -13,7 +13,7 @@ The board builds its palette from the selected UI pack. It does not keep its own
 
 The palette groups atoms by component `category` in `providers` order. The pack picker in the dock switches packs (`?pack=<id>`, default `admin-desktop`). Switching packs clears the canvas.
 
-To add or change an item, edit the pack, not `sketch/`. The format and rules belong to `ui-pack-maintain`: [Sketch atoms](../../ui-pack-maintain/references/contract.md#sketch-atoms). Validate with `validate-pack.mjs --strict`, which checks that every declared atom is marked exactly once.
+To add or change an item, edit the pack, not `runtime/author/sketch/`. The format and rules belong to `ui-pack-maintain`: [Sketch atoms](../../ui-pack-maintain/references/contract.md#sketch-atoms). Validate with `validate-pack.mjs --strict`, which checks that every declared atom is marked exactly once.
 
 ## Decision
 
@@ -23,8 +23,8 @@ For a mobile screen, the board stays free-form. Draw the phone frame with the re
 
 ## Board-side behavior
 
-- `sketch/mount.js` is the only extractor. It copies the marked node, keeps `data-pack-atom-scope` ancestors as empty wrappers, drops `data-pack-atom-strip` and `[hidden]` descendants, and prefixes ids per stamp.
+- `runtime/author/sketch/mount.js` is the only extractor. It copies the marked node, keeps `data-pack-atom-scope` ancestors as empty wrappers, drops `data-pack-atom-strip` and `[hidden]` descendants, and prefixes ids per stamp.
 - The board resets fixed, sticky, and transformed atom roots to normal flow.
 - Resizing never uses `transform: scale()`.
-- Charts are the only atoms that load a pack script (`sketch/charts.js`, admin-desktop ECharts bridge). They paint the pack sample series onto the stamp.
+- Charts are the only atoms that load a pack script (`runtime/author/sketch/charts.js`, admin-desktop ECharts bridge). They paint the pack sample series onto the stamp.
 - `visibility: internal` components such as `_echarts-core` are never palette items. Their CSS still loads through `requires`.

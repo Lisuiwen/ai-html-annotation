@@ -32,7 +32,7 @@ When generating or heavily changing UI, read the [shared generation contract](re
 
 For visual tasks, discover packs, pick a foundation and providers via the [UI pack catalog](ui/catalog.md), resolve the minimal closure, and follow the [consumer pack rules](ui/contract.md). When no pack is installed, follow [Pack install](references/pack-install.md).
 
-`scripts/` holds the agent's deterministic tools. `runtime/` is split by execution boundary: `client/` formal browser runtime, `author/` browser authoring tools, `server/` local Node authoring service, `cli/` standalone command-line tools.
+`scripts/` holds the agent's deterministic tools. `runtime/` is split by execution boundary: `client/` formal browser runtime, `author/` browser authoring tools (including the sketch board), `server/` local Node authoring service, `cli/` standalone command-line tools. Only `runtime/client/` is copied into a prototype. `runtime/author/`, `runtime/server/`, and `runtime/cli/` stay in the skill.
 
 ## Terminology
 
@@ -46,5 +46,6 @@ For visual tasks, discover packs, pick a foundation and providers via the [UI pa
 - Mark is a temporary review tool in the Author Tools panel alongside Direct edit; its data goes to page-path-scoped localStorage, is never written to the snapshot, and is not injected into the source HTML.
 - Direct edit previews in the authoring session only and writes back to the source HTML safely through the server.
 - The authoring service only handles local editing and in-prototype source lookup; it never enters the source HTML or the final deliverable.
+- The sketch board in `runtime/author/sketch/` is an authoring-session page. Do not copy it into `<prototype-name>/`.
 - Screenshots consume only the URL scene and formal annotation data; they do not generate business state.
 - System names, menus, fields, states, and business data must come from the user's materials; ask when information is unclear, never guess.

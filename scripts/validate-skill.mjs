@@ -152,7 +152,6 @@ await import('../tests/e2e/pack-install.e2e.mjs');
 await import('../tests/e2e/pack-validate.e2e.mjs');
 await import('../tests/e2e/pack-resolve.e2e.mjs');
 await import('../tests/packs/admin-desktop/charts.test.mjs');
-await import('../tests/sketch/palette.test.mjs');
 await import('../tests/runtime/index.test.mjs');
 await import('../tests/contracts/runtime.test.mjs');
 await import('../tests/examples/minimal-notes-system/prototype.test.mjs');
