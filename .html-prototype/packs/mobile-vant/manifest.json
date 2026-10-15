@@ -1,20 +1,43 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "mobile-vant",
-  "version": 2,
+  "version": 3,
   "classPrefix": "mv-",
   "tokenPrefix": "mv-",
   "foundation": {
     "id": "mobile-vant.default",
     "contract": "foundation/FOUNDATION.md",
-    "sources": ["foundation/tokens.css", "foundation/base.css"]
+    "sources": [
+      "foundation/tokens.css",
+      "foundation/base.css"
+    ]
   },
   "providers": {
-    "action": { "compatibleFoundations": ["mobile-vant.default"] },
-    "navigation": { "compatibleFoundations": ["mobile-vant.default"] },
-    "form": { "compatibleFoundations": ["mobile-vant.default"] },
-    "data": { "compatibleFoundations": ["mobile-vant.default"] },
-    "feedback": { "compatibleFoundations": ["mobile-vant.default"] }
+    "action": {
+      "compatibleFoundations": [
+        "mobile-vant.default"
+      ]
+    },
+    "navigation": {
+      "compatibleFoundations": [
+        "mobile-vant.default"
+      ]
+    },
+    "form": {
+      "compatibleFoundations": [
+        "mobile-vant.default"
+      ]
+    },
+    "data": {
+      "compatibleFoundations": [
+        "mobile-vant.default"
+      ]
+    },
+    "feedback": {
+      "compatibleFoundations": [
+        "mobile-vant.default"
+      ]
+    }
   },
   "components": {
     "action.button": {
@@ -23,7 +46,12 @@
       "source": "components/action/button/component.html",
       "adapter": "components/action/button/state-adapter.js",
       "atoms": {
-        "button": { "label": "Button", "resize": "x", "width": 343, "minWidth": 64 }
+        "button": {
+          "label": "Button",
+          "resize": "x",
+          "width": 343,
+          "minWidth": 64
+        }
       }
     },
     "navigation.nav-bar": {
@@ -31,7 +59,12 @@
       "contract": "components/navigation/nav-bar/COMPONENT.md",
       "source": "components/navigation/nav-bar/component.html",
       "atoms": {
-        "nav-bar": { "label": "Nav bar", "resize": "x", "width": 375, "minWidth": 240 }
+        "nav-bar": {
+          "label": "Nav bar",
+          "resize": "x",
+          "width": 375,
+          "minWidth": 240
+        }
       }
     },
     "navigation.tab-bar": {
@@ -40,7 +73,12 @@
       "source": "components/navigation/tab-bar/component.html",
       "adapter": "components/navigation/tab-bar/state-adapter.js",
       "atoms": {
-        "tab-bar": { "label": "Tab bar", "resize": "x", "width": 375, "minWidth": 240 }
+        "tab-bar": {
+          "label": "Tab bar",
+          "resize": "x",
+          "width": 375,
+          "minWidth": 240
+        }
       }
     },
     "form.field": {
@@ -49,7 +87,12 @@
       "source": "components/form/field/component.html",
       "adapter": "components/form/field/state-adapter.js",
       "atoms": {
-        "field": { "label": "Field", "resize": "x", "width": 375, "minWidth": 200 }
+        "field": {
+          "label": "Field",
+          "resize": "x",
+          "width": 375,
+          "minWidth": 200
+        }
       }
     },
     "form.switch": {
@@ -58,7 +101,10 @@
       "source": "components/form/switch/component.html",
       "adapter": "components/form/switch/state-adapter.js",
       "atoms": {
-        "switch": { "label": "Switch", "resize": "none" }
+        "switch": {
+          "label": "Switch",
+          "resize": "none"
+        }
       }
     },
     "form.radio-group": {
@@ -67,7 +113,12 @@
       "source": "components/form/radio-group/component.html",
       "adapter": "components/form/radio-group/state-adapter.js",
       "atoms": {
-        "radio": { "label": "Radio", "resize": "x", "width": 375, "minWidth": 160 }
+        "radio": {
+          "label": "Radio",
+          "resize": "x",
+          "width": 375,
+          "minWidth": 160
+        }
       }
     },
     "form.checkbox-group": {
@@ -76,7 +127,12 @@
       "source": "components/form/checkbox-group/component.html",
       "adapter": "components/form/checkbox-group/state-adapter.js",
       "atoms": {
-        "checkbox": { "label": "Checkbox", "resize": "x", "width": 375, "minWidth": 160 }
+        "checkbox": {
+          "label": "Checkbox",
+          "resize": "x",
+          "width": 375,
+          "minWidth": 160
+        }
       }
     },
     "data.cell": {
@@ -84,7 +140,12 @@
       "contract": "components/data/cell/COMPONENT.md",
       "source": "components/data/cell/component.html",
       "atoms": {
-        "cell": { "label": "Cell", "resize": "x", "width": 375, "minWidth": 200 }
+        "cell": {
+          "label": "Cell",
+          "resize": "x",
+          "width": 375,
+          "minWidth": 200
+        }
       }
     },
     "data.tag": {
@@ -92,7 +153,10 @@
       "contract": "components/data/tag/COMPONENT.md",
       "source": "components/data/tag/component.html",
       "atoms": {
-        "tag": { "label": "Tag", "resize": "none" }
+        "tag": {
+          "label": "Tag",
+          "resize": "none"
+        }
       }
     },
     "data.empty": {
@@ -100,7 +164,12 @@
       "contract": "components/data/empty/COMPONENT.md",
       "source": "components/data/empty/component.html",
       "atoms": {
-        "empty": { "label": "Empty", "resize": "x", "width": 343, "minWidth": 160 }
+        "empty": {
+          "label": "Empty",
+          "resize": "x",
+          "width": 343,
+          "minWidth": 160
+        }
       }
     },
     "feedback.dialog": {
@@ -109,7 +178,12 @@
       "source": "components/feedback/dialog/component.html",
       "adapter": "components/feedback/dialog/state-adapter.js",
       "atoms": {
-        "dialog": { "label": "Dialog", "resize": "x", "width": 320, "minWidth": 240 }
+        "dialog": {
+          "label": "Dialog",
+          "resize": "x",
+          "width": 320,
+          "minWidth": 240
+        }
       }
     },
     "feedback.toast": {
@@ -118,7 +192,225 @@
       "source": "components/feedback/toast/component.html",
       "adapter": "components/feedback/toast/state-adapter.js",
       "atoms": {
-        "toast": { "label": "Toast", "resize": "none" }
+        "toast": {
+          "label": "Toast",
+          "resize": "none"
+        }
+      }
+    },
+    "data._echarts-core": {
+      "category": "data",
+      "visibility": "internal",
+      "keywords": [],
+      "contract": "components/data/_echarts-core/COMPONENT.md",
+      "source": "components/data/_echarts-core/component.html",
+      "adapter": "components/data/_echarts-core/state-adapter.js",
+      "requires": [],
+      "vendor": [
+        "vendor/echarts/echarts.min.js"
+      ],
+      "runtime": [
+        "runtime/charts/bridge.js",
+        "runtime/charts/presets.js"
+      ]
+    },
+    "data.chart-line": {
+      "category": "data",
+      "keywords": [
+        "line chart",
+        "trend chart",
+        "area chart",
+        "time trend"
+      ],
+      "contract": "components/data/chart-line/COMPONENT.md",
+      "source": "components/data/chart-line/component.html",
+      "adapter": "components/data/chart-line/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Line chart",
+          "resize": "both",
+          "width": 343,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-bar": {
+      "category": "data",
+      "keywords": [
+        "bar chart",
+        "comparison chart",
+        "grouped bar",
+        "stacked bar"
+      ],
+      "contract": "components/data/chart-bar/COMPONENT.md",
+      "source": "components/data/chart-bar/component.html",
+      "adapter": "components/data/chart-bar/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Bar chart",
+          "resize": "both",
+          "width": 343,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-donut": {
+      "category": "data",
+      "keywords": [
+        "donut chart",
+        "share chart",
+        "composition chart",
+        "pie chart"
+      ],
+      "contract": "components/data/chart-donut/COMPONENT.md",
+      "source": "components/data/chart-donut/component.html",
+      "adapter": "components/data/chart-donut/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Donut chart",
+          "resize": "both",
+          "width": 343,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-mixed": {
+      "category": "data",
+      "keywords": [
+        "mixed chart",
+        "bar-line mixed",
+        "dual-axis chart"
+      ],
+      "contract": "components/data/chart-mixed/COMPONENT.md",
+      "source": "components/data/chart-mixed/component.html",
+      "adapter": "components/data/chart-mixed/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Mixed chart",
+          "resize": "both",
+          "width": 343,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-funnel": {
+      "category": "data",
+      "keywords": [
+        "funnel chart",
+        "conversion",
+        "drop-off"
+      ],
+      "contract": "components/data/chart-funnel/COMPONENT.md",
+      "source": "components/data/chart-funnel/component.html",
+      "adapter": "components/data/chart-funnel/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Funnel chart",
+          "resize": "both",
+          "width": 343,
+          "height": 280,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-gauge": {
+      "category": "data",
+      "keywords": [
+        "gauge",
+        "completion rate",
+        "progress ring"
+      ],
+      "contract": "components/data/chart-gauge/COMPONENT.md",
+      "source": "components/data/chart-gauge/component.html",
+      "adapter": "components/data/chart-gauge/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Gauge",
+          "resize": "both",
+          "width": 343,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-heatmap": {
+      "category": "data",
+      "keywords": [
+        "heatmap",
+        "activity distribution",
+        "matrix"
+      ],
+      "contract": "components/data/chart-heatmap/COMPONENT.md",
+      "source": "components/data/chart-heatmap/component.html",
+      "adapter": "components/data/chart-heatmap/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Heatmap",
+          "resize": "both",
+          "width": 343,
+          "height": 280,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-map": {
+      "category": "data",
+      "keywords": [
+        "map",
+        "regional stats",
+        "provincial distribution"
+      ],
+      "contract": "components/data/chart-map/COMPONENT.md",
+      "source": "components/data/chart-map/component.html",
+      "adapter": "components/data/chart-map/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "assets": [
+        "vendor/echarts/maps/china.json",
+        "vendor/echarts/maps/china.js"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Map",
+          "resize": "both",
+          "width": 343,
+          "height": 360,
+          "minWidth": 160,
+          "minHeight": 200
+        }
       }
     }
   },
@@ -130,26 +422,56 @@
     "pattern.form-page": {
       "contract": "patterns/form-page/PATTERN.md",
       "source": "patterns/form-page/pattern.html",
-      "requires": ["navigation.nav-bar", "form.field", "form.switch", "action.button"]
+      "requires": [
+        "navigation.nav-bar",
+        "form.field",
+        "form.switch",
+        "action.button"
+      ]
     },
     "pattern.list-page": {
       "contract": "patterns/list-page/PATTERN.md",
       "source": "patterns/list-page/pattern.html",
-      "requires": ["navigation.nav-bar", "data.cell", "data.empty", "navigation.tab-bar"]
+      "requires": [
+        "navigation.nav-bar",
+        "data.cell",
+        "data.empty",
+        "navigation.tab-bar"
+      ]
     }
   },
   "presets": {
     "preset.mobile-form": {
       "contract": "presets/mobile-form/PRESET.md",
       "source": "presets/mobile-form/seed.html",
-      "uses": ["pattern.device-frame", "pattern.form-page"],
-      "requires": ["form.field", "form.switch", "action.button"]
+      "uses": [
+        "pattern.device-frame",
+        "pattern.form-page"
+      ],
+      "requires": [
+        "form.field",
+        "form.switch",
+        "action.button"
+      ]
     },
     "preset.mobile-list": {
       "contract": "presets/mobile-list/PRESET.md",
       "source": "presets/mobile-list/seed.html",
-      "uses": ["pattern.device-frame", "pattern.list-page"],
-      "requires": ["data.cell", "data.empty"]
+      "uses": [
+        "pattern.device-frame",
+        "pattern.list-page"
+      ],
+      "requires": [
+        "data.cell",
+        "data.empty"
+      ]
     }
+  },
+  "delivery": {
+    "vendor/echarts/echarts.min.js": "assets/echarts.min.js",
+    "runtime/charts/bridge.js": "prototype/bridge.js",
+    "runtime/charts/presets.js": "prototype/presets.js",
+    "vendor/echarts/maps/china.json": "assets/maps/china.json",
+    "vendor/echarts/maps/china.js": "assets/maps/china.js"
   }
 }

@@ -38,6 +38,8 @@ another pack; for non-mobile visual systems ask first.
   hide the chrome and use the OS status bar.
 - All visual tokens are provisional (no screenshot evidence was provided); see
   `design-system.md` for the `ponytail:` notes.
+- Chart leaves (`data.chart-*`) are stamped from the ECharts pack plugin. They
+  use this pack's `mv-` prefix and do not depend on desktop `data.card`.
 
 ## Usage
 

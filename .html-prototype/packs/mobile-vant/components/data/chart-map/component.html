@@ -1,0 +1,17 @@
+<style>
+  :root { --mv-chart-height: 360px; --mv-chart-gap: 12px; --mv-chart-caption: 12px; }
+  .mv-chart { display: grid; gap: var(--mv-chart-gap, 12px); min-width: 0; }
+  .mv-chart-canvas { width: 100%; height: var(--mv-chart-height); min-height: 200px; }
+  .mv-chart-summary, .mv-chart-empty { color: var(--mv-text-secondary); font-size: var(--mv-chart-caption, 12px); }
+  .mv-chart[data-status="empty"] .mv-chart-data { display: none; }
+  .mv-chart[data-status="data"] .mv-chart-empty, .mv-chart[data-status="loading"] .mv-chart-empty { display: none; }
+  /* ponytail: province-level China mock only; city-level geo and boundary hover not implemented. */
+</style>
+<section class="mv-chart mv-chart-map" id="uiChartMap" data-status="data" aria-labelledby="uiChartMapTitle" data-pack-atom="chart">
+  <h2 class="mv-visually-hidden" id="uiChartMapTitle">Regional task volume</h2>
+  <div class="mv-chart-data">
+    <div class="mv-chart-canvas" data-chart-canvas role="img" aria-label="Task volume by province"></div>
+  </div>
+  <div class="mv-chart-empty" hidden>No map data</div>
+  <div class="mv-chart-summary" aria-live="polite">Province-level regional stats</div>
+</section>

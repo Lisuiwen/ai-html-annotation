@@ -1,0 +1,17 @@
+<style>
+  :root { --mv-chart-height: 240px; --mv-chart-gap: 12px; --mv-chart-caption: 12px; }
+  .mv-chart { display: grid; gap: var(--mv-chart-gap, 12px); min-width: 0; }
+  .mv-chart-canvas { width: 100%; height: var(--mv-chart-height); min-height: 160px; }
+  .mv-chart-summary, .mv-chart-empty { color: var(--mv-text-secondary); font-size: var(--mv-chart-caption, 12px); }
+  .mv-chart[data-status="empty"] .mv-chart-data { display: none; }
+  .mv-chart[data-status="data"] .mv-chart-empty, .mv-chart[data-status="loading"] .mv-chart-empty { display: none; }
+  /* ponytail: tooltip position, zoom, and animation duration not captured from formal spec; currently using ECharts defaults. */
+</style>
+<section class="mv-chart mv-chart-line" id="uiChartLine" data-status="data" aria-labelledby="uiChartLineTitle" data-pack-atom="chart">
+  <h2 class="mv-visually-hidden" id="uiChartLineTitle">Six-month trend</h2>
+  <div class="mv-chart-data">
+    <div class="mv-chart-canvas" data-chart-canvas role="img" aria-label="Monthly trend comparison: current vs previous period"></div>
+  </div>
+  <div class="mv-chart-empty" hidden>No trend data</div>
+  <div class="mv-chart-summary" aria-live="polite">Currently showing: current period, previous period</div>
+</section>

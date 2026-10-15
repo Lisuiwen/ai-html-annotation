@@ -19,7 +19,7 @@ Official packs are **prototype visual simulations**. Use them to get to an opena
 | `admin-desktop` | Desktop admin: forms, tables, navigation, dashboard charts. Default for [`examples/minimal-notes-system`](../examples/minimal-notes-system). |
 | `mobile-vant` | Phone-width H5, Vant-style simulation: touch targets, cells, overlays. Alternate sample: [`examples/mobile-work-order`](../examples/mobile-work-order). |
 
-`admin-desktop` vendors Apache ECharts inside the pack ([NOTICE](../NOTICE)); that is still not a commercial UI-library compatibility promise.
+Both official packs include the same ECharts chart set, stamped from `.html-prototype/pack-plugins/echarts/` into the pack itself ([NOTICE](../NOTICE)). The chart plugin is not a third pack and cannot be installed on its own. That is still not a commercial UI-library compatibility promise.
 
 Choose from **installed** packs. When the UI type is unclear, ask — never silently default.
 

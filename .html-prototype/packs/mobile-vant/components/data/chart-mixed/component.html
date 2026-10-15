@@ -1,0 +1,16 @@
+<style>
+  :root { --mv-chart-height: 240px; --mv-chart-gap: 12px; --mv-chart-caption: 12px; }
+  .mv-chart { display: grid; gap: var(--mv-chart-gap, 12px); min-width: 0; }
+  .mv-chart-canvas { width: 100%; height: var(--mv-chart-height); min-height: 160px; }
+  .mv-chart-summary, .mv-chart-empty { color: var(--mv-text-secondary); font-size: var(--mv-chart-caption, 12px); }
+  .mv-chart[data-status="empty"] .mv-chart-data { display: none; }
+  .mv-chart[data-status="data"] .mv-chart-empty { display: none; }
+</style>
+<section class="mv-chart mv-chart-mixed" id="uiChartMixed" data-status="data" aria-labelledby="uiChartMixedTitle" data-pack-atom="chart">
+  <h2 class="mv-visually-hidden" id="uiChartMixedTitle">Task volume and completion rate</h2>
+  <div class="mv-chart-data">
+    <div class="mv-chart-canvas" data-chart-canvas role="img" aria-label="Mixed bar-line comparison"></div>
+  </div>
+  <div class="mv-chart-empty" hidden>No mixed chart data</div>
+  <div class="mv-chart-summary" aria-live="polite">Mixed bar-line: task volume + completion rate</div>
+</section>

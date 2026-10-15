@@ -44,7 +44,7 @@ child `manifest.json` qualify as packs.
 ```bash
 node skills/ui-pack-maintain/scripts/generate-registry.mjs
 node skills/ui-pack-maintain/scripts/generate-registry.mjs --check --default-ref=<committed source.defaultRef>
-node skills/ui-pack-maintain/scripts/generate-registry.mjs --default-ref=v0.5.2
+node skills/ui-pack-maintain/scripts/generate-registry.mjs --default-ref=v0.5.3
 ```
 
 Day-to-day generation leaves `ref` at `master`. A release passes `--default-ref=<tag>`.

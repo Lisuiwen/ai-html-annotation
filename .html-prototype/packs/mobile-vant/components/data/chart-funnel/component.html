@@ -1,0 +1,16 @@
+<style>
+  :root { --mv-chart-height: 280px; --mv-chart-gap: 12px; --mv-chart-caption: 12px; }
+  .mv-chart { display: grid; gap: var(--mv-chart-gap, 12px); min-width: 0; }
+  .mv-chart-canvas { width: 100%; height: var(--mv-chart-height); min-height: 160px; }
+  .mv-chart-summary, .mv-chart-empty { color: var(--mv-text-secondary); font-size: var(--mv-chart-caption, 12px); }
+  .mv-chart[data-status="empty"] .mv-chart-data { display: none; }
+  .mv-chart[data-status="data"] .mv-chart-empty { display: none; }
+</style>
+<section class="mv-chart mv-chart-funnel" id="uiChartFunnel" data-status="data" aria-labelledby="uiChartFunnelTitle" data-pack-atom="chart">
+  <h2 class="mv-visually-hidden" id="uiChartFunnelTitle">Approval flow funnel</h2>
+  <div class="mv-chart-data">
+    <div class="mv-chart-canvas" data-chart-canvas role="img" aria-label="Stage drop-off from visit to completion"></div>
+  </div>
+  <div class="mv-chart-empty" hidden>No funnel data</div>
+  <div class="mv-chart-summary" aria-live="polite">5  stage flow</div>
+</section>

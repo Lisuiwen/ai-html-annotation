@@ -1,0 +1,42 @@
+{
+  "hosts": [
+    {
+      "id": "admin-desktop",
+      "prefix": "ui-",
+      "version": 7,
+      "schemaVersion": 2,
+      "optionalCard": true,
+      "atomWidth": null,
+      "themeVars": [
+        "--ui-primary",
+        "--ui-success",
+        "--ui-warning",
+        "--ui-error",
+        "--ui-info",
+        "--ui-font",
+        "--ui-text-secondary",
+        "--ui-border",
+        "--ui-border-soft"
+      ]
+    },
+    {
+      "id": "mobile-vant",
+      "prefix": "mv-",
+      "version": 3,
+      "schemaVersion": 2,
+      "optionalCard": false,
+      "atomWidth": 343,
+      "themeVars": [
+        "--mv-primary",
+        "--mv-success",
+        "--mv-warning",
+        "--mv-danger",
+        "--mv-primary",
+        "--mv-font-family",
+        "--mv-text-secondary",
+        "--mv-border-color",
+        "--mv-background"
+      ]
+    }
+  ]
+}

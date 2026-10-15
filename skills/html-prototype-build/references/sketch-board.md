@@ -26,5 +26,5 @@ For a mobile screen, the board stays free-form. Draw the phone frame with the re
 - `runtime/author/sketch/mount.js` is the only extractor. It copies the marked node, keeps `data-pack-atom-scope` ancestors as empty wrappers, drops `data-pack-atom-strip` and `[hidden]` descendants, and prefixes ids per stamp.
 - The board resets fixed, sticky, and transformed atom roots to normal flow.
 - Resizing never uses `transform: scale()`.
-- Charts are the only atoms that load a pack script (`runtime/author/sketch/charts.js`, admin-desktop ECharts bridge). They paint the pack sample series onto the stamp.
+- Charts are the only atoms that load a pack script (`runtime/author/sketch/charts.js`). A `data.chart-*` atom loads that pack's ECharts vendor and `runtime/charts`, then paints the sample series. The preset name is the id suffix (`data.chart-line` → `line`).
 - `visibility: internal` components such as `_echarts-core` are never palette items. Their CSS still loads through `requires`.

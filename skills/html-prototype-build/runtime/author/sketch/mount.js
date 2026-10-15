@@ -142,7 +142,7 @@ export function measureStamp(stamp, spec) {
     stamp.style.height = spec.height == null ? 'auto' : spec.height + 'px';
   }
   if (spec.chart && spec.height != null) {
-    stamp.querySelector('.stamp-host').style.setProperty('--ui-chart-height', spec.height + 'px');
+    stamp.querySelector('.stamp-host').style.setProperty(chartHeightProperty(stamp), spec.height + 'px');
   }
   const host = stamp.querySelector('.stamp-host');
   const width = hugWidth ? host.scrollWidth : spec.width;
@@ -161,6 +161,13 @@ export async function fillStamp(stamp, entry) {
   await ensureStyles(entry.componentId, manifest.components);
   const { body } = await componentHtml(component);
   stamp.querySelector('.stamp-host').replaceChildren(extractAtom(body, entry, stamp.dataset.stampId));
+}
+
+export function chartHeightProperty(stamp) {
+  const canvas = stamp.querySelector('[data-chart-canvas]');
+  const name = canvas && String(canvas.className).split(/\s+/).find((item) => item.endsWith('chart-canvas'));
+  const prefix = name ? name.slice(0, -'chart-canvas'.length) : 'ui-';
+  return '--' + prefix + 'chart-height';
 }
 
 export function paletteEntries(manifest) {

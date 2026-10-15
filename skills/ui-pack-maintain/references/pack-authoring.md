@@ -88,6 +88,16 @@ Keep data, empty, loading, selection, and similar states together when they belo
 - Let Patterns reference component IDs. Let Presets reference Patterns through `uses` and direct required Components through `requires`.
 - Never duplicate leaf implementation code.
 
+## Chart plugin
+
+Charts are not their own pack. The source lives in `.html-prototype/pack-plugins/echarts/` and is stamped into each host pack:
+
+```bash
+node scripts/stamp-chart-plugin.mjs
+```
+
+`admin-desktop` and `mobile-vant` each receive a full ECharts set (`data.chart-*`, `data._echarts-core`, vendor, runtime). The plugin id does not appear in `resolve-pack --list` or the sketch pack picker. Edit the plugin, then stamp again; do not hand-edit the generated chart files inside a host pack.
+
 ## Resolver smoke tests
 
 After changing public entries, run both resolvers:
