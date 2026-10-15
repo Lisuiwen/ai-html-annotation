@@ -60,4 +60,4 @@ UI 包是原型生成**消费**的可复用视觉系统（Token、组件、Patte
 node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
 ```
 
-参数、覆盖保护和 `--dest=project`：[Pack install](../skills/html-prototype-build/references/pack-install.md)。消费侧目录：[catalog](../skills/html-prototype-build/ui/catalog.md)。包契约与 registry：[ui-pack-maintain](../skills/ui-pack-maintain/SKILL.md)。落地路径：[Pack 编写](../skills/ui-pack-maintain/references/pack-authoring.md)。
+参数、覆盖保护和 `--dest=project`：[Pack install](../skills/html-prototype-build/references/pack-install.md)。消费侧目录：[catalog](../skills/html-prototype-build/ui/catalog.md)。包契约与 registry：[ui-pack-maintain](../skills/ui-pack-maintain/SKILL.md)。落地路径与扫描顺序：[Pack 编写](../skills/ui-pack-maintain/references/pack-authoring.md#pack-discovery)（`list-packs.mjs`、`HTML_PROTOTYPE_PACK_ROOT`、`--pack-root`）。

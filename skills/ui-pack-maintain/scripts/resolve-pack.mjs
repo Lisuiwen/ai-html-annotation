@@ -9,10 +9,11 @@
  * them as a `ponytail:` evidence gap until a consumer defines cross-pack wiring.
  *
  * Usage:
- *   node resolve-pack.mjs --pack=<pack-directory> --entry=<id>[,<id>...] [--optional=<id>[,<id>...]]
+ *   node resolve-pack.mjs --pack=<pack-id|directory> --entry=<id>[,<id>...] [--optional=<id>[,<id>...]]
  */
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { resolvePackDirectory, printDiscoveryUsage } from './_pack-discover.mjs';
 
 const args = process.argv.slice(2);
 const valueOf = (flag) => {
@@ -20,12 +21,21 @@ const valueOf = (flag) => {
   return arg ? arg.slice(flag.length + 1) : undefined;
 };
 
-const packDirectory = valueOf('--pack');
 const entryArg = valueOf('--entry');
 const optionalArg = valueOf('--optional');
 
-if (!packDirectory || !entryArg) {
-  console.error('Usage: node resolve-pack.mjs --pack=<pack-directory> --entry=<id>[,<id>...] [--optional=<id>[,<id>...]]');
+if (!entryArg) {
+  printDiscoveryUsage('resolve-pack.mjs');
+  console.error('Missing --entry=<id>[,<id>...]');
+  process.exit(2);
+}
+
+let packDirectory;
+try {
+  ({ packDirectory } = await resolvePackDirectory(args, process.cwd()));
+} catch (error) {
+  printDiscoveryUsage('resolve-pack.mjs');
+  console.error(error.message);
   process.exit(2);
 }
 

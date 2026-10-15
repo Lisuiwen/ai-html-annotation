@@ -6,17 +6,23 @@ description: Creates, extends, repairs, validates, versions, and publishes reusa
 # UI Pack Maintain
 
 Self-contained authoring and publication workflow for UI Packs. This skill owns the pack
-contract, schema version rules, registry format, validator, and release metadata. It does not
-own consumer-side discovery, download, or prototype generation.
+contract, schema version rules, registry format, validator, and release metadata. It locates
+local packs for maintenance. It does not own download or prototype generation.
 
 ## Quick start
 
-Create a Pack, then validate and resolve it:
+List installed packs (same lookup chain as `html-prototype-build`), then validate and resolve:
 
 ```bash
-node scripts/validate-pack.mjs --pack=<pack-directory> --strict
-node scripts/resolve-pack.mjs --pack=<pack-directory> --entry=<id>[,<id>...]
+node scripts/list-packs.mjs
+node scripts/validate-pack.mjs --pack=<pack-id|directory> --strict
+node scripts/resolve-pack.mjs --pack=<pack-id|directory> --entry=<id>[,<id>...]
 ```
+
+Pack discovery order: `--pack-root=` / `HTML_PROTOTYPE_PACK_ROOT`, then
+`<cwd>`-upward `.html-prototype/packs/`, then `~/.html-prototype/packs/`. Pass a filesystem
+path to `--pack=` to skip id lookup. Details in
+[Pack authoring](references/pack-authoring.md#pack-discovery).
 
 Before publishing pack changes:
 
@@ -32,8 +38,8 @@ Landing paths, create/update steps, and the consumer resolver smoke test are in
 
 | Owns `ui-pack-maintain` | Owns `html-prototype-build` |
 |---|---|
-| pack contract, `schemaVersion`, `validate-pack.mjs`, registry generation | pack lookup chain, `install-pack.mjs`, `deliver[]` copy-out |
-| in-pack `resolve-pack.mjs` (`--pack=<dir> --entry=`) | consumer `resolve-pack.mjs` (`--list` / `--select`) |
+| pack contract, `schemaVersion`, `validate-pack.mjs`, registry generation, maintenance lookup (`list-packs.mjs`) | consumer lookup, `install-pack.mjs`, `deliver[]` copy-out |
+| in-pack `resolve-pack.mjs` (`--pack=<id|dir> --entry=`) | consumer `resolve-pack.mjs` (`--list` / `--select`) |
 | pack lifecycle: create → validate → version → publish | prototype generation |
 
 ## Workflow
@@ -62,9 +68,9 @@ Publication references:
 
 ## Hard boundaries
 
-- Keep a UI Pack inside the directory passed as `--pack=`; this skill owns only
-  the workflow, contract, registry format, resolver, and validator. It does not
-  hard-code a consumer's pack install location.
+- Keep a UI Pack inside the directory resolved by `--pack=`; this skill discovers
+  installed packs through the shared root chain (explicit roots, project, user cache).
+  It does not implement consumer download flows.
 - Keep the Foundation DOM-free; include only shared tokens and a document-level
   CSS baseline.
 - Keep each Component as one leaf implementation with a local contract.

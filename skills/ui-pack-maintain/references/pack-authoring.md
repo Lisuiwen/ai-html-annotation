@@ -2,7 +2,7 @@
 
 ## Pack landing paths
 
-`--pack=<dir>` stays required. Choose the landing path by role:
+`--pack=<pack-id|directory>` selects the pack. Choose the landing path by role:
 
 | Role | Recommended location | Synced to remote |
 |---|---|---|
@@ -11,6 +11,29 @@
 
 End-user packs should stay in the home cache. Only project developers commit packs under
 `<repo>/.html-prototype/packs/`. That directory is the source of truth for `registry.json`.
+
+## Pack discovery
+
+Maintenance scripts discover packs the same way as `html-prototype-build` `resolve-pack.mjs --list`:
+
+| Priority | Source | Location |
+|---|---|---|
+| 1 | `--pack-root=<dir>` or `HTML_PROTOTYPE_PACK_ROOT` | User-specified roots (`;`-separated on Windows, `:` on Unix) |
+| 2 | project | `.html-prototype/packs/` from `process.cwd()` upward |
+| 3 | user-cache | `~/.html-prototype/packs/` |
+| 4 | builtin | `<html-prototype-build>/ui/packs/` (optional legacy fallback) |
+
+When the same `manifest.id` appears in multiple roots, the first root in this table wins;
+later copies are listed as `shadowed` in `--list` output.
+
+```bash
+node scripts/list-packs.mjs
+node scripts/validate-pack.mjs --pack=admin-desktop --strict
+node scripts/validate-pack.mjs --pack=E:/path/to/my-pack --strict
+```
+
+Use `--pack=<pack-id>` for an installed pack. Pass a directory that contains `manifest.json`
+to edit that tree without id lookup.
 
 ## Pack id naming
 
