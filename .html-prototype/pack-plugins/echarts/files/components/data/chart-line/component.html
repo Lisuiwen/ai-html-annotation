@@ -1,0 +1,17 @@
+<style>
+  :root { --{{prefix}}chart-height: 240px; --{{prefix}}chart-gap: 12px; --{{prefix}}chart-caption: 12px; }
+  .{{prefix}}chart { display: grid; gap: var(--{{prefix}}chart-gap, 12px); min-width: 0; }
+  .{{prefix}}chart-canvas { width: 100%; height: var(--{{prefix}}chart-height); min-height: 160px; }
+  .{{prefix}}chart-summary, .{{prefix}}chart-empty { color: var(--{{prefix}}text-secondary); font-size: var(--{{prefix}}chart-caption, 12px); }
+  .{{prefix}}chart[data-status="empty"] .{{prefix}}chart-data { display: none; }
+  .{{prefix}}chart[data-status="data"] .{{prefix}}chart-empty, .{{prefix}}chart[data-status="loading"] .{{prefix}}chart-empty { display: none; }
+  /* ponytail: tooltip position, zoom, and animation duration not captured from formal spec; currently using ECharts defaults. */
+</style>
+<section class="{{prefix}}chart {{prefix}}chart-line" id="uiChartLine" data-status="data" aria-labelledby="uiChartLineTitle" data-pack-atom="chart">
+  <h2 class="{{prefix}}visually-hidden" id="uiChartLineTitle">Six-month trend</h2>
+  <div class="{{prefix}}chart-data">
+    <div class="{{prefix}}chart-canvas" data-chart-canvas role="img" aria-label="Monthly trend comparison: current vs previous period"></div>
+  </div>
+  <div class="{{prefix}}chart-empty" hidden>No trend data</div>
+  <div class="{{prefix}}chart-summary" aria-live="polite">Currently showing: current period, previous period</div>
+</section>

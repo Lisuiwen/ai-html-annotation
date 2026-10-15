@@ -1,0 +1,250 @@
+{
+  "delivery": {
+    "vendor/echarts/echarts.min.js": "assets/echarts.min.js",
+    "runtime/charts/bridge.js": "prototype/bridge.js",
+    "runtime/charts/presets.js": "prototype/presets.js",
+    "vendor/echarts/maps/china.json": "assets/maps/china.json",
+    "vendor/echarts/maps/china.js": "assets/maps/china.js"
+  },
+  "components": {
+    "data._echarts-core": {
+      "category": "data",
+      "visibility": "internal",
+      "keywords": [],
+      "contract": "components/data/_echarts-core/COMPONENT.md",
+      "source": "components/data/_echarts-core/component.html",
+      "adapter": "components/data/_echarts-core/state-adapter.js",
+      "requires": [],
+      "vendor": [
+        "vendor/echarts/echarts.min.js"
+      ],
+      "runtime": [
+        "runtime/charts/bridge.js",
+        "runtime/charts/presets.js"
+      ]
+    },
+    "data.chart-line": {
+      "category": "data",
+      "keywords": [
+        "line chart",
+        "trend chart",
+        "area chart",
+        "time trend"
+      ],
+      "contract": "components/data/chart-line/COMPONENT.md",
+      "source": "components/data/chart-line/component.html",
+      "adapter": "components/data/chart-line/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Line chart",
+          "resize": "both",
+          "width": 480,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-bar": {
+      "category": "data",
+      "keywords": [
+        "bar chart",
+        "comparison chart",
+        "grouped bar",
+        "stacked bar"
+      ],
+      "contract": "components/data/chart-bar/COMPONENT.md",
+      "source": "components/data/chart-bar/component.html",
+      "adapter": "components/data/chart-bar/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Bar chart",
+          "resize": "both",
+          "width": 480,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-donut": {
+      "category": "data",
+      "keywords": [
+        "donut chart",
+        "share chart",
+        "composition chart",
+        "pie chart"
+      ],
+      "contract": "components/data/chart-donut/COMPONENT.md",
+      "source": "components/data/chart-donut/component.html",
+      "adapter": "components/data/chart-donut/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Donut chart",
+          "resize": "both",
+          "width": 480,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-mixed": {
+      "category": "data",
+      "keywords": [
+        "mixed chart",
+        "bar-line mixed",
+        "dual-axis chart"
+      ],
+      "contract": "components/data/chart-mixed/COMPONENT.md",
+      "source": "components/data/chart-mixed/component.html",
+      "adapter": "components/data/chart-mixed/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Mixed chart",
+          "resize": "both",
+          "width": 480,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-funnel": {
+      "category": "data",
+      "keywords": [
+        "funnel chart",
+        "conversion",
+        "drop-off"
+      ],
+      "contract": "components/data/chart-funnel/COMPONENT.md",
+      "source": "components/data/chart-funnel/component.html",
+      "adapter": "components/data/chart-funnel/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Funnel chart",
+          "resize": "both",
+          "width": 480,
+          "height": 280,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-gauge": {
+      "category": "data",
+      "keywords": [
+        "gauge",
+        "completion rate",
+        "progress ring"
+      ],
+      "contract": "components/data/chart-gauge/COMPONENT.md",
+      "source": "components/data/chart-gauge/component.html",
+      "adapter": "components/data/chart-gauge/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Gauge",
+          "resize": "both",
+          "width": 480,
+          "height": 240,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-heatmap": {
+      "category": "data",
+      "keywords": [
+        "heatmap",
+        "activity distribution",
+        "matrix"
+      ],
+      "contract": "components/data/chart-heatmap/COMPONENT.md",
+      "source": "components/data/chart-heatmap/component.html",
+      "adapter": "components/data/chart-heatmap/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "optional": [
+        "data.card"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Heatmap",
+          "resize": "both",
+          "width": 480,
+          "height": 280,
+          "minWidth": 160,
+          "minHeight": 160
+        }
+      }
+    },
+    "data.chart-map": {
+      "category": "data",
+      "keywords": [
+        "map",
+        "regional stats",
+        "provincial distribution"
+      ],
+      "contract": "components/data/chart-map/COMPONENT.md",
+      "source": "components/data/chart-map/component.html",
+      "adapter": "components/data/chart-map/state-adapter.js",
+      "requires": [
+        "data._echarts-core"
+      ],
+      "assets": [
+        "vendor/echarts/maps/china.json",
+        "vendor/echarts/maps/china.js"
+      ],
+      "optional": [
+        "data.card"
+      ],
+      "atoms": {
+        "chart": {
+          "label": "Map",
+          "resize": "both",
+          "width": 480,
+          "height": 360,
+          "minWidth": 160,
+          "minHeight": 200
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { isChart, paintChart } from './charts.js';
 import { copyBoardPng } from './export.js';
-import { fillStamp, loadFoundation, loadManifest, loadPackList, measureStamp, packId, paletteEntries } from './mount.js';
+import { chartHeightProperty, fillStamp, loadFoundation, loadManifest, loadPackList, measureStamp, packId, paletteEntries } from './mount.js';
 import { FRAME, resolveSizing } from './sizing.js';
 
 const board = globalThis.document ? document.getElementById('board') : null;
@@ -274,10 +274,10 @@ function originFor(width, height) {
 function syncChart(stamp) {
   if (stamp.dataset.chart !== '1') return;
   const host = stamp.querySelector('.stamp-host');
-  const summary = stamp.querySelector('.ui-chart-summary');
+  const summary = stamp.querySelector('[class*="chart-summary"]');
   const extra = summary ? summary.offsetHeight + 12 : 0;
   const height = Math.max(Number(stamp.dataset.minHeight) || 160, stamp.clientHeight - extra);
-  host.style.setProperty('--ui-chart-height', height + 'px');
+  host.style.setProperty(chartHeightProperty(stamp), height + 'px');
 }
 
 function syncFluidHeight(stamp) {

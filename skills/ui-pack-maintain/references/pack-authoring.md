@@ -2,7 +2,7 @@
 
 ## Pack landing paths
 
-`--pack=<dir>` stays required. Choose the landing path by role:
+`--pack=<pack-id|directory>` selects the pack. Choose the landing path by role:
 
 | Role | Recommended location | Synced to remote |
 |---|---|---|
@@ -11,6 +11,29 @@
 
 End-user packs should stay in the home cache. Only project developers commit packs under
 `<repo>/.html-prototype/packs/`. That directory is the source of truth for `registry.json`.
+
+## Pack discovery
+
+Maintenance scripts discover packs the same way as `html-prototype-build` `resolve-pack.mjs --list`:
+
+| Priority | Source | Location |
+|---|---|---|
+| 1 | `--pack-root=<dir>` or `HTML_PROTOTYPE_PACK_ROOT` | User-specified roots (`;`-separated on Windows, `:` on Unix) |
+| 2 | project | `.html-prototype/packs/` from `process.cwd()` upward |
+| 3 | user-cache | `~/.html-prototype/packs/` |
+| 4 | builtin | `<html-prototype-build>/ui/packs/` (optional legacy fallback) |
+
+When the same `manifest.id` appears in multiple roots, the first root in this table wins;
+later copies are listed as `shadowed` in `--list` output.
+
+```bash
+node scripts/list-packs.mjs
+node scripts/validate-pack.mjs --pack=admin-desktop --strict
+node scripts/validate-pack.mjs --pack=E:/path/to/my-pack --strict
+```
+
+Use `--pack=<pack-id>` for an installed pack. Pass a directory that contains `manifest.json`
+to edit that tree without id lookup.
 
 ## Pack id naming
 
@@ -64,6 +87,16 @@ Keep data, empty, loading, selection, and similar states together when they belo
 - Use a Preset for a business-fact-free page skeleton.
 - Let Patterns reference component IDs. Let Presets reference Patterns through `uses` and direct required Components through `requires`.
 - Never duplicate leaf implementation code.
+
+## Chart plugin
+
+Charts are not their own pack. The source lives in `.html-prototype/pack-plugins/echarts/` and is stamped into each host pack:
+
+```bash
+node scripts/stamp-chart-plugin.mjs
+```
+
+`admin-desktop` and `mobile-vant` each receive a full ECharts set (`data.chart-*`, `data._echarts-core`, vendor, runtime). The plugin id does not appear in `resolve-pack --list` or the sketch pack picker. Edit the plugin, then stamp again; do not hand-edit the generated chart files inside a host pack.
 
 ## Resolver smoke tests
 

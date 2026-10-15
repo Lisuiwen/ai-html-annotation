@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "id": "admin-desktop",
-  "version": 6,
+  "version": 7,
   "classPrefix": "ui-",
   "tokenPrefix": "ui-",
   "foundation": {

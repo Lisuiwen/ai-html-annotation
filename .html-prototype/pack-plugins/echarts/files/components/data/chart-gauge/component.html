@@ -1,0 +1,17 @@
+<style>
+  :root { --{{prefix}}chart-height: 240px; --{{prefix}}chart-gap: 12px; --{{prefix}}chart-caption: 12px; }
+  .{{prefix}}chart { display: grid; gap: var(--{{prefix}}chart-gap, 12px); min-width: 0; }
+  .{{prefix}}chart-canvas { width: 100%; height: var(--{{prefix}}chart-height); min-height: 160px; }
+  .{{prefix}}chart-summary, .{{prefix}}chart-empty { color: var(--{{prefix}}text-secondary); font-size: var(--{{prefix}}chart-caption, 12px); }
+  .{{prefix}}chart[data-status="empty"] .{{prefix}}chart-data { display: none; }
+  .{{prefix}}chart[data-status="data"] .{{prefix}}chart-empty { display: none; }
+  /* ponytail: pointer animation duration and segment threshold styles not captured from formal spec. */
+</style>
+<section class="{{prefix}}chart {{prefix}}chart-gauge" id="uiChartGauge" data-status="data" aria-labelledby="uiChartGaugeTitle" data-pack-atom="chart">
+  <h2 class="{{prefix}}visually-hidden" id="uiChartGaugeTitle">Completion rate</h2>
+  <div class="{{prefix}}chart-data">
+    <div class="{{prefix}}chart-canvas" data-chart-canvas role="img" aria-label="Current completion rate gauge"></div>
+  </div>
+  <div class="{{prefix}}chart-empty" hidden>No metric data</div>
+  <div class="{{prefix}}chart-summary" aria-live="polite">Current completion rate 72%</div>
+</section>

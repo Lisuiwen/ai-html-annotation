@@ -293,7 +293,7 @@ body.is-embed .dock h1 { display: none; }
 .stamp[data-stretch-y] .ui-table-wrap { overflow: auto; }
 
 .stamp[data-chart] .stamp-host > * { height: auto; }
-.stamp[data-chart] .ui-chart-canvas { background: var(--ui-bg, #fff); }
+.stamp[data-chart] [data-chart-canvas] { background: var(--ui-bg, #fff); }
 
 /* Overlay roots (toast, tab bar, sticky header) are laid out by the stamp, not the viewport. */
 .stamp .stamp-host > * {
@@ -304,7 +304,8 @@ body.is-embed .dock h1 { display: none; }
   transform: none;
 }
 .stamp[data-atom="navigation.app-header#brand"] .ui-brand { width: max-content; height: auto; }
-.stamp .ui-visually-hidden {
+.stamp .ui-visually-hidden,
+.stamp [class$="visually-hidden"] {
   position: absolute;
   width: 1px;
   height: 1px;

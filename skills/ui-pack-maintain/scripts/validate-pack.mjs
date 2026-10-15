@@ -3,16 +3,19 @@ import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { parseFrontmatter } from './_pack-md.mjs';
 import { SUPPORTED_SCHEMA_VERSION_SET as SUPPORTED_SCHEMA_VERSIONS } from './_pack-schema.mjs';
+import { resolvePackDirectory, printDiscoveryUsage } from './_pack-discover.mjs';
 
 const args = process.argv.slice(2);
-const packArg = args.find((value) => value.startsWith('--pack='));
 const strict = args.includes('--strict');
-if (!packArg || !packArg.slice('--pack='.length)) {
-  console.error('Usage: node validate-pack.mjs --pack=<pack-directory> [--strict]');
+
+let packDirectory;
+try {
+  ({ packDirectory } = await resolvePackDirectory(args, process.cwd()));
+} catch (error) {
+  printDiscoveryUsage('validate-pack.mjs');
+  console.error(error.message);
   process.exit(2);
 }
-
-const packDirectory = path.resolve(packArg.slice('--pack='.length));
 const errors = [];
 const warnings = [];
 const referencedFiles = new Set(['PACK.md', 'manifest.json', 'design-system.md', '.pack-source.json']);

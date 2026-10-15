@@ -49,7 +49,7 @@
     }
     var presets = window.PrototypeChartPresets;
     if (!presets) return;
-    var build = options.preset ? presets[options.preset] : options.buildOption;
+    var build = presets[options.preset];
     if (typeof build !== 'function') return;
     render(root, build(state));
     if (summary && options.summary) {

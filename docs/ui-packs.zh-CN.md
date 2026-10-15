@@ -19,7 +19,7 @@ UI 包是原型生成**消费**的可复用视觉系统（Token、组件、Patte
 | `admin-desktop` | 桌面后台：表单、表格、导航、看板图表。默认用于 [`examples/minimal-notes-system`](../examples/minimal-notes-system)。 |
 | `mobile-vant` | 手机宽度 H5、Vant 风格模拟：触控热区、单元格、浮层。备选样例：[`examples/mobile-work-order`](../examples/mobile-work-order)。 |
 
-`admin-desktop` 在包内带了 Apache ECharts（[NOTICE](../NOTICE)）；这仍不是对某套商业 UI 库版本的兼容承诺。
+两个官方包各自带同一套 ECharts 图表，由 `.html-prototype/pack-plugins/echarts/` 打进包内（[NOTICE](../NOTICE)）。图表插件不是第三个包，也不能单独安装。这仍不是对某套商业 UI 库版本的兼容承诺。
 
 从**已安装**的包里选。UI 类型不清楚就先问 — 不要悄悄默认。
 
@@ -60,4 +60,4 @@ UI 包是原型生成**消费**的可复用视觉系统（Token、组件、Patte
 node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
 ```
 
-参数、覆盖保护和 `--dest=project`：[Pack install](../skills/html-prototype-build/references/pack-install.md)。消费侧目录：[catalog](../skills/html-prototype-build/ui/catalog.md)。包契约与 registry：[ui-pack-maintain](../skills/ui-pack-maintain/SKILL.md)。落地路径：[Pack 编写](../skills/ui-pack-maintain/references/pack-authoring.md)。
+参数、覆盖保护和 `--dest=project`：[Pack install](../skills/html-prototype-build/references/pack-install.md)。消费侧目录：[catalog](../skills/html-prototype-build/ui/catalog.md)。包契约与 registry：[ui-pack-maintain](../skills/ui-pack-maintain/SKILL.md)。落地路径与扫描顺序：[Pack 编写](../skills/ui-pack-maintain/references/pack-authoring.md#pack-discovery)（`list-packs.mjs`、`HTML_PROTOTYPE_PACK_ROOT`、`--pack-root`）。
