@@ -16,7 +16,7 @@
 | <span id="prod-library">生产组件库（不是本产品）</span> | 应用里的共享组件 | 代码评审、Storybook 或正在跑的应用 | 真实组件 API 与生产源码 | 生产代码 | 原型已经对齐之后 — **本产品不是那个组件库** |
 | <span id="ai-html-annotation">AI HTML Annotation</span> | UI 材料 + 可选 UI 包（`admin-desktop` / `mobile-vant`） | 在真实 DOM 上：Viewer 放正式标注；作者工具里用 Mark 打点 | selector + 元素 HTML（`Copy all → For AI`）；页面上的标注 | 原生 HTML + 标注 + 可选纯净多状态 PNG；带 `AGENTS.md` 的目录 | 需要可打开的 HTML 原型、DOM 绑定评审、以及可交给 Agent 的上下文时 |
 
-作者工具 — Mark、Direct Edit、Inspector — 只在作者会话中加载。正式 HTML 只保留只读 Viewer 与语义 DOM。多状态截图不含作者层界面。
+作者工具 — Mark、Direct Edit、Inspector、草图板 — 只在作者会话中加载。草图板把粗布局复制到剪贴板，它不是设计文件。正式 HTML 只保留只读 Viewer 与语义 DOM。多状态截图不含作者层界面。
 
 ## 适合 / 不适合
 

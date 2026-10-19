@@ -6,7 +6,7 @@
 
 ## 1. 这是设计工具，还是给编程 Agent 用的？
 
-**给编程 Agent 用** — 也给和 Agent 一起在 HTML 上评审的人用。它不是设计画布。
+**给编程 Agent 用** — 也给和 Agent 一起在 HTML 上评审的人用。它不是 Figma 那种设计工具。草图板只是一张复制给 Agent 的粗布局。
 
 这是面向 Claude Code、Codex、Cursor 等编程 Agent 的 Skill：在真实 DOM 上标注并迭代原生 HTML 原型。页面本身就是交付物，不只是一张效果图。见[对比](comparison.zh-CN.md)。安装见 [quickstart](quickstart.zh-CN.md)。
 
@@ -20,7 +20,7 @@ Figma 仍是设计源稿。本 Skill 把 UI 材料落成可执行 HTML，标注�
 
 **不会。** 它们是作者工具，不进入正式页面的加载结构。
 
-正式 HTML 只保留语义 DOM、稳定锚点和只读 Viewer。Mark 的 pin 按页面存在 `localStorage`，用 `Copy all → For AI` 导出。Direct Edit 可以把样式或文案写回源码，工具本身不会注入交付物。见[产品指南](guide.zh-CN.md#作者层-vs-正式交付物)。
+正式 HTML 只保留语义 DOM、稳定锚点和只读 Viewer。Mark 的 pin 按页面存在 `localStorage`，用 `Copy all → For AI` 导出。Direct Edit 可以把样式或文案写回源码，工具本身不会注入交付物。草图板留在作者会话里：**Copy image** 把画布放到剪贴板，不写进原型。见[产品指南](guide.zh-CN.md#作者层-vs-正式交付物)。
 
 ## 4. 为什么需要 localhost 作者工具？安全吗？
 

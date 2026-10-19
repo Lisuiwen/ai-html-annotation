@@ -6,7 +6,7 @@ Short answers for people choosing a review method or installing for the first ti
 
 ## 1. Is this a design tool or for coding agents?
 
-**For coding agents** — and for people who review HTML with them. It is not a design canvas.
+**For coding agents** — and for people who review HTML with them. It is not a Figma-style design tool. The sketch board is only a rough layout you copy to the agent.
 
 It is an Agent Skill for Claude Code, Codex, Cursor, and other coding agents: annotate and iterate native HTML prototypes on the real DOM. The page is the deliverable, not a picture of one. See [how it compares](comparison.md). Install: [quickstart](quickstart.md).
 
@@ -20,7 +20,7 @@ Figma stays the design source. This Skill turns UI materials into executable HTM
 
 **No.** They are Author Tools, not part of the formal page load.
 
-Formal HTML keeps semantic DOM, stable anchors, and the read-only Viewer. Mark pins live in page-scoped `localStorage` and export via `Copy all → For AI`. Direct Edit can write style and copy back to source; the tool itself is not injected into the deliverable. See [product guide](guide.md#author-layer-vs-formal-deliverable).
+Formal HTML keeps semantic DOM, stable anchors, and the read-only Viewer. Mark pins live in page-scoped `localStorage` and export via `Copy all → For AI`. Direct Edit can write style and copy back to source; the tool itself is not injected into the deliverable. The sketch board stays in the authoring session: **Copy image** puts the canvas on the clipboard and does not write the prototype. See [product guide](guide.md#author-layer-vs-formal-deliverable).
 
 ## 4. Why is localhost Author Tools needed? Is it safe?
 

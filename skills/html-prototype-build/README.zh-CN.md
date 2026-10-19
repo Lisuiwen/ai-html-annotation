@@ -24,7 +24,7 @@
 | `notes.snapshot.js` | 正式说明、场景状态与截图清单的唯一数据源 |
 | 按场景生成的 PNG | 纯页面截图，不含右侧说明、连线和作者工具 |
 
-正式原型只保留语义 DOM、稳定锚点与只读 Viewer；Mark、Direct Edit、Notes Editor、Inspector 和本地作者服务都属于**作者层**，不会写进交付 HTML。
+正式原型只保留语义 DOM、稳定锚点与只读 Viewer；Mark、Direct Edit、Notes Editor、Inspector、草图板和本地作者服务都属于**作者层**，不会写进交付 HTML。
 
 ## 典型怎么用
 
@@ -33,7 +33,7 @@
 1. **新建或大改页面**
    在 Cursor、Claude Code、Codex 等客户端启用本 Skill，用自然语言描述需求或附上材料，让 Agent 生成 `prototype.html` 与 `prototype/`。约束与任务分流见 [SKILL.md](SKILL.md)。
 2. **在页面上继续工作**
-   需要改样式、改说明、打评审 pin、从元素跳回源码时，通过本地作者服务在浏览器里操作。Direct Edit 与 Mark 同在 Author Tools 面板；能力说明见 [本地作者服务](references/local-authoring.md)、[评审打点](references/review-mark.md)。
+   需要改样式、改说明、打评审 pin、从元素跳回源码，或给 Agent 摆一张粗布局时，通过本地作者服务在浏览器里操作。Direct Edit 与 Mark 同在 Author Tools 面板；草图板从同一页打开。能力说明见 [本地作者服务](references/local-authoring.md)、[评审打点](references/review-mark.md)、[草图板](references/sketch-board.md)。
 3. **按场景出图或交付**
    需要批量纯页面截图或整理最终文件时，见 [场景截图](references/screenshots.md) 与 [交付与迭代](references/delivery.md)。
 
@@ -48,6 +48,7 @@
    ├── Direct Edit / Mark：直接改页面样式或打评审 pin，导出给 AI 的 selector 与元素快照
    ├── Notes Editor：编辑正式说明卡片
    ├── Inspector：从页面元素跳转到本机 IDE 源码
+   ├── 草图板：把 UI 包原子摆到自由画布上，并把参考图复制到剪贴板
    └── Screenshot：按 snapshot 场景输出纯页面 PNG
 ```
 

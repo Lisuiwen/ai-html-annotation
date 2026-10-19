@@ -29,7 +29,7 @@ generate HTML from a UI pack
    scenarios
 ```
 
-Mark, Direct Edit, and Inspector are parallel options after Viewer, not a required sequence.
+Mark, Direct Edit, Inspector, and the sketch board are parallel options after Viewer, not a required sequence.
 
 ## See it first
 
@@ -59,6 +59,10 @@ Hold `Alt + Shift`, hover to see the selector, click to open that location in yo
 
 ![Lock an element and jump from the page to its source](media/inspector.gif)
 
+### Sketch a rough layout and copy it to the AI
+
+Author Tools → **sketch**. Drag components from an installed UI pack onto a free canvas — including the ECharts charts in `admin-desktop` and `mobile-vant` — draw a phone frame if you need one, and edit text on the selected piece. **Copy image** puts that canvas on the clipboard. It does not download a file, and it is not part of the delivered page.
+
 ### Deliver clean multi-state screenshots
 
 Multi-state screenshots hide the annotation rail, connectors, and Author Tools. Formal HTML can still show Viewer; the PNGs are the product page only.
@@ -67,7 +71,7 @@ Multi-state screenshots hide the annotation rail, connectors, and Author Tools. 
 
 ### Generate from a UI pack so pages stay visually consistent
 
-Installable visual systems — tokens, components, patterns — not bundled inside the Skill. Official packs: `admin-desktop` (desktop admin) and `mobile-vant` (phone-width H5). Customize or author a pack with the `ui-pack-maintain` skill when the official simulation is the wrong visual language. Details: [UI packs](docs/ui-packs.md).
+Installable visual systems — tokens, components, patterns — not bundled inside the Skill. Official packs: `admin-desktop` (desktop admin) and `mobile-vant` (phone-width H5). Both include the same ECharts set (line, bar, donut, mixed, funnel, gauge, heatmap, and map), which you can place on the sketch board or generate into a page. Customize or author a pack with the `ui-pack-maintain` skill when the official simulation is the wrong visual language. Details: [UI packs](docs/ui-packs.md).
 
 ## Fit / not fit
 
@@ -108,7 +112,7 @@ Skill references, UI pack contracts, and addon docs are in English.
 
 ## For agents
 
-Local Author Tools, pack install, and screenshot commands: [Local authoring](skills/html-prototype-build/references/local-authoring.md), [Pack install](skills/html-prototype-build/references/pack-install.md), [Screenshots](skills/html-prototype-build/references/screenshots.md). Agent routing: [SKILL.md](skills/html-prototype-build/SKILL.md).
+Local Author Tools, the sketch board, pack install, and screenshot commands: [Local authoring](skills/html-prototype-build/references/local-authoring.md), [Sketch board](skills/html-prototype-build/references/sketch-board.md), [Pack install](skills/html-prototype-build/references/pack-install.md), [Screenshots](skills/html-prototype-build/references/screenshots.md). Agent routing: [SKILL.md](skills/html-prototype-build/SKILL.md).
 
 ## Distribution layout
 
@@ -125,15 +129,16 @@ docs/                            Product docs
 ## Security
 
 - Author Tools bind to `127.0.0.1` only. Do not run authoring or screenshots against untrusted HTML.
+- The author page has a Stop button that shuts that local server down immediately. Closing the last tab waits 3 minutes. With no requests for 2 hours, the process exits. Starting it again while the same page is already running reuses that process.
 - Author writes require same-origin localhost JSON. Keep the Skill-root `.env` local for IDE selection; never commit it.
-- Direct Edit and Mark load only in the authoring session. Direct Edit writes style/copy through localhost; Mark stores pins in page-scoped `localStorage` and may copy to the clipboard. Neither is injected into source HTML.
+- Direct Edit, Mark, and the sketch board load only in the authoring session. Direct Edit writes style/copy through localhost; Mark stores pins in page-scoped `localStorage` and may copy to the clipboard. Sketch **Copy image** copies the canvas to the clipboard and does not write a file. None of them is injected into source HTML. The sketch board is served at `/sketch/` by the same author server.
 - Do not put real credentials, production data, personal information, or unauthorized brand assets in prototypes.
 
 ## Contributing
 
 Experimental 0.x; APIs and layout may change. See [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md) and [`.github/CODE_OF_CONDUCT.md`](.github/CODE_OF_CONDUCT.md). Report vulnerabilities privately per [`.github/SECURITY.md`](.github/SECURITY.md).
 
-UI packs are original native-HTML visual simulations. They do not bundle third-party design-system code; vendored libraries (for example Apache ECharts in `admin-desktop`) ship inside the pack and are listed in [NOTICE](NOTICE).
+UI packs are original native-HTML visual simulations. They do not bundle third-party design-system code; vendored libraries (Apache ECharts, stamped into both official packs from `.html-prototype/pack-plugins/echarts/`) ship inside the pack and are listed in [NOTICE](NOTICE). The chart plugin is not a third installable pack.
 
 ## License
 

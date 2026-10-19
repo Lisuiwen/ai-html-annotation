@@ -16,7 +16,7 @@ Use the table to pick a review method. Demos of Viewer, Mark, and Inspector are 
 | <span id="prod-library">Production component library (not us)</span> | Shared app components | Code review, Storybook, or the running app | Real component APIs and production source | Production code | After the prototype is agreed — **this product is not that library** |
 | <span id="ai-html-annotation">AI HTML Annotation</span> | UI materials + optional UI pack (`admin-desktop` / `mobile-vant`) | On the real DOM: Viewer for formal annotations; Mark pins in Author Tools | Selectors + element HTML (`Copy all → For AI`); annotations on the page | Native HTML + annotations + optional clean multi-state PNGs; folder with `AGENTS.md` | When you need an openable HTML prototype, DOM-bound review, and AI-ready context |
 
-Author Tools — Mark, Direct Edit, Inspector — load only in the authoring session. Formal HTML keeps the read-only Viewer and semantic DOM. Multi-state screenshots omit that chrome.
+Author Tools — Mark, Direct Edit, Inspector, and the sketch board — load only in the authoring session. The sketch board copies a rough layout to the clipboard; it is not a design file. Formal HTML keeps the read-only Viewer and semantic DOM. Multi-state screenshots omit that chrome.
 
 ## Fit / not fit
 

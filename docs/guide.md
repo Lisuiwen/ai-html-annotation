@@ -18,7 +18,7 @@ Most prototype workflows break after the mock looks “good enough.” The pictu
 | Author / agent | Rebuild HTML from pixels | No shared UI pack. Visuals reinvent themselves every pass. |
 | Anyone verifying a fix | Spec in a doc, notes in chat, change in source | Nothing is bound to the same element, so checking is slow. |
 
-The reconnection is native HTML: **annotate** on the real DOM, use **Author Tools**, **copy to an AI**, and ship **multi-state screenshots**. Mark, Direct Edit, and Inspector are parallel options after Viewer, not a required sequence.
+The reconnection is native HTML: **annotate** on the real DOM, use **Author Tools**, **copy to an AI**, and ship **multi-state screenshots**. Mark, Direct Edit, Inspector, and the sketch board are parallel options after Viewer, not a required sequence.
 
 ```text
 generate HTML from a UI pack
@@ -55,6 +55,7 @@ You are producing or tightening the page, not only commenting on it.
 1. Generate from an installed UI pack (`admin-desktop` or `mobile-vant`) so later pages match. See [UI packs](ui-packs.md).
 2. For a local style or copy tweak: Author Tools → **edit**, hold `Ctrl` / `⌘`, change, save. Saved CSS/copy become source; the editor UI does not.
 3. To confirm the right node: **Inspector** — hold `Alt + Shift`, hover, click — open that location in the local IDE.
+4. To hand the agent a rough layout: Author Tools → **sketch**. Drag components from the installed pack (including charts), draw a phone frame if you need one, edit text on the selected piece, and **Copy image**. That canvas goes to the clipboard. It is not saved as a file and is not written into the prototype.
 
 Direct Edit changes source; Mark does not. Inspector highlighting is session-only — do not copy it as a For-AI selector.
 
@@ -92,11 +93,11 @@ Customize or author a pack: [UI packs](ui-packs.md) and the [`ui-pack-maintain`]
 
 ### Author layer vs formal deliverable
 
-Mark, Direct Edit, Inspector, and Author Tools load only while you are authoring. What you ship is semantic HTML, stable anchors, read-only Viewer, optional clean PNGs, and `AGENTS.md`. Do not treat Mark pins as formal annotations. Do not inject Author Tools into delivered HTML.
+Mark, Direct Edit, Inspector, the sketch board, and Author Tools load only while you are authoring. What you ship is semantic HTML, stable anchors, read-only Viewer, optional clean PNGs, and `AGENTS.md`. Do not treat Mark pins or a sketch image as formal annotations. Do not inject Author Tools into delivered HTML.
 
 ## End-to-end steps
 
-You do not have to run every step every time. Review-only sessions start at Mark. Direct Edit and Inspector are optional and can run in any order after Viewer. Pack work is optional. First commands: [quickstart](quickstart.md).
+You do not have to run every step every time. Review-only sessions start at Mark. Direct Edit, Inspector, and the sketch board are optional and can run in any order after Viewer. Pack work is optional. First commands: [quickstart](quickstart.md).
 
 1. **Materials to openable HTML.** Confirm page type from materials (ask if the UI type is unclear). Install a UI pack if none is present (`admin-desktop` for the notes-system sample; `mobile-vant` for mobile-work-order). Enable the prototype skill and let the agent generate the page. Double-click the HTML for a read-only Viewer preview; Author Tools are required to edit.
 

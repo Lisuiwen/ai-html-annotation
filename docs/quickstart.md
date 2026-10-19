@@ -43,7 +43,9 @@ If you are not using this repo, install a UI pack, enable the skill, and ask the
 
 ## Start Author Tools
 
-Author Tools listen on `127.0.0.1` only. Open the localhost URL the process prints. Without formal annotation data, Direct Edit, Mark, and Inspector still work; annotation cards cannot be saved.
+Author Tools listen on `127.0.0.1` only. Open the localhost URL the process prints. Without formal annotation data, Direct Edit, Mark, and Inspector still work; annotation cards cannot be saved. The page has a Stop button that shuts the server down immediately. Closing the last tab waits 3 minutes; with no requests for 2 hours, the process exits. Starting it again while the same page is already running reuses that process.
+
+Author Tools → **sketch** opens the sketch board on that same server. Place components from an installed pack and copy the canvas to the clipboard. It is optional, and it is not part of the five-minute success check below.
 
 Inspector IDE jump: copy the Skill-root `.env.example` to `.env`. Do not commit `.env`.
 

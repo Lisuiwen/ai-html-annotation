@@ -24,7 +24,7 @@ A complete task typically yields three outputs:
 | `notes.snapshot.js` | Single source of truth for formal notes, scenario states, and the screenshot manifest |
 | Per-scenario PNGs | Clean page screenshots without the notes rail, connectors, or author tools |
 
-Formal prototypes keep only semantic DOM, stable anchors, and the read-only Viewer; Mark, Direct edit, Notes editor, Inspector, and the local authoring server all belong to the **authoring layer** and never enter the delivered HTML.
+Formal prototypes keep only semantic DOM, stable anchors, and the read-only Viewer; Mark, Direct edit, Notes editor, Inspector, the sketch board, and the local authoring server all belong to the **authoring layer** and never enter the delivered HTML.
 
 ## Typical usage
 
@@ -33,7 +33,7 @@ No need to memorize commands — work by intent:
 1. **create or heavily change a page**
    Enable this Skill in Cursor, Claude Code, Codex, or other clients, describe the requirement in natural language or attach materials, and let the agent generate `prototype.html` and `prototype/`. Constraints and task routing: [SKILL.md](SKILL.md).
 2. **Keep working on the page**
-   To change styles or notes, drop review pins, or jump from an element back to source, operate through the local authoring server in the browser. Direct edit and Mark share the Author Tools panel; capabilities are described in [Local authoring](references/local-authoring.md) and [Review mark](references/review-mark.md).
+   To change styles or notes, drop review pins, jump from an element back to source, or sketch a rough layout for the agent, operate through the local authoring server in the browser. Direct edit and Mark share the Author Tools panel; the sketch board opens from the same page. Capabilities are described in [Local authoring](references/local-authoring.md), [Review mark](references/review-mark.md), and [Sketch board](references/sketch-board.md).
 3. **Capture scenarios or deliver**
    For batch clean-page screenshots or final file assembly, see [Scenario screenshots](references/screenshots.md) and [Delivery & iteration](references/delivery.md).
 

@@ -18,7 +18,7 @@ AI HTML Annotation 给需要和编程 Agent 一起评审原生 HTML 的人用。
 | 作者 / Agent | 对着像素重写 HTML | 没有共享 UI 包。每次视觉都重来。 |
 | 任何要验收修改的人 | 说明在文档、意见在聊天、改动在源码 | 对不上同一个元素，验证很慢。 |
 
-接回去的方式是原生 HTML：在真实 DOM 上**标注**，用**作者工具**，**复制给 AI**，再出**多状态截图**。Mark、Direct Edit、Inspector 是 Viewer 之后的并行可选项，不是一条必走的线性链。
+接回去的方式是原生 HTML：在真实 DOM 上**标注**，用**作者工具**，**复制给 AI**，再出**多状态截图**。Mark、Direct Edit、Inspector、草图板是 Viewer 之后的并行可选项，不是一条必走的线性链。
 
 ```text
 用 UI pack 生成 HTML
@@ -28,7 +28,8 @@ AI HTML Annotation 给需要和编程 Agent 一起评审原生 HTML 的人用。
         │
         ├── Mark → Copy for AI   (optional)
         ├── Direct Edit          (optional)
-        └── Inspector            (optional)
+        ├── Inspector            (optional)
+        └── Sketch board         (optional clipboard image)
         │
         ▼
    scenarios
@@ -54,6 +55,7 @@ AI HTML Annotation 给需要和编程 Agent 一起评审原生 HTML 的人用。
 1. 从已安装的 UI 包生成（`admin-desktop` 或 `mobile-vant`），让后面的页面长得像这一套。见 [UI 包](ui-packs.zh-CN.md)。
 2. 本地改样式或文案：作者工具 → **edit**，按住 `Ctrl` / `⌘`，改完保存。保存后的 CSS / 文案成为源码；编辑器界面不会。
 3. 确认改的是对的节点：用 **Inspector**，按住 `Alt + Shift`，悬停后单击 — 在本机 IDE 打开对应位置。
+4. 要先给 Agent 一张粗布局：作者工具 → **sketch**。从已安装的包拖组件（含图表），需要就画手机外框，选中后改字，再 **Copy image**。画布进剪贴板，不存成文件，也不写进原型。
 
 Direct Edit 改源码；Mark 不改。Inspector 的高亮只用于当前会话 — 不要把它当成复制给 AI 的 selector。
 
@@ -85,16 +87,17 @@ Direct Edit 改源码；Mark 不改。Inspector 的高亮只用于当前会话 �
 | 评审 pin → 复制给 AI | Mark，`Copy all → For AI` | 作者会话 |
 | 在页面上改样式或文案 | Direct Edit | 作者会话 |
 | 锁定元素 → IDE | Inspector | 作者会话 |
+| 给 Agent 的粗模块布局 | 草图板 | 作者会话 |
 | 视觉稳定 | UI 包 | 包，不在 Skill 内 |
 | 新建 / 编辑 / 空态等纯净 PNG | 多状态截图 | 交付 |
 
 ### 作者层 vs 正式交付物
 
-Mark、Direct Edit、Inspector 和作者工具只在你写作时加载。交出去的是语义 HTML、稳定锚点、只读 Viewer、可选纯净 PNG 和 `AGENTS.md`。不要把 Mark 的 pin 当成正式标注。不要把作者工具写进交付 HTML。
+Mark、Direct Edit、Inspector、草图板和作者工具只在你写作时加载。交出去的是语义 HTML、稳定锚点、只读 Viewer、可选纯净 PNG 和 `AGENTS.md`。不要把 Mark 的 pin 或草图图片当成正式标注。不要把作者工具写进交付 HTML。
 
 ## 端到端步骤
 
-不必每次跑完每一步。只做评审时从 Mark 开始。Direct Edit 和 Inspector 可选，且在 Viewer 之后可按任意顺序。UI 包工作是可选的。第一条命令：[quickstart](quickstart.zh-CN.md)。
+不必每次跑完每一步。只做评审时从 Mark 开始。Direct Edit、Inspector 和草图板可选，且在 Viewer 之后可按任意顺序。UI 包工作是可选的。第一条命令：[quickstart](quickstart.zh-CN.md)。
 
 1. **从材料到可打开的 HTML。** 从材料确认页面类型（UI 类型不清楚就先问）。还没有 UI 包就先安装（笔记系统样例用 `admin-desktop`；mobile-work-order 用 `mobile-vant`）。启用原型 Skill，让 Agent 生成页面。双击 HTML 可只读预览 Viewer；要改内容需作者工具。
 
@@ -118,6 +121,7 @@ Mark、Direct Edit、Inspector 和作者工具只在你写作时加载。交出�
 脚本名、快照文件和本机命令在 Skill 参考里 — 不写在上面的产品正文中。
 
 - 启动作者工具 → [本地作者服务](../skills/html-prototype-build/references/local-authoring.md)
+- 摆模块草图 → [草图板](../skills/html-prototype-build/references/sketch-board.md)
 - 安装 UI 包 → [Pack install](../skills/html-prototype-build/references/pack-install.md)
 - 打点并复制给 AI → [评审打点](../skills/html-prototype-build/references/review-mark.md)
 - 多状态 PNG → [截图](../skills/html-prototype-build/references/screenshots.md)

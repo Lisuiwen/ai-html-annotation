@@ -22,13 +22,14 @@
         │
         ├── Mark → Copy for AI   (optional)
         ├── Direct Edit          (optional)
-        └── Inspector            (optional)
+        ├── Inspector            (optional)
+        └── Sketch board         (optional clipboard image)
         │
         ▼
    scenarios
 ```
 
-Mark、Direct Edit、Inspector 是 Viewer 之后的并行可选项，不是一条必走的线性链。
+Mark、Direct Edit、Inspector、草图板是 Viewer 之后的并行可选项，不是一条必走的线性链。
 
 ## 你可以先看演示
 
@@ -58,6 +59,10 @@ Mark、Direct Edit、Inspector 是 Viewer 之后的并行可选项，不是一�
 
 ![锁定元素并从页面跳转到源码](media/inspector.gif)
 
+### 摆一张粗布局，复制给 AI
+
+作者工具 → **sketch**。把已安装 UI 包里的组件拖到自由画布上 — 包括 `admin-desktop` 和 `mobile-vant` 里的 ECharts 图表 — 需要手机外框就自己画，选中后可以改字。**Copy image** 把这块画布复制到剪贴板。它不会下载文件，也不进入交付页面。
+
 ### 交付不含作者工具的多状态截图
 
 多状态截图会藏掉标注栏、连线和作者工具。正式 HTML 仍可以带 Viewer；PNG 是纯页面。
@@ -66,7 +71,7 @@ Mark、Direct Edit、Inspector 是 Viewer 之后的并行可选项，不是一�
 
 ### 用 UI 包生成，让页面视觉保持稳定
 
-可安装的视觉系统 — Token、组件、Pattern — 不打进 Skill。官方 UI 包：`admin-desktop`（桌面后台）与 `mobile-vant`（手机宽度 H5）。官方模拟不是你的视觉语言时，用 `ui-pack-maintain` Skill 自定义或编写 UI 包。详见 [UI 包](docs/ui-packs.zh-CN.md)。
+可安装的视觉系统 — Token、组件、Pattern — 不打进 Skill。官方 UI 包：`admin-desktop`（桌面后台）与 `mobile-vant`（手机宽度 H5）。两者带同一套 ECharts 图表（折线、柱、环、组合、漏斗、仪表、热力、地图），可以摆到草图板上，也可以生成进页面。官方模拟不是你的视觉语言时，用 `ui-pack-maintain` Skill 自定义或编写 UI 包。详见 [UI 包](docs/ui-packs.zh-CN.md)。
 
 ## 适合 / 不适合
 
@@ -107,7 +112,7 @@ Skill 参考、UI 包契约和 addon 文档为英文。
 
 ## 进阶
 
-作者工具、安装 UI 包、截图命令：[本地作者服务](skills/html-prototype-build/references/local-authoring.md)、[Pack install](skills/html-prototype-build/references/pack-install.md)、[截图](skills/html-prototype-build/references/screenshots.md)。Agent 分流：[SKILL.md](skills/html-prototype-build/SKILL.md)。
+作者工具、草图板、安装 UI 包、截图命令：[本地作者服务](skills/html-prototype-build/references/local-authoring.md)、[草图板](skills/html-prototype-build/references/sketch-board.md)、[Pack install](skills/html-prototype-build/references/pack-install.md)、[截图](skills/html-prototype-build/references/screenshots.md)。Agent 分流：[SKILL.md](skills/html-prototype-build/SKILL.md)。
 
 ## 分发结构
 
@@ -124,15 +129,16 @@ docs/                            产品文档
 ## 安全
 
 - 作者工具只绑定 `127.0.0.1`。不要对不可信 HTML 跑作者工具和截图。
+- 作者页面有「停止」按钮，立即关掉本机服务。关掉最后一个标签后等待 3 分钟。连续 2 小时没有任何请求时，进程自行退出。同一页面已经在运行时，再次启动会复用该进程。
 - 作者写接口要求 localhost 同源 JSON。Skill 根目录的 `.env` 只用于本机 IDE 选择，不要提交。
-- Direct Edit 与 Mark 只在作者会话中加载。Direct Edit 经 localhost 写回样式 / 文案；Mark 把 pin 存在页面作用域的 `localStorage`，也可能复制到剪贴板。它们都不会注入源 HTML。
+- Direct Edit、Mark 和草图板只在作者会话中加载。Direct Edit 经 localhost 写回样式 / 文案；Mark 把 pin 存在页面作用域的 `localStorage`，也可能复制到剪贴板。草图板的 **Copy image** 把画布复制到剪贴板，不写文件。它们都不会注入源 HTML。草图板由同一作者服务在 `/sketch/` 提供。
 - 原型中不要放真实凭据、生产数据、个人信息或未授权品牌。
 
 ## 开源协作
 
 实验性 0.x，接口和目录仍可能变化。贡献见 [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md)，行为规范见 [`.github/CODE_OF_CONDUCT.md`](.github/CODE_OF_CONDUCT.md)，漏洞请按 [`.github/SECURITY.md`](.github/SECURITY.md) 私下报告。
 
-本项目 UI 包为自研原生 HTML 视觉模拟，不捆绑第三方设计系统代码；包内引用的库（例如 `admin-desktop` 中的 Apache ECharts）随包分发，见 [NOTICE](NOTICE)。
+本项目 UI 包为自研原生 HTML 视觉模拟，不捆绑第三方设计系统代码；包内引用的库（Apache ECharts，由 `.html-prototype/pack-plugins/echarts/` 打进两个官方包）随包分发，见 [NOTICE](NOTICE)。图表插件不是第三个可安装包。
 
 ## 许可证
 

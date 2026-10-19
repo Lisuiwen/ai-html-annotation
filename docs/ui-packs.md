@@ -62,4 +62,4 @@ Prototype generation consumes packs. Do not use `ui-pack-maintain` to generate b
 node <skill-root>/scripts/install-pack.mjs --pack=admin-desktop
 ```
 
-Flags, overwrite protection, and `--dest=project`: [Pack install](../skills/html-prototype-build/references/pack-install.md). Consumer catalog: [catalog](../skills/html-prototype-build/ui/catalog.md). Pack contract and registry: [ui-pack-maintain](../skills/ui-pack-maintain/SKILL.md). Landing: [Pack authoring](../skills/ui-pack-maintain/references/pack-authoring.md).
+Flags, overwrite protection, and `--dest=project`: [Pack install](../skills/html-prototype-build/references/pack-install.md). Consumer catalog: [catalog](../skills/html-prototype-build/ui/catalog.md). Pack contract and registry: [ui-pack-maintain](../skills/ui-pack-maintain/SKILL.md). Discovery order and `list-packs.mjs` (`HTML_PROTOTYPE_PACK_ROOT`, `--pack-root`): [Pack authoring](../skills/ui-pack-maintain/references/pack-authoring.md#pack-discovery).

@@ -23,6 +23,8 @@ UI 包是原型生成**消费**的可复用视觉系统（Token、组件、Patte
 
 从**已安装**的包里选。UI 类型不清楚就先问 — 不要悄悄默认。
 
+能摆到模块草图板上的公开组件，在 manifest 里声明 `atoms`，并在 `component.html` 用 `data-pack-atom` 标记对应节点。草图板读这份声明，自己不维护组件清单。字段规则：[草图原子](../skills/ui-pack-maintain/references/contract.md#sketch-atoms)。
+
 ## 安装
 
 终端用户默认装到家目录缓存 `~/.html-prototype/packs/<id>/`。让 Agent 安装 `admin-desktop` 或 `mobile-vant`。
