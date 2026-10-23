@@ -410,6 +410,23 @@
           window.AuthorToolsMarkPins.scheduleReposition(annotations);
         }).observe(document.documentElement);
       }
+      /* Popup open/close toggles hidden, class, or style and does not resize the page. */
+      if (window.MutationObserver && document.body) {
+        var domObserver = new window.MutationObserver(function (records) {
+          for (var i = 0; i < records.length; i++) {
+            var node = records[i].target;
+            if (node && node.nodeType === 1 && node.closest && node.closest('.mm-pin, .mm-note-pop, .mm-ui, .at-ui')) continue;
+            window.AuthorToolsMarkPins.scheduleReposition(annotations);
+            return;
+          }
+        });
+        domObserver.observe(document.body, {
+          subtree: true,
+          childList: true,
+          attributes: true,
+          attributeFilter: ['hidden', 'class', 'style', 'open', 'aria-hidden']
+        });
+      }
       restore();
     },
     activate: activate,

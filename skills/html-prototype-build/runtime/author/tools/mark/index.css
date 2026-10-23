@@ -21,6 +21,8 @@
   user-select: none; animation: mm-pin-in 0.42s cubic-bezier(0.22,1,0.36,1);
 }
 body.mm-on .mm-pin { display: flex; }
+/* Closed popup DOM stays mounted; hide the body-level pin until that target is laid out again. */
+body.mm-on .mm-pin.mm-pin-hidden { visibility: hidden; pointer-events: none; }
 .mm-pin:hover, .mm-pin.mm-pin-hl { transform: scale(1.22); }
 .mm-pin.mm-pin-active { box-shadow: 0 0 0 4px rgba(147,51,234,0.25), 0 4px 12px rgba(147,51,234,0.35); }
 .mm-pin-del {

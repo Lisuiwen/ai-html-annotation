@@ -4,18 +4,41 @@
 
   var repoRaf = 0;
 
+  /* Pins live on document.body, so a target inside a closed popup would keep its last screen point. */
+  function isTargetLaidOut(target) {
+    if (!target || target.nodeType !== 1 || !target.isConnected) return false;
+    if (typeof target.checkVisibility === 'function') {
+      try {
+        if (!target.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return false;
+      } catch (_) {
+        if (!target.checkVisibility()) return false;
+      }
+    } else if (typeof window.getComputedStyle === 'function') {
+      var node = target;
+      while (node && node.nodeType === 1) {
+        var style = window.getComputedStyle(node);
+        if (style.display === 'none' || style.visibility === 'hidden' || style.visibility === 'collapse') return false;
+        node = node.parentElement;
+      }
+    }
+    var rect = target.getBoundingClientRect();
+    return !!(rect && (rect.width || rect.height));
+  }
+
   function positionPin(ann) {
     var target = ann.targetEl;
-    if (target && target.nodeType === 1 && target.isConnected && typeof ann.relX === 'number') {
+    var laidOut = isTargetLaidOut(target);
+    if (laidOut && typeof ann.relX === 'number') {
       var rect = target.getBoundingClientRect();
-      if (rect.width || rect.height) {
-        ann.pageX = rect.left + window.scrollX + ann.relX * rect.width;
-        ann.pageY = rect.top + window.scrollY + ann.relY * rect.height;
-      }
+      ann.pageX = rect.left + window.scrollX + ann.relX * rect.width;
+      ann.pageY = rect.top + window.scrollY + ann.relY * rect.height;
     }
     if (ann.pinEl) {
       ann.pinEl.style.left = (ann.pageX - 11) + 'px';
       ann.pinEl.style.top = (ann.pageY - 11) + 'px';
+      if (ann.pinEl.classList && target && target.nodeType === 1) {
+        ann.pinEl.classList.toggle('mm-pin-hidden', !laidOut);
+      }
     }
   }
 
