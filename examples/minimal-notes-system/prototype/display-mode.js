@@ -23,7 +23,15 @@
     return [
       scoped + '{display:none!important}',
       'body.' + BODY_CLASS + ' .pi-hover{outline:none!important}',
-      'body.' + BODY_CLASS + ' [data-ui-interactive]::after{display:none!important;content:none!important}'
+      'body.' + BODY_CLASS + ' [data-ui-interactive]::after{display:none!important;content:none!important}',
+      /* Screenshot capture: collapse notes column, unwrap scroll clips, let product use full viewport width. */
+      'body.' + BODY_CLASS + '{overflow:visible!important}',
+      'body.' + BODY_CLASS + ' .pn-page{display:grid!important;grid-template-columns:minmax(0,1fr) 0!important;grid-template-rows:auto!important;height:auto!important;min-height:0!important;overflow:visible!important}',
+      'body.' + BODY_CLASS + ' .pn-preview{overflow:visible!important;height:auto!important;max-height:none!important;min-height:0!important;width:100%!important;max-width:none!important;border-right:0!important}',
+      'body.' + BODY_CLASS + ' .pn-notes,body.' + BODY_CLASS + ' .pn-connections{width:0!important;min-width:0!important;max-width:0!important;padding:0!important;margin:0!important;border:0!important;overflow:hidden!important}',
+      'body.' + BODY_CLASS + ' .ui-content-card{overflow:visible!important;min-height:0!important}',
+      'body.' + BODY_CLASS + ' .ui-table-wrap{overflow:visible!important}',
+      'body.' + BODY_CLASS + ' .ui-layer-body{overflow:visible!important;max-height:none!important}'
     ].join('');
   }
 

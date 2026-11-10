@@ -2,6 +2,56 @@
 
 All notable changes to AI HTML Annotation are documented here.
 
+## v0.5.4 — 2026-11-10
+
+### English
+
+#### Added
+
+- Scenario screenshot CLI measures the product preview over CDP by default, resizes the viewport, and clips to `.pn-preview`. Use `--width` / `--height` as minimums, `--max-width` / `--max-height` as caps, `--only=id1,id2` for subsets, and `--no-auto-size` for the legacy fixed viewport.
+
+#### Changed
+
+- `product-only=1` now collapses the notes column and unwraps viewer, content-card, table, modal-body, and related scroll clips so captures reflect full product layout.
+
+#### Fixed
+
+- Batch screenshots no longer keep the right notes rail or drop content hidden behind `.pn-preview` / inner scroll regions when timing or grid column width was wrong.
+
+#### Install / update
+
+Re-install or update the `html-prototype-build` skill copy so deliveries pick up `runtime/cli/screenshot.mjs` and `runtime/client/core/display-mode.js`:
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+```
+
+Copy the updated `display-mode.js` into existing formal prototypes when you rely on the new screenshot behavior (same file as the skill runtime).
+
+### 中文
+
+#### 新增
+
+- 场景截图 CLI 默认通过 CDP 测量产品预览区、调整视口并按 `.pn-preview` 裁切。`--width` / `--height` 为下限，`--max-width` / `--max-height` 为上限，`--only=id1,id2` 可只拍部分场景，`--no-auto-size` 恢复固定视口。
+
+#### 变更
+
+- `product-only=1` 会收起说明栏列并展开 viewer、内容卡片、表格区、弹窗 body 等在截图模式下的滚动裁切，使画面反映完整产品布局。
+
+#### 修复
+
+- 批量截图不再误保留右侧说明栏，也不再裁掉 `.pn-preview` 或内部滚动区域中的溢出内容（原有时序与双栏占位问题）。
+
+#### 安装 / 更新
+
+请重新安装或更新 `html-prototype-build` Skill，以获取新的 `runtime/cli/screenshot.mjs` 与 `runtime/client/core/display-mode.js`：
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+```
+
+若依赖新截图行为，请将正式交付物中的 `prototype/display-mode.js` 替换为 Skill 运行时同款文件。
+
 ## v0.5.3 — 2026-10-15
 
 ### English
