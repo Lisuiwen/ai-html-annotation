@@ -1,0 +1,25 @@
+skills/html-prototype-build/references/generation-contract.md
+  s_12fef1dcd13eeb::t_1ef354877a6f11 96
+examples/minimal-notes-system/AGENTS.md
+  s_12fef1dcd13eeb::t_74f0ac0637a504 5-10,13,18,20-25
+skills/html-prototype-build/templates/AGENTS.md
+  s_12fef1dcd13eeb::t_f9b7dce3cc88e5 5-10,13,18,20-25
+CHANGELOG.md
+  s_12fef1dcd13eeb::t_3d78c7ab137d05 5-38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "98c19efa57e2a9296f8360fb47834ab1198e3094",
+  "prompts": {},
+  "sessions": {
+    "s_12fef1dcd13eeb": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "af9aa7fe-e091-4ea7-8390-317fa06821f8",
+        "model": "composer-2.5"
+      },
+      "human_author": "lisuiwen <202310729@any3.com>"
+    }
+  }
+}
