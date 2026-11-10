@@ -38,3 +38,10 @@ test('product-only=1 enters pure page mode automatically', async () => {
   assert.equal(window.PrototypeAuthorChrome.isProductOnly(), true);
   assert.equal(document.body.classList.contains('pa-product-only'), true);
 });
+
+test('product-only styles unwrap viewer scroll clips for capture', async () => {
+  const { headChildren } = await boot();
+  const style = headChildren.find((node) => node.id === 'prototype-author-chrome-style');
+  assert.match(style.textContent, /body\.pa-product-only \.pn-preview\{[^}]*overflow:visible!important/);
+  assert.match(style.textContent, /body\.pa-product-only \.ui-table-wrap\{overflow:visible!important\}/);
+});

@@ -14,6 +14,8 @@ node <skill-root>/runtime/cli/screenshot.mjs <prototype.html> --snapshot=prototy
 
 The tool writes `screenshots/<scene-id>.png` into the delivery directory next to the HTML, iterating over `snapshot.scenarios`; the screenshot URL automatically carries `collapsed=1&product-only=1`, hiding annotations and author UI.
 
+By default the CLI measures the product preview area over CDP (`display-mode.js` unwraps viewer scroll clips in product-only mode), then resizes the viewport before capture. Use `--width` / `--height` as minimum dimensions, `--max-width` / `--max-height` as caps, `--only=scene-a,scene-b` for a subset, and `--no-auto-size` to revert to the legacy fixed viewport.
+
 ## Agent prerequisites
 
 - The snapshot uses `schemaVersion: 2` and explicitly declares the screenshot list and each scenario's composed state via the `scenarios` object.
