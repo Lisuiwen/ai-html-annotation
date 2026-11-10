@@ -93,7 +93,7 @@ Every prototype generates the same structure:
 ```
 
 - `<prototype-name>/` is a complete, independently handoff-able final product directory; its name comes from the current task and is stable and filesystem-safe.
-- Copy `templates/AGENTS.md` verbatim to `<prototype-name>/AGENTS.md`. It requires downstream coding agents to extract product information only from the snapshot, screenshots, and anchor-scoped HTML locals, and not to port the prototype implementation into the target project.
+- Copy `templates/AGENTS.md` verbatim to `<prototype-name>/AGENTS.md`. It directs downstream coding agents through a priority-ordered reading path (snapshot → screenshots → anchor-scoped HTML → screenshot/HTML reconciliation when cards do not cover the scenario), and forbids porting the prototype implementation into the target project.
 - `<prototype-name>/` may contain only `AGENTS.md`, `prototype.html`, `prototype/`, `screenshots/`, and an `assets/` created on demand; do not scatter CSS, JS, snapshot, or runtime files.
 - The HTML loads `./prototype/prototype.css` in `<head>` and, before `</body>`, loads `./prototype/notes.snapshot.js`, `./prototype/display-mode.js`, `./prototype/state.js`, `./prototype/model.js`, `./prototype/viewer.js`, and `./prototype/prototype.js` in order. Paths must be relative to the HTML so the page can be opened directly under `file://`.
 - `prototype.html` keeps a readable page DOM, stable anchors, and minimal asset references; inlining large CSS blocks or business scripts is forbidden.

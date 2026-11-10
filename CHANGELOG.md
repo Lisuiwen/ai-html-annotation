@@ -2,6 +2,40 @@
 
 All notable changes to AI HTML Annotation are documented here.
 
+## v0.5.5 — 2026-11-10
+
+### English
+
+#### Changed
+
+- Delivery handoff template (`templates/AGENTS.md`): added **Priority and fallback**, clarified that product-only screenshots define the full product surface to implement (not only card-linked targets), and added step 4 — **screenshot and HTML reconciliation** when annotations do not cover the scenario.
+
+#### Install / update
+
+Re-install or update the `html-prototype-build` skill so new deliveries copy the handoff template:
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+```
+
+Copy `templates/AGENTS.md` into existing delivery folders when you rely on the updated Coding Agent reading order.
+
+### 中文
+
+#### 变更
+
+- 交付交接模板（`templates/AGENTS.md`）：新增 **优先级与降级**；明确以 product-only 截图界定须还原的完整产品区（不限于有卡片/连线的目标）；新增第 4 步——标注无法覆盖场景时，用 **截图 + HTML 产品区复核** 补齐。
+
+#### 安装 / 更新
+
+请重新安装或更新 `html-prototype-build` Skill，以便新交付物带上最新交接模板：
+
+```bash
+npx skills add https://github.com/Lisuiwen/ai-html-annotation --skill html-prototype-build
+```
+
+已有交付目录若依赖新版 Coding Agent 阅读顺序，请将 `templates/AGENTS.md` 同步到包内 `AGENTS.md`。
+
 ## v0.5.4 — 2026-11-10
 
 ### English
