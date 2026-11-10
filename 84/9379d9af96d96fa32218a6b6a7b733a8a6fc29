@@ -1,0 +1,43 @@
+CHANGELOG.md
+  s_93902676904e84::t_238a95c1b267e7 5-54
+skills/html-prototype-build/runtime/client/core/display-mode.js
+  s_93902676904e84::t_1a0a8e82fd3d88 27,29-31
+  s_93902676904e84::t_5defb1578c903e 26,28,32
+  s_93902676904e84::t_a11e8d27c48216 33-34
+skills/html-prototype-build/references/screenshots.md
+  s_93902676904e84::t_9041e6d5b69671 17-18
+tests/runtime/cli/screenshot.test.mjs
+  s_93902676904e84::t_e8b2319a03a6d9 3-7
+  s_93902676904e84::t_2ef1cf76f00f4e 14-30
+skills/html-prototype-build/runtime/cli/screenshot.mjs
+  s_93902676904e84::t_80f4023e7a1a4b 252-260,267-276
+  s_93902676904e84::t_9f0770522870b5 312-313
+  s_93902676904e84::t_88252b3a94369e 317,327,330-334,338-340
+  s_93902676904e84::t_a8ed190f9522d2 284-286
+  s_93902676904e84::t_72df983af91669 76,79-98
+  s_93902676904e84::t_0821e34e7e712e 311
+  s_93902676904e84::t_6d005352e838be 3-6,8,14,25-30,35,75,77,99-100,146-251,261-266,277-283,287-310,318-326,328,335-337,341-354,356,368,436-453,457-459,473,487-490,492-522
+  s_93902676904e84::t_a93a39e179ca33 314-316
+  s_93902676904e84::t_ae9f0655c5fd6d 36-74,78
+  s_93902676904e84::t_7c18f28a67857b 329
+tests/runtime/client/core/display-mode.test.mjs
+  s_93902676904e84::t_21b1947dfb2545 45
+  s_93902676904e84::t_ad0e731a80ccff 41-44,47
+  s_93902676904e84::t_7d722b737e8b96 46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "849379d9af96d96fa32218a6b6a7b733a8a6fc29",
+  "prompts": {},
+  "sessions": {
+    "s_93902676904e84": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "119861cb-7931-42f5-ae18-f165916c9161",
+        "model": "composer-2.5"
+      },
+      "human_author": "lisuiwen <202310729@any3.com>"
+    }
+  }
+}
